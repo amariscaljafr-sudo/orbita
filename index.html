@@ -90,17 +90,17 @@ main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-ar
 body.static{position:fixed;inset:0;width:100%;overflow:hidden;overscroll-behavior:none}
 body.static main{padding-bottom:0}
 .view.home-v{height:calc(100vh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);height:calc(100dvh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);gap:0;overflow:hidden}
-.home-v .home{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,3vh,30px);padding-block:clamp(14px,2.6vh,26px) clamp(12px,2.4vh,24px);width:100%;max-width:420px;margin-inline:auto}
+.home-v .home{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-start;gap:clamp(16px,2.6vh,28px);padding-block:clamp(12px,2.2vh,22px) 8px;width:100%;max-width:480px;margin-inline:auto}
 .home-v .cal{width:100%;margin-inline:0;flex:none}
 .home-v .cal-h{margin-bottom:8px;padding-inline:4px}
-.home-v .cal-h .m{font-size:clamp(1.35rem,5.4vw,1.7rem)}
+.home-v .cal-h .m{font-size:clamp(1.5rem,6vw,1.95rem)}
 .home-v .cal-h .ibtn{width:40px;height:40px}
 .home-v .grid7{gap:3px}
 .home-v .wk{font-size:11px;padding-bottom:5px}
-.home-v .d{aspect-ratio:auto;height:clamp(30px,calc((100dvh - 600px) / 6),46px);font-size:clamp(15px,4.6vw,20px);border-radius:12px;font-weight:750}
+.home-v .d{aspect-ratio:auto;height:clamp(36px,calc((100dvh - 470px) / 6),64px);font-size:clamp(17px,5.2vw,24px);border-radius:12px;font-weight:750}
 .home-v .d .pip{bottom:5%}
 .home-v .d .pip i{width:4px;height:4px}
-.home-v .agenda{flex:0 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:clamp(14px,2.4vh,22px)}
+.home-v .agenda{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:clamp(14px,2.4vh,22px)}
 .ag-block{display:flex;flex-direction:column;min-height:0}
 .free-sub{margin:-4px 0 4px;font-size:13px;color:var(--mute)}
 @media (max-width:899px){.home-v .free-sub{display:none}}
@@ -120,9 +120,9 @@ body.static main{padding-bottom:0}
 .home-v .eyebrow{font-size:10.5px}
 .more-btn{align-self:flex-start;margin-top:8px}
 @media (min-width:900px){
-  .home-v .home{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:clamp(40px,5vw,72px);align-items:center;align-content:center;max-width:1060px;padding-block:24px 28px}
-  .home-v .cal{max-width:520px;justify-self:end}
-  .home-v .d{height:clamp(40px,calc((100dvh - 420px) / 6),68px);font-size:clamp(17px,2vw,23px)}
+  .home-v .home{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:clamp(36px,4vw,64px);align-items:start;align-content:center;max-width:1120px;padding-block:20px 16px}
+  .home-v .cal{max-width:600px;justify-self:stretch}
+  .home-v .d{height:clamp(44px,calc((100dvh - 380px) / 6),84px);font-size:clamp(18px,2.2vw,26px)}
   .home-v .agenda{max-height:100%}
   .home-v .agenda{max-height:100%;align-self:center;max-width:440px}
 }
@@ -369,6 +369,8 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 .dnav.on .n{color:#bdbdb9}
 .dnav.ai{background:var(--paper-2);margin-bottom:6px}
 .dnav.ai svg{color:var(--red)}
+.dnav.ai.on svg{color:#fff}
+.drawer .ver{margin-top:auto;padding:18px 12px 0;font-size:12px;color:var(--mute)}
 .dlabel{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:800;padding:18px 12px 6px}
 
 /* schedule */
@@ -491,6 +493,7 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .typing i{width:7px;height:7px;border-radius:50%;background:var(--mute);animation:blink 1.2s infinite}
 .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.chat-in.page{bottom:calc(var(--foot) + env(safe-area-inset-bottom,0px) + 6px)}
 .chat-in{position:sticky;bottom:-24px;background:var(--paper);padding-block:12px 4px;display:flex;gap:8px;align-items:flex-end}
 .chat-in textarea{flex:1;min-height:50px;max-height:140px;padding:13px 15px;border-radius:16px;background:var(--paper-2);border:1.5px solid transparent;outline:none;font-size:16px;resize:none}
 .chat-in textarea:focus{border-color:var(--ink);background:var(--paper)}
@@ -528,10 +531,10 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .av-wrap,.probador{display:grid;gap:22px}
 @media (min-width:760px){.av-wrap,.probador{grid-template-columns:minmax(240px,.8fr) 1.2fr;align-items:start}.av-stage{position:sticky;top:90px}}
 .av-stage{display:flex;justify-content:center;align-items:flex-end;padding:18px 0 8px;border-radius:var(--r-lg);background:radial-gradient(80% 60% at 50% 30%,#fff,var(--paper-2));min-height:300px}
-.av-svg{height:min(52vh,440px);width:auto;max-width:100%;filter:drop-shadow(0 10px 18px rgba(13,13,13,.12));animation:avIn .5s var(--spring)}
+.av-svg{height:min(58vh,500px);width:auto;max-width:100%;filter:drop-shadow(0 10px 18px rgba(13,13,13,.12));animation:avIn .5s var(--spring)}
 @keyframes avIn{from{transform:translateY(8px) scale(.98);opacity:.4}}
 .pb-stage{display:flex;flex-direction:column;gap:10px}
-@media (max-width:759px){.probador .av-svg{height:34vh}}
+@media (max-width:759px){.probador .av-svg{height:46vh}}
 .oc{display:flex;flex-direction:column;gap:10px}
 .oc-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
 .oc-d{position:relative;aspect-ratio:3/4;max-width:100%;border-radius:12px;background:var(--paper-2);overflow:hidden;display:flex;align-items:flex-end;justify-content:center;transition:transform .2s var(--spring)}
@@ -704,6 +707,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
+const APP_VERSION = "12";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -855,8 +859,8 @@ function toast(title, text, opts={}){
 }
 
 /* ================= routing ================= */
-const ROUTES = ["inicio","buscar","nuevo","horario","probador","avatar","calendario","tareas","avisos","notas","secciones","perfil"];
-const ROUTE_TITLE = {probador:"Probador", avatar:"Tu avatar", buscar:"Buscar", nuevo:"Añadir", horario:"Horario", calendario:"Calendario", tareas:"Tareas", avisos:"Avisos y fechas", notas:"Notas", secciones:"Secciones", perfil:"Perfil y ajustes"};
+const ROUTES = ["inicio","buscar","nuevo","horario","asistente","probador","avatar","calendario","tareas","avisos","notas","secciones","perfil"];
+const ROUTE_TITLE = {asistente:"Asistente", probador:"Probador", avatar:"Tu avatar", buscar:"Buscar", nuevo:"Añadir", horario:"Horario", calendario:"Calendario", tareas:"Tareas", avisos:"Avisos y fechas", notas:"Notas", secciones:"Secciones", perfil:"Perfil y ajustes"};
 function currentRoute(){
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith("s-") && secById(h.slice(2))) return h;
@@ -876,7 +880,7 @@ function render(){
   if (r === "inicio") html = vHome(changed);
   else {
     const sec = r.startsWith("s-") ? secById(r.slice(2)) : null;
-    const fn = {probador:vProbador, avatar:vAvatar, buscar:vSearch, nuevo:vNew, horario:vDay, calendario:vCalendar, tareas:vTasks, avisos:vReminders, notas:vNotes, secciones:vSections, perfil:vProfile}[r];
+    const fn = {asistente:vAssistant, probador:vProbador, avatar:vAvatar, buscar:vSearch, nuevo:vNew, horario:vDay, calendario:vCalendar, tareas:vTasks, avisos:vReminders, notas:vNotes, secciones:vSections, perfil:vProfile}[r];
     html = topBar(sec ? sec.name : ROUTE_TITLE[r]) + (fn ? fn() : vSection(sec));
   }
   document.body.classList.toggle("static", r === "inicio");
@@ -909,8 +913,8 @@ const topBar = title => `<div class="top"><button class="ibtn" data-act="drawer"
 function renderDock(){
   if (!S.settings || S.locked){ $("#dock").innerHTML = ""; return; }
   const r = currentRoute();
-  const tabs = [["inicio","Inicio","home"],["buscar","Buscar","search"],["nuevo","Añadir","plus"],["horario","Horario","cal"]];
-  $("#dock").innerHTML = tabs.map(([k, l, i]) => k === "nuevo"
+  const tabs = [["inicio","Inicio","home"],["buscar","Buscar","search"],["asistente","Asistente","spark"],["horario","Horario","cal"]];
+  $("#dock").innerHTML = tabs.map(([k, l, i]) => k === "asistente"
     ? `<button class="ft add${r === k ? " on" : ""}" data-act="tab" data-to="${k}"${r === k ? ' aria-current="page"' : ""}><span class="plus">${ic(i)}</span>${l}</button>`
     : `<button class="ft${k === "horario" ? " today-n" : ""}${r === k ? " on" : ""}" data-act="tab" data-to="${k}"${r === k ? ' aria-current="page"' : ""}>${k === "horario" ? `<span class="ic-wrap">${ic(i)}<b>${new Date().getDate()}</b></span>` : ic(i)}${l}</button>`).join("");
 }
@@ -949,7 +953,7 @@ function greetHtml(animate){
 }
 function fitGreet(){
   const g = $("#greet"); if (!g) return;
-  let size = Math.min(52, Math.max(30, window.innerWidth * .1));
+  let size = Math.min(56, Math.max(32, window.innerWidth * .11));
   g.style.fontSize = size + "px";
   let guard = 0;
   while (g.scrollWidth > g.clientWidth + 1 && size > 16 && guard++ < 60){ size -= 1; g.style.fontSize = size + "px"; }
@@ -995,7 +999,7 @@ function agendaHtml(){
   return `<section class="agenda">
     <div class="ag-block" data-more="+{n} más">
       <div class="sec-t"><h2>${esc(title)}</h2><span class="n">${its.length || ""}</span><span class="sp"></span><button class="lnk def-lnk" data-act="day" data-date="${sel}">Horario${ic("right")}</button><button class="lnk more-btn" data-act="day" data-date="${sel}" hidden></button></div>
-      <div class="ag-list">${its.length ? its.map(agendaRow).join("") : `<div class="empty"><b>${isToday ? "Hoy no tienes nada apuntado." : "Día libre."}</b>Toca «Añadir» abajo para crear un evento, una tarea o un aviso.</div>`}
+      <div class="ag-list">${its.length ? its.map(agendaRow).join("") : `<div class="empty"><b>${isToday ? "Hoy no tienes nada apuntado." : "Día libre."}</b>Abre el menú ☰ y toca «Añadir algo», o pídeselo al asistente.</div>`}
       ${late.length ? `<div class="group-t red">Atrasadas · ${late.length}</div>${late.map(t => agendaRow({t:"task", it:t, time:"", label:"Era para " + relDay(t.date).toLowerCase(), red:true, title:t.title})).join("")}` : ""}</div>
     </div>
     ${isToday ? `<div class="ag-block free" data-more="+{n} más">
@@ -1242,7 +1246,7 @@ const PAGES = {
     <h3>Terceros</h3><p>Google Fonts (tipografía) y jsDelivr (solo para cargar la librería del asistente cuando lo usas) pueden registrar tu dirección IP al servir sus archivos.</p></div>`],
   about:["Acerca de Órbita", `<div class="prose">
     <p><b>Órbita</b> es tu espacio personal para organizar el día: calendario, tareas, avisos, notas y secciones a tu medida.</p>
-    <p>Versión 3 · funciona sin conexión · tus datos se quedan en tu dispositivo.</p>
+    <p>Versión ${APP_VERSION} · funciona sin conexión · tus datos se quedan en tu dispositivo.</p>
     <h3>Instálala</h3><p>En Safari: Compartir y luego «Añadir a pantalla de inicio». Las actualizaciones llegan solas.</p></div>`]
 };
 
@@ -1287,13 +1291,14 @@ function openDrawer(){
   const link = (to, label, icon, n, cls="") => `<a class="dnav${r === to ? " on" : ""} ${cls}" href="#${to}">${cls.includes("child") ? "" : ic(icon)}<span>${esc(label)}</span>${n ? `<span class="n">${n}</span>` : ""}</a>`;
   const tree = s => link("s-" + s.id, s.name, s.icon, deepCount(s.id)) + descendants(s.id).map(c => link("s-" + c.id, (c.parentId !== s.id ? "· " : "") + c.name, c.icon, entriesOf(c.id).length, "child")).join("");
   openLayer(`<div class="brand"><b>Órbita<i>.</i></b><button class="ibtn" data-act="close" aria-label="Cerrar menú">${ic("x")}</button></div>
-    <button class="dnav ai" data-act="ai">${ic("spark")}<span>Asistente</span></button>
+    <a class="dnav ai${r === "nuevo" ? " on" : ""}" href="#nuevo">${ic("plus")}<span>Añadir algo</span></a>
     ${link("inicio","Inicio","home")}${link("calendario","Calendario","cal")}${link("tareas","Tareas","task", ofKind("task").filter(t => !t.done).length)}${link("avisos","Avisos y fechas","bell", ofKind("reminder").filter(t => !t.done).length)}${link("notas","Notas","note", ofKind("note").length)}
     <div class="dlabel">Tus secciones</div>
     ${topSections().map(tree).join("")}
     <button class="dnav" data-act="sec-new">${ic("plus")}<span>Nueva sección</span></button>
     ${link("secciones","Gestionar secciones","grid")}
-    <div class="dlabel">Tú</div>${link("perfil","Perfil y ajustes","user")}`, {kind:"drawer"});
+    <div class="dlabel">Tú</div>${link("perfil","Perfil y ajustes","user")}${link("avatar","Tu avatar","user")}
+    <div class="ver">Órbita · versión ${APP_VERSION}</div>`, {kind:"drawer"});
 }
 function vNew(){
   const d = S.addDate || todayKey();
@@ -1359,6 +1364,15 @@ function afterView(r, changed){
     inp.oninput = () => { S.searchQ = inp.value; $("#gres").innerHTML = searchResults(); };
     inp.onkeydown = e => { if (e.key === "Enter"){ addRecent(inp.value); inp.blur(); } };
     if (changed && window.matchMedia("(pointer:fine)").matches) inp.focus();
+  }
+  if (r === "asistente"){
+    drawChat();
+    const ta = $("#ai-in");
+    if (ta){
+      ta.oninput = () => { ta.style.height = "auto"; ta.style.height = Math.min(140, ta.scrollHeight) + "px"; };
+      ta.onkeydown = e => { if (e.key === "Enter" && !e.shiftKey && window.matchMedia("(pointer:fine)").matches){ e.preventDefault(); ta.form.requestSubmit(); } };
+      if (S.aiPrefill){ const t = S.aiPrefill; S.aiPrefill = ""; setTimeout(() => aiSend(t), 150); }
+    }
   }
   if (r === "horario"){
     const n = new Date(), isToday = S.dayKey === todayKey(), sched = $("#sched");
@@ -1794,20 +1808,22 @@ function drawChat(){
   const sugg = ["¿Qué tengo esta semana?", "Planifícame el día de hoy", "Crea una sección de artes marciales con horarios y progreso", "Apúntame ir al gimnasio lunes, miércoles y viernes a las 19:00"];
   box.innerHTML = AI.view.length ? AI.view.map(m => m.goto ? `<button class="msg act" data-act="nav" data-to="s-${m.goto}">Ver la sección creada →</button>` : `<div class="msg ${m.r}">${esc(m.t)}</div>`).join("") + (AI.busy ? `<div class="typing"><i></i><i></i><i></i></div>` : "")
     : `<div class="msg a">Hola${myName() ? ", " + esc(myName()) : ""}. Dime qué quieres organizar y lo apunto, lo planifico o te creo una sección a medida.</div><div class="chips" style="flex-wrap:wrap">${sugg.map(s => `<button class="chip" data-act="ai-sugg" data-t="${esc(s)}">${esc(s)}</button>`).join("")}</div>`;
-  const sh = box.closest(".sheet"); if (sh) sh.scrollTop = sh.scrollHeight;
+  const sh = box.closest(".sheet"); if (sh) sh.scrollTop = sh.scrollHeight; else window.scrollTo(0, document.documentElement.scrollHeight);
   const b = $("#chat-send"); if (b) b.disabled = AI.busy;
 }
-function openAI(prefill){
-  if (!aiKey()) return openAIKey(prefill);
-  openLayer(`${sheetHead(`<span class="row" style="gap:8px">Asistente <span class="tag">${PROV_NAME[aiProv()]}</span></span>`, AI.view.length ? `<button class="lnk" data-act="ai-clear" style="margin-right:6px">Nueva charla</button>` : "")}
+function vAssistant(){
+  if (!aiKey()) return `
+    <div class="page-h"><h1>Tu asistente</h1><p>Te apunta cosas, te planifica el día y te crea secciones a medida.</p></div>
+    <div class="empty"><b>Primero conéctalo.</b>Con Gemini es gratis: solo necesitas pegar tu clave una vez en este dispositivo.<button class="btn pri sm" data-act="ai-key">${ic("spark")}Conectar el asistente</button></div>`;
+  return `
+    <div class="row" style="justify-content:space-between"><span class="tag">${PROV_NAME[aiProv()]}</span>${AI.view.length ? `<button class="lnk" data-act="ai-clear">Nueva charla</button>` : ""}</div>
     <div class="chat" id="chat"></div>
-    <form class="chat-in" data-form="ai"><textarea id="ai-in" name="t" rows="1" placeholder="Escribe lo que necesites…" aria-label="Mensaje para el asistente" enterkeyhint="send"></textarea><button class="btn pri" id="chat-send" type="submit" aria-label="Enviar">${ic("send")}</button></form>`, {onMount(sh){
-      drawChat();
-      const ta = $("#ai-in", sh);
-      ta.addEventListener("input", () => { ta.style.height = "auto"; ta.style.height = Math.min(140, ta.scrollHeight) + "px"; });
-      ta.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && window.matchMedia("(pointer:fine)").matches){ e.preventDefault(); sh.querySelector("form[data-form=ai]").requestSubmit(); } });
-      if (prefill) setTimeout(() => aiSend(prefill), 200);
-    }});
+    <form class="chat-in page" data-form="ai"><textarea id="ai-in" name="t" rows="1" placeholder="Escribe lo que necesites…" aria-label="Mensaje para el asistente" enterkeyhint="send"></textarea><button class="btn pri" id="chat-send" type="submit" aria-label="Enviar">${ic("send")}</button></form>`;
+}
+function openAI(prefill){
+  S.aiPrefill = prefill || "";
+  closeLayer();
+  if (currentRoute() === "asistente") render(); else location.hash = "asistente";
 }
 function openAIKey(after, provArg){
   if (window.claude){
@@ -2145,7 +2161,7 @@ document.addEventListener("submit", e => {
     if (prov === "claude" && !/^sk-ant-/.test(key)){ toast("Esa clave no parece de Anthropic", "Empieza por «sk-ant-». Cópiala entera desde console.anthropic.com."); return; }
     try { localStorage.setItem(prov === "claude" ? AI_KEY : GEM_KEY, key); localStorage.setItem(PROV_KEY, prov); } catch {}
     AI.history = []; AI.gHist = []; AI.view = [];
-    const after = f.dataset.after; closeLayer(); render(); toast("Asistente conectado"); setTimeout(() => openAI(after || ""), 320);
+    const after = f.dataset.after; closeLayer(); toast("Asistente conectado"); setTimeout(() => openAI(after || ""), 320);
   } else if (kind === "sec-ai"){
     const t = (fd.get("text") || "").trim();
     if (!t){ $("#sa-text").focus(); return; }
@@ -2303,82 +2319,124 @@ function shade(hex, k){
   const n = parseInt(m[1], 16), f = v => Math.max(0, Math.min(255, Math.round(v * k)));
   return "#" + [f(n >> 16 & 255), f(n >> 8 & 255), f(n & 255)].map(v => v.toString(16).padStart(2, "0")).join("");
 }
+let avSeq = 0;
+function smoothEdge(pts){
+  if (pts.length < 3) return pts.map((p, i) => `${i ? "L" : ""}${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(" ");
+  let d = "";
+  for (let i = 1; i < pts.length - 1; i++){ const m = [(pts[i][0] + pts[i + 1][0]) / 2, (pts[i][1] + pts[i + 1][1]) / 2]; d += ` Q${pts[i][0].toFixed(1)} ${pts[i][1].toFixed(1)} ${m[0].toFixed(1)} ${m[1].toFixed(1)}`; }
+  const l = pts[pts.length - 1]; return d + ` L${l[0].toFixed(1)} ${l[1].toFixed(1)}`;
+}
+function limbPath(pts){
+  const L = pts.map(([x, y, w]) => [x - w / 2, y]), R = pts.map(([x, y, w]) => [x + w / 2, y]).reverse();
+  const top = pts[0], bot = pts[pts.length - 1];
+  return `M${L[0][0].toFixed(1)} ${L[0][1].toFixed(1)}${smoothEdge(L)} Q${bot[0].toFixed(1)} ${(bot[1] + bot[2] * .55).toFixed(1)} ${R[0][0].toFixed(1)} ${R[0][1].toFixed(1)}${smoothEdge(R)} Q${top[0].toFixed(1)} ${(top[1] - 2).toFixed(1)} ${L[0][0].toFixed(1)} ${L[0][1].toFixed(1)} Z`;
+}
 function avatarSVG(cfg, wear={}){
-  const c = {...avatarCfg(), ...cfg};
-  const bw = {s:.88, m:1, l:1.16}[c.body] || 1, sk = c.skin, skD = shade(sk, .86), hc = c.hairColor, hcD = shade(hc, .8);
-  const X = d => (100 + d * bw).toFixed(1);
-  const g = k => wear[k] ? garmentInfo(S.items.get(wear[k]) || {fields:{}}) : null;
+  const c = {...avatarCfg(), ...cfg}, id = "av" + (++avSeq);
+  const bw = {s:.9, m:1, l:1.16}[c.body] || 1, sk = c.skin, skD = shade(sk, .84), skL = shade(sk, 1.06), hc = c.hairColor, hcL = shade(hc, 1.35), hcD = shade(hc, .7);
+  const X = d => 100 + d * bw;
+  const g = k => wear[k] && S.items.get(wear[k]) ? garmentInfo(S.items.get(wear[k])) : null;
   const top = g("Arriba"), bot = g("Abajo"), dress = g("Vestido"), coat = g("Abrigo"), shoes = g("Calzado"), acc = g("Accesorio");
-  const kw = (gg, re) => gg && re.test(gg.title.toLowerCase());
-  const col = (gg, d) => (gg && gg.color) || d;
-  const armW = 13 * Math.sqrt(bw), legW = 19 * Math.sqrt(bw);
-  const arm = (side, toY, color, w) => { const sx = side < 0 ? X(-29) : X(29), ex = side < 0 ? X(-37) : X(37), hx = side < 0 ? X(-41) : X(41); return toY < 200 ? `<path d="M${sx} 122 L${ex} ${toY}" stroke="${color}" stroke-width="${w}" stroke-linecap="round" fill="none"/>` : `<path d="M${sx} 122 L${ex} 176 L${hx} 226" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`; };
-  const leg = (side, fromY, toY, color, w) => `<path d="M${X(side * 13)} ${fromY} L${X(side * 15)} ${Math.min(toY, 330)}${toY > 330 ? ` L${X(side * 16)} ${toY}` : ""}" stroke="${color}" stroke-width="${w}" stroke-linecap="round" fill="none"/>`;
-  const torso = (color, y2=230, extra=0) => `<path d="M${X(-29 - extra)} 116 Q100 ${108 - extra} ${X(29 + extra)} 116 L${X(25 + extra)} 200 L${X(27 + extra)} ${y2} L${X(-27 - extra)} ${y2} L${X(-25 - extra)} 200 Z" fill="${color}" stroke="${shade(color, .82)}" stroke-width="1.5" stroke-linejoin="round"/>`;
-  let o = `<ellipse cx="100" cy="414" rx="${48 * bw}" ry="7" fill="#000" opacity=".08"/>`;
-  // hair behind
-  if (c.hair === "largo") o += `<path d="M66 70 Q64 130 74 150 L126 150 Q136 130 134 70 Z" fill="${hc}"/>`;
-  if (c.hair === "coleta") o += `<path d="M126 66 Q150 90 138 140 Q130 120 124 96 Z" fill="${hc}"/>`;
-  // legs, arms skin
-  o += leg(-1, 226, 398, sk, legW) + leg(1, 226, 398, sk, legW);
-  o += arm(-1, 226, sk, armW) + arm(1, 226, sk, armW);
-  o += `<circle cx="${X(-41)}" cy="230" r="${7 * Math.sqrt(bw)}" fill="${sk}"/><circle cx="${X(41)}" cy="230" r="${7 * Math.sqrt(bw)}" fill="${sk}"/>`;
-  // neck
-  o += `<rect x="92" y="94" width="16" height="22" rx="6" fill="${skD}"/>`;
+  const kw = (gg, re) => !!gg && re.test(gg.title.toLowerCase());
+  const grads = [];
+  const fillG = (col, name) => { const gid = `${id}${name}`; grads.push(`<linearGradient id="${gid}" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="${shade(col, .8)}"/><stop offset=".3" stop-color="${col}"/><stop offset=".62" stop-color="${shade(col, 1.04)}"/><stop offset="1" stop-color="${shade(col, .78)}"/></linearGradient>`); return `url(#${gid})`; };
+  const skinF = fillG(sk, "sk");
+  // anatomy
+  const arm = s => [[X(s * 41), 118, 25 * bw], [X(s * 46), 156, 21 * bw], [X(s * 49), 198, 17 * bw], [X(s * 51), 226, 18 * bw], [X(s * 53), 272, 12 * bw]];
+  const leg = s => [[X(s * 19), 250, 40 * bw], [X(s * 18), 310, 33 * bw], [X(s * 16), 388, 22 * bw], [X(s * 16), 428, 24 * bw], [X(s * 14), 500, 13 * bw]];
+  const torsoPath = (y2, extra=0) => { const e = extra; return `M100 104 C${X(14 + e)} 104 ${X(30 + e)} 106 ${X(42 + e)} 114 C${X(48 + e)} 120 ${X(46 + e)} 136 ${X(41 + e)} 152 C${X(36 + e)} 172 ${X(31 + e)} 196 ${X(31 + e)} 214 C${X(31 + e)} 230 ${X(37 + e)} 246 ${X(37 + e)} ${y2} L${X(-37 - e)} ${y2} C${X(-37 - e)} 246 ${X(-31 - e)} 230 ${X(-31 - e)} 214 C${X(-31 - e)} 196 ${X(-36 - e)} 172 ${X(-41 - e)} 152 C${X(-46 - e)} 136 ${X(-48 - e)} 120 ${X(-42 - e)} 114 C${X(-30 - e)} 106 ${X(-14 - e)} 104 100 104 Z`; };
+  const sleeve = (s, upto, col, extra=3) => { const pts = arm(s).filter(p => p[1] <= upto).map(([x, y, w]) => [x, y, w + extra]); if (pts[pts.length - 1][1] < upto){ const a = arm(s); const nx = a.find(p => p[1] > upto) || a[a.length - 1]; pts.push([nx[0], upto, nx[2] + extra]); } return `<path d="${limbPath(pts)}" fill="${col}"/>`; };
+  const trouser = (s, upto, col, extra=5) => { const pts = leg(s).filter(p => p[1] <= upto).map(([x, y, w]) => [x, y, w + extra]); if (pts[pts.length - 1][1] < upto){ const a = leg(s); const nx = a.find(p => p[1] > upto) || a[a.length - 1]; pts.push([nx[0], upto, nx[2] + extra]); } return `<path d="${limbPath(pts)}" fill="${col}"/>`; };
+  let back = "", o = "";
+  o += `<ellipse cx="100" cy="526" rx="${54 * bw}" ry="8" fill="#000" opacity=".09"/>`;
+  if (c.hair === "largo") back += `<path d="M71 48 C64 92 64 140 72 166 C86 174 114 174 128 166 C136 140 136 92 129 48 Z" fill="${hcD}"/>`;
+  if (c.hair === "coleta") back += `<path d="M118 30 C142 40 146 80 136 128 C132 108 126 80 116 56 Z" fill="${hcD}"/>`;
+  o += back;
+  // legs & feet (skin)
+  o += `<path d="${limbPath(leg(-1))}" fill="${skinF}"/><path d="${limbPath(leg(1))}" fill="${skinF}"/>`;
+  o += `<path d="M${X(-21)} 498 C${X(-26)} 512 ${X(-25)} 522 ${X(-18)} 523 L${X(-4)} 523 C${X(-2)} 516 ${X(-5)} 506 ${X(-8)} 498 Z" fill="${skD}"/><path d="M${X(21)} 498 C${X(26)} 512 ${X(25)} 522 ${X(18)} 523 L${X(4)} 523 C${X(2)} 516 ${X(5)} 506 ${X(8)} 498 Z" fill="${skD}"/>`;
+  // arms (skin) + hands
+  o += `<path d="${limbPath(arm(-1))}" fill="${skinF}"/><path d="${limbPath(arm(1))}" fill="${skinF}"/>`;
+  const hand = s => `<path d="M${X(s * 47)} 268 C${X(s * 45)} 284 ${X(s * 47)} 298 ${X(s * 53)} 301 C${X(s * 59)} 298 ${X(s * 61)} 284 ${X(s * 59)} 268 Z" fill="${skD}"/>`;
+  o += hand(-1) + hand(1);
+  // torso skin + neck
+  o += `<path d="${torsoPath(258)}" fill="${skinF}"/>`;
+  o += `<path d="M90 76 L90 104 Q100 114 110 104 L110 76 Z" fill="${skD}"/><path d="M90 98 Q100 106 110 98" stroke="${shade(sk, .76)}" stroke-width="1.4" fill="none" opacity=".6"/>`;
+  // base underwear
+  const baseTop = !top && !dress, baseBot = !bot && !dress;
+  if (baseBot) o += `<path d="M${X(-37)} 232 L${X(37)} 232 L${X(36)} 270 Q${X(18)} 278 100 266 Q${X(-18)} 278 ${X(-36)} 270 Z" fill="${fillG("#cfcfca", "ub")}"/>`;
   // bottoms
-  if (!dress){
-    if (bot && kw(bot, /falda/)) o += `<path d="M${X(-27)} 222 L${X(27)} 222 L${X(36)} 300 L${X(-36)} 300 Z" fill="${col(bot, "#3b4a6b")}" stroke="${shade(col(bot, "#3b4a6b"), .8)}" stroke-width="1.5"/>`;
+  if (!dress && bot){
+    const bc = bot.color || "#3b4a6b", bf = fillG(bc, "bt");
+    if (kw(bot, /falda/)) o += `<path d="M${X(-36)} 228 L${X(36)} 228 C${X(42)} 270 ${X(48)} 310 ${X(50)} 336 L${X(-50)} 336 C${X(-48)} 310 ${X(-42)} 270 ${X(-36)} 228 Z" fill="${bf}"/>`;
     else {
-      const short = !bot || kw(bot, /short|bermuda|corto/), bc = col(bot, bot ? "#3b4a6b" : "#d9d9d5"), to = short ? 286 : 396;
-      o += `<path d="M${X(-27)} 222 L${X(27)} 222 L${X(25)} 252 L${X(-25)} 252 Z" fill="${bc}"/>` + leg(-1, 228, to, bc, legW + 7) + leg(1, 228, to, bc, legW + 7);
-      if (!short) o += `<path d="M100 232 L100 252" stroke="${shade(bc, .75)}" stroke-width="1.5"/>`;
+      const upto = kw(bot, /short|bermuda|corto/) ? 330 : 498;
+      o += trouser(-1, upto, bf) + trouser(1, upto, bf) + `<path d="M${X(-38)} 226 L${X(38)} 226 L${X(38)} 270 L${X(-38)} 270 Z" fill="${bf}"/>`;
+      o += `<path d="M${X(-38)} 226 L${X(38)} 226 L${X(38)} 236 L${X(-38)} 236 Z" fill="${shade(bc, .78)}"/><path d="M100 236 L100 276" stroke="${shade(bc, .7)}" stroke-width="1.4"/>`;
+      if (upto > 400) o += `<path d="M${X(-17)} 300 L${X(-16)} 480 M${X(17)} 300 L${X(16)} 480" stroke="${shade(bc, .86)}" stroke-width="1" opacity=".6"/>`;
     }
   }
   // shoes
-  const shc = shoes ? col(shoes, "#222") : sk;
-  o += `<ellipse cx="${X(-17)}" cy="404" rx="${shoes ? 14 : 9}" ry="${shoes ? 8 : 6}" fill="${shc}"/><ellipse cx="${X(17)}" cy="404" rx="${shoes ? 14 : 9}" ry="${shoes ? 8 : 6}" fill="${shc}"/>`;
-  if (shoes && /^#(f|e|d)/i.test(shc)) o += `<ellipse cx="${X(-17)}" cy="404" rx="14" ry="8" fill="none" stroke="#bbb" stroke-width="1.2"/><ellipse cx="${X(17)}" cy="404" rx="14" ry="8" fill="none" stroke="#bbb" stroke-width="1.2"/>`;
+  if (shoes){
+    const scl = shoes.color || "#222", boot = kw(shoes, /bota/), sf = fillG(scl, "sh");
+    const shoe = s => `<path d="M${X(s * 6)} ${boot ? 470 : 498} L${X(s * 23)} ${boot ? 470 : 498} C${X(s * 27)} 510 ${X(s * 28)} 518 ${X(s * 24)} 524 L${X(s * 2)} 524 C${X(s * 1)} 514 ${X(s * 3)} 504 ${X(s * 6)} ${boot ? 470 : 498} Z" fill="${sf}" stroke="${shade(scl, .7)}" stroke-width="1"/><path d="M${X(s * 2)} 520 L${X(s * 25)} 520" stroke="${/^#(f|e|d)/i.test(scl) ? "#c9c9c4" : shade(scl, 1.4)}" stroke-width="3"/>`;
+    o += shoe(-1) + shoe(1);
+  }
   // top / dress
   if (dress){
-    const dc = col(dress, "#b23a48");
-    o += torso(dc, 232) + `<path d="M${X(-27)} 226 L${X(27)} 226 L${X(40)} 318 L${X(-40)} 318 Z" fill="${dc}" stroke="${shade(dc, .82)}" stroke-width="1.5" stroke-linejoin="round"/>`;
-    o += arm(-1, 150, dc, armW + 5) + arm(1, 150, dc, armW + 5);
-  } else {
-    const tc = col(top, top ? "#f4f4f2" : "#ececea"), long = kw(top, /jersey|sudadera|manga larga|camisa|su[eé]ter|polar/);
-    o += torso(tc);
-    o += arm(-1, long ? 226 : 156, tc, armW + 5) + arm(1, long ? 226 : 156, tc, armW + 5);
-    if (top && (!tc || /^#f/i.test(tc))) o += `<path d="M92 114 Q100 124 108 114" stroke="${shade(tc, .8)}" stroke-width="1.5" fill="none"/>`;
+    const dc = dress.color || "#b23a48", df = fillG(dc, "dr");
+    o += `<path d="${torsoPath(240)}" fill="${df}"/><path d="M${X(-35)} 236 L${X(35)} 236 C${X(44)} 290 ${X(52)} 340 ${X(56)} 380 L${X(-56)} 380 C${X(-52)} 340 ${X(-44)} 290 ${X(-35)} 236 Z" fill="${df}"/>`;
+    o += sleeve(-1, 150, df, 2) + sleeve(1, 150, df, 2) + `<path d="M90 106 Q100 122 110 106" stroke="${shade(dc, .7)}" stroke-width="1.6" fill="none"/>`;
+  } else if (top || baseTop){
+    const tc = top ? (top.color || "#f4f4f2") : "#ecebe7", tf = fillG(tc, "tp");
+    const long = kw(top, /jersey|sudadera|manga larga|camisa|su[eé]ter|polar|hoodie/), hood = kw(top, /sudadera|hoodie/), shirt = kw(top, /camisa/);
+    const tank = !top;
+    o += `<path d="${torsoPath(top ? 250 : 236, top ? 2 : 0)}" fill="${tf}"/>`;
+    if (!tank) o += sleeve(-1, long ? 266 : 166, tf) + sleeve(1, long ? 266 : 166, tf);
+    if (long && !shirt) o += `<path d="M${X(-55)} 258 L${X(-48)} 258 M${X(48)} 258 L${X(55)} 258" stroke="${shade(tc, .75)}" stroke-width="3"/>`;
+    o += `<path d="M${tank ? 86 : 89} 106 Q100 ${tank ? 128 : 120} ${tank ? 114 : 111} 106" stroke="${shade(tc, .72)}" stroke-width="1.6" fill="${tank ? skD : "none"}"/>`;
+    if (hood) o += `<path d="M84 106 Q100 132 116 106" stroke="${shade(tc, .7)}" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M${X(-22)} 196 L${X(22)} 196 L${X(26)} 236 L${X(-26)} 236 Z" fill="none" stroke="${shade(tc, .75)}" stroke-width="1.5"/>`;
+    if (shirt) o += `<path d="M88 104 L100 122 L112 104" stroke="${shade(tc, .7)}" stroke-width="2" fill="none"/><path d="M100 122 L100 246" stroke="${shade(tc, .8)}" stroke-width="1.2"/>${[140, 166, 192, 218].map(y => `<circle cx="100" cy="${y}" r="1.8" fill="${shade(tc, .65)}"/>`).join("")}`;
+    o += `<path d="M${X(-30)} 150 Q${X(-20)} 162 ${X(-26)} 200 M${X(30)} 150 Q${X(20)} 162 ${X(26)} 200" stroke="${shade(tc, .88)}" stroke-width="1.2" fill="none" opacity=".7"/>`;
   }
   if (coat){
-    const cc = col(coat, "#5b4636");
-    o += `<path d="M${X(-33)} 114 Q100 104 ${X(33)} 114 L${X(31)} 200 L${X(36)} 304 L102 304 L100 140 L98 304 L${X(-36)} 304 L${X(-31)} 200 Z" fill="${cc}" stroke="${shade(cc, .78)}" stroke-width="1.5" stroke-linejoin="round"/>`;
-    o += arm(-1, 226, cc, armW + 8) + arm(1, 226, cc, armW + 8);
-    o += `<path d="M92 112 L100 140 L108 112" stroke="${shade(cc, .7)}" stroke-width="2" fill="none"/>`;
+    const cc = coat.color || "#5b4636", cf = fillG(cc, "ct");
+    o += `<path d="${torsoPath(360, 6).replace(/L[^C]*C/, m => m)}" fill="${cf}"/>`;
+    o += sleeve(-1, 268, cf, 6) + sleeve(1, 268, cf, 6);
+    o += `<path d="M90 104 L100 160 L110 104" fill="${shade(cc, .8)}"/><path d="M100 160 L100 358" stroke="${shade(cc, .65)}" stroke-width="1.8"/>${[190, 230, 270].map(y => `<circle cx="${X(6)}" cy="${y}" r="2.6" fill="${shade(cc, .55)}"/>`).join("")}`;
   }
   // head
-  o += `<circle cx="72" cy="72" r="6" fill="${skD}"/><circle cx="128" cy="72" r="6" fill="${skD}"/><ellipse cx="100" cy="68" rx="29" ry="32" fill="${sk}"/>`;
-  if (c.beard === "corta") o += `<path d="M73 72 Q76 100 100 102 Q124 100 127 72 Q124 92 100 93 Q76 92 73 72 Z" fill="${hc}" opacity=".85"/>`;
-  if (c.beard === "larga") o += `<path d="M72 70 Q72 114 100 118 Q128 114 128 70 Q124 94 100 95 Q76 94 72 70 Z" fill="${hc}"/>`;
-  // face
-  o += `<ellipse cx="89" cy="70" rx="3.2" ry="3.8" fill="#1a1a1a"/><ellipse cx="111" cy="70" rx="3.2" ry="3.8" fill="#1a1a1a"/>`;
-  o += `<path d="M83 61 Q89 58 95 61 M105 61 Q111 58 117 61" stroke="${hcD}" stroke-width="2.4" stroke-linecap="round" fill="none"/>`;
-  o += `<path d="M91 84 Q100 ${c.beard === "larga" ? 89 : 91} 109 84" stroke="#7a3b2e" stroke-width="2.4" stroke-linecap="round" fill="none"/>`;
-  o += `<circle cx="84" cy="80" r="4" fill="#e8716b" opacity=".18"/><circle cx="116" cy="80" r="4" fill="#e8716b" opacity=".18"/>`;
-  if (c.glasses === "redondas") o += `<g stroke="#1a1a1a" stroke-width="2" fill="none"><circle cx="89" cy="70" r="8"/><circle cx="111" cy="70" r="8"/><path d="M97 70 L103 70"/></g>`;
-  if (c.glasses === "cuadradas") o += `<g stroke="#1a1a1a" stroke-width="2" fill="none"><rect x="80" y="63" width="17" height="13" rx="3"/><rect x="103" y="63" width="17" height="13" rx="3"/><path d="M97 69 L103 69"/></g>`;
+  o += `<ellipse cx="71" cy="54" rx="5.5" ry="9" fill="${skD}"/><ellipse cx="129" cy="54" rx="5.5" ry="9" fill="${skD}"/>`;
+  grads.push(`<radialGradient id="${id}fc" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="${skL}"/><stop offset=".7" stop-color="${sk}"/><stop offset="1" stop-color="${skD}"/></radialGradient>`);
+  o += `<path d="M100 16 C122 16 129 34 128 52 C127 68 121 79 113 86 C107 91 104 92 100 92 C96 92 93 91 87 86 C79 79 73 68 72 52 C71 34 78 16 100 16 Z" fill="url(#${id}fc)"/>`;
+  // beard
+  if (c.beard === "corta") o += `<path d="M74 58 C75 74 82 86 100 90 C118 86 125 74 126 58 C124 76 116 84 100 85 C84 84 76 76 74 58 Z" fill="${hc}" opacity=".55"/><path d="M90 76 Q100 72 110 76" stroke="${hc}" stroke-width="3" opacity=".55" fill="none"/>`;
+  if (c.beard === "larga") o += `<path d="M73 56 C72 80 80 102 100 108 C120 102 128 80 127 56 C122 74 114 82 100 84 C86 82 78 74 73 56 Z" fill="${hc}"/><path d="M88 76 Q100 70 112 76 Q106 80 100 79 Q94 80 88 76 Z" fill="${hc}"/>`;
+  // eyes
+  const eye = x => `<path d="M${x - 7} 55 Q${x} 49 ${x + 7} 55 Q${x} 59 ${x - 7} 55 Z" fill="#fff"/><circle cx="${x}" cy="54.6" r="3.4" fill="#5a3a22"/><circle cx="${x}" cy="54.6" r="1.6" fill="#111"/><circle cx="${x + 1.1}" cy="53.5" r=".9" fill="#fff"/><path d="M${x - 7.4} 54.6 Q${x} 48.4 ${x + 7.4} 54.6" stroke="#2a1e18" stroke-width="1.5" fill="none" stroke-linecap="round"/>`;
+  o += eye(89) + eye(111);
+  o += `<path d="M81 46 Q88 42.5 96 45.5 L96 47.3 Q88 45 81.5 48 Z" fill="${hcD}"/><path d="M119 46 Q112 42.5 104 45.5 L104 47.3 Q112 45 118.5 48 Z" fill="${hcD}"/>`;
+  // nose, lips, cheeks
+  o += `<path d="M100 56 C99 63 97 67 96 70 Q100 72.5 104 70" stroke="${shade(sk, .72)}" stroke-width="1.5" fill="none" stroke-linecap="round"/>`;
+  const lip = SKINS.indexOf(sk) > 3 ? shade(sk, .78) : "#c06a5f";
+  if (c.beard !== "larga") o += `<path d="M91 78 Q95.5 75.6 100 77 Q104.5 75.6 109 78 Q104.5 79.5 100 79.2 Q95.5 79.5 91 78 Z" fill="${shade(lip, .9)}"/><path d="M91.5 78.2 Q100 85 108.5 78.2 Q100 80.4 91.5 78.2 Z" fill="${lip}"/>`;
+  o += `<ellipse cx="82" cy="68" rx="6" ry="3.6" fill="#e8716b" opacity=".13"/><ellipse cx="118" cy="68" rx="6" ry="3.6" fill="#e8716b" opacity=".13"/>`;
+  if (c.glasses === "redondas") o += `<g stroke="#1a1a1a" stroke-width="1.8" fill="rgba(255,255,255,.08)"><circle cx="89" cy="55" r="9"/><circle cx="111" cy="55" r="9"/></g><path d="M98 54 Q100 52.5 102 54 M80 54 L73 52 M120 54 L127 52" stroke="#1a1a1a" stroke-width="1.8" fill="none"/>`;
+  if (c.glasses === "cuadradas") o += `<g stroke="#1a1a1a" stroke-width="2" fill="rgba(255,255,255,.08)"><rect x="79" y="48" width="19" height="14" rx="3.5"/><rect x="102" y="48" width="19" height="14" rx="3.5"/></g><path d="M98 54 L102 54 M79 53 L73 51 M121 53 L127 51" stroke="#1a1a1a" stroke-width="2" fill="none"/>`;
   // hair front
-  const hf = {
-    corto:`<path d="M70 66 Q70 34 100 34 Q130 34 130 66 Q124 50 108 48 Q96 56 78 52 Q72 58 70 66 Z" fill="${hc}"/>`,
-    largo:`<path d="M68 76 Q66 32 100 32 Q134 32 132 76 Q128 52 116 46 Q100 56 84 46 Q72 54 68 76 Z" fill="${hc}"/>`,
-    rizado:[[76,48],[86,38],[100,35],[114,38],[124,48],[71,60],[129,60]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="11" fill="${hc}"/>`).join(""),
-    mono:`<circle cx="100" cy="28" r="12" fill="${hc}"/><path d="M70 66 Q70 36 100 36 Q130 36 130 66 Q122 46 100 46 Q78 46 70 66 Z" fill="${hc}"/>`,
-    coleta:`<path d="M70 66 Q70 34 100 34 Q130 34 130 66 Q122 46 100 46 Q78 46 70 66 Z" fill="${hc}"/>`,
-    rapado:`<path d="M71 60 Q72 38 100 37 Q128 38 129 60 Q118 48 100 47 Q82 48 71 60 Z" fill="${hc}" opacity=".55"/>`,
-    calvo:""
+  const hairF = fillG(hc, "hr");
+  const front = {
+    corto:`<path d="M71 54 C68 26 84 10 102 10 C121 10 133 26 129 54 C127 42 122 33 113 28 C104 34 90 35 80 31 C75 38 72 46 71 54 Z" fill="${hairF}"/><path d="M84 18 Q100 12 116 18" stroke="${hcL}" stroke-width="2" fill="none" opacity=".5"/>`,
+    largo:`<path d="M70 64 C64 22 86 8 102 8 C124 8 136 24 131 64 C128 44 120 30 108 27 C100 38 86 42 76 38 C73 45 71 54 70 64 Z" fill="${hairF}"/><path d="M70 60 C66 86 68 120 74 148 L80 148 C76 118 75 88 78 60 Z M130 60 C134 86 132 120 126 148 L120 148 C124 118 125 88 122 60 Z" fill="${hairF}"/><path d="M86 14 Q102 8 118 16" stroke="${hcL}" stroke-width="2" fill="none" opacity=".5"/>`,
+    rizado:[[78,34,11],[88,22,12],[101,17,13],[114,22,12],[124,34,11],[72,48,9],[128,48,9],[94,30,9],[108,30,9]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${hairF}"/><circle cx="${x - r * .3}" cy="${y - r * .3}" r="${r * .35}" fill="${hcL}" opacity=".25"/>`).join(""),
+    mono:`<circle cx="100" cy="6" r="13" fill="${hairF}"/><path d="M71 54 C70 26 84 14 100 14 C116 14 130 26 129 54 C124 36 114 26 100 26 C86 26 76 36 71 54 Z" fill="${hairF}"/>`,
+    coleta:`<path d="M71 54 C70 26 84 14 100 14 C116 14 130 26 129 54 C124 36 114 26 100 26 C86 26 76 36 71 54 Z" fill="${hairF}"/><circle cx="118" cy="28" r="5" fill="${hcD}"/>`,
+    rapado:`<path d="M72 50 C72 26 86 16 100 16 C114 16 128 26 128 50 C122 34 112 28 100 28 C88 28 78 34 72 50 Z" fill="${hc}" opacity=".5"/>`,
+    calvo:`<path d="M84 22 Q100 16 116 22" stroke="#fff" stroke-width="3" fill="none" opacity=".18"/>`
   }[c.hair] || "";
-  o += hf;
-  if (acc && kw(acc, /gorra|sombrero|gorro/)) { const ac = col(acc, "#222"); o += `<path d="M68 56 Q70 28 100 28 Q130 28 132 56 Z" fill="${ac}"/><path d="M100 54 L146 58 Q140 62 100 60 Z" fill="${shade(ac, .8)}"/>`; }
-  return `<svg class="av-svg" viewBox="0 0 200 430" role="img" aria-label="Tu avatar">${o}</svg>`;
+  o += front;
+  if (acc && kw(acc, /gorra|sombrero|gorro/)){ const ac = acc.color || "#222", af = fillG(ac, "ac"); o += `<path d="M69 44 C68 16 84 6 100 6 C116 6 132 16 131 44 Z" fill="${af}"/><path d="M100 42 C120 40 140 42 152 48 C138 50 118 50 100 48 Z" fill="${shade(ac, .78)}"/>`; }
+  return `<svg class="av-svg" viewBox="0 -4 200 536" role="img" aria-label="Tu avatar"><defs>${grads.join("")}</defs>${o}</svg>`;
 }
 function vAvatar(){
   const c = avatarCfg();
@@ -2568,7 +2626,13 @@ Object.assign(ACT, {
   else { render(); checkAlerts(); }
   const wait = Math.max(0, (reduce.matches ? 200 : 1300) - (Date.now() - t0));
   setTimeout(() => { const sp = $("#splash"); sp.classList.add("out"); setTimeout(() => sp.remove(), 500); fitGreet(); }, wait);
-  if (!window.claude && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+  if (!window.claude && "serviceWorker" in navigator && location.protocol === "https:"){
+    navigator.serviceWorker.register("sw.js", {updateViaCache:"none"}).then(reg => { reg.update().catch(() => {}); document.addEventListener("visibilitychange", () => { if (!document.hidden) reg.update().catch(() => {}); }); }).catch(() => {});
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => { if (reloaded || $(".sheet") || $(".onb")) return; reloaded = true; location.reload(); });
+    const checkVersion = () => fetch("version.txt?t=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.text() : "").then(v => { v = v.trim(); if (v && v !== APP_VERSION && !sessionStorage.getItem("orbita.reload." + v)){ sessionStorage.setItem("orbita.reload." + v, "1"); location.reload(); } }).catch(() => {});
+    checkVersion(); document.addEventListener("visibilitychange", () => { if (!document.hidden) checkVersion(); });
+  }
 })();
 })();
 </script>

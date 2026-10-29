@@ -1,5 +1,5 @@
 // Órbita — caché sin conexión. Sube VERSION al publicar cambios.
-const VERSION = "orbita-v11";
+const VERSION = "orbita-v12";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
@@ -14,10 +14,11 @@ self.addEventListener("fetch", e => {
   const url = new URL(req.url);
   // Página: red primero para recibir actualizaciones, caché si no hay conexión.
   if (req.mode === "navigate"){
-    e.respondWith(fetch(req).then(r => { const c = r.clone(); caches.open(VERSION).then(k => k.put("./index.html", c)); return r; }).catch(() => caches.match("./index.html")));
+    e.respondWith(fetch(req, {cache:"no-store"}).then(r => { const c = r.clone(); caches.open(VERSION).then(k => k.put("./index.html", c)); return r; }).catch(() => caches.match("./index.html")));
     return;
   }
   // Resto (iconos, fuentes, librería 3D): caché primero y se refresca en segundo plano.
+  if (url.pathname.endsWith("version.txt")) return;
   const cacheable = url.origin === location.origin || /fonts\.(googleapis|gstatic)\.com|cdnjs\.cloudflare\.com/.test(url.host);
   if (!cacheable) return;
   e.respondWith(caches.open(VERSION).then(async c => {
