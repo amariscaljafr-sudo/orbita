@@ -741,6 +741,12 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.rep .seg{margin-bottom:2px}
+.rep-days,.rep-until{display:none;flex-direction:column;gap:8px;margin-top:10px}
+.rep:has(#it-r-days:checked) .rep-days{display:flex}
+.rep:has(input[name=repeat]:not([value=none]):checked) .rep-until{display:flex}
+.day-plus{background:var(--ink)!important;color:var(--paper)}
+
 .secs-bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .sb-opt{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:14px;border-radius:18px;background:var(--paper-2);text-align:left;transition:transform .2s var(--spring),background .2s}
 .sb-opt:first-child{background:var(--ink);color:var(--paper)}
@@ -828,7 +834,7 @@ button.crumb{align-self:flex-start}
 .tsub{font-size:11.5px;color:var(--mute);font-weight:700}
 .tt-wrap{overflow-x:auto;margin:0 -4px;padding:0 4px;scrollbar-width:none}
 .tt-wrap::-webkit-scrollbar{display:none}
-.tt{display:grid;grid-template-columns:38px repeat(5,minmax(44px,1fr)) repeat(2,minmax(30px,.62fr));grid-template-rows:auto calc(var(--hh) * var(--rows));min-width:340px;column-gap:3px}
+.tgrid{display:grid;grid-template-columns:38px repeat(5,minmax(44px,1fr)) repeat(2,minmax(30px,.62fr));grid-template-rows:auto calc(var(--hh) * var(--rows));min-width:340px;column-gap:3px}
 .tt-corner{grid-row:1;grid-column:1}
 .tt-day{grid-row:1;display:flex;flex-direction:column;align-items:center;padding:4px 0 8px;line-height:1}
 .tt-day b{font-weight:900;font-size:14px}
@@ -847,7 +853,7 @@ button.crumb{align-self:flex-start}
 .tt-cls{position:absolute;left:2px;right:2px;border-radius:8px;padding:4px 5px;background:var(--c);color:#fff;text-align:left;display:flex;flex-direction:column;gap:1px;overflow:hidden;box-shadow:0 4px 10px -6px rgba(0,0,0,.5);z-index:1}
 .tt-cls b{font-size:10.5px;font-weight:800;line-height:1.15;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
 .tt-cls span{font-size:9.5px;font-weight:700;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media (min-width:700px){.tt{grid-template-columns:56px repeat(5,1fr) repeat(2,.75fr)}.tt-cls{padding:6px 8px}.tt-cls b{font-size:13px}.tt-cls span{font-size:11px}}
+@media (min-width:700px){.tgrid{grid-template-columns:56px repeat(5,1fr) repeat(2,.75fr)}.tt-cls{padding:6px 8px}.tt-cls b{font-size:13px}.tt-cls span{font-size:11px}}
 .ktabs.sm .ktab{min-height:36px;font-size:13px}
 
 .ktopics{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr))}
@@ -1117,7 +1123,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "20";
+const APP_VERSION = "21";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1205,6 +1211,8 @@ const profile = () => S.settings?.profile || {};
 const myName = () => (profile().name || "").trim();
 function occursOn(ev, key){
   if (!ev.date) return false;
+  if (ev.repeat && ev.repeat !== "none"){ if (ev.until && key > ev.until) return false; if (Array.isArray(ev.skip) && ev.skip.includes(key)) return false; }
+  if (ev.repeat === "days") return key >= ev.date && Array.isArray(ev.days) && ev.days.includes(dowOf(key));
   if (!ev.repeat || ev.repeat === "none") return ev.date === key;
   if (key < ev.date) return false;
   const a = parseYmd(ev.date), b = parseYmd(key);
@@ -1759,20 +1767,21 @@ function searchResults(){
     ${hits.length ? `<div class="s-group"><span class="lbl">Guardado · ${hits.length}</span><div class="list">${hits.map(i => `<div class="it" data-act="s-hit" data-id="${i.id}"><div class="tx"><div class="tt">${hl(i.title || (i.body || "").slice(0, 60) || "Sin título", q)}</div><div class="mt">${esc(label(i) || "")}${i.date ? " · " + esc(relDay(i.date)) : ""}</div></div>${ic("right")}</div>`).join("")}</div></div>` : ""}
     ${!secs.length && !hits.length ? `<div class="empty" style="margin-top:16px"><b>Nada con «${esc(q)}».</b>Prueba con otra palabra o crea una sección nueva.<button class="btn sm" data-act="sec-new">${ic("plus")}Nueva sección</button></div>` : ""}`;
 }
+const repText = ev => ev.repeat === "daily" ? "Todos los días" : ev.repeat === "days" ? (ev.days || []).slice().sort().map(d => DOW[d - 1]).join(" ") : ev.repeat === "weekly" ? "Cada " + DOWL[dowOf(ev.date) - 1].toLowerCase() : ev.repeat === "monthly" ? "Cada mes" : ev.repeat === "yearly" ? "Cada año" : "";
 function vDay(){
   const cur = S.dayKey || todayKey(), its = dayItems(cur), isToday = cur === todayKey();
   const allDay = its.filter(x => !x.time), timed = its.filter(x => x.time);
   let rows = "";
   for (let h = 0; h < 24; h++){
     const hh = pad(h), inH = timed.filter(x => x.time.slice(0, 2) === hh);
-    rows += `<div class="hr${isToday && new Date().getHours() === h ? " now" : ""}" id="hr-${h}"><div class="h">${hh}:00</div><div class="slot" data-act="slot" data-date="${cur}" data-h="${hh}" aria-label="Añadir a las ${hh}:00">${inH.map(x => `<button class="blk${x.t === "reminder" && !x.it.done ? " red" : x.t === "entry" || x.t === "task" ? " lite" : ""}${x.it.done ? " done" : ""}" data-act="open" data-id="${x.it.id}">${esc(x.title)}<small>${x.time}${x.end ? "–" + x.end : ""} · ${esc(x.label)}</small></button>`).join("")}</div></div>`;
+    rows += `<div class="hr${isToday && new Date().getHours() === h ? " now" : ""}" id="hr-${h}"><div class="h">${hh}:00</div><div class="slot" data-act="slot" data-date="${cur}" data-h="${hh}" aria-label="Añadir a las ${hh}:00">${inH.map(x => `<button class="blk${x.t === "reminder" && !x.it.done ? " red" : x.t === "entry" || x.t === "task" ? " lite" : ""}${x.it.done ? " done" : ""}" data-act="open" data-id="${x.it.id}">${esc(x.title)}<small>${x.time}${x.end ? "–" + x.end : ""} · ${esc(x.label)}${x.it.repeat && x.it.repeat !== "none" ? " · " + repText(x.it) : ""}</small></button>`).join("")}</div></div>`;
   }
   return `
   <div class="day-h"><div><h1>${esc(cap1(fmt(parseYmd(cur), {weekday:"long"})))} ${parseYmd(cur).getDate()}</h1><p>${esc(cap1(fmt(parseYmd(cur), {month:"long"})))} ${parseYmd(cur).getFullYear()}${isToday ? " · hoy" : ""}</p></div>
-    <div class="row" style="gap:4px;flex-wrap:nowrap">${isToday ? "" : `<button class="pillbtn" data-act="day-move" data-d="0">Hoy</button>`}<button class="ibtn" data-act="day-move" data-d="-1" aria-label="Día anterior">${ic("left")}</button><button class="ibtn" data-act="day-move" data-d="1" aria-label="Día siguiente">${ic("right")}</button></div></div>
+    <div class="row" style="gap:4px;flex-wrap:nowrap"><button class="ibtn day-plus" data-act="day-new" aria-label="Añadir actividad">${ic("plus")}</button>${isToday ? "" : `<button class="pillbtn" data-act="day-move" data-d="0">Hoy</button>`}<button class="ibtn" data-act="day-move" data-d="-1" aria-label="Día anterior">${ic("left")}</button><button class="ibtn" data-act="day-move" data-d="1" aria-label="Día siguiente">${ic("right")}</button></div></div>
   ${allDay.length ? `<div class="allday">${allDay.map(x => `<button class="blk${x.red && !x.it.done ? " red" : " lite"}${x.it.done ? " done" : ""}" style="width:auto" ${x.t === "bday" ? 'data-act="nav" data-to="perfil"' : `data-act="open" data-id="${x.it.id}"`}>${esc(x.title)}<small>${esc(x.label)}</small></button>`).join("")}</div>` : ""}
   <div class="sched" id="sched">${rows}</div>
-  <p class="muted small" style="margin:0">Toca una hora libre para añadir un evento.</p>`;
+  <p class="muted small" style="margin:0">Toca una hora libre o el + para añadir una actividad. Puedes hacer que se repita todos los días o los días que elijas.</p>`;
 }
 function afterView(r, changed){
   if (r === "buscar"){
@@ -1803,7 +1812,7 @@ function openItem(kind, item, preset={}){
   if (kind === "entry") return openEntry(item ? item.sectionId : preset.sec, item, preset);
   const isNew = !item;
   if (kind === "important"){ kind = "event"; preset.important = true; }
-  const it = item ? {...item} : {id:uid(), kind, title:"", date:kind === "note" ? "" : (preset.date || todayKey()), ...(preset.time ? {time:preset.time} : {}), ...(preset.important ? {important:true, repeat:"yearly", color:"red"} : {})};
+  const it = item ? {...item} : {id:uid(), kind, title:"", date:kind === "note" ? "" : (preset.date || todayKey()), ...(preset.time ? {time:preset.time, ...(kind === "event" ? {end:pad(Math.min(23, +preset.time.slice(0, 2) + 1)) + preset.time.slice(2)} : {})} : {}), ...(preset.important ? {important:true, repeat:"yearly", color:"red"} : {})};
   if (isNew && kind === "reminder" && !preset.time){ const d = new Date(Date.now() + 60*60e3); it.time = `${pad(d.getHours())}:00`; if (!preset.date || preset.date === todayKey()) it.date = ymd(d); }
   const label = it.important ? "Fecha importante" : KIND_LABEL[kind];
   let f = `<div class="field"><input type="text" class="title-in" id="it-title" name="title" value="${esc(it.title)}" placeholder="${kind === "note" ? "Título (opcional)" : "Título"}" aria-label="Título"${kind === "note" ? "" : " required"}></div>`;
@@ -1818,7 +1827,11 @@ function openItem(kind, item, preset={}){
       <div class="field"><label for="it-notes">Notas</label><textarea id="it-notes" name="notes" placeholder="Detalles, pasos, enlaces…">${esc(it.notes || "")}</textarea></div>`;
   } else if (kind === "event"){
     f += `<div class="grid2"><div class="field"><label for="it-date">${it.important ? "Fecha original" : "Fecha"}</label><input type="date" id="it-date" name="date" value="${esc(it.date || "")}" required></div>
-      <div class="field"><label for="it-rep">Repetir</label><select id="it-rep" name="repeat">${[["none","No se repite"],["daily","Cada día"],["weekly","Cada semana"],["monthly","Cada mes"],["yearly","Cada año"]].map(([v,l]) => `<option value="${v}"${(it.repeat || "none") === v ? " selected" : ""}>${l}</option>`).join("")}</select></div></div>
+      ${it.important ? `<div class="field"><label for="it-rep">Repetir</label><select id="it-rep" name="repeat">${[["none","No se repite"],["yearly","Cada año"]].map(([v,l]) => `<option value="${v}"${(it.repeat || "none") === v ? " selected" : ""}>${l}</option>`).join("")}</select></div>` : "<span></span>"}</div>
+      ${it.important ? "" : `<div class="field rep"><span class="lbl">¿Cuándo?</span><div class="seg">${[["none","Solo ese día"],["daily","Todos los días"],["days","Algunos días"],["weekly","Cada semana"],["monthly","Cada mes"],["yearly","Cada año"]].map(([v,l]) => `<input type="radio" name="repeat" id="it-r-${v}" value="${v}"${(it.repeat || "none") === v ? " checked" : ""}><label for="it-r-${v}">${l}</label>`).join("")}</div>
+        <div class="rep-days"><span class="muted small">Qué días de la semana</span><div class="days-in">${DOW.map((x, i) => `<input type="checkbox" name="rdays" id="it-d-${i}" value="${i + 1}"${(Array.isArray(it.days) ? it.days : it.date && it.repeat !== "days" ? [dowOf(it.date)] : []).includes(i + 1) ? " checked" : ""}><label for="it-d-${i}" title="${DOWL[i]}">${x}</label>`).join("")}</div></div>
+        <div class="rep-until"><label class="muted small" for="it-until">Hasta (opcional; vacío = para siempre)</label><input type="date" id="it-until" name="until" value="${esc(it.until || "")}"></div>
+        ${it.skip && it.skip.length ? `<p class="muted small" style="margin:0">Quitado algún día suelto: ${it.skip.length}. <button type="button" class="lnk" data-act="skip-clear" data-id="${it.id}" style="display:inline">Volver a ponerlos</button></p>` : ""}</div>`}
       ${it.important ? `<p class="muted small" style="margin:-4px 0 0">Para un cumpleaños pon el año de nacimiento y verás cuántos cumple.</p>` : `<div class="grid2"><div class="field"><label for="it-time">Empieza</label><input type="time" id="it-time" name="time" value="${esc(it.time || "")}"></div><div class="field"><label for="it-end">Termina</label><input type="time" id="it-end" name="end" value="${esc(it.end || "")}"></div></div>
       <div class="field"><label for="it-alert">Avisarme</label><select id="it-alert" name="alert">${[["","No"],["0","A la hora"],["10","10 min antes"],["30","30 min antes"],["60","1 hora antes"],["1440","1 día antes"]].map(([v,l]) => `<option value="${v}"${String(it.alert ?? "") === v ? " selected" : ""}>${l}</option>`).join("")}</select></div>`}
       <label class="toggle"><span><b>Destacar en rojo</b><span class="sub">Para lo que no te puedes perder.</span></span><input type="checkbox" name="red" id="it-red"${it.color === "red" ? " checked" : ""}></label>
@@ -1831,7 +1844,8 @@ function openItem(kind, item, preset={}){
   }
   openLayer(`${sheetHead((isNew ? "Nuevo · " : "") + label, it.example ? '<span class="tag ex">Ejemplo</span>' : "")}
     <form class="stack" data-form="item" data-id="${it.id}" data-kind="${kind}" data-new="${isNew ? 1 : ""}" autocomplete="off">${f}
-      <div class="sheet-f">${isNew ? "<span></span>" : `<button type="button" class="btn danger" data-act="del" data-id="${it.id}">${ic("trash")}<span>Eliminar</span></button>`}<div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="submit" class="btn pri">Guardar</button></div></div>
+      ${!isNew && kind === "event" && it.repeat && it.repeat !== "none" && S.occDate && occursOn(it, S.occDate) ? `<button type="button" class="btn sm" data-act="skip-day" data-id="${it.id}" data-date="${S.occDate}" style="align-self:flex-start">${ic("x")}<span>Quitar solo el ${esc(relDay(S.occDate).toLowerCase())}</span></button>` : ""}
+      <div class="sheet-f">${isNew ? "<span></span>" : `<button type="button" class="btn danger" data-act="del" data-id="${it.id}">${ic("trash")}<span>${it.repeat && it.repeat !== "none" ? "Eliminar todas" : "Eliminar"}</span></button>`}<div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="submit" class="btn pri">Guardar</button></div></div>
     </form>`);
 }
 
@@ -2429,7 +2443,10 @@ const ACT = {
   "day-move"(el){ const d = +el.dataset.d; S.dayKey = d === 0 ? todayKey() : ymd(addDays(parseYmd(S.dayKey || todayKey()), d)); S.dayJump = true; S.listAnim = true; render(); },
   slot(el){ ACT.add({dataset:{kind:"event", date:el.dataset.date, time:`${el.dataset.h}:00`}}); },
   add(el){ const {kind, date, sec, time} = el.dataset; swapLayer(() => openItem(kind, null, {date, sec, time})); },
-  open(el){ const it = S.items.get(el.dataset.id); if (it) swapLayer(() => openItem(it.kind, it)); },
+  open(el){ const it = S.items.get(el.dataset.id); S.occDate = el.dataset.date || (currentRoute() === "horario" ? (S.dayKey || todayKey()) : currentRoute() === "inicio" ? S.cal.sel : ""); if (it) swapLayer(() => openItem(it.kind, it)); },
+  "skip-day"(el){ const it = S.items.get(el.dataset.id); if (!it) return; putItem({...it, skip:[...new Set([...(it.skip || []), el.dataset.date])]}); closeLayer(); toast("Quitado ese día", "El resto de días sigue igual."); },
+  "skip-clear"(el){ const it = S.items.get(el.dataset.id); if (!it) return; const c = {...it}; delete c.skip; putItem(c); closeLayer(); toast("Días recuperados"); },
+  "day-new"(){ swapLayer(() => openItem("event", null, {date:S.dayKey || todayKey()})); },
   toggle(el){
     const it = S.items.get(el.dataset.id); if (!it) return;
     const done = !it.done; el.classList.toggle("on", done); buzz();
@@ -2552,7 +2569,7 @@ document.addEventListener("submit", e => {
       if (!it.title) return;
       it.date = fd.get("date") || ""; it.notes = fd.get("notes") || "";
       if (k === "task"){ it.priority = fd.get("priority") || ""; it.link = fd.has("link") ? fd.get("link") : (old.link || ""); }
-      if (k === "event"){ it.repeat = fd.get("repeat") || "none"; it.important = !!fd.get("important"); it.color = fd.get("red") ? "red" : "ink"; if (fd.has("time")){ it.time = fd.get("time") || ""; it.end = fd.get("end") || ""; it.alert = fd.get("alert") || ""; } }
+      if (k === "event"){ it.repeat = fd.get("repeat") || "none"; it.until = it.repeat !== "none" ? (fd.get("until") || "") : ""; if (it.repeat === "days"){ it.days = fd.getAll("rdays").map(Number).filter(Boolean); if (!it.days.length) it.days = [dowOf(fd.get("date") || todayKey())]; } else delete it.days; if (it.repeat === "none") delete it.skip; it.important = !!fd.get("important"); it.color = fd.get("red") ? "red" : "ink"; if (fd.has("time")){ it.time = fd.get("time") || ""; it.end = fd.get("end") || ""; it.alert = fd.get("alert") || ""; } }
       if (k === "reminder"){ it.time = fd.get("time") || ""; if (old.date !== it.date || old.time !== it.time) it.done = false; }
     }
     putItem(it); closeLayer(); toast(f.dataset.new ? "Guardado" : "Cambios guardados");
@@ -3794,7 +3811,7 @@ function vEstudios(s){
     const hours = [...Array(h1 - h0)].map((_, i) => h0 + i), HH = 52, wk = [...Array(7)].map((_, i) => ymd(addDays(weekStart(), i)));
     const loose = clases.filter(c => toM(c.fields?.hora) === null || !(c.fields?.dias || []).length);
     body = `${mats.length ? "" : `<div class="note-box">Empieza creando tus materias en la pestaña «Materias»; luego toca un hueco del horario para poner una clase.</div>`}
-      <div class="tt-wrap"><div class="tt" style="--hh:${HH}px;--rows:${hours.length}">
+      <div class="tt-wrap"><div class="tgrid" style="--hh:${HH}px;--rows:${hours.length}">
         <div class="tt-corner"></div>${DOW.map((x, i) => `<div class="tt-day${wk[i] === tk ? " today" : ""}${i > 4 ? " we" : ""}"><b>${x}</b><span>${parseYmd(wk[i]).getDate()}</span></div>`).join("")}
         <div class="tt-hours">${hours.map(h => `<span>${h}:00<i>${h + 1}:00</i></span>`).join("")}</div>
         ${DOW.map((x, i) => { const d = i + 1;
@@ -4100,7 +4117,7 @@ function ttHtml(s, items, sub, colOf){
   const h0 = Math.min(8, ...blocks.map(x => Math.floor(x.a / 60))), h1 = Math.max(15, ...blocks.map(x => Math.ceil(x.b / 60)));
   const hours = [...Array(h1 - h0)].map((_, i) => h0 + i), HH = 52, wk = [...Array(7)].map((_, i) => ymd(addDays(weekStart(), i))), tk = todayKey();
   const loose = items.filter(c => toM(c.fields?.hora) === null || !(c.fields?.dias || []).length);
-  return `<div class="tt-wrap"><div class="tt" style="--hh:${HH}px;--rows:${hours.length}">
+  return `<div class="tt-wrap"><div class="tgrid" style="--hh:${HH}px;--rows:${hours.length}">
       <div class="tt-corner"></div>${DOW.map((x, i) => `<div class="tt-day${wk[i] === tk ? " today" : ""}${i > 4 ? " we" : ""}"><b>${x}</b><span>${parseYmd(wk[i]).getDate()}</span></div>`).join("")}
       <div class="tt-hours">${hours.map(h => `<span>${h}:00<i>${h + 1}:00</i></span>`).join("")}</div>
       ${DOW.map((x, i) => { const d = i + 1;
