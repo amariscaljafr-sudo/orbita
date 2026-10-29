@@ -28,6 +28,7 @@
   --r-lg:22px; --r-md:16px;
   --ease:cubic-bezier(.22,1,.36,1);
   --spring:cubic-bezier(.34,1.56,.64,1);
+  --foot:68px;
   color-scheme:light;
 }
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -44,7 +45,7 @@ a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:8px}
 svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
 
-main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:6px 128px;min-width:0}
+main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:6px calc(var(--foot) + env(safe-area-inset-bottom,0px) + 28px);min-width:0}
 .view{display:flex;flex-direction:column;gap:24px}
 .view.enter{animation:viewIn .5s var(--ease)}
 @keyframes viewIn{from{opacity:.001;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -86,6 +87,18 @@ main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-ar
 
 .home{display:grid;gap:24px}
 @media (min-width:900px){.home{grid-template-columns:minmax(0,1.6fr) minmax(320px,1fr);align-items:start;gap:40px}}
+body.static{position:fixed;inset:0;width:100%;overflow:hidden;overscroll-behavior:none}
+body.static main{padding-bottom:0}
+.view.home-v{height:calc(100vh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);height:calc(100dvh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);gap:14px;overflow:hidden}
+.home-v .home{flex:1;min-height:0;display:flex;flex-direction:column;gap:16px}
+.home-v .agenda{flex:1;min-height:0;overflow:hidden}
+.home-v .d{aspect-ratio:auto;height:clamp(36px,calc((100dvh - 440px) / 6),62px)}
+.more-btn{align-self:flex-start;margin-top:8px}
+@media (min-width:900px){
+  .home-v .home{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(320px,1fr);gap:40px;align-items:stretch}
+  .home-v .cal{display:flex;flex-direction:column;min-height:0}
+  .home-v .d{height:clamp(44px,calc((100dvh - 340px) / 6),104px)}
+}
 
 /* calendar */
 .cal{width:calc(100% + 12px);margin-inline:-6px;touch-action:pan-y}
@@ -150,17 +163,38 @@ main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-ar
 .group-t.red{color:var(--red)}
 
 /* dock */
-.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;align-items:center;gap:6px;padding:7px;border-radius:999px;background:rgba(255,255,255,.9);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid var(--line);box-shadow:0 18px 40px -14px rgba(13,13,13,.35);animation:dockIn .6s .3s var(--spring) both}
-@keyframes dockIn{from{transform:translate(-50%,40px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;min-height:var(--foot);
+  padding:6px max(18px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
+  background:var(--paper);border-top:1px solid var(--line);animation:footIn .5s .25s var(--ease) both}
+@keyframes footIn{from{transform:translateY(100%)}to{transform:none}}
 .dock:empty{display:none}
-.dock button{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;transition:transform .2s var(--spring),background .2s}
-.dock button:hover{background:var(--paper-2)}
-.dock button:active{transform:scale(.85)}
-.dock .add{width:62px;height:62px;background:var(--ink);color:var(--paper)}
-.dock .add:hover{background:#262626}
-.dock .add svg{width:26px;height:26px;stroke-width:2.4}
+.dock .ft{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;border-radius:14px;font-size:11.5px;font-weight:750;letter-spacing:.02em;color:var(--ink-2);transition:background .2s,transform .2s var(--spring)}
+.dock .ft:hover{background:var(--paper-2)}
+.dock .ft:active{transform:scale(.9)}
+.dock .ft:first-child{justify-self:stretch}
+.dock .ft:last-child{justify-self:stretch}
+.dock .add{display:flex;align-items:center;gap:8px;height:48px;padding:0 22px;border-radius:16px;background:var(--ink);color:var(--paper);font-weight:800;font-size:14.5px;transition:transform .2s var(--spring)}
+.dock .add:active{transform:scale(.92)}
+.dock .add svg{width:22px;height:22px;stroke-width:2.4}
 .dock .today-n{position:relative}
-.dock .today-n b{position:absolute;top:54%;left:50%;transform:translate(-50%,-30%);font-size:9.5px;font-weight:900}
+.dock .today-n .ic-wrap{position:relative;display:grid;place-items:center}
+.dock .today-n b{position:absolute;top:55%;left:50%;transform:translate(-50%,-30%);font-size:9px;font-weight:900}
+@media (min-width:900px){.dock{grid-template-columns:200px auto 200px;justify-content:center;gap:28px}}
+
+/* search */
+.s-group{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.s-group > .lbl{display:flex;justify-content:space-between;align-items:center}
+.recent{display:flex;flex-wrap:wrap;gap:8px}
+.recent .chip{padding-right:8px}
+.recent .chip .x{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;margin-left:2px}
+.recent .chip .x svg{width:14px;height:14px}
+.sec-hit{display:flex;align-items:center;gap:12px;padding:10px 6px;border-radius:14px;text-align:left;width:100%;transition:background .2s}
+.sec-hit:hover{background:var(--paper-2)}
+.sec-hit .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--ink);color:var(--paper);flex:none}
+.sec-hit .tx{flex:1;min-width:0}
+.sec-hit b{display:block;font-weight:800;font-size:15.5px}
+.sec-hit span{font-size:12.5px;color:var(--mute)}
+.mark{background:var(--red-soft);color:var(--red);border-radius:4px;padding:0 2px}
 
 /* controls */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:14px;font-weight:800;font-size:14.5px;background:var(--paper-2);transition:transform .15s var(--ease),background .2s;text-align:center}
@@ -757,7 +791,8 @@ function render(){
     const fn = {calendario:vCalendar, tareas:vTasks, avisos:vReminders, notas:vNotes, secciones:vSections, perfil:vProfile}[r];
     html = topBar(sec ? sec.name : ROUTE_TITLE[r]) + (fn ? fn() : vSection(sec));
   }
-  v.innerHTML = `<div class="view${changed ? " enter" : ""}${S.listAnim ? " anim" : ""}">${html}</div>`;
+  document.body.classList.toggle("static", r === "inicio");
+  v.innerHTML = `<div class="view${r === "inicio" ? " home-v" : ""}${changed ? " enter" : ""}${S.listAnim ? " anim" : ""}">${html}</div>`;
   S.listAnim = false; S.calAnim = "";
   $$(".anim .row-it, .anim .it, .anim .entry, .anim .tile, .anim .note", v).forEach((el, i) => el.style.setProperty("--i", Math.min(i, 14)));
   renderDock();
@@ -766,7 +801,7 @@ function render(){
     window.scrollTo(0, y);
     if (focusId){ const f = document.getElementById(focusId); if (f){ f.focus(); try { if (typeof f.value === "string" && f.setSelectionRange) f.setSelectionRange(f.value.length, f.value.length); } catch {} } }
   }
-  bindSwipe(); fitGreet();
+  bindSwipe(); fitGreet(); fitAgenda();
 }
 function onData(){
   if (!S.ready) return;
@@ -787,9 +822,9 @@ function renderDock(){
   if (!S.settings || S.locked){ $("#dock").innerHTML = ""; return; }
   if ($("#dock").childElementCount) { const b = $("#dock .today-n b"); if (b) b.textContent = new Date().getDate(); $("#dock .today-n").dataset.date = todayKey(); return; }
   $("#dock").innerHTML = `
-    <button data-act="search" aria-label="Buscar">${ic("search")}</button>
-    <button class="add" data-act="quick" aria-label="Añadir">${ic("plus")}</button>
-    <button class="today-n" data-act="day" data-date="${todayKey()}" aria-label="Horario de hoy">${ic("cal")}<b>${new Date().getDate()}</b></button>`;
+    <button class="ft" data-act="search">${ic("search")}Buscar</button>
+    <button class="add" data-act="quick">${ic("plus")}Añadir</button>
+    <button class="ft today-n" data-act="day" data-date="${todayKey()}"><span class="ic-wrap">${ic("cal")}<b>${new Date().getDate()}</b></span>Horario de hoy</button>`;
 }
 
 /* ================= greeting ================= */
@@ -866,10 +901,23 @@ function agendaHtml(){
   const title = isToday ? "Para hoy" : dd === 1 ? "Para mañana" : dd === -1 ? "Ayer" : `${cap1(fmt(parseYmd(sel), {weekday:"long"}))} ${parseYmd(sel).getDate()}`;
   return `<section class="agenda">
     <div class="sec-t"><h2>${esc(title)}</h2><span class="n">${its.length || ""}</span><span class="sp"></span><button class="lnk" data-act="day" data-date="${sel}">Horario${ic("right")}</button></div>
-    ${its.length ? `<div>${its.map(agendaRow).join("")}</div>` : `<div class="empty"><b>${isToday ? "Hoy no tienes nada apuntado." : "Día libre."}</b>Toca el botón + de abajo para añadir un evento, una tarea o un aviso.</div>`}
-    ${late.length ? `<div class="group-t red">Atrasadas · ${late.length}</div><div>${late.map(t => agendaRow({t:"task", it:t, time:"", label:"Era para " + relDay(t.date).toLowerCase(), red:true, title:t.title})).join("")}</div>` : ""}
+    <div class="ag-list">${its.length ? its.map(agendaRow).join("") : `<div class="empty"><b>${isToday ? "Hoy no tienes nada apuntado." : "Día libre."}</b>Toca «Añadir» abajo para crear un evento, una tarea o un aviso.</div>`}
+    ${late.length ? `<div class="group-t red">Atrasadas · ${late.length}</div>${late.map(t => agendaRow({t:"task", it:t, time:"", label:"Era para " + relDay(t.date).toLowerCase(), red:true, title:t.title})).join("")}` : ""}</div>
+    <button class="btn sm more-btn" data-act="day" data-date="${sel}" hidden></button>
   </section>`;
 }
+function fitAgenda(){
+  const ag = $(".home-v .agenda"); if (!ag) return;
+  const rows = $$(".ag-list > .row-it, .ag-list > .group-t", ag), more = $(".more-btn", ag);
+  rows.forEach(r => r.hidden = false); more.hidden = true;
+  if (ag.scrollHeight <= ag.clientHeight + 1) return;
+  more.hidden = false;
+  let hidden = 0;
+  for (let i = rows.length - 1; i >= 0 && ag.scrollHeight > ag.clientHeight + 1; i--){ rows[i].hidden = true; if (rows[i].classList.contains("row-it")) hidden++; }
+  const vis = rows.filter(r => !r.hidden); if (vis.length && vis[vis.length - 1].classList.contains("group-t")) vis[vis.length - 1].hidden = true;
+  more.textContent = hidden ? `Ver ${hidden} más en el horario` : "Ver el horario";
+}
+addEventListener("resize", () => requestAnimationFrame(fitAgenda));
 function vHome(animate){
   const now = new Date();
   return `
@@ -1133,23 +1181,53 @@ function openQuick(){
     <div class="qa">${opts.map(([k,l,i,dsc,red]) => `<button data-act="add" data-kind="${k}" data-date="${k === "note" ? "" : d}"><span class="ic${red ? " red" : ""}">${ic(i)}</span>${l}<span class="d">${dsc}</span></button>`).join("")}</div>
     ${sections().length ? `<div class="group-t" style="padding-top:22px">En tus secciones</div><div class="qa">${sections().map(s => `<button data-act="add" data-kind="entry" data-sec="${s.id}" data-date="${d}"><span class="ic">${ic(s.icon)}</span>${esc(s.name)}${s.parentId ? `<span class="d">${esc(secById(s.parentId)?.name || "")}</span>` : ""}</button>`).join("")}</div>` : ""}`);
 }
+const RECENT_KEY = "orbita.recent";
+const recents = () => lsGet(RECENT_KEY, []);
+function addRecent(q){ q = q.trim(); if (q.length < 2) return; lsSet(RECENT_KEY, [q, ...recents().filter(x => x.toLowerCase() !== q.toLowerCase())].slice(0, 8)); }
+const norm = t => String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+function hl(text, q){
+  const t = String(text || ""); if (!q) return esc(t);
+  const i = norm(t).indexOf(norm(q)); if (i < 0) return esc(t);
+  return esc(t.slice(0, i)) + `<span class="mark">${esc(t.slice(i, i + q.length))}</span>` + esc(t.slice(i + q.length));
+}
 function openSearch(){
-  let scope = "";
-  openLayer(`${sheetHead("Buscar")}<input type="search" class="search-in" id="gsearch" placeholder="Busca una palabra…" autocomplete="off" aria-label="Buscar en todo" enterkeyhint="search"><div class="chips" id="gscope" style="margin-top:12px"></div><div class="list" id="gres" style="margin-top:8px"></div>`, {onMount(sh){
-    const inp = $("#gsearch", sh), res = $("#gres", sh), sc = $("#gscope", sh);
-    const scopes = [["", "Todo"], ["task","Tareas"], ["event","Eventos"], ["reminder","Avisos"], ["note","Notas"], ...sections().map(s => ["s:" + s.id, s.name])];
-    const drawScopes = () => { sc.innerHTML = scopes.map(([k, l]) => `<button class="chip${scope === k ? " on" : ""}" data-scope="${k}">${esc(l)}</button>`).join(""); };
+  openLayer(`${sheetHead("Buscar")}<input type="search" class="search-in" id="gsearch" placeholder="Busca una sección o algo que guardaste" autocomplete="off" aria-label="Buscar" enterkeyhint="search"><div id="gres"></div>`, {onMount(sh){
+    const inp = $("#gsearch", sh), res = $("#gres", sh);
+    const secRow = s => { const n = deepCount(s.id); return `<button class="sec-hit" data-go="s-${s.id}"><span class="ic">${ic(s.icon)}</span><span class="tx"><b>${hl(s.name, inp.value.trim())}</b><span>${s.parentId ? esc(secById(s.parentId)?.name || "") + " · " : ""}${n} ${n === 1 ? "entrada" : "entradas"}</span></span>${ic("right")}</button>`; };
+    const quick = [["tareas","Tareas pendientes","task"],["avisos","Avisos y fechas","bell"],["notas","Notas","note"],["calendario","Calendario","cal"]];
     const run = () => {
-      const q = inp.value.trim().toLowerCase();
-      let pool = all();
-      if (scope.startsWith("s:")){ const ids = [scope.slice(2), ...descendants(scope.slice(2)).map(c => c.id)]; pool = pool.filter(i => i.kind === "entry" && ids.includes(i.sectionId)); }
-      else if (scope) pool = pool.filter(i => i.kind === scope);
-      if (!q && !scope){ res.innerHTML = `<p class="muted small" style="margin:6px 4px">Escribe una palabra o elige una sección para ver lo que tienes guardado.</p>`; return; }
-      const hits = pool.filter(i => !q || JSON.stringify([i.title, i.body, i.notes, i.fields]).toLowerCase().includes(q)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(0, 60);
-      res.innerHTML = hits.length ? hits.map(i => { const s = i.kind === "entry" ? secById(i.sectionId) : null; const lab = s ? secPath(s) : (i.important ? "Fecha importante" : {task:"Tarea", event:"Evento", reminder:"Aviso", note:"Nota"}[i.kind]); return `<div class="it" data-act="open" data-id="${i.id}"><div class="tx"><div class="tt">${esc(i.title || (i.body || "").slice(0, 60) || "Sin título")}</div><div class="mt">${esc(lab || "")}${i.date ? " · " + esc(relDay(i.date)) : ""}</div></div>${ic("right")}</div>`; }).join("") : `<p class="muted small" style="margin:6px 4px">Sin resultados${q ? ` para «${esc(q)}»` : ""}.</p>`;
+      const q = inp.value.trim();
+      if (!q){
+        const rc = recents();
+        res.innerHTML = `
+          ${rc.length ? `<div class="s-group"><span class="lbl">Búsquedas recientes <button class="lnk" data-clear style="font-size:12px;letter-spacing:0;text-transform:none">Borrar</button></span><div class="recent">${rc.map((r, i) => `<span class="chip"><button data-q="${esc(r)}">${esc(r)}</button><button class="x" data-rm="${i}" aria-label="Quitar ${esc(r)}">${ic("x")}</button></span>`).join("")}</div></div>` : ""}
+          <div class="s-group"><span class="lbl">Accesos directos</span><div class="chips" style="flex-wrap:wrap">${quick.map(([k, l, i]) => `<button class="chip" data-go="${k}">${ic(i)}${l}</button>`).join("")}</div></div>
+          <div class="s-group"><span class="lbl">Tus secciones</span>${sections().length ? sections().map(secRow).join("") : `<p class="muted small" style="margin:0">Aún no tienes secciones.</p>`}</div>`;
+        return;
+      }
+      const nq = norm(q);
+      const secs = sections().filter(s => norm(s.name).includes(nq) || s.fields.some(f => norm(f.label).includes(nq)));
+      const hits = all().filter(i => norm(JSON.stringify([i.title, i.body, i.notes, i.fields])).includes(nq)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(0, 40);
+      const label = i => { const s = i.kind === "entry" ? secById(i.sectionId) : null; return s ? secPath(s) : (i.important ? "Fecha importante" : {task:"Tarea", event:"Evento", reminder:"Aviso", note:"Nota"}[i.kind]); };
+      res.innerHTML = `
+        ${secs.length ? `<div class="s-group"><span class="lbl">Secciones · ${secs.length}</span>${secs.map(secRow).join("")}</div>` : ""}
+        ${hits.length ? `<div class="s-group"><span class="lbl">Guardado · ${hits.length}</span><div class="list">${hits.map(i => `<div class="it" data-hit="${i.id}"><div class="tx"><div class="tt">${hl(i.title || (i.body || "").slice(0, 60) || "Sin título", q)}</div><div class="mt">${esc(label(i) || "")}${i.date ? " · " + esc(relDay(i.date)) : ""}</div></div>${ic("right")}</div>`).join("")}</div></div>` : ""}
+        ${!secs.length && !hits.length ? `<div class="empty" style="margin-top:16px"><b>Nada con «${esc(q)}».</b>Prueba con otra palabra o crea una sección nueva.<button class="btn sm" data-new>${ic("plus")}Nueva sección</button></div>` : ""}`;
     };
-    sc.addEventListener("click", e => { const b = e.target.closest("[data-scope]"); if (!b) return; scope = b.dataset.scope; drawScopes(); run(); });
-    drawScopes(); inp.addEventListener("input", run); run(); setTimeout(() => inp.focus(), 80);
+    res.addEventListener("click", e => {
+      const t = e.target.closest("[data-go],[data-hit],[data-q],[data-rm],[data-clear],[data-new]"); if (!t) return;
+      e.stopPropagation();
+      const q = inp.value.trim();
+      if (t.dataset.q !== undefined){ inp.value = t.dataset.q; run(); inp.focus(); }
+      else if (t.dataset.rm !== undefined){ const r = recents(); r.splice(+t.dataset.rm, 1); lsSet(RECENT_KEY, r); run(); }
+      else if (t.hasAttribute("data-clear")){ lsSet(RECENT_KEY, []); run(); }
+      else if (t.hasAttribute("data-new")){ swapLayer(() => openTemplates("")); }
+      else if (t.dataset.go){ if (q) addRecent(q); closeLayer(); location.hash = t.dataset.go; }
+      else if (t.dataset.hit){ if (q) addRecent(q); const it = S.items.get(t.dataset.hit); if (it) swapLayer(() => openItem(it.kind, it)); }
+    }, true);
+    inp.addEventListener("input", run);
+    inp.addEventListener("keydown", e => { if (e.key === "Enter"){ addRecent(inp.value); inp.blur(); } });
+    run(); setTimeout(() => inp.focus(), 80);
   }});
 }
 function openDay(key){
@@ -1790,7 +1868,7 @@ function renderPartial(){
   $$(".row-it", tmp).forEach((el, i) => el.style.setProperty("--i", Math.min(i, 14)));
   const nag = tmp.firstElementChild; if (S.listAnim) nag.classList.add("anim");
   $(".agenda").replaceWith(nag);
-  S.listAnim = false; S.calAnim = ""; bindSwipe();
+  S.listAnim = false; S.calAnim = ""; bindSwipe(); fitAgenda();
 }
 function moveMonth(d){
   let {y, m} = S.cal; m += d; if (m < 0){ m = 11; y--; } if (m > 11){ m = 0; y++; }
