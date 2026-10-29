@@ -707,7 +707,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "13";
+const APP_VERSION = "14";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -913,7 +913,7 @@ const topBar = title => `<div class="top"><button class="ibtn" data-act="drawer"
 function renderDock(){
   if (!S.settings || S.locked){ $("#dock").innerHTML = ""; return; }
   const r = currentRoute();
-  const tabs = [["inicio","Inicio","home"],["buscar","Buscar","search"],["asistente","Asistente","spark"],["horario","Horario","cal"]];
+  const tabs = [["inicio","Inicio","home"],["buscar","Buscar","search"],["horario","Horario","cal"],["asistente","Asistente","spark"]];
   $("#dock").innerHTML = tabs.map(([k, l, i]) => k === "asistente"
     ? `<button class="ft add${r === k ? " on" : ""}" data-act="tab" data-to="${k}"${r === k ? ' aria-current="page"' : ""}><span class="plus">${ic(i)}</span>${l}</button>`
     : `<button class="ft${k === "horario" ? " today-n" : ""}${r === k ? " on" : ""}" data-act="tab" data-to="${k}"${r === k ? ' aria-current="page"' : ""}>${k === "horario" ? `<span class="ic-wrap">${ic(i)}<b>${new Date().getDate()}</b></span>` : ic(i)}${l}</button>`).join("");
@@ -999,7 +999,7 @@ function agendaHtml(){
   return `<section class="agenda">
     <div class="ag-block" data-more="+{n} más">
       <div class="sec-t"><h2>${esc(title)}</h2><span class="n">${its.length || ""}</span><span class="sp"></span><button class="lnk def-lnk" data-act="day" data-date="${sel}">Horario${ic("right")}</button><button class="lnk more-btn" data-act="day" data-date="${sel}" hidden></button></div>
-      <div class="ag-list">${its.length ? its.map(agendaRow).join("") : `<div class="empty"><b>${isToday ? "Hoy no tienes nada apuntado." : "Día libre."}</b>Abre el menú ☰ y toca «Añadir algo», o pídeselo al asistente.</div>`}
+      <div class="ag-list">${its.length ? its.map(agendaRow).join("") : `<div class="empty"><b>${isToday ? "Hoy no tienes nada apuntado." : "Día libre."}</b>Abre el menú ☰ y toca «Añadir», o pídeselo al asistente.</div>`}
       ${late.length ? `<div class="group-t red">Atrasadas · ${late.length}</div>${late.map(t => agendaRow({t:"task", it:t, time:"", label:"Era para " + relDay(t.date).toLowerCase(), red:true, title:t.title})).join("")}` : ""}</div>
     </div>
     ${isToday ? `<div class="ag-block free" data-more="+{n} más">
@@ -1291,7 +1291,7 @@ function openDrawer(){
   const link = (to, label, icon, n, cls="") => `<a class="dnav${r === to ? " on" : ""} ${cls}" href="#${to}">${cls.includes("child") ? "" : ic(icon)}<span>${esc(label)}</span>${n ? `<span class="n">${n}</span>` : ""}</a>`;
   const tree = s => link("s-" + s.id, s.name, s.icon, deepCount(s.id)) + descendants(s.id).map(c => link("s-" + c.id, (c.parentId !== s.id ? "· " : "") + c.name, c.icon, entriesOf(c.id).length, "child")).join("");
   openLayer(`<div class="brand"><b>Órbita<i>.</i></b><button class="ibtn" data-act="close" aria-label="Cerrar menú">${ic("x")}</button></div>
-    <a class="dnav ai${r === "nuevo" ? " on" : ""}" href="#nuevo">${ic("plus")}<span>Añadir algo</span></a>
+    <a class="dnav ai${r === "nuevo" ? " on" : ""}" href="#nuevo">${ic("plus")}<span>Añadir</span></a>
     ${link("inicio","Inicio","home")}${link("calendario","Calendario","cal")}${link("tareas","Tareas","task", ofKind("task").filter(t => !t.done).length)}${link("avisos","Avisos y fechas","bell", ofKind("reminder").filter(t => !t.done).length)}${link("notas","Notas","note", ofKind("note").length)}
     <div class="dlabel">Tus secciones</div>
     ${topSections().map(tree).join("")}
