@@ -538,6 +538,7 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .khead{display:flex;align-items:flex-start;gap:12px}
 .khead p{margin:0;flex:1;font-size:14.5px;max-width:56ch}
 .khead .ibtn,.cl-top .ibtn{flex:none;background:var(--paper-2)}
+.khead .ibtn{margin-left:auto}
 .kd-l{font-weight:700;color:var(--mute)}
 .ktabs{display:flex;gap:4px;padding:4px;border-radius:16px;background:var(--paper-2);overflow-x:auto;scrollbar-width:none}
 .ktabs::-webkit-scrollbar{display:none}
@@ -739,6 +740,15 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.ktopics{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr))}
+.ktopic{display:flex;flex-direction:column;gap:4px;padding:14px;border-radius:var(--r-lg);background:var(--ink);color:var(--paper);min-height:132px;min-width:0;transition:transform .2s var(--spring)}
+.ktopic:active{transform:scale(.97)}
+.ktopic .ic{width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.12);display:grid;place-items:center;margin-bottom:auto}
+.ktopic .ic svg{width:18px;height:18px;color:var(--red)}
+.ktopic b{font-size:17px;font-weight:900;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kt-n{font-size:12px;font-weight:700;opacity:.65}
+.ktopic i{font-style:normal;font-size:12.5px;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 .sec-t h2.sub-h{font-size:19px;font-stretch:112%}
 .sec-t .btn{flex:none}
 /* armario 3D */
@@ -997,7 +1007,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "17";
+const APP_VERSION = "18";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1424,7 +1434,7 @@ function fieldDisplay(f, v){
 }
 function vSection(s){
   const parent = s.parentId ? secById(s.parentId) : null;
-  if (KIT_VIEWS[s.tpl]) return `${parent ? `<a class="crumb" href="#s-${parent.id}">${ic("left")}${esc(parent.name)}</a>` : ""}${KIT_VIEWS[s.tpl](s)}${subsBlock(s, true)}`;
+  if (KIT_VIEWS[s.tpl]) return `${parent ? `<a class="crumb" href="#s-${parent.id}">${ic("left")}${esc(parent.name)}</a>` : ""}${KIT_VIEWS[s.tpl](s)}${s.tpl === "conocimientos" ? "" : subsBlock(s, true)}`;
   const subs = childrenOf(s.id);
   const all_ = entriesOf(s.id);
   const sf = s.fields.find(f => f.key === s.statusKey && f.type === "select");
@@ -3727,6 +3737,24 @@ function subsBlock(s, kitMode){
 }
 const KIT_VIEWS = {entrenos:vEntrenos, peliculas:vMedia, libros:vMedia, comidas:vComidas, aprender:vAprender, estudios:vEstudios, armario:vArmario};
 
+/* ---------- Conocimientos: cuaderno por temas ---------- */
+KITS.conocimientos = {def:"nota", kinds:{nota:{label:"Nota", title:"Qué has aprendido (título)", fields:[F("notas","Lo que aprendí","longtext"),F("fuente","Fuente","link"),F("fecha","Fecha","date"),F("tema","Etiqueta","text")], dateKey:"fecha"}}};
+const noteCard = (e, wide) => { const f = e.fields || {}, sec = secById(e.sectionId); return `<button class="note" data-act="open" data-id="${e.id}"><h4>${esc(e.title)}</h4>${f.notas ? `<p>${esc(f.notas)}</p>` : ""}<div class="mt">${esc([f.fecha ? relDay(f.fecha) : "", f.tema, wide && sec && sec.parentId ? sec.name : "", f.fuente ? "Con fuente" : ""].filter(Boolean).join(" · "))}${e.example ? " · Ejemplo" : ""}</div></button>`; };
+function vConocimientos(s){
+  const top = !s.parentId || !secById(s.parentId), subs = childrenOf(s.id), q = (S.secQuery[s.id] || "").toLowerCase();
+  const pool = q ? [s, ...descendants(s.id)].flatMap(x => entriesOf(x.id)) : entriesOf(s.id);
+  const ns = pool.filter(e => !q || JSON.stringify([e.title, e.fields]).toLowerCase().includes(q)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  const sugg = top ? ["Tecnología","Ropa","Zapatos","Mochilas","Cocina","Salud","Viajes","Dinero"].filter(n => !subs.some(x => x.name.toLowerCase() === n.toLowerCase())).slice(0, 6) : [];
+  const tile = t => { const es = [t, ...descendants(t.id)].flatMap(x => entriesOf(x.id)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); return `<a class="ktopic" href="#s-${t.id}"><span class="ic">${ic(t.icon)}</span><b>${esc(t.name)}</b><span class="kt-n">${es.length} ${es.length === 1 ? "nota" : "notas"}</span>${es[0] ? `<i>${esc(es[0].title)}</i>` : ""}</a>`; };
+  return `${kitHead(s, top ? "Todo lo que vas aprendiendo, ordenado por temas." : `Tus notas sobre ${esc(s.name.toLowerCase())}.`)}
+    <input class="search-in" id="sq-${s.id}" data-input="secq" data-sec="${s.id}" placeholder="${top ? "Buscar en todos tus conocimientos" : "Buscar en " + esc(s.name.toLowerCase())}" value="${esc(S.secQuery[s.id] || "")}" aria-label="Buscar">
+    ${q ? "" : `<section class="stack" style="gap:12px"><div class="sec-t"><h2 class="sub-h">${top ? "Temas" : "Dentro de " + esc(s.name)}</h2><span class="n">${subs.length || ""}</span><span class="sp"></span><button class="plus-sm" data-act="topic-new" data-parent="${s.id}" aria-label="Nuevo tema">${ic("plus")}</button></div>
+      ${subs.length ? `<div class="ktopics">${subs.map(tile).join("")}</div>` : `<p class="muted small" style="margin:0">${top ? "Crea un tema para cada cosa: tecnología, ropa, zapatos, mochilas…" : "Si este tema crece, toca + para dividirlo en partes."}</p>`}
+      ${sugg.length ? `<div class="chips">${sugg.map(n => `<button class="chip" data-act="topic-quick" data-parent="${s.id}" data-name="${esc(n)}">${ic("plus")}${esc(n)}</button>`).join("")}</div>` : ""}</section>`}
+    <section class="stack" style="gap:12px"><div class="sec-t"><h2 class="sub-h">${q ? "Resultados" : top ? "Notas sueltas" : "Notas"}</h2><span class="n">${ns.length || ""}</span><span class="sp"></span>${kbtn(s, "nota", "Nota", {fecha:todayKey()}, "btn sm pri")}</div>
+      ${ns.length ? `<div class="notes">${ns.map(e => noteCard(e, !!q)).join("")}</div>` : kempty(q ? "Nada coincide." : "Aún no hay notas aquí.", q ? "Prueba con otra palabra." : "Apunta lo que aprendas: un truco, un dato, un resumen de un vídeo…")}</section>`;
+}
+KIT_VIEWS.conocimientos = vConocimientos;
 /* ---------- actions ---------- */
 const kitPut = (e, fields, extra={}) => putItem({...e, ...extra, fields:{...(e.fields || {}), ...fields}});
 function makeTopic(parentId, name){
