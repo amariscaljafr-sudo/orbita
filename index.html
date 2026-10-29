@@ -707,7 +707,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "12";
+const APP_VERSION = "13";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1003,7 +1003,7 @@ function agendaHtml(){
       ${late.length ? `<div class="group-t red">Atrasadas · ${late.length}</div>${late.map(t => agendaRow({t:"task", it:t, time:"", label:"Era para " + relDay(t.date).toLowerCase(), red:true, title:t.title})).join("")}` : ""}</div>
     </div>
     ${isToday ? `<div class="ag-block free" data-more="+{n} más">
-      <div class="sec-t"><h2>¿Tiempo libre hoy?</h2><span class="n">${free.length || ""}</span><span class="sp"></span><a class="lnk def-lnk" href="#tareas">Tareas${ic("right")}</a><a class="lnk more-btn" href="#tareas" hidden></a></div>
+      <div class="sec-t"><h2>Tiempo libre</h2><span class="n">${free.length || ""}</span><span class="sp"></span><a class="lnk def-lnk" href="#tareas">Tareas${ic("right")}</a><a class="lnk more-btn" href="#tareas" hidden></a></div>
       <p class="free-sub">Aprovecha para adelantar algo de lo pendiente.</p>
       <div class="ag-list">${free.length ? free.map(taskRow).join("") : `<div class="empty"><b>Nada pendiente.</b>Disfruta el rato: te lo has ganado.</div>`}</div>
     </div>` : ""}
