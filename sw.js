@@ -1,5 +1,5 @@
 // Órbita — caché sin conexión. Sube VERSION al publicar cambios.
-const VERSION = "orbita-v6";
+const VERSION = "orbita-v7";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/apple-touch-icon.png"];
 
 self.addEventListener("install", e => {

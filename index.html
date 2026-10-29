@@ -90,23 +90,27 @@ main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-ar
 body.static{position:fixed;inset:0;width:100%;overflow:hidden;overscroll-behavior:none}
 body.static main{padding-bottom:0}
 .view.home-v{height:calc(100vh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);height:calc(100dvh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);gap:0;overflow:hidden}
-.home-v .home{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,3.5vh,34px);padding-block:clamp(14px,3vh,30px) clamp(14px,3vh,28px);width:100%;max-width:400px;margin-inline:auto}
+.home-v .home{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(26px,5vh,48px);padding-block:clamp(22px,5vh,48px) clamp(20px,4vh,40px);width:100%;max-width:340px;margin-inline:auto}
 .home-v .cal{width:100%;margin-inline:0;flex:none}
-.home-v .cal-h{margin-bottom:8px;padding-inline:4px}
-.home-v .cal-h .m{font-size:clamp(1.3rem,5vw,1.7rem)}
-.home-v .grid7{gap:2px}
-.home-v .wk{font-size:11px;padding-bottom:4px}
-.home-v .d{aspect-ratio:auto;height:clamp(32px,calc((100dvh - 520px) / 6),46px);font-size:clamp(15px,4.3vw,20px);border-radius:12px}
-.home-v .d .pip{bottom:6%}
+.home-v .cal-h{margin-bottom:10px;padding-inline:4px}
+.home-v .cal-h .m{font-size:clamp(1.15rem,4.4vw,1.4rem)}
+.home-v .cal-h .ibtn{width:38px;height:38px}
+.home-v .grid7{gap:3px}
+.home-v .wk{font-size:10.5px;padding-bottom:6px}
+.home-v .d{aspect-ratio:auto;height:clamp(30px,calc((100dvh - 600px) / 6),40px);font-size:clamp(14px,4vw,17px);border-radius:10px;font-weight:700}
+.home-v .d .pip{bottom:4%}
+.home-v .d .pip i{width:4px;height:4px}
 .home-v .agenda{flex:0 1 auto;min-height:0;overflow:hidden}
 .home-v .sec-t{margin-bottom:2px}
-.home-v .sec-t h2{font-size:clamp(1.25rem,4.4vw,1.5rem)}
-.home-v .row-it{padding:10px 4px}
+.home-v .sec-t h2{font-size:clamp(1.1rem,4vw,1.3rem)}
+.home-v .row-it{padding:9px 4px;grid-template-columns:54px minmax(0,1fr) auto}
+.home-v .row-it .tt{font-size:15px}
+.home-v .eyebrow{font-size:10.5px}
 .more-btn{align-self:flex-start;margin-top:8px}
 @media (min-width:900px){
-  .home-v .home{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.8fr);gap:clamp(40px,6vw,80px);align-items:center;align-content:center;max-width:1040px;padding-block:24px 28px}
-  .home-v .cal{max-width:540px;justify-self:end}
-  .home-v .d{height:clamp(38px,calc((100dvh - 430px) / 6),68px);font-size:clamp(17px,2vw,24px)}
+  .home-v .home{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.9fr);gap:clamp(48px,7vw,96px);align-items:center;align-content:center;max-width:960px;padding-block:32px 40px}
+  .home-v .cal{max-width:440px;justify-self:end}
+  .home-v .d{height:clamp(36px,calc((100dvh - 480px) / 6),56px);font-size:clamp(16px,1.7vw,20px)}
   .home-v .agenda{max-height:100%;align-self:center;max-width:440px}
 }
 
@@ -173,7 +177,7 @@ body.static main{padding-bottom:0}
 .group-t.red{color:var(--red)}
 
 /* dock */
-.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;min-height:var(--foot);
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(4,1fr);align-items:center;gap:8px;min-height:var(--foot);
   padding:6px max(18px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
   background:var(--paper);border-top:1px solid var(--line);animation:footIn .5s .25s var(--ease) both}
 @keyframes footIn{from{transform:translateY(100%)}to{transform:none}}
@@ -181,15 +185,15 @@ body.static main{padding-bottom:0}
 .dock .ft{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;border-radius:14px;font-size:11.5px;font-weight:750;letter-spacing:.02em;color:var(--ink-2);transition:background .2s,transform .2s var(--spring)}
 .dock .ft:hover{background:var(--paper-2)}
 .dock .ft:active{transform:scale(.9)}
-.dock .ft:first-child{justify-self:stretch}
-.dock .ft:last-child{justify-self:stretch}
-.dock .add{display:flex;align-items:center;gap:8px;height:48px;padding:0 22px;border-radius:16px;background:var(--ink);color:var(--paper);font-weight:800;font-size:14.5px;transition:transform .2s var(--spring)}
-.dock .add:active{transform:scale(.92)}
-.dock .add svg{width:22px;height:22px;stroke-width:2.4}
+.dock .ft.on{color:var(--ink)}
+.dock .ft.on svg{stroke:var(--red)}
+.dock .add .plus{width:34px;height:24px;border-radius:9px;background:var(--ink);color:var(--paper);display:grid;place-items:center;margin-block:-1px}
+.dock .add .plus svg{width:17px;height:17px;stroke-width:2.6}
+.dock .add{color:var(--ink)}
 .dock .today-n{position:relative}
 .dock .today-n .ic-wrap{position:relative;display:grid;place-items:center}
 .dock .today-n b{position:absolute;top:55%;left:50%;transform:translate(-50%,-30%);font-size:9px;font-weight:900}
-@media (min-width:900px){.dock{grid-template-columns:200px auto 200px;justify-content:center;gap:28px}}
+@media (min-width:900px){.dock{grid-template-columns:repeat(4,150px);justify-content:center;gap:24px}}
 
 /* search */
 .s-group{display:flex;flex-direction:column;gap:8px;margin-top:18px}
@@ -830,11 +834,13 @@ function avatarHtml(cls=""){
 const topBar = title => `<div class="top"><button class="ibtn" data-act="drawer" aria-label="Abrir menú">${ic("menu")}</button><div class="ttl">${esc(title)}</div><a class="ibtn" href="#perfil" aria-label="Perfil y ajustes">${avatarHtml()}</a></div>`;
 function renderDock(){
   if (!S.settings || S.locked){ $("#dock").innerHTML = ""; return; }
-  if ($("#dock").childElementCount) { const b = $("#dock .today-n b"); if (b) b.textContent = new Date().getDate(); $("#dock .today-n").dataset.date = todayKey(); return; }
+  const home = currentRoute() === "inicio";
+  if ($("#dock").childElementCount) { const b = $("#dock .today-n b"); if (b) b.textContent = new Date().getDate(); $("#dock .today-n").dataset.date = todayKey(); $("#dock [data-to=inicio]").classList.toggle("on", home); return; }
   $("#dock").innerHTML = `
+    <button class="ft${home ? " on" : ""}" data-act="nav" data-to="inicio">${ic("home")}Inicio</button>
     <button class="ft" data-act="search">${ic("search")}Buscar</button>
-    <button class="add" data-act="quick">${ic("plus")}Añadir</button>
-    <button class="ft today-n" data-act="day" data-date="${todayKey()}"><span class="ic-wrap">${ic("cal")}<b>${new Date().getDate()}</b></span>Horario de hoy</button>`;
+    <button class="ft add" data-act="quick"><span class="plus">${ic("plus")}</span>Añadir</button>
+    <button class="ft today-n" data-act="day" data-date="${todayKey()}"><span class="ic-wrap">${ic("cal")}<b>${new Date().getDate()}</b></span>Horario</button>`;
 }
 
 /* ================= greeting ================= */
@@ -868,10 +874,10 @@ function greetHtml(animate){
 }
 function fitGreet(){
   const g = $("#greet"); if (!g) return;
-  let size = Math.min(58, Math.max(32, window.innerWidth * .12));
+  let size = Math.min(44, Math.max(26, window.innerWidth * .085));
   g.style.fontSize = size + "px";
   let guard = 0;
-  while (g.scrollWidth > g.clientWidth + 1 && size > 16 && guard++ < 60){ size -= 1.5; g.style.fontSize = size + "px"; }
+  while (g.scrollWidth > g.clientWidth + 1 && size > 16 && guard++ < 60){ size -= 1; g.style.fontSize = size + "px"; }
 }
 addEventListener("resize", () => requestAnimationFrame(fitGreet));
 
