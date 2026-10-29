@@ -607,7 +607,7 @@ const TEMPLATES = {
   peliculas:{name:"Películas y series", icon:"film", d:"Lo que has visto y lo que te falta", fields:[F("tipo","Tipo","select",{options:["Película","Serie","Documental","Anime"]}),F("estado","Estado","select",{options:["Por ver","Viendo","Vista"]}),F("valoracion","Valoración","rating"),F("fecha","Para ver el","date"),F("plataforma","Dónde verla","text"),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
   armario:{name:"Armario", icon:"shirt", d:"Cada prenda que tienes", fields:[F("categoria","Categoría","select",{options:["Arriba","Abajo","Vestido","Abrigo","Calzado","Accesorio"]}),F("color","Color","color"),F("temporada","Temporada","select",{options:["Todo el año","Primavera/Verano","Otoño/Invierno"]}),F("estado","Estado","select",{options:["En uso","Guardado","Para donar","Quiero comprar"]}),F("marca","Marca","text"),F("notas","Notas","longtext")], statusKey:"categoria"},
   outfits:{name:"Outfits", icon:"layers", d:"Qué llevas cada día", fields:[F("fecha","Día","date"),F("ocasion","Ocasión","select",{options:["Diario","Trabajo","Deporte","Evento","Viaje"]}),F("prendas","Prendas","longtext"),F("valoracion","Cómo me sentí","rating"),F("notas","Notas","longtext")], statusKey:"ocasion", dateKey:"fecha", calendar:true},
-  entrenos:{name:"Entrenamiento", icon:"dumbbell", d:"Qué días entrenas y cómo", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("hecho","Completado","check"),F("notas","Ejercicios y series","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true},
+  entrenos:{name:"Entrenamientos", icon:"dumbbell", d:"Qué días entrenas y cómo", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("hecho","Completado","check"),F("notas","Ejercicios y series","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true},
   rutina:{name:"Rutina", icon:"dumbbell", d:"Ejercicios, series y pesos", fields:[F("dia","Día de rutina","select",{options:["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]}),F("grupo","Grupo muscular","text"),F("series","Series x reps","text"),F("peso","Peso (kg)","number"),F("notas","Notas","longtext")], statusKey:"dia"},
   horario:{name:"Horario de clases", icon:"clock", d:"Clases y horarios que se repiten", fields:[F("fecha","Primer día","date"),F("hora","Hora","time"),F("semanal","Se repite cada semana","check"),F("lugar","Lugar","text"),F("notas","Notas","longtext")], dateKey:"fecha", timeKey:"hora", repeatKey:"semanal", calendar:true},
   progreso:{name:"Progreso", icon:"trend", d:"Logros, niveles y mejoras", fields:[F("fecha","Fecha","date"),F("nivel","Nivel o grado","text"),F("logro","Qué he conseguido","longtext"),F("valoracion","Cómo me siento","rating")], dateKey:"fecha"},
@@ -1046,7 +1046,7 @@ function tileHtml(s){
   const n = deepCount(s.id), subs = childrenOf(s.id).length;
   return `<a class="tile" href="#s-${s.id}"><div class="ic">${ic(s.icon)}</div><div><div class="nm">${esc(s.name)}</div><div class="ct">${n} ${n === 1 ? "entrada" : "entradas"}${subs ? ` · ${subs} ${subs === 1 ? "subsección" : "subsecciones"}` : ""}</div></div></a>`;
 }
-const vSections = () => `<p class="muted" style="margin:0;max-width:56ch">Cada sección tiene sus propios campos y puede tener subsecciones dentro. Por ejemplo, Entrenamiento con Gimnasio y Artes marciales.</p>
+const vSections = () => `<p class="muted" style="margin:0;max-width:56ch">Cada sección tiene sus propios campos y puede tener subsecciones dentro. Por ejemplo, Entrenamientos con Gimnasio y Artes marciales.</p>
   <div class="tiles">${topSections().map(tileHtml).join("")}<button class="tile add" data-act="sec-new"><div class="ic">${ic("plus")}</div><div><div class="nm">Nueva sección</div><div class="ct">Dime qué quieres organizar</div></div></button></div>`;
 function fieldDisplay(f, v){
   if (v === undefined || v === null || v === "") return "";
@@ -1156,7 +1156,7 @@ const PAGES = {
     <details class="faq"><summary>¿Cómo funciona el asistente?</summary><p>Puede crear tareas, eventos, avisos, notas, secciones y entradas por ti. Funciona con tu propia clave: Gemini de Google (gratis, con un límite diario) o Claude de Anthropic (de pago, se cobra por uso en tu cuenta).</p></details>
     <details class="faq"><summary>¿Recibiré avisos con la app cerrada?</summary><p>Por ahora no. Los avisos saltan con sonido si Órbita está abierta; si no, los verás pendientes al volver.</p></details>
     <details class="faq"><summary>¿Cómo la pongo en la pantalla de inicio?</summary><p>En Safari toca Compartir y luego «Añadir a pantalla de inicio». En Android, en Chrome, menú ⋮ y «Añadir a pantalla de inicio».</p></details>
-    <details class="faq"><summary>¿Qué son las subsecciones?</summary><p>Secciones dentro de otra sección, cada una con sus campos. Por ejemplo, dentro de Entrenamiento puedes tener Gimnasio, Artes marciales, Horarios o Progreso.</p></details>`],
+    <details class="faq"><summary>¿Qué son las subsecciones?</summary><p>Secciones dentro de otra sección, cada una con sus campos. Por ejemplo, dentro de Entrenamientos puedes tener Gimnasio, Artes marciales, Horarios o Progreso.</p></details>`],
   privacy:["Política de privacidad", `<div class="prose">
     <p>Órbita es una herramienta personal. Esta página explica qué datos maneja y dónde quedan.</p>
     <h3>Qué guarda</h3><p>Lo que tú escribes: tu perfil (nombre, usuario, cumpleaños y foto), tareas, eventos, avisos, notas, secciones y sus entradas, y tus preferencias.</p>
@@ -2160,6 +2160,9 @@ setInterval(() => {
   await initStore();
   if (S.settings && !S.settings.profile) S.settings.profile = {name:S.settings.name || ""};
   if (S.settings && !S.settings.sections) S.settings.sections = [];
+  if (S.settings && S.settings.sections.some(x => x.tpl === "entrenos" && /^(Entrenamiento|Entrenos)$/.test(x.name))){
+    S.settings.sections = S.settings.sections.map(x => x.tpl === "entrenos" && /^(Entrenamiento|Entrenos)$/.test(x.name) ? {...x, name:"Entrenamientos"} : x); putSettings(true);
+  }
   S.ready = true;
   if (!S.settings) showOnboarding();
   else if (S.settings.pin) showLock();
