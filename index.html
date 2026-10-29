@@ -51,12 +51,12 @@ main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-ar
 @keyframes viewIn{from{opacity:.001;transform:translateY(10px)}to{opacity:1;transform:none}}
 
 /* splash */
-#splash{position:fixed;inset:0;z-index:90;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .45s var(--ease),transform .45s var(--ease)}
-#splash.out{opacity:0;transform:scale(1.04);pointer-events:none}
+#splash{position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;z-index:90;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .45s var(--ease),transform .45s var(--ease)}
+#splash.out{opacity:0;pointer-events:none}
 #splash .logo{position:relative;width:96px;height:96px}
-#splash .logo svg{width:96px;height:96px;transform:rotate(-90deg)}
+#splash .logo svg{width:96px;height:96px;display:block;overflow:visible}
 #splash .logo circle{fill:none;stroke:var(--ink);stroke-width:13;stroke-dasharray:226;stroke-dashoffset:226;animation:ringDraw .9s .05s var(--ease) forwards;stroke-linecap:round}
-#splash .logo i{position:absolute;right:2px;top:2px;width:24px;height:24px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px var(--paper);transform:scale(0);animation:dotPop .5s .75s var(--spring) forwards}
+#splash .logo i{position:absolute;right:2px;top:2px;width:24px;height:24px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px var(--paper);transform:scale(0);transform-origin:50% 50%;animation:dotPop .5s .75s var(--spring) forwards}
 #splash b{font-weight:900;font-stretch:122%;font-size:30px;letter-spacing:-.035em;opacity:0;animation:fadeUp .6s .55s var(--ease) forwards}
 #splash b em{font-style:normal;color:var(--red)}
 @keyframes ringDraw{to{stroke-dashoffset:0}}
@@ -496,6 +496,65 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .chat-in textarea:focus{border-color:var(--ink);background:var(--paper)}
 .chat-in .btn{width:50px;padding:0;min-height:50px}
 
+
+/* wardrobe */
+.entry.has-img{padding-top:0;overflow:hidden}
+.e-img{display:block;position:relative;margin:0 -16px 2px;aspect-ratio:4/3;max-width:calc(100% + 32px);background:var(--paper-3);overflow:hidden}
+.e-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease)}
+.entry:hover .e-img img{transform:scale(1.04)}
+.e-3d{position:absolute;right:8px;bottom:8px;display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 9px;border-radius:999px;background:rgba(13,13,13,.78);color:#fff;font-style:normal;font-size:11.5px;font-weight:800}
+.e-3d svg{width:13px;height:13px}
+.entries.lst .e-img{display:none}
+.ph-field{display:flex;flex-direction:column;gap:8px}
+.ph-list{display:flex;gap:8px;flex-wrap:wrap}
+.ph{position:relative;width:84px;height:84px;border-radius:14px;overflow:hidden;background:var(--paper-3)}
+.ph img{width:100%;height:100%;object-fit:cover;cursor:pointer}
+.ph .x{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;background:rgba(13,13,13,.7);color:#fff;display:grid;place-items:center}
+.ph .x svg{width:13px;height:13px}
+.ph-add{width:84px;height:84px;border-radius:14px;border:2px dashed var(--line-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11.5px;font-weight:700;color:var(--ink-2);cursor:pointer;text-align:center}
+.g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}
+.g-grid.sm{grid-template-columns:repeat(auto-fill,minmax(84px,1fr))}
+.g-card{display:flex;flex-direction:column;gap:6px;padding:6px;border-radius:16px;background:var(--paper-2);text-align:left;font-size:12.5px;font-weight:700;transition:transform .2s var(--spring),box-shadow .2s;min-width:0}
+.g-card span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px 2px}
+.g-card:active{transform:scale(.95)}
+.g-card.on{box-shadow:0 0 0 2.5px var(--ink)}
+.g-img,.g-sw{width:100%;aspect-ratio:1/1;border-radius:11px;object-fit:cover;display:grid;place-items:center;background:var(--paper-3);color:rgba(255,255,255,.85)}
+.g-sw svg{width:40%;height:40%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.g-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.g-strip::-webkit-scrollbar{display:none}
+.g-mini{flex:none;width:64px;display:flex;flex-direction:column;gap:4px;font-size:11px}
+.g-mini b{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g-strip.sm .g-mini{width:38px}
+.av-wrap,.probador{display:grid;gap:22px}
+@media (min-width:760px){.av-wrap,.probador{grid-template-columns:minmax(240px,.8fr) 1.2fr;align-items:start}.av-stage{position:sticky;top:90px}}
+.av-stage{display:flex;justify-content:center;align-items:flex-end;padding:18px 0 8px;border-radius:var(--r-lg);background:radial-gradient(80% 60% at 50% 30%,#fff,var(--paper-2));min-height:300px}
+.av-svg{height:min(52vh,440px);width:auto;max-width:100%;filter:drop-shadow(0 10px 18px rgba(13,13,13,.12));animation:avIn .5s var(--spring)}
+@keyframes avIn{from{transform:translateY(8px) scale(.98);opacity:.4}}
+.pb-stage{display:flex;flex-direction:column;gap:10px}
+@media (max-width:759px){.probador .av-svg{height:34vh}}
+.oc{display:flex;flex-direction:column;gap:10px}
+.oc-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.oc-d{position:relative;aspect-ratio:3/4;max-width:100%;border-radius:12px;background:var(--paper-2);overflow:hidden;display:flex;align-items:flex-end;justify-content:center;transition:transform .2s var(--spring)}
+.oc-d:active{transform:scale(.92)}
+.oc-d.out{opacity:.35}
+.oc-d .n{position:absolute;top:4px;left:6px;font-size:12px;font-weight:800;z-index:2;text-shadow:0 0 4px #fff}
+.oc-d.today{box-shadow:inset 0 0 0 2.5px var(--red)}
+.oc-d.today .n{color:var(--red)}
+.oc-d img,.oc-d .g-sw,.oc-d .g-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0;aspect-ratio:auto}
+.viewer{position:fixed;inset:0;z-index:80;background:radial-gradient(90% 70% at 50% 40%,#fff,#ecebe8);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:calc(16px + env(safe-area-inset-top,0px)) 18px calc(24px + env(safe-area-inset-bottom,0px));opacity:0;transition:opacity .3s}
+.viewer.open{opacity:1}
+.vw-top{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));left:18px;right:18px;display:flex;align-items:center;justify-content:space-between;font-size:17px}
+.vw-stage{perspective:1000px;display:flex;flex-direction:column;align-items:center;gap:0}
+.vw-card{position:relative;width:min(78vw,420px);aspect-ratio:3/4;max-width:100%;border-radius:24px;overflow:hidden;background:#fff;box-shadow:0 30px 60px -20px rgba(13,13,13,.35);transform-style:preserve-3d;transition:transform .5s var(--ease);touch-action:none;cursor:grab}
+.vw-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;opacity:0;transition:opacity .12s;user-select:none;-webkit-user-select:none;pointer-events:none}
+.vw-card img.on{opacity:1}
+.vw-sheen{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
+.vw-shadow{width:60%;height:18px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.22),transparent);margin-top:18px;transition:transform .5s var(--ease)}
+.vw-hint{margin:0;color:var(--mute);font-size:13px;text-align:center;max-width:36ch}
+.vw-dots{display:flex;gap:6px}
+.vw-dots i{width:7px;height:7px;border-radius:50%;background:var(--line-2)}
+.vw-dots i.on{background:var(--ink)}
+img.missing{visibility:hidden}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;transition-duration:.001s!important}
 }
@@ -504,7 +563,7 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 <body>
 
 
-<div id="splash" aria-hidden="true"><div class="logo"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="36"/></svg><i></i></div><b>Órbita<em>.</em></b></div>
+<div id="splash" aria-hidden="true"><div class="logo"><svg viewBox="0 0 96 96" width="96" height="96"><circle cx="48" cy="48" r="36" transform="rotate(-90 48 48)"/></svg><i></i></div><b>Órbita<em>.</em></b></div>
 <main>
   <div id="view"></div>
 </main>
@@ -605,8 +664,8 @@ const PRIO = { alta:"Alta", media:"Media", baja:"Baja" };
 const F = (key, label, type, extra={}) => ({key, label, type, ...extra});
 const TEMPLATES = {
   peliculas:{name:"Películas y series", icon:"film", d:"Lo que has visto y lo que te falta", fields:[F("tipo","Tipo","select",{options:["Película","Serie","Documental","Anime"]}),F("estado","Estado","select",{options:["Por ver","Viendo","Vista"]}),F("valoracion","Valoración","rating"),F("fecha","Para ver el","date"),F("plataforma","Dónde verla","text"),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
-  armario:{name:"Armario", icon:"shirt", d:"Cada prenda que tienes", fields:[F("categoria","Categoría","select",{options:["Arriba","Abajo","Vestido","Abrigo","Calzado","Accesorio"]}),F("color","Color","color"),F("temporada","Temporada","select",{options:["Todo el año","Primavera/Verano","Otoño/Invierno"]}),F("estado","Estado","select",{options:["En uso","Guardado","Para donar","Quiero comprar"]}),F("marca","Marca","text"),F("notas","Notas","longtext")], statusKey:"categoria"},
-  outfits:{name:"Outfits", icon:"layers", d:"Qué llevas cada día", fields:[F("fecha","Día","date"),F("ocasion","Ocasión","select",{options:["Diario","Trabajo","Deporte","Evento","Viaje"]}),F("prendas","Prendas","longtext"),F("valoracion","Cómo me sentí","rating"),F("notas","Notas","longtext")], statusKey:"ocasion", dateKey:"fecha", calendar:true},
+  armario:{name:"Armario", icon:"shirt", d:"Tus prendas con fotos y vista 3D", fields:[F("fotos","Fotos","photos"),F("categoria","Categoría","select",{options:["Arriba","Abajo","Vestido","Abrigo","Calzado","Accesorio"]}),F("color","Color","color"),F("temporada","Temporada","select",{options:["Todo el año","Primavera/Verano","Otoño/Invierno"]}),F("estado","Estado","select",{options:["En uso","Guardado","Para donar","Quiero comprar"]}),F("marca","Marca","text"),F("notas","Notas","longtext")], statusKey:"categoria"},
+  outfits:{name:"Calendario de outfits", icon:"layers", d:"Qué te pones cada día", fields:[F("fecha","Día","date"),F("prendas_ids","Prendas del armario","garments"),F("fotos","Foto del outfit","photos"),F("ocasion","Ocasión","select",{options:["Diario","Trabajo","Deporte","Evento","Viaje"]}),F("valoracion","Cómo me sentí","rating"),F("notas","Notas","longtext")], statusKey:"ocasion", dateKey:"fecha", calendar:true},
   entrenos:{name:"Entrenamientos", icon:"dumbbell", d:"Qué días entrenas y cómo", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("hecho","Completado","check"),F("notas","Ejercicios y series","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true},
   rutina:{name:"Rutina", icon:"dumbbell", d:"Ejercicios, series y pesos", fields:[F("dia","Día de rutina","select",{options:["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]}),F("grupo","Grupo muscular","text"),F("series","Series x reps","text"),F("peso","Peso (kg)","number"),F("notas","Notas","longtext")], statusKey:"dia"},
   horario:{name:"Horario de clases", icon:"clock", d:"Clases y horarios que se repiten", fields:[F("fecha","Primer día","date"),F("hora","Hora","time"),F("semanal","Se repite cada semana","check"),F("lugar","Lugar","text"),F("notas","Notas","longtext")], dateKey:"fecha", timeKey:"hora", repeatKey:"semanal", calendar:true},
@@ -623,7 +682,7 @@ const TEMPLATES = {
   guardados:{name:"Guardados", icon:"bookmark", d:"Enlaces, ideas y citas", fields:[F("tipo","Tipo","select",{options:["Enlace","Idea","Cita","Documento","Otro"]}),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"tipo"},
   blanco:{name:"Sección en blanco", icon:"star", d:"Créala a tu manera", fields:[F("notas","Notas","longtext")]}
 };
-const FIELD_TYPES = {text:"Texto", longtext:"Texto largo", select:"Opciones", rating:"Estrellas", date:"Fecha", time:"Hora", number:"Número", progress:"Progreso %", link:"Enlace", check:"Sí / No", color:"Color"};
+const FIELD_TYPES = {photos:"Fotos", garments:"Prendas del armario", text:"Texto", longtext:"Texto largo", select:"Opciones", rating:"Estrellas", date:"Fecha", time:"Hora", number:"Número", progress:"Progreso %", link:"Enlace", check:"Sí / No", color:"Color"};
 const PURPOSES = [
   ["dia","Organizar mi día","cal",[]],
   ["estudios","Estudios","cap",["estudios","conocimientos"]],
@@ -796,8 +855,8 @@ function toast(title, text, opts={}){
 }
 
 /* ================= routing ================= */
-const ROUTES = ["inicio","buscar","nuevo","horario","calendario","tareas","avisos","notas","secciones","perfil"];
-const ROUTE_TITLE = {buscar:"Buscar", nuevo:"Añadir", horario:"Horario", calendario:"Calendario", tareas:"Tareas", avisos:"Avisos y fechas", notas:"Notas", secciones:"Secciones", perfil:"Perfil y ajustes"};
+const ROUTES = ["inicio","buscar","nuevo","horario","probador","avatar","calendario","tareas","avisos","notas","secciones","perfil"];
+const ROUTE_TITLE = {probador:"Probador", avatar:"Tu avatar", buscar:"Buscar", nuevo:"Añadir", horario:"Horario", calendario:"Calendario", tareas:"Tareas", avisos:"Avisos y fechas", notas:"Notas", secciones:"Secciones", perfil:"Perfil y ajustes"};
 function currentRoute(){
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith("s-") && secById(h.slice(2))) return h;
@@ -817,7 +876,7 @@ function render(){
   if (r === "inicio") html = vHome(changed);
   else {
     const sec = r.startsWith("s-") ? secById(r.slice(2)) : null;
-    const fn = {buscar:vSearch, nuevo:vNew, horario:vDay, calendario:vCalendar, tareas:vTasks, avisos:vReminders, notas:vNotes, secciones:vSections, perfil:vProfile}[r];
+    const fn = {probador:vProbador, avatar:vAvatar, buscar:vSearch, nuevo:vNew, horario:vDay, calendario:vCalendar, tareas:vTasks, avisos:vReminders, notas:vNotes, secciones:vSections, perfil:vProfile}[r];
     html = topBar(sec ? sec.name : ROUTE_TITLE[r]) + (fn ? fn() : vSection(sec));
   }
   document.body.classList.toggle("static", r === "inicio");
@@ -1058,6 +1117,8 @@ function fieldDisplay(f, v){
     case "color": return `<i class="colorchip" style="background:${esc(v)}"></i>`;
     case "progress": return `<span class="row" style="gap:8px;width:100%"><span class="bar" style="flex:1"><i style="width:${Math.max(0, Math.min(100, +v))}%"></i></span><span class="small" style="font-weight:700">${+v}%</span></span>`;
     case "link": return `<span class="tag">Enlace</span>`;
+    case "photos": return "";
+    case "garments": return Array.isArray(v) && v.length ? `<span class="tag">${v.length} ${v.length === 1 ? "prenda" : "prendas"}</span>` : "";
     case "number": return `<span class="tag">${esc(v)} ${esc(f.label.toLowerCase())}</span>`;
     case "select": return `<span class="tag">${esc(v)}</span>`;
     default: return "";
@@ -1073,29 +1134,36 @@ function vSection(s){
   const lst = s.view === "list";
   const textF = s.fields.find(f => f.type === "text"), longF = s.fields.find(f => f.type === "longtext");
   const shown = s.fields.filter(f => f.type !== "text" && f.type !== "longtext");
-  return `
-  ${parent ? `<a class="crumb" href="#s-${parent.id}">${ic("left")}${esc(parent.name)}</a>` : ""}
-  <section class="stack" style="gap:12px">
+  const special = s.tpl === "armario" || s.tpl === "outfits";
+  const subsHtml = `  <section class="stack" style="gap:12px">
     <div class="row" style="justify-content:space-between"><h2 class="sub-h">${subs.length ? "Subsecciones" : "Organiza más a fondo"}</h2></div>
     <div class="tiles sm">${subs.map(tileHtml).join("")}<button class="tile add" data-act="sec-new" data-parent="${s.id}"><div class="ic">${ic("plus")}</div><div><div class="nm">Nueva subsección</div><div class="ct">Dentro de ${esc(s.name)}</div></div></button></div>
-  </section>
+  </section>`;
+  return `
+  ${parent ? `<a class="crumb" href="#s-${parent.id}">${ic("left")}${esc(parent.name)}</a>` : ""}
+  ${special ? "" : subsHtml}
   <div class="row" style="flex-wrap:nowrap">
     <input class="search-in" id="sq-${s.id}" data-input="secq" data-sec="${s.id}" placeholder="Buscar en ${esc(s.name.toLowerCase())}" value="${esc(S.secQuery[s.id] || "")}" aria-label="Buscar">
     <button class="ibtn" style="flex:none;background:var(--paper-2)" data-act="sec-view" data-sec="${s.id}" aria-label="${lst ? "Ver como tarjetas" : "Ver como lista"}">${ic(lst ? "grid" : "list")}</button>
     <button class="ibtn" style="flex:none;background:var(--paper-2)" data-act="sec-edit" data-sec="${s.id}" aria-label="Editar sección">${ic("edit")}</button>
   </div>
   ${sf ? `<div class="chips"><button class="chip${!filt ? " on" : ""}" data-act="sec-filter" data-sec="${s.id}" data-v="">Todo<span class="n">${all_.length}</span></button>${sf.options.map(o => `<button class="chip${filt === o ? " on" : ""}" data-act="sec-filter" data-sec="${s.id}" data-v="${esc(o)}">${esc(o)}<span class="n">${all_.filter(e => e.fields?.[sf.key] === o).length}</span></button>`).join("")}</div>` : ""}
-  <div><button class="btn pri" data-act="add" data-kind="entry" data-sec="${s.id}">${ic("plus")}Añadir a ${esc(s.name)}</button></div>
+  ${s.tpl === "outfits" ? outfitCalendar(s) : ""}
+  <div class="row"><button class="btn pri" data-act="add" data-kind="entry" data-sec="${s.id}">${ic("plus")}${s.tpl === "armario" ? "Añadir prenda" : s.tpl === "outfits" ? "Guardar outfit" : "Añadir a " + esc(s.name)}</button>${s.tpl === "armario" ? `<a class="btn" href="#probador">${ic("shirt")}Probador</a>` : ""}</div>
   ${es.length ? `<div class="entries${lst ? " lst" : ""}">${es.map(e => {
     const tc = s.tasks ? tasksDoneCount(e.id) : {n:0};
     const metas = shown.map(f => fieldDisplay(f, e.fields?.[f.key])).filter(Boolean);
-    return `<button class="entry" data-act="open" data-id="${e.id}">
+    const pics = photoIdsOf(e), gF = s.fields.find(f => f.type === "garments"), gids = gF && Array.isArray(e.fields?.[gF.key]) ? e.fields[gF.key].filter(id => S.items.has(id)) : [];
+    return `<button class="entry${pics.length && !lst ? " has-img" : ""}" data-act="open" data-id="${e.id}">
+      ${pics.length ? `<span class="e-img" data-act="view-3d" data-id="${e.id}" title="Ver en 3D"><img data-img="${pics[0]}" alt="">${pics.length > 1 ? `<i class="e-3d">${ic("spark")}3D · ${pics.length}</i>` : `<i class="e-3d">${ic("spark")}3D</i>`}</span>` : ""}
       <div class="et">${esc(e.title || "Sin título")}</div>
+      ${gids.length ? `<div class="g-strip sm">${gids.slice(0, 5).map(id => `<span class="g-mini">${gThumb(garmentInfo(S.items.get(id)))}</span>`).join("")}</div>` : ""}
       ${textF && e.fields?.[textF.key] ? `<div class="es">${esc(e.fields[textF.key])}</div>` : ""}
       ${!lst && longF && e.fields?.[longF.key] ? `<div class="es muted" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(e.fields[longF.key])}</div>` : ""}
       ${metas.length || tc.n || e.example ? `<div class="em">${metas.join("")}${tc.n ? `<span class="tag">${tc.d}/${tc.n} tareas</span>` : ""}${e.example ? '<span class="tag ex">Ejemplo</span>' : ""}</div>` : ""}
     </button>`; }).join("")}</div>`
-  : `<div class="empty"><b>${q || filt ? "Nada coincide con el filtro." : "Aquí aún no hay entradas."}</b>${q || filt ? "Prueba con otro filtro." : "Pulsa «Añadir» para crear la primera."}</div>`}`;
+  : `<div class="empty"><b>${q || filt ? "Nada coincide con el filtro." : "Aquí aún no hay entradas."}</b>${q || filt ? "Prueba con otro filtro." : "Pulsa «Añadir» para crear la primera."}</div>`}
+  ${special ? subsHtml : ""}`;
 }
 
 /* ---------- profile & settings ---------- */
@@ -1121,6 +1189,9 @@ function vProfile(){
       <div><button class="btn pri" type="submit">Guardar cambios</button></div>
     </form>
     <div class="stack">
+      <div class="box"><span class="lbl">Avatar</span><div class="set-list">
+        ${row("nav", "user", "Tu avatar", "Personalízalo y pruébate tu ropa en el probador", ' data-to="avatar"')}
+      </div></div>
       <div class="box"><span class="lbl">Seguridad</span><div class="set-list">
         ${row("pin-setup", "lock", hasPin ? "Cambiar PIN" : "Proteger con PIN", hasPin ? "Órbita pide el PIN al abrirse" : "Pide un código de 4 cifras al abrir Órbita")}
         ${hasPin ? row("pin-off", "shield", "Quitar el PIN", "Órbita se abrirá sin código") + row("lock-now", "lock", "Bloquear ahora", "Vuelve a pedir el PIN") : ""}
@@ -1349,6 +1420,8 @@ function fieldInput(f, v, id){
     case "progress": return `<div class="row" style="flex-wrap:nowrap"><input type="range" min="0" max="100" step="5" id="${id}" name="${n}" value="${+v || 0}" oninput="this.nextElementSibling.textContent=this.value+'%'"><span style="width:48px;text-align:right;font-weight:800">${+v || 0}%</span></div>`;
     case "link": return `<div class="row" style="flex-wrap:nowrap"><input type="url" id="${id}" name="${n}" value="${esc(v || "")}" placeholder="https://…">${v ? `<a class="ibtn" style="flex:none;background:var(--paper-2)" href="${esc(safeUrl(v))}" target="_blank" rel="noopener" aria-label="Abrir enlace">${ic("link")}</a>` : ""}</div>`;
     case "check": return `<label class="toggle"><span><b>${esc(f.label)}</b></span><input type="checkbox" id="${id}" name="${n}"${v ? " checked" : ""}></label>`;
+    case "photos": return photosField(f, v, id);
+    case "garments": return garmentsField(f, v);
     case "color": { const cs = ["#111111","#f4f4f2","#8a8f98","#2f4f8f","#7fb0e8","#2f6b4f","#c9a66b","#8b5a3c","#b23a48","#f2a7b8","#f2d16b","#6b4f9e"]; return `<div class="swatches">${cs.map((c, i) => `<input type="radio" name="${n}" id="${id}-${i}" value="${c}"${v === c ? " checked" : ""}><label class="sw" for="${id}-${i}" style="background:${c}"></label>`).join("")}<input type="radio" name="${n}" id="${id}-x" value=""${!v ? " checked" : ""}><label for="${id}-x" class="lnk" style="cursor:pointer">Ninguno</label></div>`; }
     default: return `<input type="text" id="${id}" name="${n}" value="${esc(v || "")}">`;
   }
@@ -1850,7 +1923,7 @@ function seedExamples(secs){
   const SAMPLES = {
     peliculas:[["Dune: Parte dos", {tipo:"Película", estado:"Vista", valoracion:5, plataforma:"Cine"}],["Severance", {tipo:"Serie", estado:"Viendo", plataforma:"Streaming", fecha:k(0)}]],
     armario:[["Vaqueros rectos", {categoria:"Abajo", color:"#2f4f8f", temporada:"Todo el año", estado:"En uso"}],["Jersey de punto", {categoria:"Arriba", color:"#c9a66b", estado:"En uso"}]],
-    outfits:[["Casual de oficina", {fecha:k(0), ocasion:"Trabajo", prendas:"Jersey de punto, vaqueros rectos, zapatillas blancas", valoracion:4}]],
+    outfits:[["Casual de oficina", {fecha:k(-1), ocasion:"Trabajo", valoracion:4, notas:"Jersey de punto, vaqueros rectos y zapatillas blancas"}]],
     entrenos:[["Pierna y glúteo", {fecha:k(0), hora:"19:00", tipo:"Fuerza", duracion:60, intensidad:"Alta", notas:"Sentadilla 4x8\nPeso muerto rumano 3x10"}],["Carrera suave", {fecha:k(2), hora:"08:00", tipo:"Cardio", duracion:35, intensidad:"Suave"}]],
     comidas:[["Bowl de salmón", {fecha:k(0), momento:"Comida", notas:"Arroz, salmón, aguacate, edamame"}]],
     musica:[["Midnight City", {artista:"M83", genero:"Electrónica", estado:"En bucle", valoracion:5, fecha:k(-3)}]],
@@ -1929,7 +2002,8 @@ const ACT = {
   },
   del(el){
     if (!armed(el, "Toca otra vez para borrar")) return;
-    const id = el.dataset.id;
+    const id = el.dataset.id, gone = S.items.get(id);
+    if (gone) for (const pid of photoIdsOf(gone)) IDB.del(pid).catch(() => {});
     for (const t of ofKind("task").filter(t => t.link === id)) putItem({...t, link:""}, true);
     delItem(id); closeLayer(); toast("Eliminado");
   },
@@ -1976,7 +2050,9 @@ const ACT = {
   "lock-now"(){ showLock(); },
   page(el){ const [t, h] = PAGES[el.dataset.page]; swapLayer(() => openLayer(`${sheetHead(t)}${h}`)); },
   async export(){
-    const data = JSON.stringify({app:"orbita", version:3, exportedAt:new Date().toISOString(), settings:S.settings, items:all()}, null, 2);
+    const images = {};
+    for (const it of all()) for (const pid of photoIdsOf(it)){ try { const b = await IDB.get(pid); if (b) images[pid] = await blobToDataURL(b); } catch {} }
+    const data = JSON.stringify({app:"orbita", version:4, exportedAt:new Date().toISOString(), settings:S.settings, items:all(), images});
     const name = `orbita-copia-${todayKey()}.json`;
     if (window.claude?.use){
       let dl = null; try { dl = await window.claude.use("downloads"); } catch {}
@@ -2052,6 +2128,7 @@ document.addEventListener("submit", e => {
       if (fl.type === "check") fields[fl.key] = !!v;
       else if (fl.type === "rating" || fl.type === "progress") fields[fl.key] = +v || 0;
       else if (fl.type === "number") fields[fl.key] = v === "" || v === null ? "" : +v;
+      else if (fl.type === "photos" || fl.type === "garments"){ try { fields[fl.key] = JSON.parse(v || "[]"); } catch { fields[fl.key] = []; } }
       else fields[fl.key] = (v || "").trim();
     }
     const title = (fd.get("title") || "").trim(); if (!title) return;
@@ -2100,6 +2177,7 @@ $("#importFile").addEventListener("change", async e => {
     if (!st.sections) st.sections = [];
     S.settings = st; putSettings(true);
     for (const it of o.items) if (it && it.id && it.kind) putItem(it, true);
+    for (const [pid, du] of Object.entries(o.images || {})){ try { const b = await (await fetch(du)).blob(); await IDB.put(pid, b); imgCache.delete(pid); } catch {} }
     if ($("#onb")){ onbDraft = null; $("#onb").remove(); }
     S.greet = null; lastRoute = null; flushBulk(); location.hash = "inicio"; render();
     toast("Copia importada", `${o.items.length} elementos recuperados.`);
@@ -2154,12 +2232,333 @@ setInterval(() => {
   if (todayKey() !== lastDay){ const prev = lastDay; lastDay = todayKey(); if (S.cal.sel === prev) S.cal = {y:n.getFullYear(), m:n.getMonth(), sel:lastDay}; S.greet = null; render(); }
 }, 5000);
 
+/* ================= images (IndexedDB) ================= */
+const IDB = (() => {
+  let dbp = null;
+  const open = () => dbp || (dbp = new Promise((res, rej) => {
+    const r = indexedDB.open("orbita-img", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("img");
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+  const run = async (mode, fn) => { const db = await open(); return new Promise((res, rej) => { const t = db.transaction("img", mode); const req = fn(t.objectStore("img")); t.oncomplete = () => res(req && req.result); t.onerror = () => rej(t.error); }); };
+  return {put:(id, blob) => run("readwrite", st => st.put(blob, id)), get:id => run("readonly", st => st.get(id)), del:id => run("readwrite", st => st.delete(id))};
+})();
+const imgCache = new Map();
+async function imgURL(id){
+  if (imgCache.has(id)) return imgCache.get(id);
+  const p = IDB.get(id).then(b => b ? URL.createObjectURL(b) : "").catch(() => "");
+  imgCache.set(id, p); return p;
+}
+function hydrateImgs(root=document){
+  $$("img[data-img]:not([data-ok])", root).forEach(async im => { im.dataset.ok = "1"; const u = await imgURL(im.dataset.img); if (u) im.src = u; else im.classList.add("missing"); });
+}
+new MutationObserver(() => { clearTimeout(hydrateImgs._t); hydrateImgs._t = setTimeout(() => hydrateImgs(), 16); }).observe(document.body, {childList:true, subtree:true});
+function compressImage(file, max=1000){
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement("canvas");
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      const x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); c.toBlob(b => b ? res(b) : rej(new Error("blob")), "image/jpeg", .84);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error("img")); };
+    img.src = url;
+  });
+}
+async function addImages(files){
+  const ids = [];
+  for (const f of files){
+    try { const b = await compressImage(f); const id = "img" + uid(); await IDB.put(id, b); ids.push(id); }
+    catch { toast("No se pudo guardar una foto", "Prueba con otra imagen (JPG o PNG)."); }
+  }
+  return ids;
+}
+const blobToDataURL = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.onerror = () => r(""); fr.readAsDataURL(b); });
+const photoIdsOf = it => { const s = it.kind === "entry" ? secById(it.sectionId) : null; if (!s) return []; return s.fields.filter(f => f.type === "photos").flatMap(f => Array.isArray(it.fields?.[f.key]) ? it.fields[f.key] : []); };
+
+/* ================= wardrobe helpers ================= */
+const armarioSec = () => sections().find(s => s.tpl === "armario");
+const outfitSec = () => sections().find(s => s.tpl === "outfits");
+const CATS = ["Arriba","Abajo","Vestido","Abrigo","Calzado","Accesorio"];
+function garmentInfo(e){
+  const s = secById(e.sectionId) || {fields:[]};
+  const catF = s.fields.find(f => f.type === "select" && (f.options || []).some(o => CATS.includes(o)));
+  const colF = s.fields.find(f => f.type === "color");
+  return {id:e.id, title:e.title || "", cat:(catF && e.fields?.[catF.key]) || "Arriba", color:(colF && e.fields?.[colF.key]) || "", photo:photoIdsOf(e)[0] || ""};
+}
+const garments = () => { const s = armarioSec(); return s ? entriesOf(s.id).map(garmentInfo) : []; };
+const gThumb = (g, cls="") => g.photo ? `<img class="g-img ${cls}" data-img="${g.photo}" alt="">` : `<span class="g-sw ${cls}" style="background:${esc(g.color || "#d9d9d5")}">${ic("shirt")}</span>`;
+
+/* ================= avatar ================= */
+const SKINS = ["#f6d7c3","#efc3a4","#e0a98a","#c98e6b","#a86f4c","#8a5536","#6b3f27","#4a2a1a"];
+const HAIRC = ["#1d1a18","#4a3121","#7a4b2a","#b07a45","#d9b26a","#e8dcc0","#9a9a9a","#c0392b"];
+const HAIRS = [["corto","Corto"],["largo","Largo"],["rizado","Rizado"],["mono","Moño"],["coleta","Coleta"],["rapado","Rapado"],["calvo","Sin pelo"]];
+const BODIES = [["s","Delgada"],["m","Media"],["l","Robusta"]];
+const BEARDS = [["no","Sin barba"],["corta","Corta"],["larga","Larga"]];
+const GLASSES = [["no","Sin gafas"],["redondas","Redondas"],["cuadradas","Cuadradas"]];
+const avatarCfg = () => ({skin:SKINS[1], body:"m", hair:"corto", hairColor:HAIRC[1], beard:"no", glasses:"no", ...(profile().avatar || {})});
+function shade(hex, k){
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || ""); if (!m) return hex;
+  const n = parseInt(m[1], 16), f = v => Math.max(0, Math.min(255, Math.round(v * k)));
+  return "#" + [f(n >> 16 & 255), f(n >> 8 & 255), f(n & 255)].map(v => v.toString(16).padStart(2, "0")).join("");
+}
+function avatarSVG(cfg, wear={}){
+  const c = {...avatarCfg(), ...cfg};
+  const bw = {s:.88, m:1, l:1.16}[c.body] || 1, sk = c.skin, skD = shade(sk, .86), hc = c.hairColor, hcD = shade(hc, .8);
+  const X = d => (100 + d * bw).toFixed(1);
+  const g = k => wear[k] ? garmentInfo(S.items.get(wear[k]) || {fields:{}}) : null;
+  const top = g("Arriba"), bot = g("Abajo"), dress = g("Vestido"), coat = g("Abrigo"), shoes = g("Calzado"), acc = g("Accesorio");
+  const kw = (gg, re) => gg && re.test(gg.title.toLowerCase());
+  const col = (gg, d) => (gg && gg.color) || d;
+  const armW = 13 * Math.sqrt(bw), legW = 19 * Math.sqrt(bw);
+  const arm = (side, toY, color, w) => { const sx = side < 0 ? X(-29) : X(29), ex = side < 0 ? X(-37) : X(37), hx = side < 0 ? X(-41) : X(41); return toY < 200 ? `<path d="M${sx} 122 L${ex} ${toY}" stroke="${color}" stroke-width="${w}" stroke-linecap="round" fill="none"/>` : `<path d="M${sx} 122 L${ex} 176 L${hx} 226" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`; };
+  const leg = (side, fromY, toY, color, w) => `<path d="M${X(side * 13)} ${fromY} L${X(side * 15)} ${Math.min(toY, 330)}${toY > 330 ? ` L${X(side * 16)} ${toY}` : ""}" stroke="${color}" stroke-width="${w}" stroke-linecap="round" fill="none"/>`;
+  const torso = (color, y2=230, extra=0) => `<path d="M${X(-29 - extra)} 116 Q100 ${108 - extra} ${X(29 + extra)} 116 L${X(25 + extra)} 200 L${X(27 + extra)} ${y2} L${X(-27 - extra)} ${y2} L${X(-25 - extra)} 200 Z" fill="${color}" stroke="${shade(color, .82)}" stroke-width="1.5" stroke-linejoin="round"/>`;
+  let o = `<ellipse cx="100" cy="414" rx="${48 * bw}" ry="7" fill="#000" opacity=".08"/>`;
+  // hair behind
+  if (c.hair === "largo") o += `<path d="M66 70 Q64 130 74 150 L126 150 Q136 130 134 70 Z" fill="${hc}"/>`;
+  if (c.hair === "coleta") o += `<path d="M126 66 Q150 90 138 140 Q130 120 124 96 Z" fill="${hc}"/>`;
+  // legs, arms skin
+  o += leg(-1, 226, 398, sk, legW) + leg(1, 226, 398, sk, legW);
+  o += arm(-1, 226, sk, armW) + arm(1, 226, sk, armW);
+  o += `<circle cx="${X(-41)}" cy="230" r="${7 * Math.sqrt(bw)}" fill="${sk}"/><circle cx="${X(41)}" cy="230" r="${7 * Math.sqrt(bw)}" fill="${sk}"/>`;
+  // neck
+  o += `<rect x="92" y="94" width="16" height="22" rx="6" fill="${skD}"/>`;
+  // bottoms
+  if (!dress){
+    if (bot && kw(bot, /falda/)) o += `<path d="M${X(-27)} 222 L${X(27)} 222 L${X(36)} 300 L${X(-36)} 300 Z" fill="${col(bot, "#3b4a6b")}" stroke="${shade(col(bot, "#3b4a6b"), .8)}" stroke-width="1.5"/>`;
+    else {
+      const short = !bot || kw(bot, /short|bermuda|corto/), bc = col(bot, bot ? "#3b4a6b" : "#d9d9d5"), to = short ? 286 : 396;
+      o += `<path d="M${X(-27)} 222 L${X(27)} 222 L${X(25)} 252 L${X(-25)} 252 Z" fill="${bc}"/>` + leg(-1, 228, to, bc, legW + 7) + leg(1, 228, to, bc, legW + 7);
+      if (!short) o += `<path d="M100 232 L100 252" stroke="${shade(bc, .75)}" stroke-width="1.5"/>`;
+    }
+  }
+  // shoes
+  const shc = shoes ? col(shoes, "#222") : sk;
+  o += `<ellipse cx="${X(-17)}" cy="404" rx="${shoes ? 14 : 9}" ry="${shoes ? 8 : 6}" fill="${shc}"/><ellipse cx="${X(17)}" cy="404" rx="${shoes ? 14 : 9}" ry="${shoes ? 8 : 6}" fill="${shc}"/>`;
+  if (shoes && /^#(f|e|d)/i.test(shc)) o += `<ellipse cx="${X(-17)}" cy="404" rx="14" ry="8" fill="none" stroke="#bbb" stroke-width="1.2"/><ellipse cx="${X(17)}" cy="404" rx="14" ry="8" fill="none" stroke="#bbb" stroke-width="1.2"/>`;
+  // top / dress
+  if (dress){
+    const dc = col(dress, "#b23a48");
+    o += torso(dc, 232) + `<path d="M${X(-27)} 226 L${X(27)} 226 L${X(40)} 318 L${X(-40)} 318 Z" fill="${dc}" stroke="${shade(dc, .82)}" stroke-width="1.5" stroke-linejoin="round"/>`;
+    o += arm(-1, 150, dc, armW + 5) + arm(1, 150, dc, armW + 5);
+  } else {
+    const tc = col(top, top ? "#f4f4f2" : "#ececea"), long = kw(top, /jersey|sudadera|manga larga|camisa|su[eé]ter|polar/);
+    o += torso(tc);
+    o += arm(-1, long ? 226 : 156, tc, armW + 5) + arm(1, long ? 226 : 156, tc, armW + 5);
+    if (top && (!tc || /^#f/i.test(tc))) o += `<path d="M92 114 Q100 124 108 114" stroke="${shade(tc, .8)}" stroke-width="1.5" fill="none"/>`;
+  }
+  if (coat){
+    const cc = col(coat, "#5b4636");
+    o += `<path d="M${X(-33)} 114 Q100 104 ${X(33)} 114 L${X(31)} 200 L${X(36)} 304 L102 304 L100 140 L98 304 L${X(-36)} 304 L${X(-31)} 200 Z" fill="${cc}" stroke="${shade(cc, .78)}" stroke-width="1.5" stroke-linejoin="round"/>`;
+    o += arm(-1, 226, cc, armW + 8) + arm(1, 226, cc, armW + 8);
+    o += `<path d="M92 112 L100 140 L108 112" stroke="${shade(cc, .7)}" stroke-width="2" fill="none"/>`;
+  }
+  // head
+  o += `<circle cx="72" cy="72" r="6" fill="${skD}"/><circle cx="128" cy="72" r="6" fill="${skD}"/><ellipse cx="100" cy="68" rx="29" ry="32" fill="${sk}"/>`;
+  if (c.beard === "corta") o += `<path d="M73 72 Q76 100 100 102 Q124 100 127 72 Q124 92 100 93 Q76 92 73 72 Z" fill="${hc}" opacity=".85"/>`;
+  if (c.beard === "larga") o += `<path d="M72 70 Q72 114 100 118 Q128 114 128 70 Q124 94 100 95 Q76 94 72 70 Z" fill="${hc}"/>`;
+  // face
+  o += `<ellipse cx="89" cy="70" rx="3.2" ry="3.8" fill="#1a1a1a"/><ellipse cx="111" cy="70" rx="3.2" ry="3.8" fill="#1a1a1a"/>`;
+  o += `<path d="M83 61 Q89 58 95 61 M105 61 Q111 58 117 61" stroke="${hcD}" stroke-width="2.4" stroke-linecap="round" fill="none"/>`;
+  o += `<path d="M91 84 Q100 ${c.beard === "larga" ? 89 : 91} 109 84" stroke="#7a3b2e" stroke-width="2.4" stroke-linecap="round" fill="none"/>`;
+  o += `<circle cx="84" cy="80" r="4" fill="#e8716b" opacity=".18"/><circle cx="116" cy="80" r="4" fill="#e8716b" opacity=".18"/>`;
+  if (c.glasses === "redondas") o += `<g stroke="#1a1a1a" stroke-width="2" fill="none"><circle cx="89" cy="70" r="8"/><circle cx="111" cy="70" r="8"/><path d="M97 70 L103 70"/></g>`;
+  if (c.glasses === "cuadradas") o += `<g stroke="#1a1a1a" stroke-width="2" fill="none"><rect x="80" y="63" width="17" height="13" rx="3"/><rect x="103" y="63" width="17" height="13" rx="3"/><path d="M97 69 L103 69"/></g>`;
+  // hair front
+  const hf = {
+    corto:`<path d="M70 66 Q70 34 100 34 Q130 34 130 66 Q124 50 108 48 Q96 56 78 52 Q72 58 70 66 Z" fill="${hc}"/>`,
+    largo:`<path d="M68 76 Q66 32 100 32 Q134 32 132 76 Q128 52 116 46 Q100 56 84 46 Q72 54 68 76 Z" fill="${hc}"/>`,
+    rizado:[[76,48],[86,38],[100,35],[114,38],[124,48],[71,60],[129,60]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="11" fill="${hc}"/>`).join(""),
+    mono:`<circle cx="100" cy="28" r="12" fill="${hc}"/><path d="M70 66 Q70 36 100 36 Q130 36 130 66 Q122 46 100 46 Q78 46 70 66 Z" fill="${hc}"/>`,
+    coleta:`<path d="M70 66 Q70 34 100 34 Q130 34 130 66 Q122 46 100 46 Q78 46 70 66 Z" fill="${hc}"/>`,
+    rapado:`<path d="M71 60 Q72 38 100 37 Q128 38 129 60 Q118 48 100 47 Q82 48 71 60 Z" fill="${hc}" opacity=".55"/>`,
+    calvo:""
+  }[c.hair] || "";
+  o += hf;
+  if (acc && kw(acc, /gorra|sombrero|gorro/)) { const ac = col(acc, "#222"); o += `<path d="M68 56 Q70 28 100 28 Q130 28 132 56 Z" fill="${ac}"/><path d="M100 54 L146 58 Q140 62 100 60 Z" fill="${shade(ac, .8)}"/>`; }
+  return `<svg class="av-svg" viewBox="0 0 200 430" role="img" aria-label="Tu avatar">${o}</svg>`;
+}
+function vAvatar(){
+  const c = avatarCfg();
+  const sw = (key, list) => `<div class="swatches">${list.map((v, i) => `<input type="radio" name="av-${key}" id="av-${key}-${i}" value="${v}"${c[key] === v ? " checked" : ""} data-av="${key}"><label class="sw" for="av-${key}-${i}" style="background:${v}"></label>`).join("")}</div>`;
+  const seg = (key, list) => `<div class="seg">${list.map(([v, l]) => `<input type="radio" name="av-${key}" id="av-${key}-${v}" value="${v}"${c[key] === v ? " checked" : ""} data-av="${key}"><label for="av-${key}-${v}">${l}</label>`).join("")}</div>`;
+  return `
+  <div class="av-wrap">
+    <div class="av-stage" id="av-stage">${avatarSVG(c)}</div>
+    <div class="stack av-ctrl">
+      <div class="field"><span class="lbl">Tono de piel</span>${sw("skin", SKINS)}</div>
+      <div class="field"><span class="lbl">Peinado</span>${seg("hair", HAIRS)}</div>
+      <div class="field"><span class="lbl">Color de pelo</span>${sw("hairColor", HAIRC)}</div>
+      <div class="field"><span class="lbl">Complexión</span>${seg("body", BODIES)}</div>
+      <div class="field"><span class="lbl">Barba</span>${seg("beard", BEARDS)}</div>
+      <div class="field"><span class="lbl">Gafas</span>${seg("glasses", GLASSES)}</div>
+      <div class="row"><a class="btn pri" href="#probador">${ic("shirt")}Ir al probador</a></div>
+    </div>
+  </div>`;
+}
+document.addEventListener("change", e => {
+  const k = e.target.dataset?.av; if (!k) return;
+  S.settings.profile = {...profile(), avatar:{...avatarCfg(), [k]:e.target.value}}; putSettings();
+  const st = $("#av-stage"); if (st) st.innerHTML = avatarSVG(avatarCfg());
+});
+
+/* ================= probador ================= */
+S.wear = lsGet("orbita.wear", {});
+function vProbador(){
+  const arm = armarioSec();
+  if (!arm) return `<div class="empty"><b>Primero necesitas un Armario.</b>Crea la sección Armario y añade tus prendas con sus fotos.<button class="btn sm" data-act="tpl-pick" data-tpl="armario" data-parent="">${ic("plus")}Crear Armario</button></div>`;
+  const gs = garments(), cat = S.wearCat || "Arriba";
+  for (const k of Object.keys(S.wear)) if (!S.items.has(S.wear[k])) delete S.wear[k];
+  const worn = Object.values(S.wear).map(id => gs.find(g => g.id === id)).filter(Boolean);
+  const list = gs.filter(g => g.cat === cat);
+  return `
+  <div class="probador">
+    <div class="pb-stage"><div class="av-stage">${avatarSVG({}, S.wear)}</div><a class="lnk" href="#avatar" style="justify-content:center">${ic("edit")}Editar avatar</a></div>
+    <div class="stack" style="min-width:0">
+      <div class="chips">${CATS.map(k => `<button class="chip${k === cat ? " on" : ""}" data-act="wear-cat" data-c="${k}">${k}${S.wear[k] ? " ·" : ""}<span class="n">${gs.filter(g => g.cat === k).length}</span></button>`).join("")}</div>
+      ${list.length ? `<div class="g-grid">${list.map(g => `<button class="g-card${S.wear[cat] === g.id ? " on" : ""}" data-act="wear" data-id="${g.id}" data-c="${cat}">${gThumb(g)}<span>${esc(g.title)}</span></button>`).join("")}</div>`
+        : `<div class="empty"><b>No tienes prendas de «${esc(cat)}».</b>Añádelas en tu Armario con su categoría.<button class="btn sm" data-act="add" data-kind="entry" data-sec="${arm.id}">${ic("plus")}Añadir prenda</button></div>`}
+      <div class="box stack" style="gap:12px">
+        <span class="lbl">Outfit actual</span>
+        ${worn.length ? `<div class="g-strip">${worn.map(g => `<span class="g-mini">${gThumb(g)}<b>${esc(g.title)}</b></span>`).join("")}</div>` : `<p class="muted small" style="margin:0">Toca prendas para probártelas.</p>`}
+        <div class="row"><input type="date" class="inp" id="pb-date" value="${todayKey()}" style="width:auto;flex:1;min-width:150px" aria-label="Día del outfit"><button class="btn pri" data-act="wear-save"${worn.length ? "" : " disabled"}>${ic("cal")}Guardar en el calendario</button></div>
+        ${worn.length ? `<button class="lnk" data-act="wear-clear" style="align-self:flex-start">Quitar todo</button>` : ""}
+      </div>
+    </div>
+  </div>`;
+}
+function ensureOutfitSec(){
+  let s = outfitSec();
+  if (!s){ s = makeSection("outfits"); S.settings.sections = [...sections(), s]; putSettings(true); }
+  return s;
+}
+
+/* ================= outfit calendar ================= */
+S.ocal = {y:new Date().getFullYear(), m:new Date().getMonth()};
+function outfitCalendar(s){
+  const {y, m} = S.ocal, first = new Date(y, m, 1), start = addDays(first, -((first.getDay() + 6) % 7)), tk = todayKey();
+  const dateF = s.fields.find(f => f.type === "date"), gF = s.fields.find(f => f.type === "garments"), pF = s.fields.find(f => f.type === "photos");
+  const byDay = {};
+  for (const e of entriesOf(s.id)){ const d = dateF && e.fields?.[dateF.key]; if (isDate(d)) (byDay[d] = byDay[d] || []).push(e); }
+  let cells = "";
+  for (let i = 0; i < 42; i++){
+    const d = addDays(start, i), k = ymd(d); if (i === 35 && d.getMonth() !== m) break;
+    const es = byDay[k] || [], e = es[0];
+    let th = "";
+    if (e){
+      const ph = pF && Array.isArray(e.fields?.[pF.key]) && e.fields[pF.key][0];
+      const gid = gF && Array.isArray(e.fields?.[gF.key]) && e.fields[gF.key].find(id => S.items.has(id));
+      const g = gid ? garmentInfo(S.items.get(gid)) : null;
+      th = ph ? `<img data-img="${ph}" alt="">` : g ? gThumb(g) : `<span class="g-sw" style="background:var(--paper-3)">${ic("layers")}</span>`;
+    }
+    cells += `<button class="oc-d${d.getMonth() !== m ? " out" : ""}${k === tk ? " today" : ""}${e ? " has" : ""}" ${e ? `data-act="open" data-id="${e.id}"` : `data-act="add" data-kind="entry" data-sec="${s.id}" data-date="${k}"`} aria-label="${esc(fmt(d, {day:"numeric", month:"long"}))}${e ? ": " + esc(e.title) : ""}"><span class="n">${d.getDate()}</span>${th}</button>`;
+  }
+  return `<section class="oc">
+    <div class="cal-h"><div class="m">${esc(fmt(first, {month:"long"}))} <span>${y}</span></div>
+      <button class="ibtn" data-act="oc-move" data-d="-1" aria-label="Mes anterior">${ic("left")}</button><button class="ibtn" data-act="oc-move" data-d="1" aria-label="Mes siguiente">${ic("right")}</button></div>
+    <div class="oc-grid">${["L","M","X","J","V","S","D"].map(w => `<div class="wk">${w}</div>`).join("")}${cells}</div>
+    <div class="row"><a class="btn" href="#probador">${ic("shirt")}Crear outfit en el probador</a></div>
+  </section>`;
+}
+
+/* ================= 3D viewer ================= */
+function openViewer(ids, title){
+  if (!ids || !ids.length) return;
+  const el = document.createElement("div"); el.className = "viewer";
+  el.innerHTML = `<div class="vw-top"><b>${esc(title || "")}</b><button class="ibtn" data-vw="close" aria-label="Cerrar">${ic("x")}</button></div>
+    <div class="vw-stage"><div class="vw-card">${ids.map((id, i) => `<img data-img="${id}" alt="" class="${i ? "" : "on"}" draggable="false">`).join("")}<i class="vw-sheen"></i></div><div class="vw-shadow"></div></div>
+    <p class="vw-hint">${ids.length > 1 ? "Arrastra a los lados para girar la prenda" : "Mueve el dedo o el dispositivo para verla en relieve · doble toque para acercar"}</p>
+    ${ids.length > 1 ? `<div class="vw-dots">${ids.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>` : ""}`;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("open"));
+  const card = $(".vw-card", el), imgs = $$("img", card), dots = $$(".vw-dots i", el), shadow = $(".vw-shadow", el), sheen = $(".vw-sheen", el);
+  let idx = 0, zoom = 1, x0 = null, idx0 = 0, rx = 0, ry = 0, lastTap = 0;
+  const show = i => { idx = (i % imgs.length + imgs.length) % imgs.length; imgs.forEach((im, k) => im.classList.toggle("on", k === idx)); dots.forEach((d, k) => d.classList.toggle("on", k === idx)); };
+  const paint = () => { card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) scale(${zoom})`; shadow.style.transform = `translateX(${-ry * 1.4}px) scaleX(${1 - Math.abs(ry) / 90})`; sheen.style.background = `linear-gradient(${105 + ry * 2}deg, transparent 30%, rgba(255,255,255,${.14 + Math.abs(ry) / 120}) 50%, transparent 70%)`; };
+  const tiltTo = (nx, ny) => { rx = -ny * 22; ry = nx * 30; paint(); };
+  card.addEventListener("pointerdown", e => { x0 = e.clientX; idx0 = idx; card.setPointerCapture(e.pointerId); card.style.transition = "none"; const now = Date.now(); if (now - lastTap < 300){ zoom = zoom > 1 ? 1 : 1.9; card.style.transition = ""; paint(); } lastTap = now; });
+  card.addEventListener("pointermove", e => {
+    const b = el.getBoundingClientRect();
+    if (x0 !== null && imgs.length > 1){ const dx = e.clientX - x0; show(idx0 - Math.round(dx / 55)); ry = Math.max(-28, Math.min(28, (dx % 55) * .5)); rx = 0; paint(); }
+    else if (x0 !== null || e.pointerType === "mouse") tiltTo((e.clientX - b.width / 2) / (b.width / 2), (e.clientY - b.height / 2) / (b.height / 2));
+  });
+  const up = () => { x0 = null; card.style.transition = ""; if (imgs.length > 1){ ry = 0; rx = 0; paint(); } };
+  card.addEventListener("pointerup", up); card.addEventListener("pointercancel", up);
+  el.addEventListener("wheel", e => { e.preventDefault(); zoom = Math.max(1, Math.min(3, zoom - e.deltaY / 400)); paint(); }, {passive:false});
+  const ori = e => { if (e.gamma == null || x0 !== null) return; tiltTo(Math.max(-1, Math.min(1, e.gamma / 35)), Math.max(-1, Math.min(1, (e.beta - 45) / 40))); };
+  addEventListener("deviceorientation", ori);
+  let auto = imgs.length > 1 && !reduce.matches ? setInterval(() => { if (x0 === null) show(idx + 1); }, 900) : null;
+  card.addEventListener("pointerdown", () => { clearInterval(auto); auto = null; }, {once:true});
+  const close = () => { clearInterval(auto); removeEventListener("deviceorientation", ori); el.classList.remove("open"); setTimeout(() => el.remove(), 300); document.removeEventListener("keydown", esck); };
+  const esck = e => { if (e.key === "Escape") close(); };
+  document.addEventListener("keydown", esck);
+  el.addEventListener("click", e => { if (e.target.closest("[data-vw=close]")) close(); });
+  paint();
+}
+
+/* ================= field widgets ================= */
+function photosField(f, v, id){
+  const ids = Array.isArray(v) ? v : [];
+  return `<div class="ph-field" data-phf="f_${f.key}"><input type="hidden" name="f_${f.key}" value="${esc(JSON.stringify(ids))}">
+    <div class="ph-list">${ids.map(pid => `<span class="ph"><img data-img="${pid}" alt="" data-act="ph-view" data-id="${pid}"><button type="button" class="x" data-act="ph-del" data-id="${pid}" aria-label="Quitar foto">${ic("x")}</button></span>`).join("")}
+      <label class="ph-add" for="${id}">${ic("cam")}<span>${ids.length ? "Más fotos" : "Añadir fotos"}</span></label><input type="file" id="${id}" accept="image/*" multiple hidden data-ph-in></div>
+    ${ids.length ? `<button type="button" class="lnk" data-act="ph-3d">${ic("spark")}Ver en 3D</button>` : `<span class="muted small">Haz varias fotos (delante, detrás, lado) para poder girar la prenda en 3D.</span>`}</div>`;
+}
+function garmentsField(f, v){
+  const sel = Array.isArray(v) ? v : [], gs = garments();
+  if (!gs.length) return `<div class="note-box">Aún no hay prendas en tu Armario. Añádelas allí y podrás elegirlas aquí.</div>`;
+  return `<div class="gf" data-gf="f_${f.key}"><input type="hidden" name="f_${f.key}" value="${esc(JSON.stringify(sel))}">
+    <div class="g-grid sm">${gs.map(g => `<button type="button" class="g-card${sel.includes(g.id) ? " on" : ""}" data-act="gf-tog" data-id="${g.id}">${gThumb(g)}<span>${esc(g.title)}</span></button>`).join("")}</div></div>`;
+}
+document.addEventListener("change", async e => {
+  const inp = e.target; if (!inp.matches || !inp.matches("[data-ph-in]")) return;
+  const box = inp.closest(".ph-field"), hid = $("input[type=hidden]", box), files = [...inp.files]; inp.value = "";
+  if (!files.length) return;
+  const lab = $(".ph-add span", box); if (lab) lab.textContent = "Guardando…";
+  const ids = [...JSON.parse(hid.value || "[]"), ...await addImages(files)];
+  hid.value = JSON.stringify(ids);
+  const fkey = box.dataset.phf.slice(2), form = box.closest("form"), s = secById(form?.dataset.sec), f = s?.fields.find(x => x.key === fkey);
+  box.outerHTML = photosField(f || {key:fkey}, ids, inp.id);
+});
+Object.assign(ACT, {
+  "ph-del"(el){ const box = el.closest(".ph-field"), hid = $("input[type=hidden]", box); const ids = JSON.parse(hid.value || "[]").filter(x => x !== el.dataset.id); hid.value = JSON.stringify(ids); el.closest(".ph").remove(); },
+  "ph-view"(el){ const box = el.closest(".ph-field"), ids = JSON.parse($("input[type=hidden]", box).value || "[]"); const i = ids.indexOf(el.dataset.id); openViewer([...ids.slice(i), ...ids.slice(0, i)], $("#en-title")?.value); },
+  "ph-3d"(el){ const box = el.closest(".ph-field"); openViewer(JSON.parse($("input[type=hidden]", box).value || "[]"), $("#en-title")?.value); },
+  "gf-tog"(el){ const box = el.closest(".gf"), hid = $("input[type=hidden]", box); let ids = JSON.parse(hid.value || "[]"); ids = ids.includes(el.dataset.id) ? ids.filter(x => x !== el.dataset.id) : [...ids, el.dataset.id]; hid.value = JSON.stringify(ids); el.classList.toggle("on"); buzz(); },
+  "view-3d"(el){ const it = S.items.get(el.dataset.id); if (it) openViewer(photoIdsOf(it), it.title); },
+  "wear-cat"(el){ S.wearCat = el.dataset.c; render(); },
+  wear(el){ const c = el.dataset.c; S.wear[c] = S.wear[c] === el.dataset.id ? undefined : el.dataset.id; if (!S.wear[c]) delete S.wear[c]; if (c === "Vestido" && S.wear.Vestido){ delete S.wear.Arriba; delete S.wear.Abajo; } if ((c === "Arriba" || c === "Abajo") && S.wear[c]) delete S.wear.Vestido; lsSet("orbita.wear", S.wear); buzz(); render(); },
+  "wear-clear"(){ S.wear = {}; lsSet("orbita.wear", S.wear); render(); },
+  "wear-save"(){
+    const ids = Object.values(S.wear).filter(id => S.items.has(id)); if (!ids.length) return;
+    const s = ensureOutfitSec(), d = $("#pb-date")?.value || todayKey();
+    const dateF = s.fields.find(f => f.type === "date"), gF = s.fields.find(f => f.type === "garments");
+    const names = ids.map(id => S.items.get(id).title);
+    const fields = {}; if (dateF) fields[dateF.key] = d; if (gF) fields[gF.key] = ids;
+    const txt = s.fields.find(f => f.type === "longtext" && /prenda/i.test(f.label)); if (txt) fields[txt.key] = names.join(", ");
+    putItem({id:uid(), kind:"entry", sectionId:s.id, title:"Outfit " + relDay(d).toLowerCase(), fields});
+    toast("Outfit guardado", `En tu calendario de outfits, ${relDay(d).toLowerCase()}.`);
+  },
+  "oc-move"(el){ let {y, m} = S.ocal; m += +el.dataset.d; if (m < 0){ m = 11; y--; } if (m > 11){ m = 0; y++; } S.ocal = {y, m}; render(); }
+});
+
 /* ================= boot ================= */
 (async function boot(){
   const t0 = Date.now();
   await initStore();
   if (S.settings && !S.settings.profile) S.settings.profile = {name:S.settings.name || ""};
   if (S.settings && !S.settings.sections) S.settings.sections = [];
+  if (S.settings){
+    let ch = false;
+    S.settings.sections = S.settings.sections.map(x => {
+      if (x.tpl === "armario" && !x.fields.some(f => f.type === "photos")){ ch = true; return {...x, fields:[{key:"fotos", label:"Fotos", type:"photos"}, ...x.fields]}; }
+      if (x.tpl === "outfits" && !x.fields.some(f => f.type === "garments")){ ch = true; const fields = [...x.fields]; fields.splice(1, 0, {key:"prendas_ids", label:"Prendas del armario", type:"garments"}, {key:"fotos", label:"Foto del outfit", type:"photos"}); return {...x, name:x.name === "Outfits" ? "Calendario de outfits" : x.name, fields}; }
+      return x;
+    });
+    if (ch) putSettings(true);
+  }
   if (S.settings && S.settings.sections.some(x => x.tpl === "entrenos" && /^(Entrenamiento|Entrenos)$/.test(x.name))){
     S.settings.sections = S.settings.sections.map(x => x.tpl === "entrenos" && /^(Entrenamiento|Entrenos)$/.test(x.name) ? {...x, name:"Entrenamientos"} : x); putSettings(true);
   }
