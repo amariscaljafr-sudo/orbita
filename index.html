@@ -291,6 +291,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 .it .mt{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--mute);margin-top:2px}
 .it > svg{color:var(--mute)}
 .addline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.addline input[type=number]{flex:1;min-width:140px}
 .addline input[type=text]{flex:1;min-width:180px;min-height:50px;padding:12px 15px;border-radius:14px;background:var(--paper-2);border:1.5px solid transparent;outline:none;font-size:16px}
 .addline input[type=text]:focus{border-color:var(--ink);background:var(--paper)}
 
@@ -534,6 +535,265 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .av-svg{height:min(58vh,500px);width:auto;max-width:100%;filter:drop-shadow(0 10px 18px rgba(13,13,13,.12));animation:avIn .5s var(--spring)}
 @keyframes avIn{from{transform:translateY(8px) scale(.98);opacity:.4}}
 .pb-stage{display:flex;flex-direction:column;gap:10px;min-width:0}
+.khead{display:flex;align-items:flex-start;gap:12px}
+.khead p{margin:0;flex:1;font-size:14.5px;max-width:56ch}
+.khead .ibtn,.cl-top .ibtn{flex:none;background:var(--paper-2)}
+.kd-l{font-weight:700;color:var(--mute)}
+.ktabs{display:flex;gap:4px;padding:4px;border-radius:16px;background:var(--paper-2);overflow-x:auto;scrollbar-width:none}
+.ktabs::-webkit-scrollbar{display:none}
+.ktab{flex:1 0 auto;min-height:40px;padding:0 10px;border-radius:12px;font-weight:800;font-size:13.5px;color:var(--ink-2);display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;transition:background .2s var(--ease),color .2s}
+.ktab .n{font-size:12px;color:var(--mute);font-weight:700}
+.ktab.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(13,13,13,.08),0 4px 12px -6px rgba(13,13,13,.18)}
+.ktab:active{transform:scale(.97)}
+.kstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kstats div{padding:12px 14px;border-radius:16px;background:var(--ink);color:var(--paper);display:flex;flex-direction:column;gap:2px;min-width:0}
+.kstats div:first-child{background:var(--red)}
+.kstats b{font-size:clamp(22px,6vw,28px);font-weight:900;letter-spacing:-.03em;line-height:1}
+.kstats span{font-size:12px;font-weight:600;opacity:.8;line-height:1.2}
+.plus-sm{flex:none;width:30px;height:30px;border-radius:50%;background:var(--paper-2);display:grid;place-items:center;color:var(--ink);transition:transform .2s var(--spring),background .2s}
+.plus-sm svg{width:16px;height:16px}
+.plus-sm:active{transform:scale(.88)}
+.plus-sm:hover{background:var(--paper-3)}
+.wkl{display:flex;flex-direction:column;gap:6px}
+.wkd{display:flex;align-items:center;gap:12px;padding:10px 10px 10px 12px;border-radius:16px;background:var(--paper-2)}
+.wkd.today{background:var(--paper);box-shadow:inset 0 0 0 2px var(--ink)}
+.wd{flex:none;width:34px;display:flex;flex-direction:column;align-items:center;line-height:1}
+.wd b{font-size:15px;font-weight:900}
+.wd span{font-size:12px;color:var(--mute);font-weight:700;margin-top:3px}
+.wkd.today .wd b{color:var(--red)}
+.wki{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.wki.col{flex-direction:column;align-items:stretch}
+.kchip{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border-radius:999px;background:var(--paper);font-size:13px;max-width:100%;box-shadow:0 0 0 1px var(--line)}
+.kchip b{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kchip span{color:var(--mute);font-weight:700;white-space:nowrap}
+.kchip svg{width:15px;height:15px;color:var(--red)}
+.kchip.alt{background:var(--ink);color:var(--paper);box-shadow:none}
+.kdone{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:800;color:#2f6b4f}
+.kdone svg{width:14px;height:14px}
+.kcards,.lcards{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.kcard{border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--paper)}
+.kc-h{display:flex;align-items:baseline;gap:10px;text-align:left}
+.kc-h b{font-size:19px;font-weight:900;letter-spacing:-.02em}
+.kc-h span{color:var(--mute);font-weight:700;font-size:13px;flex:1}
+.kc-h svg{width:16px;height:16px;color:var(--mute)}
+.ex-t{width:100%;border-collapse:collapse;font-size:13.5px}
+.ex-t th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:800;padding:0 6px 6px 0}
+.ex-t td{padding:7px 6px 7px 0;border-top:1px solid var(--line);font-weight:600}
+.ex-t td:first-child{font-weight:800}
+.ex-t th:not(:first-child),.ex-t td:not(:first-child){text-align:center;width:52px}
+.days-tag{display:inline-flex;gap:3px}
+.days-tag i{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;background:var(--paper-2);color:var(--mute)}
+.days-tag i.on{background:var(--ink);color:var(--paper)}
+.days-in{display:flex;gap:6px}
+.days-in input{position:absolute;opacity:0;pointer-events:none}
+.days-in label{flex:1;max-width:48px;aspect-ratio:1/1;border-radius:12px;background:var(--paper-2);display:grid;place-items:center;font-weight:800;cursor:pointer;transition:all .2s var(--ease)}
+.days-in input:checked + label{background:var(--ink);color:var(--paper)}
+.days-in input:focus-visible + label{outline:2px solid var(--red);outline-offset:2px}
+.rows-f{display:flex;flex-direction:column;gap:6px}
+.rf-r{display:grid;gap:6px;align-items:center;grid-template-columns:minmax(0,2.4fr) repeat(3,minmax(0,1fr)) auto}
+.rows-f.c2 .rf-r{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) auto}
+.rf-r .inp{min-height:42px;padding:0 10px;font-size:14px;width:100%}
+.rf-r .ibtn{width:34px;height:34px}
+.rows-f .lnk{align-self:flex-start}
+.klist{display:flex;flex-direction:column;gap:6px}
+.krow{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--paper-2);text-align:left;width:100%;min-width:0}
+.krow[style*="--c"]{box-shadow:inset 4px 0 0 var(--c)}
+.kr-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;text-align:left}
+.kr-t b{font-weight:800;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kr-t span{font-size:12.5px;color:var(--mute);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mm{display:flex;flex-direction:column;gap:8px}
+.mm-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center}
+.mm-g .wk{font-size:11px;font-weight:800;color:var(--mute);padding:2px 0}
+.mm-d{position:relative;height:40px;border-radius:11px;font-weight:700;font-size:14px;display:grid;place-items:center;transition:background .15s}
+.mm-d.out{opacity:.3}
+.mm-d.today{color:var(--red);font-weight:900}
+.mm-d.sel{background:var(--ink);color:var(--paper)}
+.mm-d i{position:absolute;bottom:5px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--ink)}
+.mm-d i.r{background:var(--red)}
+.mm-d.sel i{background:var(--paper)}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+@media (max-width:420px){.mgrid{grid-template-columns:1fr 1fr}}
+.mcard{display:flex;flex-direction:column;gap:8px;min-width:0}
+.mposter{position:relative;aspect-ratio:2/3;border-radius:16px;overflow:hidden;background:var(--paper-3);box-shadow:0 10px 24px -14px rgba(13,13,13,.5);transition:transform .25s var(--spring)}
+.mposter:active{transform:scale(.97)}
+.mposter img,.mp-t{width:100%;height:100%;object-fit:cover;display:grid;place-items:center}
+.mp-t{background:linear-gradient(160deg,hsl(var(--h) 45% 32%),hsl(calc(var(--h) + 40) 50% 14%));color:rgba(255,255,255,.9);font-weight:900;font-size:34px;letter-spacing:-.04em}
+.mtype{position:absolute;left:8px;top:8px;font-style:normal;font-size:11px;font-weight:800;background:rgba(255,255,255,.92);color:var(--ink);padding:3px 8px;border-radius:999px}
+.mbody{display:flex;flex-direction:column;gap:5px;min-width:0;align-items:flex-start}
+.mt{font-weight:800;font-size:14.5px;line-height:1.2;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ms{font-size:12px;color:var(--mute);font-weight:600;min-height:1em}
+.chip.sm{min-height:32px;padding:0 12px;font-size:12.5px}
+.chip svg{width:14px;height:14px}
+.chips.wrap{flex-wrap:wrap;overflow:visible}
+.mrate{display:inline-flex;gap:2px}
+.mrate button{width:26px;height:26px;display:grid;place-items:center;color:var(--line-2);transition:transform .2s var(--spring),color .15s}
+.mrate button svg{width:20px;height:20px;fill:currentColor}
+.mrate button.on{color:var(--red)}
+.mrate button:active{transform:scale(1.25)}
+.mrate.big button{width:52px;height:52px}
+.mrate.big button svg{width:40px;height:40px}
+.mrate.big:hover button{color:var(--red)}
+.mrate.big button:hover ~ button{color:var(--line-2)}
+.tops{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
+.top5{display:flex;flex-direction:column;gap:10px}
+.top5 ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.tslot{display:flex;align-items:center;gap:10px;padding:8px 10px 8px 8px;border-radius:16px;background:var(--paper-2)}
+.tslot.vac{background:transparent;box-shadow:inset 0 0 0 2px var(--line)}
+.tn{flex:none;width:34px;text-align:center;font-weight:900;font-size:26px;letter-spacing:-.04em;color:var(--red);font-stretch:115%}
+.tp{flex:none;width:40px;aspect-ratio:2/3;border-radius:8px;overflow:hidden;background:var(--paper-3)}
+.tp.sm{width:34px}
+.tp img,.tp .mp-t{width:100%;height:100%;object-fit:cover;font-size:13px}
+.tslot .tt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.tslot .tt b{font-weight:800;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tslot .ibtn{width:32px;height:32px}
+.tslot .ibtn.up svg{transform:rotate(90deg)}
+.tpick{flex:1;display:flex;align-items:center;gap:6px;min-height:40px;font-weight:800;color:var(--mute)}
+.tpick svg{width:16px;height:16px}
+.dnav-r{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dnav-r b{font-size:17px;font-weight:900}
+.dnav-r .ibtn{background:var(--paper-2)}
+.nut{display:flex;gap:18px;align-items:center;padding:16px;border-radius:var(--r-lg);background:var(--ink);color:var(--paper)}
+.ring{position:relative;flex:none;width:118px;height:118px}
+.ring svg{width:100%;height:100%}
+.ring circle{fill:none;stroke-width:9}
+.ring .bg{stroke:rgba(255,255,255,.14)}
+.ring .fg{stroke:var(--paper);stroke-linecap:round;transition:stroke-dasharray .6s var(--ease)}
+.ring .fg.over{stroke:var(--red)}
+.ring span{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:700;opacity:.9;text-align:center;line-height:1.2}
+.ring b{font-size:26px;font-weight:900;letter-spacing:-.03em}
+.nbars{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.nb{display:grid;grid-template-columns:1fr auto;gap:3px 8px;font-size:12.5px}
+.nl{font-weight:700;opacity:.85}
+.nv{font-weight:800;text-align:right}
+.nv small{opacity:.6;font-weight:600}
+.nb .bar{grid-column:1/-1;height:6px;background:rgba(255,255,255,.14)}
+.nb .bar i{background:var(--paper)}
+.nb.over .bar i{background:var(--red)}
+.nb.over .nv{color:#ff8a8f}
+.tips{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.tips li{position:relative;padding:10px 12px 10px 30px;border-radius:14px;background:var(--paper-2);font-size:13.5px;font-weight:600;color:var(--ink-2)}
+.tips li::before{content:"";position:absolute;left:13px;top:16px;width:7px;height:7px;border-radius:50%;background:var(--red)}
+.lnkbox{text-align:left;width:100%}
+.meals{display:flex;flex-direction:column;gap:6px}
+.meal{display:flex;align-items:center;gap:10px;padding:10px 10px 10px 14px;border-radius:16px;background:var(--paper-2)}
+.meal .mlab{flex:none;width:76px;font-weight:900;font-size:13.5px}
+.meal .mp{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px}
+.plan{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
+.pday{padding:12px;border-radius:18px;background:var(--paper-2);display:flex;flex-direction:column;gap:8px}
+.pday.today{background:var(--paper);box-shadow:inset 0 0 0 2px var(--ink)}
+.pdh{display:flex;align-items:baseline;gap:8px}
+.pdh b{font-weight:900}
+.pdh span{font-size:12.5px;color:var(--mute);font-weight:700}
+.pdh .pk{color:var(--ink);background:var(--paper);padding:2px 8px;border-radius:999px}
+.pday.today .pdh .pk{background:var(--paper-2)}
+.pdh .pk.over{color:var(--red)}
+.pslots{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pslot{min-height:58px;border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;text-align:left;box-shadow:inset 0 0 0 1.5px var(--line-2);color:var(--mute)}
+.pslot small{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.pslot svg{width:16px;height:16px}
+.pslot b{font-size:13px;font-weight:800;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.2}
+.pslot.on{background:var(--paper);box-shadow:0 1px 2px rgba(13,13,13,.06)}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.goalg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.goalg div{padding:10px;border-radius:14px;background:var(--paper-2);display:flex;flex-direction:column}
+.goalg b{font-size:22px;font-weight:900;letter-spacing:-.03em}
+.goalg span{font-size:11.5px;color:var(--mute);font-weight:700}
+.spark{width:100%;height:48px}
+.spark polyline{fill:none;stroke:var(--red);stroke-width:2.2;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+.lcard{border-radius:var(--r-lg);padding:16px;background:var(--paper-2);display:flex;flex-direction:column;gap:12px}
+.lcard.done{background:var(--ink);color:var(--paper)}
+.lc-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;text-align:left}
+.lc-h b{font-size:20px;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+.lvl{flex:none;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--red)}
+.lbar{height:12px;border-radius:999px;background:var(--paper-3);overflow:hidden}
+.lcard.done .lbar{background:rgba(255,255,255,.18)}
+.lbar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--ink),#3a3a3a);transition:width .6s var(--spring)}
+.lcard.done .lbar i{background:var(--red)}
+.lc-f{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lc-f > b{font-size:18px;font-weight:900}
+.lc-f .muted{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sec-t .lnk{white-space:nowrap;flex:none}
+.lc-f .chip{background:var(--paper)}
+.kalert{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:var(--red);color:#fff;font-size:14px;cursor:pointer}
+.kalert svg{width:18px;height:18px;flex:none}
+.kalert b{font-weight:900}
+.cls{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;background:var(--paper);box-shadow:inset 4px 0 0 var(--c);text-align:left;font-size:13.5px;min-width:0}
+.cls .ct{flex:none;font-weight:800;color:var(--mute);font-variant-numeric:tabular-nums;font-size:12.5px}
+.cls b{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cls span:last-child:not(.ct){margin-left:auto;color:var(--mute);font-size:12px;font-weight:700;white-space:nowrap}
+.evrow{display:flex;align-items:center;gap:12px;padding:10px 14px 10px 12px;border-radius:16px;background:var(--paper-2);box-shadow:inset 4px 0 0 var(--c)}
+.evrow.done .kr-t b{text-decoration:line-through;color:var(--mute)}
+.evrow .ck{flex:none}
+.cdown{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.cd{display:flex;align-items:center;gap:14px;padding:14px;border-radius:18px;background:var(--paper-2);text-align:left;box-shadow:inset 5px 0 0 var(--c);min-width:0}
+.cdn{flex:none;width:62px;height:62px;border-radius:16px;background:var(--ink);color:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:700;line-height:1}
+.cdn b{font-size:24px;font-weight:900;letter-spacing:-.03em}
+.grade{font-size:22px;font-weight:900;letter-spacing:-.02em}
+.grade.low{color:var(--red)}
+.mats{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr))}
+.mat{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px 16px 16px 20px;border-radius:var(--r-lg);background:var(--paper-2);text-align:left;min-height:120px}
+.mat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c)}
+.mat > b{font-size:19px;font-weight:900;letter-spacing:-.02em}
+.mat > span{font-size:13px;color:var(--mute);font-weight:600}
+.mat-m{display:flex;flex-wrap:wrap;gap:6px}
+.mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
+.mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
+.subs .tiles.sm{margin-top:2px}
+.sec-t h2.sub-h{font-size:19px;font-stretch:112%}
+.sec-t .btn{flex:none}
+/* armario 3D */
+.closet{display:flex;flex-direction:column;gap:10px;overflow-x:clip}
+.cl-top{display:flex;align-items:center;gap:10px}
+.cl-top b{font-size:18px;font-weight:900;letter-spacing:-.02em}
+.cl-top span{flex:1;color:var(--mute);font-weight:700;font-size:13px}
+.cl-body{position:relative;perspective:1400px;border-radius:24px;padding:10px;background:linear-gradient(180deg,#fdfdfc,#efeeeb);box-shadow:0 1px 0 #fff inset,0 0 0 1px var(--line),0 30px 50px -30px rgba(13,13,13,.45)}
+.cl-in{position:relative;border-radius:16px;overflow:hidden;background:radial-gradient(120% 70% at 50% -10%,#4a4a48 0%,#1e1e1d 55%,#111 100%);padding:12px 0 0;min-height:340px;display:flex;flex-direction:column;box-shadow:inset 0 10px 30px rgba(0,0,0,.6)}
+.cl-in::before{content:"";position:absolute;left:12%;right:12%;top:0;height:6px;border-radius:0 0 8px 8px;background:linear-gradient(90deg,transparent,rgba(255,244,214,.9),transparent);filter:blur(1px)}
+.cl-cats{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:6px 12px 4px}
+.cl-cats::-webkit-scrollbar{display:none}
+.cl-cat{flex:none;min-height:34px;padding:0 13px;border-radius:999px;font-size:13px;font-weight:800;color:rgba(255,255,255,.72);background:rgba(255,255,255,.08);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:background .2s,color .2s}
+.cl-cat span{font-size:11.5px;opacity:.6}
+.cl-cat.on{background:#fff;color:var(--ink)}
+.cl-stage{position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-start;padding-top:18px}
+.cl-bar{position:absolute;left:4%;right:4%;top:30px;height:8px;border-radius:999px;background:linear-gradient(180deg,#f2f2f0,#9b9b97 55%,#5b5b58);box-shadow:0 3px 6px rgba(0,0,0,.5);z-index:1}
+.cl-rail{position:relative;z-index:2;display:flex;align-items:flex-start;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 calc(50% - 64px) 14px;perspective:900px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.cl-rail::-webkit-scrollbar{display:none}
+.hg{flex:none;width:128px;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;color:#d6d6d2;transform-style:preserve-3d;transition:transform .12s linear,opacity .12s linear;transform-origin:50% 12px;-webkit-tap-highlight-color:transparent}
+.hg .hook{width:86px;height:38px;margin-top:2px;flex:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+.hg .ga{width:118px;height:168px;margin-top:-6px;object-fit:contain;object-position:top center;filter:drop-shadow(0 14px 14px rgba(0,0,0,.55));transform-origin:50% 0;pointer-events:none}
+.hg .ga.sv{display:grid;place-items:start center}
+.hg .ga.sv svg{width:100%;height:100%}
+.hg .hn{margin-top:8px;max-width:120px;font-size:11.5px;font-weight:700;color:rgba(255,255,255,.75);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hg.on .ga{animation:sway 1.4s var(--ease)}
+.hg.on .hn{color:#fff}
+.hg.on::after{content:"";width:22px;height:3px;border-radius:2px;background:var(--red);margin-top:6px}
+.hg.worn .hn::before{content:"● ";color:var(--red)}
+@keyframes sway{0%{transform:rotate(0)}20%{transform:rotate(5deg)}45%{transform:rotate(-3.5deg)}70%{transform:rotate(1.5deg)}100%{transform:rotate(0)}}
+.cl-stage.shelf{justify-content:flex-end;padding-top:30px}
+.cl-rail.shelf,.cl-stage.shelf .cl-rail{align-items:flex-end;padding-bottom:0}
+.hg.shelf .ga{height:120px;margin-top:0;object-position:bottom center}
+.hg.shelf .hn{margin:8px 0 22px}
+.cl-shelf{position:relative;height:16px;margin:-34px 3% 18px;border-radius:3px;background:linear-gradient(180deg,#f7f5f0,#cfcac0);box-shadow:0 10px 16px rgba(0,0,0,.55);z-index:1}
+.cl-empty{width:100%;flex:none;padding:56px 20px 50px;text-align:center;color:rgba(255,255,255,.7);font-weight:700;font-size:14px;line-height:1.5;scroll-snap-align:center}
+.cl-door{position:absolute;top:0;bottom:0;width:50%;background:linear-gradient(90deg,#fbfbfa,#eeedea);box-shadow:inset 0 0 0 1px var(--line);backface-visibility:hidden;z-index:5;pointer-events:none}
+.cl-door i{position:absolute;top:50%;width:5px;height:60px;margin-top:-30px;border-radius:3px;background:var(--red)}
+.cl-door.l{left:0;border-radius:24px 0 0 24px;transform-origin:0 50%}
+.cl-door.r{right:0;border-radius:0 24px 24px 0;transform-origin:100% 50%}
+.cl-door.l i{right:14px}
+.cl-door.r i{left:14px}
+.closet.open .cl-door{display:none}
+.closet.opening .cl-door.l{animation:doorL 1.6s .2s var(--ease) forwards}
+.closet.opening .cl-door.r{animation:doorR 1.6s .2s var(--ease) forwards}
+@keyframes doorL{to{transform:rotateY(-108deg)}}
+@keyframes doorR{to{transform:rotateY(108deg)}}
+.cl-sel{display:flex;gap:14px;align-items:center;padding:12px;border-radius:var(--r-lg);background:var(--paper);border:1px solid var(--line);animation:avIn .35s var(--spring)}
+.cs-img{flex:none;width:92px;height:110px;border-radius:14px;background:var(--paper-2);display:grid;place-items:center;overflow:hidden}
+.cs-img .ga{width:84px;height:100px;object-fit:contain}
+.cs-img .ga.sv svg{width:84px;height:100px}
+.cs-t{font-size:18px;font-weight:900;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row-it .g-strip.sm{margin:4px 0 2px}
+@media (prefers-reduced-motion:reduce){.closet.opening .cl-door{display:none}.hg.on .ga{animation:none}}
+
 .av-mode{margin-bottom:14px}
 .av-mode label{gap:8px}
 .av-mode label svg{width:17px;height:17px}
@@ -700,22 +960,21 @@ const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 const PRIO = { alta:"Alta", media:"Media", baja:"Baja" };
 const F = (key, label, type, extra={}) => ({key, label, type, ...extra});
 const TEMPLATES = {
-  peliculas:{name:"Películas y series", icon:"film", d:"Lo que has visto y lo que te falta", fields:[F("tipo","Tipo","select",{options:["Película","Serie","Documental","Anime"]}),F("estado","Estado","select",{options:["Por ver","Viendo","Vista"]}),F("valoracion","Valoración","rating"),F("fecha","Para ver el","date"),F("plataforma","Dónde verla","text"),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
+  peliculas:{name:"Películas y series", icon:"film", d:"Por ver, viendo, vistas y tu top 5", fields:[F("tipo","Tipo","select",{options:["Película","Serie","Documental","Anime"]}),F("estado","Estado","select",{options:["Por ver","Viendo","Vista"]}),F("valoracion","Valoración","rating"),F("fecha","Para ver el","date"),F("plataforma","Dónde verla","text"),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
   armario:{name:"Armario", icon:"shirt", d:"Tus prendas con fotos y vista 3D", fields:[F("fotos","Fotos","photos"),F("categoria","Categoría","select",{options:["Arriba","Abajo","Vestido","Abrigo","Calzado","Accesorio"]}),F("color","Color","color"),F("temporada","Temporada","select",{options:["Todo el año","Primavera/Verano","Otoño/Invierno"]}),F("estado","Estado","select",{options:["En uso","Guardado","Para donar","Quiero comprar"]}),F("marca","Marca","text"),F("notas","Notas","longtext")], statusKey:"categoria"},
   outfits:{name:"Calendario de outfits", icon:"layers", d:"Qué te pones cada día", fields:[F("fecha","Día","date"),F("prendas_ids","Prendas del armario","garments"),F("fotos","Foto del outfit","photos"),F("ocasion","Ocasión","select",{options:["Diario","Trabajo","Deporte","Evento","Viaje"]}),F("valoracion","Cómo me sentí","rating"),F("notas","Notas","longtext")], statusKey:"ocasion", dateKey:"fecha", calendar:true},
-  entrenos:{name:"Entrenamientos", icon:"dumbbell", d:"Qué días entrenas y cómo", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("hecho","Completado","check"),F("notas","Ejercicios y series","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true},
+  entrenos:{name:"Entrenamientos", icon:"dumbbell", d:"Horario semanal, rutinas y registro", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("hecho","Completado","check"),F("notas","Ejercicios y series","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true},
   rutina:{name:"Rutina", icon:"dumbbell", d:"Ejercicios, series y pesos", fields:[F("dia","Día de rutina","select",{options:["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]}),F("grupo","Grupo muscular","text"),F("series","Series x reps","text"),F("peso","Peso (kg)","number"),F("notas","Notas","longtext")], statusKey:"dia"},
   horario:{name:"Horario de clases", icon:"clock", d:"Clases y horarios que se repiten", fields:[F("fecha","Primer día","date"),F("hora","Hora","time"),F("semanal","Se repite cada semana","check"),F("lugar","Lugar","text"),F("notas","Notas","longtext")], dateKey:"fecha", timeKey:"hora", repeatKey:"semanal", calendar:true},
   progreso:{name:"Progreso", icon:"trend", d:"Logros, niveles y mejoras", fields:[F("fecha","Fecha","date"),F("nivel","Nivel o grado","text"),F("logro","Qué he conseguido","longtext"),F("valoracion","Cómo me siento","rating")], dateKey:"fecha"},
   pendientes:{name:"Pendientes", icon:"task", d:"Lo que te queda por hacer", fields:[F("estado","Estado","select",{options:["Pendiente","En curso","Hecho"]}),F("fecha","Para cuándo","date"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
-  comidas:{name:"Comidas", icon:"utensils", d:"Qué comes, recetas y menús", fields:[F("fecha","Día","date"),F("momento","Momento","select",{options:["Desayuno","Comida","Merienda","Cena","Snack"]}),F("notas","Qué comí","longtext"),F("receta","Receta","link")], statusKey:"momento", dateKey:"fecha", calendar:true},
+  comidas:{name:"Comidas y salud", icon:"utensils", d:"Menú semanal, nutrientes y tu objetivo", fields:[F("fecha","Día","date"),F("momento","Momento","select",{options:["Desayuno","Comida","Merienda","Cena","Snack"]}),F("notas","Qué comí","longtext"),F("receta","Receta","link")], statusKey:"momento", dateKey:"fecha", calendar:true},
   musica:{name:"Música", icon:"music", d:"Canciones que descubres", fields:[F("artista","Artista","text"),F("genero","Género","text"),F("estado","Estado","select",{options:["Descubierta","Favorita","En bucle"]}),F("valoracion","Valoración","rating"),F("fecha","Descubierta el","date"),F("enlace","Escuchar","link")], statusKey:"estado", dateKey:"fecha"},
-  videos:{name:"Vídeos", icon:"play", d:"Vídeos que quieres ver", fields:[F("estado","Estado","select",{options:["Por ver","Visto"]}),F("canal","Canal o autor","text"),F("duracion","Minutos","number"),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"estado"},
-  aprender:{name:"Quiero aprender", icon:"bulb", d:"Habilidades y temas pendientes", fields:[F("estado","Estado","select",{options:["Idea","Empezado","En curso","Dominado"]}),F("prioridad","Prioridad","select",{options:["Alta","Media","Baja"]}),F("progreso","Progreso","progress"),F("recursos","Recursos","link"),F("notas","Notas","longtext")], statusKey:"estado", tasks:true},
-  conocimientos:{name:"Conocimientos", icon:"spark", d:"Lo que vas aprendiendo", fields:[F("tema","Tema","text"),F("fecha","Aprendido el","date"),F("notas","Resumen","longtext"),F("fuente","Fuente","link")], dateKey:"fecha"},
+  aprender:{name:"Quiero aprender", icon:"bulb", d:"Temas con barra de progreso e ideas", fields:[F("estado","Estado","select",{options:["Idea","Empezado","En curso","Dominado"]}),F("prioridad","Prioridad","select",{options:["Alta","Media","Baja"]}),F("progreso","Progreso","progress"),F("recursos","Recursos","link"),F("notas","Notas","longtext")], statusKey:"estado", tasks:true},
+  conocimientos:{name:"Conocimientos", icon:"spark", d:"Lo que sabes, ordenado por temas", fields:[F("tema","Tema","text"),F("fecha","Aprendido el","date"),F("notas","Resumen","longtext"),F("fuente","Fuente","link")], dateKey:"fecha"},
   proyectos:{name:"Proyectos", icon:"folder", d:"Avance, tareas y fechas límite", fields:[F("estado","Estado","select",{options:["Idea","En marcha","En pausa","Terminado"]}),F("progreso","Progreso","progress"),F("fecha","Fecha límite","date"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true, tasks:true},
-  estudios:{name:"Estudios", icon:"cap", d:"Exámenes, entregas y apuntes", fields:[F("asignatura","Asignatura","text"),F("tipo","Tipo","select",{options:["Examen","Entrega","Repaso","Clase"]}),F("fecha","Fecha","date"),F("hora","Hora","time"),F("estado","Estado","select",{options:["Pendiente","Preparando","Hecho"]}),F("nota","Nota","number"),F("notas","Apuntes","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true, tasks:true},
-  libros:{name:"Libros", icon:"book", d:"Lecturas y valoraciones", fields:[F("autor","Autor","text"),F("estado","Estado","select",{options:["Por leer","Leyendo","Leído"]}),F("valoracion","Valoración","rating"),F("notas","Notas","longtext")], statusKey:"estado"},
+  estudios:{name:"Estudios", icon:"cap", d:"Horario, calendario, fechas clave y materias", fields:[F("asignatura","Asignatura","text"),F("tipo","Tipo","select",{options:["Examen","Entrega","Repaso","Clase"]}),F("fecha","Fecha","date"),F("hora","Hora","time"),F("estado","Estado","select",{options:["Pendiente","Preparando","Hecho"]}),F("nota","Nota","number"),F("notas","Apuntes","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true, tasks:true},
+  libros:{name:"Libros y podcasts", icon:"book", d:"Pendientes, leyendo, terminados y tu top 5", fields:[F("autor","Autor","text"),F("estado","Estado","select",{options:["Por leer","Leyendo","Leído"]}),F("valoracion","Valoración","rating"),F("notas","Notas","longtext")], statusKey:"estado"},
   guardados:{name:"Guardados", icon:"bookmark", d:"Enlaces, ideas y citas", fields:[F("tipo","Tipo","select",{options:["Enlace","Idea","Cita","Documento","Otro"]}),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"tipo"},
   blanco:{name:"Sección en blanco", icon:"star", d:"Créala a tu manera", fields:[F("notas","Notas","longtext")]}
 };
@@ -728,8 +987,7 @@ const PURPOSES = [
   ["lectura","Lectura","book",["libros"]],
   ["estilo","Ropa y estilo","shirt",["armario","outfits"]],
   ["comida","Comida","utensils",["comidas"]],
-  ["aprender","Aprender cosas nuevas","bulb",["aprender","conocimientos"]],
-  ["videos","Vídeos pendientes","play",["videos"]]
+  ["aprender","Aprender cosas nuevas","bulb",["aprender","conocimientos"]]
 ];
 
 /* ================= state & storage ================= */
@@ -739,7 +997,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "16";
+const APP_VERSION = "17";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -817,7 +1075,7 @@ function putSettings(now=false){
 const all = () => [...S.items.values()];
 const ofKind = k => all().filter(i => i.kind === k);
 const sections = () => (S.settings?.sections || []);
-const topSections = () => sections().filter(s => !s.parentId || !secById(s.parentId));
+const topSections = () => sections().filter(s => !s.hidden && (!s.parentId || !secById(s.parentId)));
 const childrenOf = id => sections().filter(s => s.parentId === id);
 const secById = id => sections().find(s => s.id === id);
 const descendants = id => childrenOf(id).flatMap(c => [c, ...descendants(c.id)]);
@@ -843,6 +1101,7 @@ function nextOcc(ev, fromKey = todayKey()){
   return null;
 }
 function entryOn(e, s, key){
+  if (s.daysKey){ const ds = e.fields?.[s.daysKey]; return Array.isArray(ds) && ds.includes(dowOf(key)); }
   const d = e.fields?.[s.dateKey]; if (!isDate(d)) return false;
   if (s.repeatKey && e.fields?.[s.repeatKey]) return occursOn({date:d, repeat:"weekly"}, key);
   return d === key;
@@ -854,8 +1113,8 @@ function dayItems(key){
     else if (it.kind === "task" && it.date === key) out.push({t:"task", it, time:"", label:it.priority === "alta" && !it.done ? "Prioridad alta" : "Tarea", red:it.priority === "alta" && !it.done, title:it.title});
     else if (it.kind === "reminder" && it.date === key) out.push({t:"reminder", it, time:it.time || "", label:"Aviso", red:!it.done, title:it.title});
     else if (it.kind === "entry"){
-      const s = secById(it.sectionId);
-      if (s && s.calendar && s.dateKey && entryOn(it, s, key)) out.push({t:"entry", it, sec:s, time:(s.timeKey && it.fields?.[s.timeKey]) || "", label:secPath(s), red:false, title:it.title});
+      const s = secById(it.sectionId), sc = s && schedOf(s, it);
+      if (sc && sc.calendar && (sc.dateKey || sc.daysKey) && entryOn(it, sc, key)) out.push({t:"entry", it, sec:s, time:(sc.timeKey && it.fields?.[sc.timeKey]) || "", label:sc.label || secPath(s), red:!!(sc.red && sc.red(it)), title:it.title});
     }
   }
   const bd = profile().birthday;
@@ -1018,7 +1277,7 @@ function agendaRow(x){
   const tm = x.time ? `<div class="tm">${x.time}</div>` : `<div class="tm all">${x.t === "task" ? "Tarea" : "Todo el día"}</div>`;
   const right = x.t === "task" || x.t === "reminder" ? `<button class="ck${done ? " on" : ""}" data-act="toggle" data-id="${x.it.id}" aria-label="${done ? "Marcar pendiente" : "Completar"}"${x.t === "reminder" && !done ? ' style="border-color:var(--red)"' : ""}>${ic("check")}</button>` : "<span></span>";
   const sub = [x.t === "task" ? "" : x.label, x.end ? `hasta ${x.end}` : "", x.it.repeat && x.it.repeat !== "none" && !x.it.important ? "Se repite" : ""].filter(Boolean).join(" · ");
-  return `<div class="row-it${done ? " done" : ""}${x.red && !done ? " alert" : ""}" ${x.t === "bday" ? 'data-act="nav" data-to="perfil"' : `data-act="open" data-id="${x.it.id}"`}>${tm}<div style="min-width:0"><div class="tt">${esc(x.title)}</div><div class="lb">${x.red && !done ? `<span class="tag red">${esc(x.label)}</span>` : esc(sub)}${x.it.example ? '<span class="tag ex">Ejemplo</span>' : ""}</div></div>${right}</div>`;
+  return `<div class="row-it${done ? " done" : ""}${x.red && !done ? " alert" : ""}" ${x.t === "bday" ? 'data-act="nav" data-to="perfil"' : `data-act="open" data-id="${x.it.id}"`}>${tm}<div style="min-width:0"><div class="tt">${esc(x.title)}</div>${x.sec && x.sec.tpl === "outfits" ? outfitThumbs(x.it) : ""}<div class="lb">${x.red && !done ? `<span class="tag red">${esc(x.label)}</span>` : esc(sub)}${x.it.example ? '<span class="tag ex">Ejemplo</span>' : ""}</div></div>${right}</div>`;
 }
 function agendaHtml(){
   const sel = S.cal.sel, tk = todayKey(), isToday = sel === tk;
@@ -1139,9 +1398,9 @@ function vNotes(){
 }
 function tileHtml(s){
   const n = deepCount(s.id), subs = childrenOf(s.id).length;
-  return `<a class="tile" href="#s-${s.id}"><div class="ic">${ic(s.icon)}</div><div><div class="nm">${esc(s.name)}</div><div class="ct">${n} ${n === 1 ? "entrada" : "entradas"}${subs ? ` · ${subs} ${subs === 1 ? "subsección" : "subsecciones"}` : ""}</div></div></a>`;
+  return `<a class="tile" href="#s-${s.id}"><div class="ic">${ic(s.icon)}</div><div><div class="nm">${esc(s.name)}</div><div class="ct">${n} ${n === 1 ? "entrada" : "entradas"}${subs ? ` · ${subs} ${subs === 1 ? "apartado" : "apartados"}` : ""}</div></div></a>`;
 }
-const vSections = () => `<p class="muted" style="margin:0;max-width:56ch">Cada sección tiene sus propios campos y puede tener subsecciones dentro. Por ejemplo, Entrenamientos con Gimnasio y Artes marciales.</p>
+const vSections = () => `<p class="muted" style="margin:0;max-width:56ch">Cada sección tiene sus propios campos y puede tener apartados dentro. Por ejemplo, Entrenamientos con Gimnasio y Artes marciales.</p>
   <div class="tiles">${topSections().map(tileHtml).join("")}<button class="tile add" data-act="sec-new"><div class="ic">${ic("plus")}</div><div><div class="nm">Nueva sección</div><div class="ct">Dime qué quieres organizar</div></div></button></div>`;
 function fieldDisplay(f, v){
   if (v === undefined || v === null || v === "") return "";
@@ -1154,6 +1413,9 @@ function fieldDisplay(f, v){
     case "progress": return `<span class="row" style="gap:8px;width:100%"><span class="bar" style="flex:1"><i style="width:${Math.max(0, Math.min(100, +v))}%"></i></span><span class="small" style="font-weight:700">${+v}%</span></span>`;
     case "link": return `<span class="tag">Enlace</span>`;
     case "photos": return "";
+    case "days": return daysTag(v);
+    case "ref": return refName(v) ? `<span class="tag">${esc(refName(v))}</span>` : "";
+    case "rows": return Array.isArray(v) && v.length ? `<span class="tag">${v.length} ${v.length === 1 ? "fila" : "filas"}</span>` : "";
     case "garments": return Array.isArray(v) && v.length ? `<span class="tag">${v.length} ${v.length === 1 ? "prenda" : "prendas"}</span>` : "";
     case "number": return `<span class="tag">${esc(v)} ${esc(f.label.toLowerCase())}</span>`;
     case "select": return `<span class="tag">${esc(v)}</span>`;
@@ -1162,6 +1424,7 @@ function fieldDisplay(f, v){
 }
 function vSection(s){
   const parent = s.parentId ? secById(s.parentId) : null;
+  if (KIT_VIEWS[s.tpl]) return `${parent ? `<a class="crumb" href="#s-${parent.id}">${ic("left")}${esc(parent.name)}</a>` : ""}${KIT_VIEWS[s.tpl](s)}${subsBlock(s, true)}`;
   const subs = childrenOf(s.id);
   const all_ = entriesOf(s.id);
   const sf = s.fields.find(f => f.key === s.statusKey && f.type === "select");
@@ -1171,10 +1434,7 @@ function vSection(s){
   const textF = s.fields.find(f => f.type === "text"), longF = s.fields.find(f => f.type === "longtext");
   const shown = s.fields.filter(f => f.type !== "text" && f.type !== "longtext");
   const special = s.tpl === "armario" || s.tpl === "outfits";
-  const subsHtml = `  <section class="stack" style="gap:12px">
-    <div class="row" style="justify-content:space-between"><h2 class="sub-h">${subs.length ? "Subsecciones" : "Organiza más a fondo"}</h2></div>
-    <div class="tiles sm">${subs.map(tileHtml).join("")}<button class="tile add" data-act="sec-new" data-parent="${s.id}"><div class="ic">${ic("plus")}</div><div><div class="nm">Nueva subsección</div><div class="ct">Dentro de ${esc(s.name)}</div></div></button></div>
-  </section>`;
+  const subsHtml = subsBlock(s);
   return `
   ${parent ? `<a class="crumb" href="#s-${parent.id}">${ic("left")}${esc(parent.name)}</a>` : ""}
   ${special ? "" : subsHtml}
@@ -1263,7 +1523,7 @@ const PAGES = {
     <details class="faq"><summary>¿Cómo funciona el asistente?</summary><p>Puede crear tareas, eventos, avisos, notas, secciones y entradas por ti. Funciona con tu propia clave: Gemini de Google (gratis, con un límite diario) o Claude de Anthropic (de pago, se cobra por uso en tu cuenta).</p></details>
     <details class="faq"><summary>¿Recibiré avisos con la app cerrada?</summary><p>Por ahora no. Los avisos saltan con sonido si Órbita está abierta; si no, los verás pendientes al volver.</p></details>
     <details class="faq"><summary>¿Cómo la pongo en la pantalla de inicio?</summary><p>En Safari toca Compartir y luego «Añadir a pantalla de inicio». En Android, en Chrome, menú ⋮ y «Añadir a pantalla de inicio».</p></details>
-    <details class="faq"><summary>¿Qué son las subsecciones?</summary><p>Secciones dentro de otra sección, cada una con sus campos. Por ejemplo, dentro de Entrenamientos puedes tener Gimnasio, Artes marciales, Horarios o Progreso.</p></details>`],
+    <details class="faq"><summary>¿Qué son los apartados?</summary><p>Secciones dentro de otra sección, cada una con sus campos. Por ejemplo, dentro de Entrenamientos puedes tener Gimnasio, Artes marciales, Horarios o Progreso.</p></details>`],
   privacy:["Política de privacidad", `<div class="prose">
     <p>Órbita es una herramienta personal. Esta página explica qué datos maneja y dónde quedan.</p>
     <h3>Qué guarda</h3><p>Lo que tú escribes: tu perfil (nombre, usuario, cumpleaños y foto), tareas, eventos, avisos, notas, secciones y sus entradas, y tus preferencias.</p>
@@ -1467,6 +1727,9 @@ function fieldInput(f, v, id){
     case "link": return `<div class="row" style="flex-wrap:nowrap"><input type="url" id="${id}" name="${n}" value="${esc(v || "")}" placeholder="https://…">${v ? `<a class="ibtn" style="flex:none;background:var(--paper-2)" href="${esc(safeUrl(v))}" target="_blank" rel="noopener" aria-label="Abrir enlace">${ic("link")}</a>` : ""}</div>`;
     case "check": return `<label class="toggle"><span><b>${esc(f.label)}</b></span><input type="checkbox" id="${id}" name="${n}"${v ? " checked" : ""}></label>`;
     case "photos": return photosField(f, v, id);
+    case "days": { const a = Array.isArray(v) ? v : []; return `<div class="days-in">${DOW.map((d, i) => `<input type="checkbox" name="${n}" id="${id}-${i}" value="${i + 1}"${a.includes(i + 1) ? " checked" : ""}><label for="${id}-${i}" title="${DOWL[i]}">${d}</label>`).join("")}</div>`; }
+    case "rows": return rowsField(f, v, id);
+    case "ref": { const opts = refOptions(f); if (!opts.length) return `<div class="note-box">${esc(f.empty || "Aún no hay opciones.")}</div><input type="hidden" name="${n}" value="${esc(v || "")}">`; return opts.length <= 8 ? `<div class="seg">${[["", "—"], ...opts].map(([val, l], i) => `<input type="radio" name="${n}" id="${id}-${i}" value="${esc(val)}"${(v || "") === val ? " checked" : ""}><label for="${id}-${i}">${esc(l)}</label>`).join("")}</div>` : `<select id="${id}" name="${n}"><option value="">—</option>${opts.map(([val, l]) => `<option value="${esc(val)}"${v === val ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`; }
     case "garments": return garmentsField(f, v);
     case "color": { const cs = ["#111111","#f4f4f2","#8a8f98","#2f4f8f","#7fb0e8","#2f6b4f","#c9a66b","#8b5a3c","#b23a48","#f2a7b8","#f2d16b","#6b4f9e"]; return `<div class="swatches">${cs.map((c, i) => `<input type="radio" name="${n}" id="${id}-${i}" value="${c}"${v === c ? " checked" : ""}><label class="sw" for="${id}-${i}" style="background:${c}"></label>`).join("")}<input type="radio" name="${n}" id="${id}-x" value=""${!v ? " checked" : ""}><label for="${id}-x" class="lnk" style="cursor:pointer">Ninguno</label></div>`; }
     default: return `<input type="text" id="${id}" name="${n}" value="${esc(v || "")}">`;
@@ -1476,8 +1739,12 @@ function openEntry(sid, item, preset={}){
   const s = secById(sid); if (!s) return;
   const isNew = !item;
   const e = item ? {...item, fields:{...(item.fields || {})}} : {id:uid(), kind:"entry", sectionId:sid, title:"", fields:{}};
-  if (isNew && s.dateKey && s.calendar) e.fields[s.dateKey] = preset.date || todayKey();
-  if (isNew && s.timeKey && preset.time) e.fields[s.timeKey] = preset.time;
+  const kd = kindDef(s, item || {sub:preset.sub}); if (kd) e.sub = subOf(s, item || {sub:preset.sub});
+  const flds = kd ? kd.fields : s.fields, sch = kd || s;
+  if (isNew && preset.fields) Object.assign(e.fields, preset.fields);
+  if (isNew && sch.dateKey && (sch.calendar || kd) && !e.fields[sch.dateKey]) e.fields[sch.dateKey] = preset.date || todayKey();
+  if (isNew && sch.timeKey && preset.time) e.fields[sch.timeKey] = preset.time;
+  S.formSec = s.id;
   const linked = () => {
     if (!s.tasks) return "";
     if (!S.items.has(e.id)) return `<div class="field"><span class="lbl">Tareas vinculadas</span><p class="muted small" style="margin:0">Guarda la entrada para añadirle tareas.</p></div>`;
@@ -1487,10 +1754,12 @@ function openEntry(sid, item, preset={}){
       <div class="list">${ts.map(t => `<div class="it${t.done ? " done" : ""}"><button type="button" class="ck${t.done ? " on" : ""}" data-act="toggle" data-id="${t.id}" aria-label="Completar">${ic("check")}</button><div class="tx"><div class="tt">${esc(t.title)}</div>${t.date ? `<div class="mt">${esc(relDay(t.date))}</div>` : ""}</div></div>`).join("")}</div>
       <div class="addline"><input type="text" id="lt-in" placeholder="Nueva tarea para esto" aria-label="Nueva tarea vinculada" enterkeyhint="done"><button type="button" class="btn sm" data-act="link-task" data-id="${e.id}">${ic("plus")}Añadir</button></div></div>`;
   };
-  openLayer(`${sheetHead(esc(secPath(s)), e.example ? '<span class="tag ex">Ejemplo</span>' : "")}
-    <form class="stack" data-form="entry" data-id="${e.id}" data-sec="${s.id}" autocomplete="off">
-      <div class="field"><input type="text" class="title-in" id="en-title" name="title" value="${esc(e.title)}" placeholder="Nombre" aria-label="Nombre" required></div>
-      ${s.fields.map((f, i) => `<div class="field">${f.type === "check" ? "" : `<label for="en-f${i}">${esc(f.label)}</label>`}${fieldInput(f, e.fields[f.key], "en-f" + i)}</div>`).join("")}
+  openLayer(`${sheetHead(esc(secPath(s)) + (kd ? ` <span class="kd-l">· ${esc(kd.label)}</span>` : ""), e.example ? '<span class="tag ex">Ejemplo</span>' : "")}
+    <form class="stack" data-form="entry" data-id="${e.id}" data-sec="${s.id}" data-sub="${kd ? e.sub : ""}" autocomplete="off">
+      ${kd && kd.autoTitle ? `<input type="hidden" name="title" value="${esc(e.title || "-")}">` : `<div class="field"><input type="text" class="title-in" id="en-title" name="title" value="${esc(e.title)}" placeholder="${esc(kd?.title || "Nombre")}" aria-label="Nombre" required></div>`}
+      ${kd && kd.meal ? mealFormTop(s, e) : ""}
+      ${flds.map((f, i) => `<div class="field">${f.type === "check" ? "" : `<label for="en-f${i}">${esc(f.label)}</label>`}${fieldInput(f, e.fields[f.key], "en-f" + i)}</div>`).join("")}
+      ${kd && kd.meal ? mealFormEnd() : ""}
       <div id="linked">${linked()}</div>
       <div class="sheet-f">${isNew ? "<span></span>" : `<button type="button" class="btn danger" data-act="del" data-id="${e.id}">${ic("trash")}<span>Eliminar</span></button>`}<div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="submit" class="btn pri">Guardar</button></div></div>
     </form>`, {refresh(){ const el = $("#linked"); if (el) el.innerHTML = linked(); }});
@@ -1500,16 +1769,18 @@ function openEntry(sid, item, preset={}){
 function openTemplates(parentId){
   const parent = parentId ? secById(parentId) : null;
   const ex = parent ? `Ej.: «horarios de artes marciales con mi progreso de cinturones»` : `Ej.: «entrenamiento: gimnasio y artes marciales con horarios y progreso»`;
-  openLayer(`${sheetHead(parent ? `Nueva subsección en ${esc(parent.name)}` : "Nueva sección")}
+  openLayer(`${sheetHead(parent ? `Nuevo apartado en ${esc(parent.name)}` : "Nueva sección")}
     <form class="stack" data-form="sec-ai" data-parent="${parentId || ""}" style="gap:10px">
       <div class="field"><label for="sa-text">¿Qué quieres organizar${parent ? " aquí" : ""}?</label><textarea id="sa-text" name="text" placeholder="${esc(ex)}" style="min-height:84px"></textarea></div>
-      <div class="row"><button type="submit" class="btn pri">${ic("spark")}Crear con el asistente</button><span class="muted small">${aiKey() ? "Diseña los campos y subsecciones por ti." : "Antes conecta el asistente en Perfil y ajustes (Gemini es gratis)."}</span></div>
+      <div class="row"><button type="submit" class="btn pri">${ic("spark")}Crear con el asistente</button><span class="muted small">${aiKey() ? "Diseña los campos y apartados por ti." : "Antes conecta el asistente en Perfil y ajustes (Gemini es gratis)."}</span></div>
     </form>
     <div class="group-t" style="padding-top:22px">O empieza con una plantilla</div>
     <div class="qa">${Object.entries(TEMPLATES).map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${parentId || ""}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="qd">${esc(t.d)}</span></button>`).join("")}</div>`);
 }
 function makeSection(tplKey, parentId){
-  const t = TEMPLATES[tplKey];
+  const t = TEMPLATES[tplKey], kit = KITS[tplKey];
+  if (kit) return clean({id:uid(), tpl:tplKey, parentId:parentId || "", name:t.name, icon:t.icon, fields:kit.kinds[kit.def].fields, statusKey:"", dateKey:"", timeKey:"", repeatKey:"", calendar:false, tasks:false, view:"grid", kitv:KIT_V});
+  if (tplKey === "outfits") return clean({id:uid(), tpl:tplKey, parentId:parentId || "", name:t.name, icon:t.icon, fields:t.fields, statusKey:t.statusKey || "", dateKey:"fecha", timeKey:"", repeatKey:"", calendar:true, tasks:false, view:"grid", hidden:true});
   return clean({id:uid(), tpl:tplKey, parentId:parentId || "", name:t.name, icon:t.icon, fields:t.fields, statusKey:t.statusKey || "", dateKey:t.dateKey || "", timeKey:t.timeKey || "", repeatKey:t.repeatKey || "", calendar:!!t.calendar, tasks:!!t.tasks, view:"grid"});
 }
 let draftSec = null;
@@ -1521,7 +1792,7 @@ function secEditorBody(){
     <div class="field"><label for="se-name">Nombre</label><input type="text" id="se-name" data-sk="name" value="${esc(d.name)}"></div>
     <div class="field"><label for="se-parent">Dentro de</label><select id="se-parent" data-sk="parentId"><option value="">Ninguna (sección principal)</option>${parents.map(s => `<option value="${s.id}"${d.parentId === s.id ? " selected" : ""}>${esc(secPath(s))}</option>`).join("")}</select></div>
     <div class="field"><span class="lbl">Icono</span><div class="iconpick">${SEC_ICONS.map(n => `<input type="radio" name="se-icon" id="se-ic-${n}" value="${n}"${d.icon === n ? " checked" : ""} data-sk="icon"><label for="se-ic-${n}">${ic(n)}</label>`).join("")}</div></div>
-    <div class="field"><span class="lbl">Campos</span>
+    ${KITS[d.tpl] || d.tpl === "armario" || d.tpl === "outfits" ? `<p class="muted small" style="margin:0">Esta sección tiene un diseño propio; aquí puedes cambiarle el nombre, el icono o dónde está.</p>` : `    <div class="field"><span class="lbl">Campos</span>
       ${d.fields.map((f, i) => `<div class="fieldrow"><input type="text" class="inp" value="${esc(f.label)}" data-fk="${i}" data-fp="label" aria-label="Nombre del campo"><select class="inp" data-fk="${i}" data-fp="type" aria-label="Tipo">${Object.entries(FIELD_TYPES).map(([k, l]) => `<option value="${k}"${f.type === k ? " selected" : ""}>${l}</option>`).join("")}</select><button type="button" class="ibtn" data-act="field-del" data-i="${i}" aria-label="Quitar campo">${ic("trash")}</button>${f.type === "select" ? `<input type="text" class="inp opts" value="${esc((f.options || []).join(", "))}" data-fk="${i}" data-fp="options" placeholder="Opciones separadas por comas" aria-label="Opciones">` : ""}</div>`).join("")}
       <button type="button" class="btn sm" data-act="field-add" style="align-self:flex-start">${ic("plus")}Añadir campo</button></div>
     ${selFields.length ? `<div class="field"><label for="se-status">Filtrar por</label><select id="se-status" data-sk="statusKey"><option value="">Sin filtro</option>${selFields.map(f => `<option value="${f.key}"${d.statusKey === f.key ? " selected" : ""}>${esc(f.label)}</option>`).join("")}</select></div>` : ""}
@@ -1529,6 +1800,7 @@ function secEditorBody(){
     ${timeFields.length ? `<div class="field"><label for="se-time">Campo de hora</label><select id="se-time" data-sk="timeKey"><option value="">Ninguno</option>${timeFields.map(f => `<option value="${f.key}"${d.timeKey === f.key ? " selected" : ""}>${esc(f.label)}</option>`).join("")}</select></div>` : ""}
     <label class="toggle"><span><b>Mostrar en el calendario</b><span class="sub">Las entradas aparecen en su día y en «Para hoy».</span></span><input type="checkbox" id="se-cal" data-sk="calendar"${d.calendar ? " checked" : ""}></label>` : ""}
     <label class="toggle"><span><b>Tareas vinculadas</b><span class="sub">Cada entrada puede tener su lista de tareas y su avance.</span></span><input type="checkbox" id="se-tasks" data-sk="tasks"${d.tasks ? " checked" : ""}></label>
+`}
     <div class="sheet-f"><button type="button" class="btn danger" data-act="sec-del" data-sec="${d.id}">${ic("trash")}<span>Eliminar sección</span></button><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="button" class="btn pri" data-act="sec-save">Guardar</button></div></div>
   </div>`;
 }
@@ -1694,7 +1966,7 @@ function runTool(name, a){
       const main = buildSection(a, parentId);
       const subs = (Array.isArray(a.subsecciones) ? a.subsecciones : []).slice(0, 8).map(sp => buildSection(sp, main.id));
       S.settings.sections = [...sections(), main, ...subs]; putSettings(true); onData();
-      return {ok:true, id:main.id, subsecciones:subs.map(s => ({id:s.id, nombre:s.name})), _act:`${parentId ? "Subsección" : "Sección"} creada: ${main.name}${subs.length ? ` con ${subs.length} subsecciones` : ""}`, _goto:main.id};
+      return {ok:true, id:main.id, subsecciones:subs.map(s => ({id:s.id, nombre:s.name})), _act:`${parentId ? "Apartado" : "Sección"} creada: ${main.name}${subs.length ? ` con ${subs.length} subsecciones` : ""}`, _goto:main.id};
     }
     case "anadir_entrada": {
       const s = secById(a.seccion_id); if (!s) return {error:"sección no encontrada; usa ver_secciones"};
@@ -1949,6 +2221,7 @@ function finishOnboarding(){
   S.settings = {profile:{name:d.name.trim(), username:d.username.trim().replace(/^@/, "").toLowerCase(), birthday:d.birthday, photo:d.photo, purposes:[...d.purposes], about:d.about.trim()}, sound:true, sections:secs, createdAt:Date.now()};
   putSettings(true);
   if (d.examples) seedExamples(secs);
+  normalizeKits();
   const wantPin = d.pin;
   onbDraft = null;
   const el = $("#onb"); el.style.transition = "opacity .35s"; el.style.opacity = "0"; setTimeout(() => el.remove(), 350);
@@ -1969,31 +2242,22 @@ function seedExamples(secs){
   add({kind:"reminder", title:"Beber agua y estirar", date:k(0), time:hh(2)});
   add({kind:"note", title:"Ideas para el finde", body:"Ruta por la sierra el sábado\nProbar el restaurante nuevo\nTerminar la serie", pinned:true});
   const SAMPLES = {
-    peliculas:[["Dune: Parte dos", {tipo:"Película", estado:"Vista", valoracion:5, plataforma:"Cine"}],["Severance", {tipo:"Serie", estado:"Viendo", plataforma:"Streaming", fecha:k(0)}]],
+    peliculas:[["Dune: Parte dos", {tipo:"Película", estado:"Vista", valoracion:5, autor:"Cine"}],["Severance", {tipo:"Serie", estado:"Viendo", autor:"Streaming", progreso:"T2 · E4"}],["Oppenheimer", {tipo:"Película", estado:"Quiero ver"}]],
     armario:[["Vaqueros rectos", {categoria:"Abajo", color:"#2f4f8f", temporada:"Todo el año", estado:"En uso"}],["Jersey de punto", {categoria:"Arriba", color:"#c9a66b", estado:"En uso"}]],
     outfits:[["Casual de oficina", {fecha:k(-1), ocasion:"Trabajo", valoracion:4, notas:"Jersey de punto, vaqueros rectos y zapatillas blancas"}]],
-    entrenos:[["Pierna y glúteo", {fecha:k(0), hora:"19:00", tipo:"Fuerza", duracion:60, intensidad:"Alta", notas:"Sentadilla 4x8\nPeso muerto rumano 3x10"}],["Carrera suave", {fecha:k(2), hora:"08:00", tipo:"Cardio", duracion:35, intensidad:"Suave"}]],
-    comidas:[["Bowl de salmón", {fecha:k(0), momento:"Comida", notas:"Arroz, salmón, aguacate, edamame"}]],
+    entrenos:[["Gimnasio", {dias:[1,3,5], hora:"19:00", fin:"20:15", lugar:"Gimnasio del barrio"}, "plan"],["Pierna", {dias:[1,5], grupo:"Pierna y glúteo", ejercicios:[{n:"Sentadilla", s:"4", r:"8", k:"60"},{n:"Peso muerto rumano", s:"3", r:"10", k:"50"},{n:"Zancadas", s:"3", r:"12", k:"14"}]}, "rutina"],["Carrera suave", {fecha:k(-1), hora:"08:00", tipo:"Cardio", duracion:35, intensidad:"Suave", sensacion:4}, "sesion"]],
+    comidas:[["Bowl de salmón", {fecha:k(0), momento:"Comida", kcal:640, prot:38, carb:62, grasa:24, azucar:6, fibra:9, notas:"Arroz, salmón, aguacate, edamame"}, "comida"],["Tostadas con huevo", {fecha:k(0), momento:"Desayuno", kcal:380, prot:19, carb:34, grasa:17, azucar:4, fibra:5}, "comida"],["Lentejas estofadas", {momento:"Comida", kcal:520, prot:28, carb:70, grasa:12, azucar:7, fibra:16}, "idea"]],
     musica:[["Midnight City", {artista:"M83", genero:"Electrónica", estado:"En bucle", valoracion:5, fecha:k(-3)}]],
-    videos:[["Cómo organizar tu semana en 10 minutos", {estado:"Por ver", canal:"Productividad", duracion:12}]],
-    aprender:[["Tocar la guitarra", {estado:"Empezado", prioridad:"Media", progreso:20}]],
+    aprender:[["Tocar la guitarra", {prioridad:"Media", progreso:20, recursos:[{n:"Curso de acordes básicos", u:""}]}, "tema"],["Política", {prioridad:"Alta", progreso:10, recursos:[]}, "tema"]],
     conocimientos:[["La regla de los dos minutos", {tema:"Productividad", fecha:k(-2), notas:"Si algo lleva menos de dos minutos, hazlo ya."}]],
-    proyectos:[["Rediseñar mi habitación", {estado:"En marcha", progreso:40, fecha:k(20), notas:"Pintar, cambiar la luz, estantería nueva"}]],
-    estudios:[["Examen de estadística", {asignatura:"Estadística", tipo:"Examen", fecha:k(9), hora:"09:00", estado:"Preparando"}]],
-    libros:[["Hábitos atómicos", {autor:"James Clear", estado:"Leyendo", valoracion:4}]],
-    guardados:[["Receta de pan casero", {tipo:"Enlace", notas:"Para probar el domingo"}]]
+    libros:[["Hábitos atómicos", {tipo:"Libro", autor:"James Clear", estado:"Leyendo", progreso:"Página 120"}, "obra"],["Entiende tu mente", {tipo:"Podcast", autor:"Molo Cebrián", estado:"Quiero leer"}, "obra"]]
   };
-  for (const s of secs) for (const [title, fields] of (SAMPLES[s.tpl] || [])){
-    const e = add({kind:"entry", sectionId:s.id, title, fields});
-    if (s.tpl === "proyectos"){ add({kind:"task", title:"Elegir color de pintura", link:e.id, done:true, date:k(-2)}); add({kind:"task", title:"Comprar estantería", link:e.id, date:k(3)}); }
-  }
-  const ent = secs.find(s => s.tpl === "entrenos");
-  if (ent){
-    const hor = makeSection("horario", ent.id); hor.name = "Artes marciales"; hor.icon = "fist";
-    const prog = makeSection("progreso", ent.id);
-    S.settings.sections = [...sections(), hor, prog]; putSettings(true);
-    add({kind:"entry", sectionId:hor.id, title:"Clase de BJJ", fields:{fecha:k(1), hora:"20:00", semanal:true, lugar:"Gimnasio del barrio"}});
-    add({kind:"entry", sectionId:prog.id, title:"Primera raya en el cinturón", fields:{fecha:k(-10), nivel:"Blanco · 1 raya", logro:"Primera barrida limpia en sparring", valoracion:4}});
+  for (const s of secs) for (const [title, fields, sub] of (SAMPLES[s.tpl] || [])) add({kind:"entry", sectionId:s.id, title, fields, ...(sub ? {sub} : {})});
+  const est = secs.find(s => s.tpl === "estudios");
+  if (est){
+    const m = add({kind:"entry", sectionId:est.id, sub:"materia", title:"Estadística", fields:{color:"#2f4f8f", profesor:"Marta Ruiz", aula:"B12"}});
+    add({kind:"entry", sectionId:est.id, sub:"clase", title:"Estadística", fields:{materia:m.id, dias:[1,3], hora:"09:00", fin:"10:30", aula:"B12"}});
+    add({kind:"entry", sectionId:est.id, sub:"evento", title:"Examen del tema 3", fields:{tipo:"Examen", materia:m.id, fecha:k(9), hora:"09:00", importante:true}});
   }
   flushBulk();
 }
@@ -2082,7 +2346,7 @@ const ACT = {
   },
   "sec-del"(el){
     const id = el.dataset.sec, subs = descendants(id);
-    if (!armed(el, subs.length ? `Se borrarán sus entradas y ${subs.length} subsecciones` : "Se borrarán sus entradas. ¿Seguro?")) return;
+    if (!armed(el, subs.length ? `Se borrarán sus entradas y ${subs.length} apartados` : "Se borrarán sus entradas. ¿Seguro?")) return;
     const parent = secById(id)?.parentId;
     const ids = [id, ...subs.map(s => s.id)];
     for (const e of ofKind("entry").filter(e => ids.includes(e.sectionId))) delItem(e.id, true);
@@ -2170,17 +2434,20 @@ document.addEventListener("submit", e => {
   } else if (kind === "entry"){
     const s = secById(f.dataset.sec); if (!s) return;
     const old = S.items.get(f.dataset.id) || {};
+    const sub = f.dataset.sub || "", kd = sub ? kindDef(s, {sub}) : null;
     const fields = {};
-    for (const fl of s.fields){
+    for (const fl of (kd ? kd.fields : s.fields)){
       const v = fd.get("f_" + fl.key);
-      if (fl.type === "check") fields[fl.key] = !!v;
+      if (fl.type === "days") fields[fl.key] = fd.getAll("f_" + fl.key).map(Number).filter(Boolean);
+      else if (fl.type === "rows") fields[fl.key] = readRows(fd, fl);
+      else if (fl.type === "check") fields[fl.key] = !!v;
       else if (fl.type === "rating" || fl.type === "progress") fields[fl.key] = +v || 0;
       else if (fl.type === "number") fields[fl.key] = v === "" || v === null ? "" : +v;
       else if (fl.type === "photos" || fl.type === "garments"){ try { fields[fl.key] = JSON.parse(v || "[]"); } catch { fields[fl.key] = []; } }
       else fields[fl.key] = (v || "").trim();
     }
-    const title = (fd.get("title") || "").trim(); if (!title) return;
-    putItem({...old, id:f.dataset.id, kind:"entry", sectionId:s.id, title, fields});
+    let title = (fd.get("title") || "").trim(); if (kd && kd.autoTitle) title = kd.autoTitle(fields, s) || title; if (!title) return;
+    putItem({...old, id:f.dataset.id, kind:"entry", sectionId:s.id, title, fields:kd ? {...(old.fields || {}), ...fields} : fields, ...(kd ? {sub} : {})});
     closeLayer(); toast("Guardado en " + s.name);
   } else if (kind === "profile"){
     S.settings.profile = {...profile(), name:(fd.get("name") || "").trim(), username:(fd.get("username") || "").trim().replace(/^@/, "").toLowerCase().replace(/[^a-z0-9._-]/g, ""), birthday:fd.get("birthday") || ""};
@@ -2323,7 +2590,7 @@ async function addImages(files){
   return ids;
 }
 const blobToDataURL = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.onerror = () => r(""); fr.readAsDataURL(b); });
-const photoIdsOf = it => { const s = it.kind === "entry" ? secById(it.sectionId) : null; if (!s) return []; return s.fields.filter(f => f.type === "photos").flatMap(f => Array.isArray(it.fields?.[f.key]) ? it.fields[f.key] : []); };
+const photoIdsOf = it => { const s = it.kind === "entry" ? secById(it.sectionId) : null; if (!s) return []; return fieldsOf(s, it).filter(f => f.type === "photos").flatMap(f => Array.isArray(it.fields?.[f.key]) ? it.fields[f.key] : []); };
 
 /* ================= wardrobe helpers ================= */
 const armarioSec = () => sections().find(s => s.tpl === "armario");
@@ -3077,6 +3344,499 @@ Object.assign(ACT, {
   "g-photo"(){ const s = armarioSec(); if (s) swapLayer(() => openEntry(s.id)); }
 });
 
+/* ================= section kits: each section with its own screens ================= */
+const DOW = ["L","M","X","J","V","S","D"], DOWL = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+const dowOf = k => (parseYmd(k).getDay() + 6) % 7 + 1;
+const weekStart = (off=0) => { const t = new Date(); return addDays(new Date(t.getFullYear(), t.getMonth(), t.getDate()), -((t.getDay() + 6) % 7) + off * 7); };
+const MEALS = ["Desayuno","Comida","Merienda","Cena","Snack"];
+const NUT = [["kcal","Calorías","kcal"],["prot","Proteínas","g"],["carb","Carbohidratos","g"],["grasa","Grasas","g"],["azucar","Azúcares","g"],["fibra","Fibra","g"]];
+const MACROS = NUT.map(([k, l, u]) => F(k, `${l} (${u})`, "number"));
+const KIT_V = 1;
+const mediaFields = (types, states, who, prog) => [F("tipo","Tipo","select",{options:types}),F("estado","Estado","select",{options:states}),F("valoracion","Mi nota","rating"),F("autor",who,"text"),F("progreso",prog,"text"),F("portada","Portada","photos"),F("enlace","Enlace","link"),F("notas","Notas","longtext")];
+const KITS = {
+  entrenos:{def:"sesion", kinds:{
+    plan:{label:"Horario semanal", short:"Horario", title:"Deporte (gimnasio, boxeo, pádel…)", fields:[F("dias","Qué días","days"),F("hora","Hora","time"),F("fin","Hasta","time"),F("lugar","Lugar","text"),F("rutina","Rutina que toca","ref",{ref:"rutina", empty:"Cuando crees rutinas podrás vincular una aquí."}),F("notas","Notas","longtext")], daysKey:"dias", timeKey:"hora", calendar:true},
+    rutina:{label:"Rutina", title:"Nombre de la rutina (pierna, torso…)", fields:[F("dias","Días que toca","days"),F("grupo","Grupo muscular","text"),F("ejercicios","Ejercicios","rows",{cols:[["n","Ejercicio"],["s","Series"],["r","Reps"],["k","Kg"]]}),F("notas","Notas","longtext")]},
+    sesion:{label:"Entreno hecho", short:"Entreno", title:"Qué entrenaste", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("sensacion","Cómo me sentí","rating"),F("notas","Ejercicios y series","longtext")], dateKey:"fecha", timeKey:"hora", calendar:true}
+  }},
+  peliculas:{def:"obra", kinds:{obra:{label:"Película o serie", title:"Título", fields:mediaFields(["Película","Serie"], ["Quiero ver","Viendo","Vista"], "Dónde verla", "Por dónde voy (T2 · E5)")}},
+    migrate(e){ const f = e.fields || {}; return {sub:"obra", fields:{estado:{"Por ver":"Quiero ver"}[f.estado] || f.estado || "Quiero ver", tipo:{Documental:"Película", Anime:"Serie"}[f.tipo] || f.tipo || "Película", autor:f.autor || f.plataforma || ""}}; }},
+  libros:{def:"obra", rename:[/^Libros$/, "Libros y podcasts"], kinds:{obra:{label:"Libro o podcast", title:"Título", fields:mediaFields(["Libro","Podcast"], ["Quiero leer","Leyendo","Terminado"], "Autor o presentador", "Por dónde voy (página, episodio)")}},
+    migrate(e){ const f = e.fields || {}; return {sub:"obra", fields:{estado:{"Por leer":"Quiero leer", "Leído":"Terminado"}[f.estado] || f.estado || "Quiero leer", tipo:f.tipo || "Libro"}}; }},
+  comidas:{def:"comida", rename:[/^Comidas$/, "Comidas y salud"], kinds:{
+    comida:{label:"Comida", title:"Qué comes (plato)", fields:[F("fecha","Día","date"),F("momento","Momento","select",{options:MEALS}),...MACROS,F("notas","Ingredientes y notas","longtext")], dateKey:"fecha", meal:true},
+    idea:{label:"Me apetece", title:"Plato o receta", fields:[F("momento","Ideal para","select",{options:MEALS}),...MACROS,F("receta","Receta","link"),F("notas","Ingredientes","longtext")], meal:true},
+    peso:{label:"Peso", fields:[F("fecha","Día","date"),F("kg","Peso (kg)","number")], dateKey:"fecha", autoTitle:f => `${f.kg} kg`}
+  }},
+  aprender:{def:"tema", kinds:{tema:{label:"Tema", title:"Qué quieres aprender (política, inglés…)", fields:[F("progreso","Cuánto sé","progress"),F("prioridad","Prioridad","select",{options:["Alta","Media","Baja"]}),F("recursos","Vídeos, libros y enlaces","rows",{cols:[["n","Recurso"],["u","Enlace"]]}),F("notas","Lo que voy aprendiendo","longtext")]}},
+    migrate(e){ const f = e.fields || {}; return {sub:"tema", fields:{recursos:typeof f.recursos === "string" && f.recursos ? [{n:"Recurso", u:f.recursos}] : Array.isArray(f.recursos) ? f.recursos : []}}; }},
+  estudios:{def:"evento", kinds:{
+    materia:{label:"Materia", title:"Nombre de la materia", fields:[F("color","Color","color"),F("profesor","Profesor o profesora","text"),F("aula","Aula","text"),F("notas","Apuntes y notas","longtext")]},
+    clase:{label:"Clase", short:"Clase", fields:[F("materia","Materia","ref",{ref:"materia", empty:"Primero crea tus materias en la pestaña Materias."}),F("dias","Qué días","days"),F("hora","Empieza","time"),F("fin","Termina","time"),F("aula","Aula","text")], daysKey:"dias", timeKey:"hora", calendar:true, autoTitle:(f, s) => refName(f.materia) || "Clase"},
+    evento:{label:"Examen, trabajo o tarea", short:"Estudios", title:"Qué es (examen del tema 3…)", fields:[F("tipo","Tipo","select",{options:["Examen","Trabajo","Tarea","Recordatorio"]}),F("materia","Materia","ref",{ref:"materia", empty:"Puedes crear materias en la pestaña Materias."}),F("fecha","Fecha","date"),F("hora","Hora","time"),F("importante","Fecha importante","check"),F("hecho","Hecho","check"),F("nota","Nota obtenida","number"),F("notas","Notas","longtext")], dateKey:"fecha", timeKey:"hora", calendar:true, red:e => !e.fields?.hecho && (e.fields?.tipo === "Examen" || !!e.fields?.importante)}
+  }, migrate(e, s){
+    const f = e.fields || {}, out = {tipo:{Entrega:"Trabajo", Repaso:"Tarea", Clase:"Tarea"}[f.tipo] || f.tipo || "Tarea", hecho:f.estado === "Hecho" || !!f.hecho};
+    const name = String(f.asignatura || "").trim();
+    if (name){
+      let m = entriesOf(s.id).find(x => x.sub === "materia" && x.title.toLowerCase() === name.toLowerCase());
+      if (!m) m = putItem({id:uid(), kind:"entry", sectionId:s.id, sub:"materia", title:name, fields:{color:SUBJ_COL[entriesOf(s.id).filter(x => x.sub === "materia").length % SUBJ_COL.length]}}, true);
+      out.materia = m.id;
+    }
+    return {sub:"evento", fields:out};
+  }}
+};
+const SUBJ_COL = ["#2f4f8f","#b23a48","#2f6b4f","#c9a66b","#6b4f9e","#7fb0e8","#8b5a3c","#f2a7b8"];
+const subOf = (s, e) => { const k = KITS[s?.tpl]; return k ? (e && e.sub && k.kinds[e.sub] ? e.sub : k.def) : ""; };
+const kindDef = (s, e) => { const k = KITS[s?.tpl]; return k ? k.kinds[subOf(s, e)] : null; };
+const fieldsOf = (s, e) => { const kd = kindDef(s, e); return kd ? kd.fields : s.fields; };
+const byKind = (s, k) => entriesOf(s.id).filter(e => subOf(s, e) === k);
+const refName = id => (id && S.items.get(id)?.title) || "";
+function schedOf(s, e){
+  const kd = kindDef(s, e);
+  if (kd) return {calendar:!!kd.calendar, dateKey:kd.dateKey || "", timeKey:kd.timeKey || "", daysKey:kd.daysKey || "", label:`${s.name} · ${kd.short || kd.label}`, red:kd.red};
+  if (s.tpl === "outfits") return {...s, label:"Outfit"};
+  return s;
+}
+function refOptions(f){
+  const s = secById(S.formSec); if (!s) return [];
+  return byKind(s, f.ref).map(e => [e.id, e.title]);
+}
+function rowsField(f, v, id){
+  const rows = Array.isArray(v) && v.length ? v : [{}], n = `f_${f.key}`;
+  const row = r => `<div class="rf-r">${f.cols.map(([c, l], i) => `<input class="inp" name="${n}__${c}" value="${esc(r[c] ?? "")}" placeholder="${esc(l)}" aria-label="${esc(l)}"${i ? ' inputmode="' + (c === "u" ? "url" : "decimal") + '"' : ""}>`).join("")}<button type="button" class="ibtn" data-act="rf-del" aria-label="Quitar fila">${ic("x")}</button></div>`;
+  return `<div class="rows-f c${f.cols.length}" id="${id}" data-cols="${esc(JSON.stringify(f.cols))}" data-n="${n}">${rows.map(row).join("")}<button type="button" class="lnk" data-act="rf-add">${ic("plus")}Añadir fila</button></div>`;
+}
+const readRows = (fd, f) => { const cols = f.cols.map(([c]) => [c, fd.getAll(`f_${f.key}__${c}`)]); const n = Math.max(0, ...cols.map(([, a]) => a.length)); const out = []; for (let i = 0; i < n; i++){ const r = {}; let any = false; for (const [c, a] of cols){ r[c] = String(a[i] || "").trim(); if (r[c]) any = true; } if (any) out.push(r); } return out; };
+const daysTag = d => Array.isArray(d) && d.length ? `<span class="days-tag">${DOW.map((x, i) => `<i class="${d.includes(i + 1) ? "on" : ""}">${x}</i>`).join("")}</span>` : "";
+
+/* ---------- shared bits ---------- */
+S.kitTab = lsGet("orbita.kittab", {});
+const kitTab = (s, d) => S.kitTab[s.id] || d;
+function kitTabs(s, tabs, cur){
+  return `<div class="ktabs" role="tablist">${tabs.map(([k, l, n]) => `<button class="ktab${k === cur ? " on" : ""}" role="tab" aria-selected="${k === cur}" data-act="kit-tab" data-sec="${s.id}" data-t="${k}">${esc(l)}${n ? `<span class="n">${n}</span>` : ""}</button>`).join("")}</div>`;
+}
+const kitHead = (s, sub) => `<div class="khead"><p class="muted">${sub}</p><button class="ibtn" data-act="sec-edit" data-sec="${s.id}" aria-label="Editar sección">${ic("edit")}</button></div>`;
+const kbtn = (s, sub, label, f={}, cls="btn pri") => `<button class="${cls}" data-act="kadd" data-sec="${s.id}" data-sub="${sub}" data-f="${esc(JSON.stringify(f))}">${ic("plus")}${esc(label)}</button>`;
+const kplus = (s, sub, f, label) => `<button class="plus-sm" data-act="kadd" data-sec="${s.id}" data-sub="${sub}" data-f="${esc(JSON.stringify(f))}" aria-label="${esc(label)}">${ic("plus")}</button>`;
+const kempty = (t, d) => `<div class="empty"><b>${t}</b>${d}</div>`;
+const mstars = v => +v ? `<span class="mini-stars" aria-label="${v} de 5">${[1,2,3,4,5].map(i => `<svg viewBox="0 0 24 24" class="${i <= v ? "" : "off"}"><path d="${P.star}"/></svg>`).join("")}</span>` : "";
+const krow = (e, meta, stars) => `<button class="krow" data-act="open" data-id="${e.id}"><span class="kr-t"><b>${esc(e.title)}</b><span>${esc(meta.filter(Boolean).join(" · "))}</span></span>${stars ? mstars(stars) : ""}${e.example ? '<span class="tag ex">Ejemplo</span>' : ""}</button>`;
+const byTime = k => (a, b) => (a.fields?.[k] || "99") < (b.fields?.[k] || "99") ? -1 : 1;
+function secPatch(id, patch){ S.settings.sections = sections().map(x => x.id === id ? {...x, ...patch} : x); putSettings(true); render(); }
+S.mm = {};
+function miniMonth(key, marks){
+  const t = new Date(), st = S.mm[key] || (S.mm[key] = {y:t.getFullYear(), m:t.getMonth(), sel:""});
+  const first = new Date(st.y, st.m, 1), start = addDays(first, -((first.getDay() + 6) % 7)), tk = todayKey();
+  let cells = "";
+  for (let i = 0; i < 42; i++){
+    const d = addDays(start, i), k = ymd(d); if (i === 35 && d.getMonth() !== st.m) break;
+    const mk = marks[k];
+    cells += `<button class="mm-d${d.getMonth() !== st.m ? " out" : ""}${k === tk ? " today" : ""}${k === st.sel ? " sel" : ""}" data-act="mm-pick" data-k="${key}" data-date="${k}">${d.getDate()}${mk ? `<i class="${mk === "r" ? "r" : ""}"></i>` : ""}</button>`;
+  }
+  return `<div class="mm"><div class="cal-h"><div class="m">${esc(fmt(first, {month:"long"}))} <span>${st.y}</span></div>
+    <button class="ibtn" data-act="mm-move" data-k="${key}" data-d="-1" aria-label="Mes anterior">${ic("left")}</button><button class="ibtn" data-act="mm-move" data-k="${key}" data-d="1" aria-label="Mes siguiente">${ic("right")}</button></div>
+    <div class="mm-g">${DOW.map(w => `<div class="wk">${w}</div>`).join("")}${cells}</div></div>`;
+}
+
+/* ---------- Entrenamientos ---------- */
+function vEntrenos(s){
+  const plans = byKind(s, "plan"), ruts = byKind(s, "rutina"), ses = byKind(s, "sesion");
+  const wk = [...Array(7)].map((_, i) => ymd(addDays(weekStart(), i))), tk = todayKey();
+  const wkSes = ses.filter(e => wk.includes(e.fields?.fecha) && e.fields.fecha <= tk);
+  const mins = wkSes.reduce((n, e) => n + (+e.fields?.duracion || 0), 0);
+  const planned = new Set([...plans, ...ruts].flatMap(e => e.fields?.dias || [])).size;
+  const tab = kitTab(s, "semana");
+  let body = "";
+  if (tab === "semana"){
+    body = `<div class="wkl">${wk.map((k, i) => {
+      const d = i + 1, ps = plans.filter(e => (e.fields?.dias || []).includes(d)).sort(byTime("hora")), rs = ruts.filter(e => (e.fields?.dias || []).includes(d)), done = ses.filter(e => e.fields?.fecha === k);
+      return `<div class="wkd${k === tk ? " today" : ""}"><div class="wd"><b>${DOW[i]}</b><span>${parseYmd(k).getDate()}</span></div>
+        <div class="wki">${ps.map(e => `<button class="kchip" data-act="open" data-id="${e.id}"><b>${esc(e.title)}</b>${e.fields?.hora ? `<span>${esc(e.fields.hora)}${e.fields.fin ? "–" + esc(e.fields.fin) : ""}</span>` : ""}${refName(e.fields?.rutina) ? `<span>· ${esc(refName(e.fields.rutina))}</span>` : ""}</button>`).join("")}
+        ${rs.map(e => `<button class="kchip alt" data-act="open" data-id="${e.id}">${ic("dumbbell")}<b>${esc(e.title)}</b></button>`).join("")}
+        ${done.length ? `<span class="kdone">${ic("check")}${done.length === 1 ? "Hecho" : done.length + " hechos"}</span>` : ""}
+        ${!ps.length && !rs.length && !done.length ? `<span class="muted small">Descanso</span>` : ""}</div>
+        ${kplus(s, "plan", {dias:[d]}, "Añadir deporte el " + DOWL[i].toLowerCase())}</div>`; }).join("")}</div>
+      <div class="row">${kbtn(s, "plan", "Deporte en mi horario")}${kbtn(s, "rutina", "Nueva rutina", {}, "btn")}</div>`;
+  } else if (tab === "rutinas"){
+    body = (ruts.length ? `<div class="kcards">${ruts.map(e => { const ex = e.fields?.ejercicios || [];
+      return `<article class="kcard"><button class="kc-h" data-act="open" data-id="${e.id}"><b>${esc(e.title)}</b>${e.fields?.grupo ? `<span>${esc(e.fields.grupo)}</span>` : ""}${ic("edit")}</button>
+        ${daysTag(e.fields?.dias)}
+        ${ex.length ? `<table class="ex-t"><thead><tr><th>Ejercicio</th><th>Series</th><th>Reps</th><th>Kg</th></tr></thead><tbody>${ex.map(r => `<tr><td>${esc(r.n)}</td><td>${esc(r.s)}</td><td>${esc(r.r)}</td><td>${esc(r.k)}</td></tr>`).join("")}</tbody></table>` : `<p class="muted small" style="margin:0">Sin ejercicios todavía. Ábrela para añadirlos.</p>`}
+        <div class="row"><button class="btn sm pri" data-act="rut-done" data-id="${e.id}">${ic("check")}Hecha hoy</button></div></article>`; }).join("")}</div>`
+      : kempty("Aún no tienes rutinas.", "Crea una con sus ejercicios, series y pesos, y dile qué días toca.")) + `<div class="row">${kbtn(s, "rutina", "Nueva rutina")}</div>`;
+  } else {
+    const marks = {}; ses.forEach(e => { if (isDate(e.fields?.fecha)) marks[e.fields.fecha] = "k"; });
+    const sel = (S.mm["ent" + s.id] || {}).sel;
+    const list = ses.filter(e => !sel || e.fields?.fecha === sel).sort((a, b) => (b.fields?.fecha || "") > (a.fields?.fecha || "") ? 1 : -1);
+    body = `${miniMonth("ent" + s.id, marks)}
+      <div class="sec-t"><h2 class="sub-h">${sel ? esc(cap1(relDay(sel))) : "Últimos entrenos"}</h2><span class="sp"></span>${kbtn(s, "sesion", "Apuntar entreno", sel ? {fecha:sel} : {}, "btn sm pri")}</div>
+      ${list.length ? `<div class="klist">${list.slice(0, 30).map(e => krow(e, [relDay(e.fields?.fecha), e.fields?.tipo, e.fields?.duracion ? e.fields.duracion + " min" : ""], e.fields?.sensacion)).join("")}</div>` : kempty(sel ? "Ese día no hay entrenos." : "Aún no has apuntado entrenos.", "Cuando termines, apúntalo aquí o toca «Hecha hoy» en una rutina.")}`;
+  }
+  return `${kitHead(s, "Tu semana de deporte, tus rutinas y lo que vas haciendo.")}
+    <div class="kstats"><div><b>${wkSes.length}</b><span>entrenos esta semana</span></div><div><b>${mins}</b><span>minutos</span></div><div><b>${planned}</b><span>días con plan</span></div></div>
+    ${kitTabs(s, [["semana","Semana"],["rutinas","Rutinas", ruts.length],["registro","Registro", ses.length]], tab)}${body}`;
+}
+
+/* ---------- Películas y series · Libros y podcasts ---------- */
+const MEDIA_CFG = {
+  peliculas:{types:["Película","Serie"], st:["Quiero ver","Viendo","Vista"], tabs:["Quiero ver","Viendo","Vistas"], start:"Empezar", end:"Ya la vi", add:"Añadir película o serie", tops:[["Película","Top 5 películas"],["Serie","Top 5 series"]], sub:"Lo que quieres ver, lo que estás viendo y lo que ya has visto, con tu nota."},
+  libros:{types:["Libro","Podcast"], st:["Quiero leer","Leyendo","Terminado"], tabs:["Por leer","Leyendo","Leídos"], start:"Empezar", end:"Terminado", add:"Añadir libro o podcast", tops:[["Libro","Top 5 libros"],["Podcast","Top 5 podcasts"]], sub:"Lo que quieres leer o escuchar, lo que llevas entre manos y lo que ya terminaste."}
+};
+S.mtype = {};
+const hue = t => { let h = 0; for (const c of String(t)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
+const poster = (e, cls="") => { const ph = (e.fields?.portada || [])[0]; return ph ? `<img class="${cls}" data-img="${ph}" alt="">` : `<span class="mp-t ${cls}" style="--h:${hue(e.title)}">${esc((e.title || "?").split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase())}</span>`; };
+const rateBtns = e => `<span class="mrate">${[1,2,3,4,5].map(i => `<button class="${i <= (+e.fields?.valoracion || 0) ? "on" : ""}" data-act="m-rate" data-id="${e.id}" data-v="${i}" aria-label="${i} estrellas"><svg viewBox="0 0 24 24"><path d="${P.star}"/></svg></button>`).join("")}</span>`;
+function vMedia(s){
+  const c = MEDIA_CFG[s.tpl], es = entriesOf(s.id), tab = kitTab(s, "0"), tf = S.mtype[s.id] || "";
+  const cnt = i => es.filter(e => (e.fields?.estado || c.st[0]) === c.st[i]).length;
+  let body = "";
+  if (tab === "top"){
+    body = `<div class="tops">${c.tops.map(([type, label]) => {
+      const ids = ((s.top || {})[type] || []).filter(id => S.items.has(id));
+      return `<section class="top5"><h3 class="sub-h">${esc(label)}</h3><ol>${[0,1,2,3,4].map(i => { const e = ids[i] && S.items.get(ids[i]);
+        return e ? `<li class="tslot"><span class="tn">${i + 1}</span><button class="tp" data-act="open" data-id="${e.id}">${poster(e)}</button><span class="tt"><b>${esc(e.title)}</b>${mstars(e.fields?.valoracion)}</span>${i ? `<button class="ibtn up" data-act="top-up" data-sec="${s.id}" data-type="${esc(type)}" data-i="${i}" aria-label="Subir">${ic("left")}</button>` : ""}<button class="ibtn" data-act="top-del" data-sec="${s.id}" data-type="${esc(type)}" data-i="${i}" aria-label="Quitar del top">${ic("x")}</button></li>`
+          : `<li class="tslot vac"><span class="tn">${i + 1}</span><button class="tpick" data-act="top-pick" data-sec="${s.id}" data-type="${esc(type)}">${ic("plus")}Elegir</button></li>`; }).join("")}</ol></section>`; }).join("")}</div>`;
+  } else {
+    const st = c.st[+tab] || c.st[0];
+    const list = es.filter(e => (e.fields?.estado || c.st[0]) === st && (!tf || e.fields?.tipo === tf)).sort((a, b) => +tab === 2 ? (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0) : (b.updatedAt || 0) - (a.updatedAt || 0));
+    body = `<div class="chips">${["", ...c.types].map(t => `<button class="chip${t === tf ? " on" : ""}" data-act="m-type" data-sec="${s.id}" data-t="${esc(t)}">${t ? esc(t) + "s" : "Todo"}</button>`).join("")}</div>
+      ${list.length ? `<div class="mgrid">${list.map(e => { const f = e.fields || {};
+        return `<article class="mcard"><button class="mposter" data-act="open" data-id="${e.id}">${poster(e)}${f.tipo ? `<i class="mtype">${esc(f.tipo)}</i>` : ""}</button>
+          <div class="mbody"><b class="mt">${esc(e.title)}</b><span class="ms">${esc([f.autor, +tab === 1 ? f.progreso : ""].filter(Boolean).join(" · "))}</span>
+          ${+tab === 2 ? rateBtns(e) : `<button class="chip sm" data-act="m-move" data-id="${e.id}" data-to="${+tab + 1}">${+tab === 0 ? ic("play") + c.start : ic("check") + c.end}</button>`}</div></article>`; }).join("")}</div>`
+      : kempty(+tab === 0 ? "Tu lista está vacía." : +tab === 1 ? "Ahora mismo no tienes nada a medias." : "Aún no has terminado nada.", +tab === 0 ? "Apunta lo que te recomienden para no olvidarlo." : "Cuando empieces algo de tu lista aparecerá aquí.")}
+      <div class="row">${kbtn(s, "obra", c.add, {estado:st, ...(tf ? {tipo:tf} : {})})}</div>`;
+  }
+  return `${kitHead(s, c.sub)}${kitTabs(s, [["0", c.tabs[0], cnt(0)], ["1", c.tabs[1], cnt(1)], ["2", c.tabs[2], cnt(2)], ["top", "Top 5"]], tab)}${body}`;
+}
+function openRate(id){
+  const e = S.items.get(id); if (!e) return;
+  openLayer(`${sheetHead("¿Qué nota le das?")}<div class="stack" style="align-items:center;gap:18px;padding:8px 0 18px"><b style="font-size:20px;text-align:center">${esc(e.title)}</b><span class="mrate big">${[1,2,3,4,5].map(i => `<button data-act="m-rate" data-id="${id}" data-v="${i}" data-close="1" aria-label="${i} estrellas"><svg viewBox="0 0 24 24"><path d="${P.star}"/></svg></button>`).join("")}</span><button class="lnk" data-act="close">Ahora no</button></div>`);
+}
+function openTopPick(sid, type){
+  const s = secById(sid), c = MEDIA_CFG[s.tpl], ids = (s.top || {})[type] || [];
+  const pool = entriesOf(sid).filter(e => e.fields?.tipo === type && !ids.includes(e.id)).sort((a, b) => (b.fields?.estado === c.st[2]) - (a.fields?.estado === c.st[2]) || (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0));
+  openLayer(`${sheetHead("Elige para tu top")}${pool.length ? `<div class="klist">${pool.map(e => `<button class="krow" data-act="top-set" data-sec="${sid}" data-type="${esc(type)}" data-id="${e.id}"><span class="tp sm">${poster(e)}</span><span class="kr-t"><b>${esc(e.title)}</b><span>${esc(e.fields?.estado || "")}</span></span>${mstars(e.fields?.valoracion)}</button>`).join("")}</div>` : kempty(`No hay ${type.toLowerCase()}s para elegir.`, "Añade alguna a tu lista y vuelve aquí.")}`);
+}
+
+/* ---------- Comidas y salud ---------- */
+function nutriGoal(s){
+  const g = s.goal || {};
+  if (!(+g.peso && +g.altura && +g.edad)) return {kcal:2000, prot:75, carb:250, grasa:65, azucar:50, fibra:28, set:false};
+  const bmr = 10 * g.peso + 6.25 * g.altura - 5 * g.edad + (g.sexo === "Mujer" ? -161 : 5);
+  let kcal = bmr * ({Poca:1.25, Media:1.45, Mucha:1.7}[g.actividad] || 1.45);
+  kcal += {bajar:-400, subir:300}[g.objetivo] || 0;
+  const prot = g.peso * ({bajar:2, subir:1.8}[g.objetivo] || 1.6), grasa = kcal * .28 / 9;
+  return {kcal:Math.round(kcal), prot:Math.round(prot), grasa:Math.round(grasa), carb:Math.max(0, Math.round((kcal - prot * 4 - grasa * 9) / 4)), azucar:Math.round(kcal * .1 / 4), fibra:g.sexo === "Mujer" ? 25 : 30, set:true};
+}
+const sumNut = ms => Object.fromEntries(NUT.map(([k]) => [k, Math.round(ms.reduce((n, e) => n + (+e.fields?.[k] || 0), 0))]));
+S.mday = {}; S.mweek = {};
+function nutTips(t, g, ms){
+  const out = [];
+  if (!ms.length) return ["Apunta lo que comes y te digo cómo vas de nutrientes."];
+  if (!t.kcal && !t.prot) out.push("Toca «Calcular nutrientes con IA» al apuntar un plato y verás sus valores.");
+  else {
+    if (t.prot < g.prot * .7) out.push(`Te faltan unos ${g.prot - t.prot} g de proteína: huevos, pollo, pescado, legumbres o yogur griego.`);
+    if (t.azucar > g.azucar) out.push(`Vas pasado de azúcar (${t.azucar} g de ${g.azucar} g). Mejor fruta entera que dulces.`);
+    if (t.fibra < g.fibra * .5) out.push("Poca fibra hoy: añade verdura, fruta, legumbres o pan integral.");
+    if (t.kcal > g.kcal * 1.1) out.push(`Llevas ${t.kcal - g.kcal} kcal por encima de tu objetivo.`);
+  }
+  return out.length ? out : ["Vas equilibrado. Así da gusto."];
+}
+function nutBars(t, g){
+  const pct = Math.min(1, t.kcal / g.kcal || 0), R = 42, C = 2 * Math.PI * R;
+  return `<div class="nut"><div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${R}" class="bg"/><circle cx="50" cy="50" r="${R}" class="fg${t.kcal > g.kcal * 1.1 ? " over" : ""}" stroke-dasharray="${(C * pct).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 50 50)"/></svg><span><b>${t.kcal}</b>de ${g.kcal} kcal</span></div>
+    <div class="nbars">${NUT.slice(1).map(([k, l, u]) => { const over = k === "azucar" && t[k] > g[k]; return `<div class="nb${over ? " over" : ""}"><span class="nl">${l}</span><span class="nv">${t[k]}<small>/${g[k]} ${u}</small></span><span class="bar"><i style="width:${Math.min(100, Math.round(t[k] / g[k] * 100) || 0)}%"></i></span></div>`; }).join("")}</div></div>`;
+}
+function vComidas(s){
+  const meals = byKind(s, "comida"), ideas = byKind(s, "idea"), pesos = byKind(s, "peso").sort((a, b) => (a.fields?.fecha || "") < (b.fields?.fecha || "") ? -1 : 1), g = nutriGoal(s);
+  const tab = kitTab(s, "hoy");
+  let body = "";
+  if (tab === "hoy"){
+    const day = S.mday[s.id] || todayKey(), ms = meals.filter(e => e.fields?.fecha === day), t = sumNut(ms);
+    body = `<div class="dnav-r"><button class="ibtn" data-act="mday" data-sec="${s.id}" data-d="-1" aria-label="Día anterior">${ic("left")}</button><b>${esc(cap1(relDay(day)))}</b><button class="ibtn" data-act="mday" data-sec="${s.id}" data-d="1" aria-label="Día siguiente">${ic("right")}</button></div>
+      ${nutBars(t, g)}
+      ${g.set ? "" : `<button class="note-box lnkbox" data-act="kit-tab" data-sec="${s.id}" data-t="objetivo">Estos objetivos son orientativos. Pon tu peso y tu meta en «Objetivo» y los ajusto a ti.</button>`}
+      <ul class="tips">${nutTips(t, g, ms).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+      <div class="meals">${MEALS.filter(m => m !== "Snack" || ms.some(e => e.fields?.momento === "Snack")).map(m => { const xs = ms.filter(e => (e.fields?.momento || "Comida") === m);
+        return `<div class="meal"><span class="mlab">${m}</span><div class="mp">${xs.map(e => `<button class="kchip" data-act="open" data-id="${e.id}"><b>${esc(e.title)}</b>${+e.fields?.kcal ? `<span>${e.fields.kcal} kcal</span>` : ""}</button>`).join("") || `<span class="muted small">Sin apuntar</span>`}</div>${kplus(s, "comida", {fecha:day, momento:m}, "Añadir " + m.toLowerCase())}</div>`; }).join("")}</div>`;
+  } else if (tab === "semana"){
+    const off = S.mweek[s.id] || 0, ws = weekStart(off), tk = todayKey();
+    body = `<div class="dnav-r"><button class="ibtn" data-act="mweek" data-sec="${s.id}" data-d="-1" aria-label="Semana anterior">${ic("left")}</button><b>${off === 0 ? "Esta semana" : "Semana del " + esc(fmt(ws, {day:"numeric", month:"short"}))}</b><button class="ibtn" data-act="mweek" data-sec="${s.id}" data-d="1" aria-label="Semana siguiente">${ic("right")}</button></div>
+      <div class="plan">${[...Array(7)].map((_, i) => { const k = ymd(addDays(ws, i)), ms = meals.filter(e => e.fields?.fecha === k), kc = sumNut(ms).kcal;
+        return `<div class="pday${k === tk ? " today" : ""}"><div class="pdh"><b>${DOWL[i]}</b><span>${parseYmd(k).getDate()}</span><span class="sp"></span>${kc ? `<span class="pk${kc > g.kcal * 1.1 ? " over" : ""}">${kc} kcal</span>` : ""}</div>
+          <div class="pslots">${MEALS.slice(0, 4).map(m => { const xs = ms.filter(e => (e.fields?.momento || "Comida") === m);
+            return xs.length ? `<button class="pslot on" data-act="open" data-id="${xs[0].id}"><small>${m}</small><b>${esc(xs.map(e => e.title).join(", "))}</b></button>` : `<button class="pslot" data-act="kadd" data-sec="${s.id}" data-sub="comida" data-f="${esc(JSON.stringify({fecha:k, momento:m}))}"><small>${m}</small>${ic("plus")}</button>`; }).join("")}</div></div>`; }).join("")}</div>`;
+  } else if (tab === "ideas"){
+    body = (ideas.length ? `<div class="klist">${ideas.map(e => `<div class="krow"><button class="kr-t" data-act="open" data-id="${e.id}"><b>${esc(e.title)}</b><span>${esc([e.fields?.momento, +e.fields?.kcal ? e.fields.kcal + " kcal" : "", +e.fields?.prot ? e.fields.prot + " g proteína" : ""].filter(Boolean).join(" · "))}</span></button><button class="btn sm" data-act="idea-plan" data-id="${e.id}">${ic("cal")}Planificar</button></div>`).join("")}</div>`
+      : kempty("Aún no tienes ideas.", "Guarda platos y recetas que te apetezcan y planifícalos en tu semana.")) + `<div class="row">${kbtn(s, "idea", "Añadir idea")}</div>`;
+  } else {
+    const o = s.goal || {}, seg = (k, opts) => `<div class="seg">${opts.map(([v, l]) => `<input type="radio" name="${k}" id="ng-${k}-${v}" value="${v}"${(o[k] || "") === v ? " checked" : ""}><label for="ng-${k}-${v}">${l}</label>`).join("")}</div>`;
+    const last = pesos[pesos.length - 1], firstP = pesos[0];
+    const ws = pesos.slice(-12).map(e => +e.fields?.kg).filter(Boolean), mn = Math.min(...ws), mx = Math.max(...ws);
+    const spark = ws.length > 1 ? `<svg class="spark" viewBox="0 0 100 34" preserveAspectRatio="none"><polyline points="${ws.map((v, i) => `${(i / (ws.length - 1) * 100).toFixed(1)},${(30 - (mx === mn ? .5 : (v - mn) / (mx - mn)) * 26).toFixed(1)}`).join(" ")}"/></svg>` : "";
+    body = `<form class="box stack" data-form="nutri-goal" data-sec="${s.id}">
+        <span class="lbl">Tu objetivo</span>${seg("objetivo", [["bajar","Bajar peso"],["mantener","Mantener"],["subir","Subir peso"]])}
+        <div class="grid3"><div class="field"><label for="ng-edad">Edad</label><input type="number" inputmode="numeric" id="ng-edad" name="edad" value="${esc(o.edad || "")}"></div><div class="field"><label for="ng-alt">Altura (cm)</label><input type="number" inputmode="numeric" id="ng-alt" name="altura" value="${esc(o.altura || "")}"></div><div class="field"><label for="ng-peso">Peso (kg)</label><input type="number" inputmode="decimal" id="ng-peso" name="peso" value="${esc(o.peso || (last ? last.fields.kg : ""))}"></div></div>
+        <span class="lbl">Sexo</span>${seg("sexo", [["Mujer","Mujer"],["Hombre","Hombre"]])}
+        <span class="lbl">Actividad física</span>${seg("actividad", [["Poca","Poca"],["Media","Media"],["Mucha","Mucha"]])}
+        <div class="row"><button class="btn pri" type="submit">${ic("check")}Calcular mis objetivos</button></div>
+      </form>
+      ${g.set ? `<div class="box stack" style="gap:10px"><span class="lbl">Tus objetivos diarios</span><div class="goalg">${NUT.map(([k, l, u]) => `<div><b>${g[k]}</b><span>${k === "kcal" ? "kcal al día" : u + " de " + l.toLowerCase()}</span></div>`).join("")}</div><p class="muted small" style="margin:0">Es una estimación general, no un consejo médico. Si tienes alguna condición de salud, consúltalo con un profesional.</p></div>` : ""}
+      <form class="box stack" data-form="peso-log" data-sec="${s.id}" style="gap:10px"><div class="sec-t"><span class="lbl">Tu peso</span><span class="sp"></span>${last ? `<b>${esc(last.fields.kg)} kg</b>${firstP && firstP !== last && firstP.fields.fecha !== last.fields.fecha ? `<span class="muted small">${(last.fields.kg - firstP.fields.kg > 0 ? "+" : "") + (last.fields.kg - firstP.fields.kg).toFixed(1)} kg desde ${esc(relDay(firstP.fields.fecha).toLowerCase())}</span>` : ""}` : ""}</div>
+        ${spark}<div class="addline"><input type="number" class="inp" inputmode="decimal" step="0.1" name="kg" placeholder="Peso de hoy (kg)" aria-label="Peso de hoy"><button class="btn sm pri" type="submit">${ic("plus")}Apuntar</button></div></form>`;
+  }
+  return `${kitHead(s, "Tu menú de la semana, cómo vas de nutrientes y tu objetivo.")}${kitTabs(s, [["hoy","Hoy"],["semana","Semana"],["ideas","Me apetece", ideas.length],["objetivo","Objetivo"]], tab)}${body}`;
+}
+const mealFormTop = (s, e) => { const ideas = byKind(s, "idea"); return subOf(s, e) === "comida" && ideas.length ? `<div class="field"><span class="lbl">De tus ideas</span><div class="chips">${ideas.map(i => `<button type="button" class="chip" data-act="idea-fill" data-id="${i.id}">${esc(i.title)}</button>`).join("")}</div></div>` : ""; };
+const mealFormEnd = () => `<div class="row"><button type="button" class="btn sm" data-act="meal-ai">${ic("spark")}Calcular nutrientes con IA</button><span class="muted small">Gratis con tu Gemini. Es una estimación.</span></div>`;
+
+/* ---------- Quiero aprender ---------- */
+const LEARN_IDEAS = ["Política","Economía personal","Invertir","Historia","Psicología","Filosofía","Inglés","Programación","Fotografía","Cocina","Primeros auxilios","Hablar en público","Nutrición","Arte","Astronomía","Mecánica básica","Negociación","Escritura"];
+const lvl = p => p >= 100 ? "Dominado" : p >= 60 ? "Avanzado" : p >= 25 ? "Aprendiendo" : p > 0 ? "Empezando" : "Por empezar";
+function vAprender(s){
+  const ts = entriesOf(s.id).sort((a, b) => ({Alta:0, Media:1, Baja:2}[a.fields?.prioridad] ?? 1) - ({Alta:0, Media:1, Baja:2}[b.fields?.prioridad] ?? 1) || (+b.fields?.progreso || 0) - (+a.fields?.progreso || 0));
+  const avg = ts.length ? Math.round(ts.reduce((n, e) => n + (+e.fields?.progreso || 0), 0) / ts.length) : 0;
+  const have = new Set(ts.map(e => e.title.toLowerCase()));
+  const ideas = (S.learnIdeas || LEARN_IDEAS).filter(x => !have.has(x.toLowerCase())).slice(0, 12);
+  return `${kitHead(s, "Los temas que quieres conocer y cuánto vas sabiendo de cada uno.")}
+    <div class="kstats"><div><b>${ts.length}</b><span>temas</span></div><div><b>${avg}%</b><span>de media</span></div><div><b>${ts.filter(e => +e.fields?.progreso >= 100).length}</b><span>dominados</span></div></div>
+    ${ts.length ? `<div class="lcards">${ts.map(e => { const p = Math.max(0, Math.min(100, +e.fields?.progreso || 0)), log = e.log || [], last = log[log.length - 1], res = (e.fields?.recursos || []).length;
+      return `<article class="lcard${p >= 100 ? " done" : ""}"><button class="lc-h" data-act="open" data-id="${e.id}"><b>${esc(e.title)}</b><span class="lvl">${lvl(p)}</span></button>
+        <div class="lbar"><i style="width:${p}%"></i></div>
+        <div class="lc-f"><b>${p}%</b><span class="muted small">${last ? "Último avance: " + esc(relDay(last.d).toLowerCase()) : "Sin avances aún"}${res ? ` · ${res} ${res === 1 ? "recurso" : "recursos"}` : ""}</span>${p < 100 ? `<button class="chip sm" data-act="learn-inc" data-id="${e.id}" data-v="5">+5%</button><button class="chip sm" data-act="learn-inc" data-id="${e.id}" data-v="10">+10%</button>` : ""}</div></article>`; }).join("")}</div>`
+      : kempty("Aún no tienes temas.", "Elige una idea de abajo o crea el tuyo. Cada vez que aprendas algo, sube su barra.")}
+    <div class="row">${kbtn(s, "tema", "Nuevo tema")}</div>
+    <section class="stack" style="gap:10px"><div class="sec-t"><h2 class="sub-h">Ideas para aprender</h2><span class="sp"></span><button class="lnk" data-act="learn-ai">${ic("spark")}Más ideas con IA</button></div>
+      <div class="chips wrap">${ideas.map(x => `<button class="chip" data-act="learn-add" data-sec="${s.id}" data-name="${esc(x)}">${ic("plus")}${esc(x)}</button>`).join("")}</div></section>`;
+}
+
+/* ---------- Estudios ---------- */
+const matCol = id => S.items.get(id)?.fields?.color || "#8a8f98";
+function vEstudios(s){
+  const mats = byKind(s, "materia"), clases = byKind(s, "clase"), evs = byKind(s, "evento"), tk = todayKey();
+  const tab = kitTab(s, "horario");
+  const evRow = e => { const f = e.fields || {}; return `<div class="evrow${f.hecho ? " done" : ""}" style="--c:${matCol(f.materia)}"><button class="ck${f.hecho ? " on" : ""}" data-act="ev-done" data-id="${e.id}" aria-label="${f.hecho ? "Marcar pendiente" : "Marcar hecho"}">${ic("check")}</button><button class="kr-t" data-act="open" data-id="${e.id}"><b>${esc(e.title)}</b><span>${esc([f.tipo, refName(f.materia), relDay(f.fecha), f.hora].filter(Boolean).join(" · "))}</span></button>${f.tipo === "Examen" && !f.hecho ? '<span class="tag red">Examen</span>' : ""}</div>`; };
+  let body = "";
+  if (tab === "horario"){
+    const days = [1,2,3,4,5, ...[6,7].filter(d => clases.some(c => (c.fields?.dias || []).includes(d)))];
+    body = `${mats.length ? "" : `<div class="note-box">Empieza creando tus materias en la pestaña «Materias»; luego añade sus clases aquí.</div>`}
+      <div class="wkl">${days.map(d => { const cs = clases.filter(c => (c.fields?.dias || []).includes(d)).sort(byTime("hora")), k = ymd(addDays(weekStart(), d - 1));
+        return `<div class="wkd${k === tk ? " today" : ""}"><div class="wd"><b>${DOW[d - 1]}</b><span>${parseYmd(k).getDate()}</span></div>
+          <div class="wki col">${cs.map(c => `<button class="cls" style="--c:${matCol(c.fields?.materia)}" data-act="open" data-id="${c.id}"><span class="ct">${esc(c.fields?.hora || "")}${c.fields?.fin ? "–" + esc(c.fields.fin) : ""}</span><b>${esc(c.title)}</b>${c.fields?.aula ? `<span>${esc(c.fields.aula)}</span>` : ""}</button>`).join("") || `<span class="muted small">Sin clases</span>`}</div>
+          ${kplus(s, "clase", {dias:[d]}, "Añadir clase el " + DOWL[d - 1].toLowerCase())}</div>`; }).join("")}</div>
+      <div class="row">${kbtn(s, "clase", "Añadir clase")}</div>`;
+  } else if (tab === "calendario"){
+    const marks = {}; evs.forEach(e => { const d = e.fields?.fecha; if (isDate(d)) marks[d] = marks[d] === "r" || (e.fields?.tipo === "Examen" || e.fields?.importante) ? "r" : "k"; });
+    const sel = (S.mm["est" + s.id] || {}).sel;
+    const list = sel ? evs.filter(e => e.fields?.fecha === sel) : evs.filter(e => !e.fields?.hecho && (e.fields?.fecha || "") >= tk).sort((a, b) => (a.fields?.fecha || "") < (b.fields?.fecha || "") ? -1 : 1).slice(0, 20);
+    body = `${miniMonth("est" + s.id, marks)}
+      <div class="sec-t"><h2 class="sub-h">${sel ? esc(cap1(relDay(sel))) : "Lo próximo"}</h2><span class="sp"></span>${kbtn(s, "evento", "Añadir", {fecha:sel || tk}, "btn sm pri")}</div>
+      ${list.length ? `<div class="klist">${list.map(evRow).join("")}</div>` : kempty(sel ? "Nada ese día." : "No tienes nada pendiente.", "Apunta exámenes, trabajos, tareas y recordatorios.")}`;
+  } else if (tab === "fechas"){
+    const imp = evs.filter(e => !e.fields?.hecho && (e.fields?.fecha || "") >= tk && (["Examen","Trabajo"].includes(e.fields?.tipo) || e.fields?.importante)).sort((a, b) => (a.fields.fecha < b.fields.fecha ? -1 : 1));
+    const grades = evs.filter(e => e.fields?.nota !== "" && e.fields?.nota != null && !isNaN(+e.fields.nota));
+    body = `${imp.length ? `<div class="cdown">${imp.map(e => { const n = daysBetween(tk, e.fields.fecha);
+      return `<button class="cd" style="--c:${matCol(e.fields?.materia)}" data-act="open" data-id="${e.id}"><span class="cdn"><b>${n === 0 ? "Hoy" : n === 1 ? "1" : n}</b>${n === 0 ? "" : n === 1 ? "día" : "días"}</span><span class="kr-t"><b>${esc(e.title)}</b><span>${esc([e.fields?.tipo, refName(e.fields?.materia), relDay(e.fields.fecha)].filter(Boolean).join(" · "))}</span></span></button>`; }).join("")}</div>`
+      : kempty("No hay fechas importantes a la vista.", "Los exámenes y trabajos aparecerán aquí con su cuenta atrás.")}
+      <div class="row">${kbtn(s, "evento", "Añadir examen o trabajo", {tipo:"Examen", importante:true})}</div>
+      ${grades.length ? `<section class="stack" style="gap:8px"><h2 class="sub-h">Notas</h2><div class="klist">${grades.map(e => `<button class="krow" data-act="open" data-id="${e.id}" style="--c:${matCol(e.fields?.materia)}"><span class="kr-t"><b>${esc(e.title)}</b><span>${esc(refName(e.fields?.materia))}</span></span><b class="grade${+e.fields.nota < 5 ? " low" : ""}">${esc(e.fields.nota)}</b></button>`).join("")}</div></section>` : ""}`;
+  } else {
+    body = (mats.length ? `<div class="mats">${mats.map(m => {
+      const cs = clases.filter(c => c.fields?.materia === m.id), hrs = cs.reduce((n, c) => n + (c.fields?.dias || []).length, 0);
+      const next = evs.filter(e => e.fields?.materia === m.id && !e.fields?.hecho && (e.fields?.fecha || "") >= tk).sort((a, b) => a.fields.fecha < b.fields.fecha ? -1 : 1)[0];
+      const ns = evs.filter(e => e.fields?.materia === m.id && e.fields?.nota !== "" && e.fields?.nota != null && !isNaN(+e.fields.nota)).map(e => +e.fields.nota);
+      return `<button class="mat" style="--c:${m.fields?.color || "#8a8f98"}" data-act="open" data-id="${m.id}"><b>${esc(m.title)}</b>${m.fields?.profesor ? `<span>${esc(m.fields.profesor)}</span>` : ""}
+        <span class="mat-m">${hrs ? `<i>${hrs} ${hrs === 1 ? "clase" : "clases"}/semana</i>` : ""}${ns.length ? `<i>Media ${(ns.reduce((a, b) => a + b, 0) / ns.length).toFixed(1)}</i>` : ""}</span>
+        ${next ? `<span class="mat-n">${esc(next.fields?.tipo || "Próximo")}: ${esc(relDay(next.fields.fecha).toLowerCase())}</span>` : ""}</button>`; }).join("")}</div>`
+      : kempty("Aún no tienes materias.", "Crea una por asignatura con su color; así todo queda organizado por materia.")) + `<div class="row">${kbtn(s, "materia", "Nueva materia", {color:SUBJ_COL[mats.length % SUBJ_COL.length]})}</div>`;
+  }
+  const nextEx = evs.filter(e => !e.fields?.hecho && e.fields?.tipo === "Examen" && (e.fields?.fecha || "") >= tk).sort((a, b) => a.fields.fecha < b.fields.fecha ? -1 : 1)[0];
+  return `${kitHead(s, "Tu horario, tu calendario de estudio, las fechas clave y cada materia.")}
+    ${nextEx ? `<div class="kalert" data-act="open" data-id="${nextEx.id}">${ic("bell")}<span><b>${esc(nextEx.title)}</b> ${daysBetween(tk, nextEx.fields.fecha) === 0 ? "es hoy" : "en " + daysBetween(tk, nextEx.fields.fecha) + " días"}</span></div>` : ""}
+    ${kitTabs(s, [["horario","Horario"],["calendario","Calendario"],["fechas","Fechas"],["materias","Materias", mats.length]], tab)}${body}`;
+}
+
+/* ---------- Armario 3D ---------- */
+const CL_GROUPS = [["Arriba","Partes de arriba","hang"],["Abrigo","Abrigos","hang"],["Vestido","Vestidos","hang"],["Abajo","Partes de abajo","clip"],["Calzado","Calzado","shelf"],["Accesorio","Accesorios","shelf"]];
+S.clOpened = new Set();
+const HANGER = `<svg class="hook" viewBox="0 0 120 52" aria-hidden="true"><path d="M60 22 V14 a6 6 0 1 1 6 -6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M60 22 L10 46 Q6 49 12 50 H108 Q114 49 110 46 Z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/></svg>`;
+const CLIP = `<svg class="hook" viewBox="0 0 120 52" aria-hidden="true"><path d="M60 24 V14 a6 6 0 1 1 6 -6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M16 26 H104 M22 26 v18 M98 26 v18" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/><rect x="17" y="40" width="10" height="8" rx="2" fill="currentColor"/><rect x="93" y="40" width="10" height="8" rx="2" fill="currentColor"/></svg>`;
+const gArt = (g, cls="") => g.photo ? `<img class="ga ${cls}" data-cut="${g.photo}" alt="" draggable="false">` : `<span class="ga sv ${cls}">${shapeSVG(g.cat, g.color)}</span>`;
+function outfitThumbs(e){ const s = secById(e.sectionId), gF = s && s.fields.find(f => f.type === "garments"), ids = gF && Array.isArray(e.fields?.[gF.key]) ? e.fields[gF.key].filter(id => S.items.has(id)) : []; return ids.length ? `<span class="g-strip sm">${ids.slice(0, 5).map(id => `<span class="g-mini">${gThumb(garmentInfo(S.items.get(id)))}</span>`).join("")}</span>` : ""; }
+function vArmario(s){
+  const gs = garments(), cat = S.clCat || (CL_GROUPS.find(([k]) => gs.some(g => g.cat === k)) || CL_GROUPS[0])[0], grp = CL_GROUPS.find(x => x[0] === cat) || CL_GROUPS[0], list = gs.filter(g => g.cat === cat);
+  const opened = S.clOpened.has(s.id) || reduce.matches; S.clOpened.add(s.id);
+  const sel = gs.find(g => g.id === S.clSel), worn = Object.values(S.wear).map(id => gs.find(g => g.id === id)).filter(Boolean);
+  const os = outfitSec(), outs = os ? entriesOf(os.id).filter(e => isDate(e.fields?.fecha)).sort((a, b) => a.fields.fecha < b.fields.fecha ? 1 : -1).slice(0, 4) : [];
+  const item = g => `<button class="hg ${grp[2]}${S.clSel === g.id ? " on" : ""}${Object.values(S.wear).includes(g.id) ? " worn" : ""}" data-act="hg-pick" data-id="${g.id}" aria-label="${esc(g.title)}">${grp[2] === "shelf" ? "" : grp[2] === "clip" ? CLIP : HANGER}${gArt(g)}<span class="hn">${esc(g.title)}</span></button>`;
+  return `
+  <div class="closet ${opened ? "open" : "opening"}">
+    <div class="cl-top"><b>${esc(myName() ? "Armario de " + myName() : "Tu armario")}</b><span>${gs.length} ${gs.length === 1 ? "prenda" : "prendas"}</span><button class="ibtn" data-act="sec-edit" data-sec="${s.id}" aria-label="Editar sección">${ic("edit")}</button></div>
+    <div class="cl-body">
+      <div class="cl-in">
+        <div class="cl-cats">${CL_GROUPS.map(([k, l]) => `<button class="cl-cat${k === cat ? " on" : ""}" data-act="cl-cat" data-c="${k}">${esc(l)}<span>${gs.filter(g => g.cat === k).length}</span></button>`).join("")}</div>
+        <div class="cl-stage ${grp[2]}">${grp[2] === "shelf" ? "" : `<div class="cl-bar"></div>`}
+          <div class="cl-rail" data-rail>${list.length ? list.map(item).join("") : `<div class="cl-empty">Aún no hay ${esc(grp[1].toLowerCase())}.<br>Añádelas con una foto o con el enlace de la tienda.</div>`}</div>
+          ${grp[2] === "shelf" ? `<div class="cl-shelf"></div>` : ""}</div>
+      </div>
+      <div class="cl-door l" aria-hidden="true"><i></i></div><div class="cl-door r" aria-hidden="true"><i></i></div>
+    </div>
+  </div>
+  ${sel ? `<div class="cl-sel"><button class="cs-img" data-act="view-3d" data-id="${sel.id}" aria-label="Ver en 3D">${gArt(sel)}</button><div class="stack" style="gap:8px;min-width:0"><b class="cs-t">${esc(sel.title)}</b><span class="muted small">${esc(sel.cat)}${sel.color ? ` <i class="colorchip" style="background:${esc(sel.color)}"></i>` : ""}</span>
+      <div class="row"><button class="btn sm${Object.values(S.wear).includes(sel.id) ? "" : " pri"}" data-act="cl-wear" data-id="${sel.id}">${Object.values(S.wear).includes(sel.id) ? "Quitar del outfit" : ic("plus") + "Al outfit"}</button>${sel.photo ? `<button class="btn sm" data-act="view-3d" data-id="${sel.id}">${ic("spark")}3D</button>` : ""}<button class="btn sm ghost" data-act="open" data-id="${sel.id}">${ic("edit")}Editar</button></div></div></div>`
+    : `<p class="muted small" style="text-align:center;margin:0">Desliza para ver tus prendas y toca una para elegirla.</p>`}
+  <div class="row"><button class="btn" data-act="add" data-kind="entry" data-sec="${s.id}">${ic("cam")}Prenda con foto</button><button class="btn" data-act="g-link">${ic("link")}Desde un enlace</button></div>
+  <div class="box stack" style="gap:12px">
+    <div class="sec-t"><span class="lbl">Tu outfit</span><span class="sp"></span><a class="lnk" href="#probador">Probármelo${ic("right")}</a></div>
+    ${worn.length ? `<div class="g-strip">${worn.map(g => `<span class="g-mini">${gThumb(g)}<b>${esc(g.title)}</b></span>`).join("")}</div>` : `<p class="muted small" style="margin:0">Elige prendas en el armario y toca «Al outfit».</p>`}
+    <div class="row"><input type="date" class="inp" id="pb-date" value="${todayKey()}" style="width:auto;flex:1;min-width:150px" aria-label="Día del outfit"><button class="btn pri" data-act="wear-save"${worn.length ? "" : " disabled"}>${ic("cal")}Pegar en el calendario</button></div>
+    <p class="muted small" style="margin:0">Aparece en el calendario de inicio, en ese día.</p>
+  </div>
+  ${outs.length ? `<section class="stack" style="gap:10px"><div class="sec-t"><h2 class="sub-h">Últimos outfits</h2><span class="sp"></span><a class="lnk" href="#s-${os.id}">Todos${ic("right")}</a></div>
+    <div class="klist">${outs.map(e => `<button class="krow" data-act="open" data-id="${e.id}"><span class="kr-t"><b>${esc(cap1(relDay(e.fields.fecha)))}</b><span>${esc(e.fields?.ocasion || e.title)}</span></span>${outfitThumbs(e)}</button>`).join("")}</div></section>` : ""}`;
+}
+function coverflow(rail){
+  const r = rail.getBoundingClientRect(), cx = r.left + r.width / 2;
+  for (const h of rail.children){
+    if (!h.classList.contains("hg")) continue;
+    const b = h.getBoundingClientRect(), o = Math.max(-1.6, Math.min(1.6, (b.left + b.width / 2 - cx) / (r.width / 2)));
+    h.style.transform = `rotateY(${(-o * 34).toFixed(1)}deg) scale(${(1 - Math.abs(o) * .16).toFixed(3)})`;
+    h.style.zIndex = String(10 - Math.round(Math.abs(o) * 5));
+    h.style.opacity = String(1 - Math.min(.5, Math.abs(o) * .28));
+  }
+}
+document.addEventListener("scroll", e => { const t = e.target; if (t && t.matches && t.matches("[data-rail]") && !t._raf) t._raf = requestAnimationFrame(() => { t._raf = 0; coverflow(t); }); }, true);
+new MutationObserver(() => $$("[data-rail]:not([data-cf])").forEach(r => {
+  r.dataset.cf = "1"; const on = $(".hg.on", r);
+  if (on) r.scrollLeft = on.offsetLeft - r.clientWidth / 2 + on.clientWidth / 2; else if (r._last) r.scrollLeft = r._last;
+  coverflow(r);
+})).observe(document.body, {childList:true, subtree:true});
+addEventListener("resize", () => $$("[data-rail]").forEach(coverflow));
+document.addEventListener("animationend", e => { if (e.target.classList && e.target.classList.contains("cl-door")){ const c = e.target.closest(".closet"); if (c){ c.classList.remove("opening"); c.classList.add("open"); } } });
+
+/* ---------- Temas (subsections) ---------- */
+function subsBlock(s, kitMode){
+  const subs = childrenOf(s.id), con = s.tpl === "conocimientos", L = con ? "Temas" : "Apartados";
+  if (kitMode && !subs.length) return "";
+  const sugg = con && !s.parentId ? ["Tecnología","Ropa","Zapatos","Mochilas","Cocina","Salud","Viajes","Dinero"].filter(n => !subs.some(x => x.name.toLowerCase() === n.toLowerCase())).slice(0, 6) : [];
+  return `<section class="subs stack" style="gap:12px"><div class="sec-t"><h2 class="sub-h">${L}</h2><span class="n">${subs.length || ""}</span><span class="sp"></span><button class="plus-sm" data-act="${con ? "topic-new" : "sec-new"}" data-parent="${s.id}" aria-label="${con ? "Nuevo tema" : "Nuevo apartado"}">${ic("plus")}</button></div>
+    ${subs.length ? `<div class="tiles sm">${subs.map(tileHtml).join("")}</div>` : `<p class="muted small" style="margin:0">${con ? "Crea un tema para cada cosa que quieras guardar: tecnología, ropa, zapatos…" : `Toca + para organizar ${esc(s.name.toLowerCase())} en apartados.`}</p>`}
+    ${sugg.length ? `<div class="chips">${sugg.map(n => `<button class="chip" data-act="topic-quick" data-parent="${s.id}" data-name="${esc(n)}">${ic("plus")}${esc(n)}</button>`).join("")}</div>` : ""}
+  </section>`;
+}
+const KIT_VIEWS = {entrenos:vEntrenos, peliculas:vMedia, libros:vMedia, comidas:vComidas, aprender:vAprender, estudios:vEstudios, armario:vArmario};
+
+/* ---------- actions ---------- */
+const kitPut = (e, fields, extra={}) => putItem({...e, ...extra, fields:{...(e.fields || {}), ...fields}});
+function makeTopic(parentId, name){
+  const p = secById(parentId), t = makeSection(p && p.tpl === "conocimientos" ? "conocimientos" : "blanco", parentId);
+  t.name = name.slice(0, 40); t.icon = p ? p.icon : "spark";
+  S.settings.sections = [...sections(), t]; putSettings(true); return t;
+}
+Object.assign(ACT, {
+  "kit-tab"(el){ S.kitTab[el.dataset.sec] = el.dataset.t; lsSet("orbita.kittab", S.kitTab); render(); },
+  kadd(el){ let f = {}; try { f = JSON.parse(el.dataset.f || "{}"); } catch {} swapLayer(() => openEntry(el.dataset.sec, null, {sub:el.dataset.sub, fields:f})); },
+  "mm-move"(el){ const st = S.mm[el.dataset.k]; if (!st) return; let m = st.m + +el.dataset.d, y = st.y; if (m < 0){ m = 11; y--; } if (m > 11){ m = 0; y++; } Object.assign(st, {y, m}); render(); },
+  "mm-pick"(el){ const st = S.mm[el.dataset.k]; if (!st) return; st.sel = st.sel === el.dataset.date ? "" : el.dataset.date; buzz(); render(); },
+  "rf-add"(el){ const box = el.closest(".rows-f"), cols = JSON.parse(box.dataset.cols), n = box.dataset.n; const d = document.createElement("div"); d.className = "rf-r"; d.innerHTML = cols.map(([c, l], i) => `<input class="inp" name="${n}__${c}" placeholder="${esc(l)}" aria-label="${esc(l)}"${i ? ' inputmode="' + (c === "u" ? "url" : "decimal") + '"' : ""}>`).join("") + `<button type="button" class="ibtn" data-act="rf-del" aria-label="Quitar fila">${ic("x")}</button>`; box.insertBefore(d, el); $("input", d).focus(); },
+  "rf-del"(el){ const r = el.closest(".rf-r"), box = r.parentElement; if ($$(".rf-r", box).length > 1) r.remove(); else $$("input", r).forEach(i => i.value = ""); },
+  "rut-done"(el){
+    const r = S.items.get(el.dataset.id); if (!r) return;
+    const ex = (r.fields?.ejercicios || []).map(x => `${x.n}${x.s || x.r ? ` ${x.s || "?"}x${x.r || "?"}` : ""}${x.k ? ` · ${x.k} kg` : ""}`).join("\n");
+    putItem({id:uid(), kind:"entry", sectionId:r.sectionId, sub:"sesion", title:r.title, fields:{fecha:todayKey(), hora:nowHM(), tipo:"Fuerza", notas:ex}});
+    toast("Entreno apuntado", `${r.title}, hoy. ¡Bien hecho!`);
+  },
+  "m-type"(el){ S.mtype[el.dataset.sec] = el.dataset.t; render(); },
+  "m-move"(el){ const e = S.items.get(el.dataset.id); if (!e) return; const c = MEDIA_CFG[secById(e.sectionId)?.tpl]; const to = +el.dataset.to; kitPut(e, {estado:c.st[to]}); buzz(); if (to === 2) openRate(e.id); },
+  "m-rate"(el){ const e = S.items.get(el.dataset.id); if (!e) return; kitPut(e, {valoracion:+el.dataset.v}); buzz(); if (el.dataset.close){ closeLayer(); toast("Nota guardada", `${e.title}: ${el.dataset.v} de 5`); } },
+  "top-pick"(el){ swapLayer(() => openTopPick(el.dataset.sec, el.dataset.type)); },
+  "top-set"(el){ const s = secById(el.dataset.sec); if (!s) return; const top = {...(s.top || {})}, t = el.dataset.type; top[t] = [...(top[t] || []).filter(id => S.items.has(id)), el.dataset.id].slice(0, 5); closeLayer(); secPatch(s.id, {top}); },
+  "top-del"(el){ const s = secById(el.dataset.sec); if (!s) return; const top = {...(s.top || {})}, t = el.dataset.type; top[t] = (top[t] || []).filter(id => S.items.has(id)); top[t].splice(+el.dataset.i, 1); secPatch(s.id, {top}); },
+  "top-up"(el){ const s = secById(el.dataset.sec); if (!s) return; const top = {...(s.top || {})}, t = el.dataset.type, a = (top[t] || []).filter(id => S.items.has(id)), i = +el.dataset.i; [a[i - 1], a[i]] = [a[i], a[i - 1]]; top[t] = a; secPatch(s.id, {top}); },
+  mday(el){ const k = S.mday[el.dataset.sec] || todayKey(); S.mday[el.dataset.sec] = ymd(addDays(parseYmd(k), +el.dataset.d)); render(); },
+  mweek(el){ S.mweek[el.dataset.sec] = (S.mweek[el.dataset.sec] || 0) + +el.dataset.d; render(); },
+  "idea-plan"(el){ const e = S.items.get(el.dataset.id); if (!e) return; swapLayer(() => openLayer(`${sheetHead("Planificar «" + esc(e.title) + "»")}<form class="stack" data-form="idea-plan" data-id="${e.id}"><div class="field"><label for="ip-d">Día</label><input type="date" id="ip-d" name="fecha" value="${todayKey()}"></div><div class="seg">${MEALS.map((m, i) => `<input type="radio" name="momento" id="ip-m${i}" value="${m}"${(e.fields?.momento || "Comida") === m ? " checked" : ""}><label for="ip-m${i}">${m}</label>`).join("")}</div><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">${ic("cal")}Planificar</button></div></div></form>`)); },
+  "idea-fill"(el){ const i = S.items.get(el.dataset.id), f = el.closest("form"); if (!i || !f) return; $("#en-title", f).value = i.title; for (const [k] of NUT){ const inp = $(`[name="f_${k}"]`, f); if (inp && i.fields?.[k] !== undefined) inp.value = i.fields[k]; } const n = $('[name="f_notas"]', f); if (n && i.fields?.notas) n.value = i.fields.notas; buzz(); },
+  async "meal-ai"(el){
+    const f = el.closest("form"), title = $("#en-title", f).value.trim(), notes = ($('[name="f_notas"]', f)?.value || "").trim();
+    if (!title){ toast("Escribe primero el plato", "Por ejemplo: «Pasta boloñesa» o «Tostada con aguacate y huevo»."); return; }
+    if (!provKey("gemini")){ toast("Conecta tu Gemini gratis", "Lo tienes en Perfil y ajustes → Asistente."); return; }
+    const old = el.innerHTML; el.disabled = true; el.innerHTML = `<span class="spin"></span>Calculando…`;
+    try {
+      const d = await geminiOnce(`Estima los valores nutricionales de una ración normal de: "${title}".${notes ? ` Ingredientes o notas: ${notes}.` : ""} Devuelve SOLO un JSON con números (sin texto): {"kcal":0,"prot":0,"carb":0,"grasa":0,"azucar":0,"fibra":0} (prot, carb, grasa, azucar y fibra en gramos).`);
+      const t = (d.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join(""), j = JSON.parse((t.match(/\{[\s\S]*\}/) || ["{}"])[0]);
+      let n = 0; for (const [k] of NUT){ const inp = $(`[name="f_${k}"]`, f); if (inp && isFinite(+j[k])){ inp.value = Math.round(+j[k]); n++; } }
+      toast(n ? "Nutrientes estimados" : "No he podido calcularlo", n ? "Revisa los números y ajusta si hace falta." : "Prueba a describir mejor el plato.");
+    } catch (e){ toast("No he podido calcularlo", e && e.status === 429 ? "Has usado el cupo gratis de Gemini por ahora. Prueba en un rato." : "Revisa tu conexión e inténtalo otra vez."); }
+    el.disabled = false; el.innerHTML = old;
+  },
+  "learn-inc"(el){ const e = S.items.get(el.dataset.id); if (!e) return; const p = Math.min(100, (+e.fields?.progreso || 0) + +el.dataset.v); kitPut(e, {progreso:p}, {log:[...(e.log || []), {d:todayKey(), v:+el.dataset.v}].slice(-60)}); buzz(); if (p >= 100) toast("¡Tema dominado!", `${e.title} al 100%. Menudo nivel.`); },
+  "learn-add"(el){ putItem({id:uid(), kind:"entry", sectionId:el.dataset.sec, sub:"tema", title:el.dataset.name, fields:{progreso:0, prioridad:"Media", recursos:[]}}); toast("Tema añadido", el.dataset.name); },
+  async "learn-ai"(el){
+    if (!provKey("gemini")){ toast("Conecta tu Gemini gratis", "Lo tienes en Perfil y ajustes → Asistente."); return; }
+    const s = secById(currentRoute().slice(2)), have = s ? entriesOf(s.id).map(e => e.title) : [];
+    el.disabled = true; el.innerHTML = `<span class="spin"></span>Pensando…`;
+    try {
+      const d = await geminiOnce(`Sugiere 10 temas interesantes y variados para aprender${have.length ? ` para alguien a quien le interesa: ${have.join(", ")}` : ""}. No repitas esos. Devuelve SOLO un array JSON de textos cortos en español (máximo 3 palabras cada uno).`);
+      const t = (d.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join(""), a = JSON.parse((t.match(/\[[\s\S]*\]/) || ["[]"])[0]);
+      if (Array.isArray(a) && a.length) S.learnIdeas = a.map(String).slice(0, 12);
+    } catch { toast("No he podido traer ideas", "Prueba otra vez en un rato."); }
+    render();
+  },
+  "ev-done"(el){ const e = S.items.get(el.dataset.id); if (e){ kitPut(e, {hecho:!e.fields?.hecho}); buzz(); } },
+  "cl-cat"(el){ S.clCat = el.dataset.c; S.clSel = ""; render(); },
+  "hg-pick"(el){ S.clSel = S.clSel === el.dataset.id ? "" : el.dataset.id; const r = el.closest("[data-rail]"); if (r) r._last = r.scrollLeft; buzz(); render(); },
+  "cl-wear"(el){ const g = garments().find(x => x.id === el.dataset.id); if (g) ACT.wear({dataset:{c:g.cat, id:g.id}}); },
+  "topic-new"(el){ const p = secById(el.dataset.parent); swapLayer(() => openLayer(`${sheetHead(p && p.tpl === "conocimientos" ? "Nuevo tema" : "Nuevo apartado")}<form class="stack" data-form="topic-new" data-parent="${el.dataset.parent}"><div class="field"><label for="tn-name">Nombre</label><input type="text" id="tn-name" name="name" placeholder="Ej.: Tecnología, Mochilas, Zapatos…" required></div><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Crear</button></div></div></form>`)); },
+  "topic-quick"(el){ makeTopic(el.dataset.parent, el.dataset.name); render(); toast("Tema creado", el.dataset.name); }
+});
+document.addEventListener("submit", e => {
+  const f = e.target, k = f.dataset.form; if (!["idea-plan","nutri-goal","peso-log","topic-new"].includes(k)) return;
+  e.preventDefault(); const fd = new FormData(f);
+  if (k === "idea-plan"){
+    const i = S.items.get(f.dataset.id); if (!i) return;
+    const fields = {fecha:fd.get("fecha") || todayKey(), momento:fd.get("momento") || "Comida", notas:i.fields?.notas || ""}; for (const [n] of NUT) if (i.fields?.[n] !== undefined && i.fields[n] !== "") fields[n] = i.fields[n];
+    putItem({id:uid(), kind:"entry", sectionId:i.sectionId, sub:"comida", title:i.title, fields}); closeLayer(); toast("Planificado", `${i.title} · ${relDay(fields.fecha).toLowerCase()}, ${fields.momento.toLowerCase()}`);
+  } else if (k === "nutri-goal"){
+    const s = secById(f.dataset.sec); if (!s) return;
+    const goal = {objetivo:fd.get("objetivo") || "mantener", sexo:fd.get("sexo") || "", actividad:fd.get("actividad") || "Media", edad:+fd.get("edad") || "", altura:+fd.get("altura") || "", peso:+String(fd.get("peso")).replace(",", ".") || ""};
+    secPatch(s.id, {goal}); toast(nutriGoal({goal}).set ? "Objetivos calculados" : "Faltan datos", nutriGoal({goal}).set ? "Ya puedes ver cómo vas en «Hoy»." : "Pon tu edad, altura y peso.");
+  } else if (k === "peso-log"){
+    const kg = +String(fd.get("kg") || "").replace(",", "."); if (!kg) return;
+    putItem({id:uid(), kind:"entry", sectionId:f.dataset.sec, sub:"peso", title:`${kg} kg`, fields:{fecha:todayKey(), kg}}); toast("Peso apuntado", `${kg} kg hoy.`);
+  } else if (k === "topic-new"){
+    const n = String(fd.get("name") || "").trim(); if (!n) return;
+    const t = makeTopic(f.dataset.parent, n); closeLayer(); location.hash = "s-" + t.id;
+  }
+});
+
+/* ---------- migration to kits ---------- */
+function normalizeKits(){
+  if (!S.settings) return;
+  let ch = false;
+  S.settings.sections = sections().map(x => {
+    let y = x; const kit = KITS[x.tpl];
+    if (kit && x.kitv !== KIT_V){ y = {...y, fields:kit.kinds[kit.def].fields, kitv:KIT_V, statusKey:"", dateKey:"", timeKey:"", repeatKey:"", calendar:false}; if (kit.rename && kit.rename[0].test(y.name)) y.name = kit.rename[1]; ch = true; }
+    if (x.tpl === "outfits" && !x.hidden){ y = {...y, hidden:true, calendar:true, dateKey:"fecha"}; ch = true; }
+    return y;
+  });
+  let n = 0;
+  for (const e of ofKind("entry")){
+    const s = secById(e.sectionId), kit = s && KITS[s.tpl];
+    if (!kit || (e.sub && kit.kinds[e.sub])) continue;
+    const r = kit.migrate ? kit.migrate(e, s) : {sub:kit.def};
+    putItem({...e, sub:r.sub, fields:{...(e.fields || {}), ...(r.fields || {})}}, true); n++;
+  }
+  if (!S.settings.cleanup2){
+    const gone = sections().filter(x => x.tpl === "videos" || /^v[ií]deos$/i.test(x.name)).flatMap(x => [x.id, ...descendants(x.id).map(c => c.id)]);
+    for (const e of ofKind("entry").filter(e => gone.includes(e.sectionId))) delItem(e.id, true);
+    S.settings.sections = sections().filter(x => !gone.includes(x.id)); S.settings.cleanup2 = true; ch = true; n++;
+  }
+  if (ch) putSettings(true);
+  if (n) flushBulk();
+}
+
 /* ================= boot ================= */
 (async function boot(){
   const t0 = Date.now();
@@ -3095,6 +3855,7 @@ Object.assign(ACT, {
   if (S.settings && S.settings.sections.some(x => x.tpl === "entrenos" && /^(Entrenamiento|Entrenos)$/.test(x.name))){
     S.settings.sections = S.settings.sections.map(x => x.tpl === "entrenos" && /^(Entrenamiento|Entrenos)$/.test(x.name) ? {...x, name:"Entrenamientos"} : x); putSettings(true);
   }
+  normalizeKits();
   if (S.settings && !S.settings.cleanup1){
     const gone = sections().filter(x => ["proyectos","guardados"].includes(x.tpl) || /^(Proyectos|Guardados)$/.test(x.name)).flatMap(x => [x.id, ...descendants(x.id).map(c => c.id)]);
     for (const e of ofKind("entry").filter(e => gone.includes(e.sectionId))) delItem(e.id, true);
