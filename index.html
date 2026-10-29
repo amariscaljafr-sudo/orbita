@@ -533,7 +533,39 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .av-stage{display:flex;justify-content:center;align-items:flex-end;padding:18px 0 8px;border-radius:var(--r-lg);background:radial-gradient(80% 60% at 50% 30%,#fff,var(--paper-2));min-height:300px}
 .av-svg{height:min(58vh,500px);width:auto;max-width:100%;filter:drop-shadow(0 10px 18px rgba(13,13,13,.12));animation:avIn .5s var(--spring)}
 @keyframes avIn{from{transform:translateY(8px) scale(.98);opacity:.4}}
-.pb-stage{display:flex;flex-direction:column;gap:10px}
+.pb-stage{display:flex;flex-direction:column;gap:10px;min-width:0}
+.av-mode{margin-bottom:14px}
+.av-mode label{gap:8px}
+.av-mode label svg{width:17px;height:17px}
+.av-h{font-size:clamp(26px,7vw,34px);font-weight:900;letter-spacing:-.03em;line-height:1;margin:0}
+.av-tips{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--ink-2)}
+.av-tips li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:10px;vertical-align:middle}
+.av-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.av-mini{position:relative;aspect-ratio:3/4;border-radius:18px;background:var(--paper-2);overflow:hidden;display:grid;place-items:center}
+.av-mini.cut{background:repeating-conic-gradient(#f1f0ed 0 25%,#fff 0 50%) 0 0/18px 18px}
+.av-mini img{width:100%;height:100%;object-fit:contain}
+.av-mini small{position:absolute;left:10px;top:10px;z-index:2;font-size:11px;font-weight:800;background:var(--paper);padding:4px 9px;border-radius:999px}
+.av-mini .ok{position:absolute;right:10px;top:10px;z-index:2;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center}
+.av-mini .ok svg{width:14px;height:14px}
+.spin{width:22px;height:22px;border-radius:50%;border:2.5px solid var(--line-2);border-top-color:var(--red);animation:spin .8s linear infinite;display:inline-block;flex:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gl-step{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+.av-stage.photo{align-items:flex-end;padding:14px 12px 0;overflow:hidden}
+.av-stage.photo .me-img{display:block;max-height:min(60vh,520px);max-width:100%;width:auto;filter:drop-shadow(0 12px 18px rgba(13,13,13,.16));animation:avIn .5s var(--spring)}
+.av-stage.photo.empty{align-items:center;min-height:300px}
+.ph-ghost svg{width:64px;height:64px;color:var(--line-2)}
+.pb-photo{position:relative;margin:0 auto;max-width:100%;border-radius:var(--r-lg);background:radial-gradient(80% 60% at 50% 30%,#fff,var(--paper-2));overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.pb-photo .me-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.pb-l{position:absolute;left:50%;top:40%;width:50%;transform:translate(-50%,-50%);cursor:pointer;filter:drop-shadow(0 4px 6px rgba(13,13,13,.18))}
+.pb-l img,.pb-l svg{display:block;width:100%;height:auto;pointer-events:none}
+.pb-l.busy{min-height:40px;opacity:.5}
+.pb-l.busy::after{content:"";position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px;border-radius:50%;border:2.5px solid var(--line-2);border-top-color:var(--red);animation:spin .8s linear infinite}
+.pb-l.sel{touch-action:none;outline:1.5px dashed var(--red);outline-offset:4px;border-radius:6px;cursor:grab}
+.pb-l.drag{cursor:grabbing;filter:drop-shadow(0 10px 16px rgba(13,13,13,.25))}
+.pb-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px}
+.pb-tools b{width:100%;text-align:center;font-size:13px}
+.pb-tools .ibtn{background:var(--paper-2)}
+
 @media (max-width:759px){.probador .av-svg{height:46vh}}
 .oc{display:flex;flex-direction:column;gap:10px}
 .oc-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
@@ -589,6 +621,8 @@ const P = {
   bell:"M6 16v-5a6 6 0 1 1 12 0v5l2 2H4zM10 21h4",
   note:"M5 3h10l4 4v14H5zM14 3v5h5M8 13h8M8 17h5",
   plus:"M12 5v14M5 12h14",
+  minus:"M5 12h14",
+  rot:"M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4",
   menu:"M4 7h16M4 12h16M4 17h10",
   user:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0",
   grid:"M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
@@ -707,7 +741,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "14";
+const APP_VERSION = "15";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1153,7 +1187,7 @@ function vSection(s){
   </div>
   ${sf ? `<div class="chips"><button class="chip${!filt ? " on" : ""}" data-act="sec-filter" data-sec="${s.id}" data-v="">Todo<span class="n">${all_.length}</span></button>${sf.options.map(o => `<button class="chip${filt === o ? " on" : ""}" data-act="sec-filter" data-sec="${s.id}" data-v="${esc(o)}">${esc(o)}<span class="n">${all_.filter(e => e.fields?.[sf.key] === o).length}</span></button>`).join("")}</div>` : ""}
   ${s.tpl === "outfits" ? outfitCalendar(s) : ""}
-  <div class="row"><button class="btn pri" data-act="add" data-kind="entry" data-sec="${s.id}">${ic("plus")}${s.tpl === "armario" ? "Añadir prenda" : s.tpl === "outfits" ? "Guardar outfit" : "Añadir a " + esc(s.name)}</button>${s.tpl === "armario" ? `<a class="btn" href="#probador">${ic("shirt")}Probador</a>` : ""}</div>
+  <div class="row"><button class="btn pri" data-act="add" data-kind="entry" data-sec="${s.id}">${ic("plus")}${s.tpl === "armario" ? "Añadir prenda" : s.tpl === "outfits" ? "Guardar outfit" : "Añadir a " + esc(s.name)}</button>${s.tpl === "armario" ? `<button class="btn" data-act="g-link">${ic("link")}Desde un enlace</button><a class="btn" href="#probador">${ic("shirt")}Probador</a>` : ""}</div>
   ${es.length ? `<div class="entries${lst ? " lst" : ""}">${es.map(e => {
     const tc = s.tasks ? tasksDoneCount(e.id) : {n:0};
     const metas = shown.map(f => fieldDisplay(f, e.fields?.[f.key])).filter(Boolean);
@@ -2438,55 +2472,12 @@ function avatarSVG(cfg, wear={}){
   if (acc && kw(acc, /gorra|sombrero|gorro/)){ const ac = acc.color || "#222", af = fillG(ac, "ac"); o += `<path d="M69 44 C68 16 84 6 100 6 C116 6 132 16 131 44 Z" fill="${af}"/><path d="M100 42 C120 40 140 42 152 48 C138 50 118 50 100 48 Z" fill="${shade(ac, .78)}"/>`; }
   return `<svg class="av-svg" viewBox="0 -4 200 536" role="img" aria-label="Tu avatar"><defs>${grads.join("")}</defs>${o}</svg>`;
 }
-function vAvatar(){
-  const c = avatarCfg();
-  const sw = (key, list) => `<div class="swatches">${list.map((v, i) => `<input type="radio" name="av-${key}" id="av-${key}-${i}" value="${v}"${c[key] === v ? " checked" : ""} data-av="${key}"><label class="sw" for="av-${key}-${i}" style="background:${v}"></label>`).join("")}</div>`;
-  const seg = (key, list) => `<div class="seg">${list.map(([v, l]) => `<input type="radio" name="av-${key}" id="av-${key}-${v}" value="${v}"${c[key] === v ? " checked" : ""} data-av="${key}"><label for="av-${key}-${v}">${l}</label>`).join("")}</div>`;
-  return `
-  <div class="av-wrap">
-    <div class="av-stage" id="av-stage">${avatarSVG(c)}</div>
-    <div class="stack av-ctrl">
-      <div class="field"><span class="lbl">Tono de piel</span>${sw("skin", SKINS)}</div>
-      <div class="field"><span class="lbl">Peinado</span>${seg("hair", HAIRS)}</div>
-      <div class="field"><span class="lbl">Color de pelo</span>${sw("hairColor", HAIRC)}</div>
-      <div class="field"><span class="lbl">Complexión</span>${seg("body", BODIES)}</div>
-      <div class="field"><span class="lbl">Barba</span>${seg("beard", BEARDS)}</div>
-      <div class="field"><span class="lbl">Gafas</span>${seg("glasses", GLASSES)}</div>
-      <div class="row"><a class="btn pri" href="#probador">${ic("shirt")}Ir al probador</a></div>
-    </div>
-  </div>`;
-}
 document.addEventListener("change", e => {
   const k = e.target.dataset?.av; if (!k) return;
   S.settings.profile = {...profile(), avatar:{...avatarCfg(), [k]:e.target.value}}; putSettings();
   const st = $("#av-stage"); if (st) st.innerHTML = avatarSVG(avatarCfg());
 });
 
-/* ================= probador ================= */
-S.wear = lsGet("orbita.wear", {});
-function vProbador(){
-  const arm = armarioSec();
-  if (!arm) return `<div class="empty"><b>Primero necesitas un Armario.</b>Crea la sección Armario y añade tus prendas con sus fotos.<button class="btn sm" data-act="tpl-pick" data-tpl="armario" data-parent="">${ic("plus")}Crear Armario</button></div>`;
-  const gs = garments(), cat = S.wearCat || "Arriba";
-  for (const k of Object.keys(S.wear)) if (!S.items.has(S.wear[k])) delete S.wear[k];
-  const worn = Object.values(S.wear).map(id => gs.find(g => g.id === id)).filter(Boolean);
-  const list = gs.filter(g => g.cat === cat);
-  return `
-  <div class="probador">
-    <div class="pb-stage"><div class="av-stage">${avatarSVG({}, S.wear)}</div><a class="lnk" href="#avatar" style="justify-content:center">${ic("edit")}Editar avatar</a></div>
-    <div class="stack" style="min-width:0">
-      <div class="chips">${CATS.map(k => `<button class="chip${k === cat ? " on" : ""}" data-act="wear-cat" data-c="${k}">${k}${S.wear[k] ? " ·" : ""}<span class="n">${gs.filter(g => g.cat === k).length}</span></button>`).join("")}</div>
-      ${list.length ? `<div class="g-grid">${list.map(g => `<button class="g-card${S.wear[cat] === g.id ? " on" : ""}" data-act="wear" data-id="${g.id}" data-c="${cat}">${gThumb(g)}<span>${esc(g.title)}</span></button>`).join("")}</div>`
-        : `<div class="empty"><b>No tienes prendas de «${esc(cat)}».</b>Añádelas en tu Armario con su categoría.<button class="btn sm" data-act="add" data-kind="entry" data-sec="${arm.id}">${ic("plus")}Añadir prenda</button></div>`}
-      <div class="box stack" style="gap:12px">
-        <span class="lbl">Outfit actual</span>
-        ${worn.length ? `<div class="g-strip">${worn.map(g => `<span class="g-mini">${gThumb(g)}<b>${esc(g.title)}</b></span>`).join("")}</div>` : `<p class="muted small" style="margin:0">Toca prendas para probártelas.</p>`}
-        <div class="row"><input type="date" class="inp" id="pb-date" value="${todayKey()}" style="width:auto;flex:1;min-width:150px" aria-label="Día del outfit"><button class="btn pri" data-act="wear-save"${worn.length ? "" : " disabled"}>${ic("cal")}Guardar en el calendario</button></div>
-        ${worn.length ? `<button class="lnk" data-act="wear-clear" style="align-self:flex-start">Quitar todo</button>` : ""}
-      </div>
-    </div>
-  </div>`;
-}
 function ensureOutfitSec(){
   let s = outfitSec();
   if (!s){ s = makeSection("outfits"); S.settings.sections = [...sections(), s]; putSettings(true); }
@@ -2586,20 +2577,506 @@ Object.assign(ACT, {
   "ph-3d"(el){ const box = el.closest(".ph-field"); openViewer(JSON.parse($("input[type=hidden]", box).value || "[]"), $("#en-title")?.value); },
   "gf-tog"(el){ const box = el.closest(".gf"), hid = $("input[type=hidden]", box); let ids = JSON.parse(hid.value || "[]"); ids = ids.includes(el.dataset.id) ? ids.filter(x => x !== el.dataset.id) : [...ids, el.dataset.id]; hid.value = JSON.stringify(ids); el.classList.toggle("on"); buzz(); },
   "view-3d"(el){ const it = S.items.get(el.dataset.id); if (it) openViewer(photoIdsOf(it), it.title); },
+  "oc-move"(el){ let {y, m} = S.ocal; m += +el.dataset.d; if (m < 0){ m = 11; y--; } if (m > 11){ m = 0; y++; } S.ocal = {y, m}; render(); }
+});
+
+/* ================= on-device cutouts (MediaPipe, free) ================= */
+const MP_URL = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.1.1";
+const MP_MODELS = {
+  person:"https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_multiclass_256x256/float32/latest/selfie_multiclass_256x256.tflite",
+  object:"https://storage.googleapis.com/mediapipe-models/interactive_segmenter/magic_touch/float32/1/magic_touch.tflite",
+  pose:"https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task"
+};
+let mpLib = null, mpFiles = null;
+const mpTasks = {};
+function mpTask(kind){
+  return mpTasks[kind] || (mpTasks[kind] = (async () => {
+    mpLib = mpLib || await import(MP_URL + "/vision_bundle.mjs");
+    mpFiles = mpFiles || await mpLib.FilesetResolver.forVisionTasks(MP_URL + "/wasm");
+    const C = {person:mpLib.ImageSegmenter, object:mpLib.InteractiveSegmenterLegacy, pose:mpLib.PoseLandmarker}[kind];
+    const opts = delegate => ({baseOptions:{modelAssetPath:MP_MODELS[kind], delegate}, runningMode:"IMAGE", ...(kind === "pose" ? {numPoses:1} : {outputCategoryMask:false, outputConfidenceMasks:true})});
+    try { return await C.createFromOptions(mpFiles, opts("GPU")); } catch { return await C.createFromOptions(mpFiles, opts("CPU")); }
+  })().catch(e => { delete mpTasks[kind]; throw e; }));
+}
+const loadImg = src => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => rej(new Error("img")); im.src = src; });
+async function blobCanvas(blob, max=1100){
+  const url = URL.createObjectURL(blob);
+  try {
+    const im = await loadImg(url), k = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight));
+    const c = document.createElement("canvas"); c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+    c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); return c;
+  } finally { URL.revokeObjectURL(url); }
+}
+// alpha: Float32Array (mw×mh) with 1 = keep; scaled smoothly onto the photo
+function applyAlpha(src, alpha, mw, mh){
+  const m = document.createElement("canvas"); m.width = mw; m.height = mh;
+  const mx = m.getContext("2d"), md = mx.createImageData(mw, mh);
+  for (let i = 0; i < alpha.length; i++){ const a = alpha[i], s = a <= .3 ? 0 : a >= .7 ? 1 : (a - .3) / .4; md.data[i * 4 + 3] = Math.round(s * s * (3 - 2 * s) * 255); }
+  mx.putImageData(md, 0, 0);
+  const out = document.createElement("canvas"); out.width = src.width; out.height = src.height;
+  const ox = out.getContext("2d"); ox.drawImage(src, 0, 0); ox.globalCompositeOperation = "destination-in"; ox.imageSmoothingQuality = "high"; ox.drawImage(m, 0, 0, out.width, out.height);
+  return out;
+}
+function cropAlpha(c, pad=.02){
+  const x = c.getContext("2d"), d = x.getImageData(0, 0, c.width, c.height).data;
+  let x0 = c.width, y0 = c.height, x1 = -1, y1 = -1;
+  for (let y = 0; y < c.height; y++) for (let i = 0; i < c.width; i++) if (d[(y * c.width + i) * 4 + 3] > 24){ if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  if (x1 < 0) return null;
+  const p = Math.round(Math.max(x1 - x0, y1 - y0) * pad);
+  x0 = Math.max(0, x0 - p); y0 = Math.max(0, y0 - p); x1 = Math.min(c.width - 1, x1 + p); y1 = Math.min(c.height - 1, y1 + p);
+  const o = document.createElement("canvas"); o.width = x1 - x0 + 1; o.height = y1 - y0 + 1;
+  o.getContext("2d").drawImage(c, x0, y0, o.width, o.height, 0, 0, o.width, o.height);
+  return o;
+}
+const coverage = c => { const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i] > 128) n++; return n / (d.length / 4); };
+const canvasBlob = (c, type="image/png", q) => new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error("blob")), type, q));
+async function maskOf(task, img, roi){
+  const r = roi ? task.segment(img, roi) : task.segment(img);
+  try {
+    const masks = r.confidenceMasks || [], mk = masks[0]; if (!mk) throw new Error("mask");
+    return {data:Float32Array.from(mk.getAsFloat32Array()), w:mk.width, h:mk.height};
+  } finally { r.close && r.close(); }
+}
+// person photo → transparent PNG cropped to the body
+async function cutPerson(blob){
+  const src = await blobCanvas(blob, 1400), seg = await mpTask("person");
+  const bg = await maskOf(seg, src);
+  for (let i = 0; i < bg.data.length; i++) bg.data[i] = 1 - bg.data[i];
+  const out = cropAlpha(applyAlpha(src, bg.data, bg.w, bg.h), .015);
+  if (!out || coverage(out) < .08) throw new Error("nobody");
+  return out;
+}
+// plain backgrounds (product shots): flood the background from the borders
+function floodCut(src){
+  const w = src.width, h = src.height, d = src.getContext("2d").getImageData(0, 0, w, h).data;
+  const border = [];
+  for (let i = 0; i < w; i += 3){ border.push(i, (h - 1) * w + i); }
+  for (let j = 0; j < h; j += 3){ border.push(j * w, j * w + w - 1); }
+  const col = p => [d[p * 4], d[p * 4 + 1], d[p * 4 + 2]];
+  const med = [0, 1, 2].map(k => { const v = border.map(p => d[p * 4 + k]).sort((a, b) => a - b); return v[v.length >> 1]; });
+  const dist = (p, c) => Math.abs(d[p * 4] - c[0]) + Math.abs(d[p * 4 + 1] - c[1]) + Math.abs(d[p * 4 + 2] - c[2]);
+  const plain = border.filter(p => dist(p, med) < 60).length / border.length;
+  if (plain < .8) return null;
+  const bg = new Uint8Array(w * h), stack = border.filter(p => dist(p, med) < 60);
+  stack.forEach(p => bg[p] = 1);
+  while (stack.length){
+    const p = stack.pop(), x = p % w, y = (p - x) / w, c = col(p);
+    for (const q of [x > 0 ? p - 1 : -1, x < w - 1 ? p + 1 : -1, y > 0 ? p - w : -1, y < h - 1 ? p + w : -1]){
+      if (q < 0 || bg[q]) continue;
+      if (dist(q, med) < 46 || dist(q, c) < 14){ bg[q] = 1; stack.push(q); }
+    }
+  }
+  const a = new Float32Array(w * h);
+  for (let i = 0; i < a.length; i++) a[i] = bg[i] ? 0 : 1;
+  // soften the edge by one pixel so it doesn't look stamped
+  const s = new Float32Array(a);
+  for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++){ const i = y * w + x; s[i] = (a[i] * 4 + a[i - 1] + a[i + 1] + a[i - w] + a[i + w]) / 8; }
+  return applyAlpha(src, s, w, h);
+}
+async function cutObject(blob){
+  const src = await blobCanvas(blob, 1100);
+  let out = floodCut(src), cov = out ? coverage(out) : 0;
+  if (!out || cov < .04 || cov > .97){
+    const seg = await mpTask("object"), m = await maskOf(seg, src, {keypoint:{x:.5, y:.5}});
+    out = applyAlpha(src, m.data, m.w, m.h); cov = coverage(out);
+    if (cov < .04 || cov > .97) throw new Error("nothing");
+  }
+  return cropAlpha(out, .01);
+}
+// body landmarks of the cutout (normalized), used to place garments
+async function poseOf(canvas){
+  try {
+    const c = document.createElement("canvas"); c.width = canvas.width; c.height = canvas.height;
+    const x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height); x.drawImage(canvas, 0, 0);
+    const r = (await mpTask("pose")).detect(c), lm = r.landmarks?.[0];
+    r.close && r.close();
+    return lm ? lm.map(p => [+p.x.toFixed(4), +p.y.toFixed(4)]) : null;
+  } catch { return null; }
+}
+// cached cutouts of garment photos: IDB "cut:<photoId>"
+const cutJobs = new Map();
+S.cutPref = lsGet("orbita.cutpref", {});
+function garmentURL(pid){
+  if (S.cutPref[pid] === "orig") return imgURL(pid);
+  const key = "cut:" + pid;
+  if (imgCache.has(key)) return imgCache.get(key);
+  if (cutJobs.has(pid)) return cutJobs.get(pid);
+  const job = (async () => {
+    const have = await IDB.get(key).catch(() => null);
+    if (have){ const u = URL.createObjectURL(have); imgCache.set(key, Promise.resolve(u)); return u; }
+    const orig = await IDB.get(pid).catch(() => null); if (!orig) return "";
+    try {
+      const b = await canvasBlob(await cutObject(orig));
+      await IDB.put(key, b); const u = URL.createObjectURL(b); imgCache.set(key, Promise.resolve(u)); return u;
+    } catch { S.cutPref[pid] = "orig"; lsSet("orbita.cutpref", S.cutPref); return imgURL(pid); }
+  })();
+  cutJobs.set(pid, job); job.finally(() => cutJobs.delete(pid));
+  return job;
+}
+function hydrateCuts(root=document){
+  $$("img[data-cut]:not([data-ok])", root).forEach(async im => {
+    im.dataset.ok = "1"; const box = im.closest(".pb-l"); box && box.classList.add("busy");
+    const u = await garmentURL(im.dataset.cut);
+    if (u){ im.onload = () => { box && box.classList.remove("busy"); placeLayer(box); }; im.src = u; } else box && box.classList.remove("busy");
+  });
+}
+new MutationObserver(() => { clearTimeout(hydrateCuts._t); hydrateCuts._t = setTimeout(() => { hydrateCuts(); $$(".pb-l").forEach(l => { if (!l._p && (S.wearPos[l.dataset.g] || !$("img", l))) placeLayer(l); }); }, 20); }).observe(document.body, {childList:true, subtree:true});
+
+/* ================= avatar from your photo ================= */
+const meAvatar = () => profile().photoAvatar || null;
+const avatarMode = () => profile().avatarMode || "foto";
+S.avDraft = null;
+async function startAvatarPhoto(file){
+  S.avDraft = {busy:true, step:"Preparando tu foto…"}; render();
+  try {
+    const orig = await compressImage(file, 1400), oid = "img" + uid(); await IDB.put(oid, orig);
+    S.avDraft = {orig:oid, busy:true, step:"Recortando el fondo en tu móvil…"}; render();
+    let cut, pose = null;
+    try { cut = await cutPerson(orig); }
+    catch (e){ S.avDraft = {orig:oid, busy:false, err:e && e.message === "nobody" ? "No encuentro a ninguna persona en la foto. Prueba con una de cuerpo entero, de frente." : "No he podido recortar la foto aquí. Revisa tu conexión la primera vez (descarga el recortador) o usa la foto tal cual."}; if (location.hash === "#avatar") render(); return; }
+    S.avDraft = {...S.avDraft, step:"Buscando hombros, cintura y pies…"}; if (location.hash === "#avatar") render();
+    pose = await poseOf(cut);
+    const cid = "img" + uid(); await IDB.put(cid, await canvasBlob(cut));
+    S.avDraft = {orig:oid, cut:cid, w:cut.width, h:cut.height, pose, busy:false};
+  } catch { S.avDraft = {busy:false, err:"No se pudo leer esa imagen. Prueba con una foto JPG o PNG."}; }
+  if (location.hash === "#avatar") render();
+}
+function avatarPhotoView(){
+  const me = meAvatar(), d = S.avDraft;
+  const pick = (label, cls="btn pri") => `<label class="${cls}" for="av-file">${ic("cam")}${label}</label><input type="file" id="av-file" accept="image/*" hidden data-av-file>`;
+  if (d){
+    return `<div class="stack" style="gap:16px">
+      <div class="av-pair">
+        <div class="av-mini"><small>Tu foto</small>${d.orig ? `<img data-img="${d.orig}" alt="Tu foto original">` : ""}</div>
+        <div class="av-mini cut"><small>Recortado</small>${d.cut ? `<span class="ok">${ic("check")}</span><img data-img="${d.cut}" alt="Tu foto sin fondo">` : d.busy ? `<span class="spin"></span>` : ""}</div>
+      </div>
+      ${d.busy ? `<p class="muted small" style="margin:0;text-align:center">${esc(d.step || "Un momento…")}</p>` : ""}
+      ${d.err ? `<div class="note-box">${esc(d.err)}</div>` : ""}
+      <div class="row">${d.cut ? `<button class="btn pri" data-act="av-use">${ic("check")}Usar como mi avatar</button>` : d.orig && d.err ? `<button class="btn pri" data-act="av-use-orig">Usar la foto tal cual</button>` : ""}${d.busy ? "" : pick("Elegir otra", "btn")}${me && !d.busy ? `<button class="btn ghost" data-act="av-cancel">Cancelar</button>` : ""}</div>
+      <p class="muted small" style="margin:0">La foto no sale de tu dispositivo: el recorte se hace aquí mismo y gratis.</p>
+    </div>`;
+  }
+  if (me){
+    return `<div class="stack" style="gap:14px">
+      <div class="row">${pick("Cambiar foto", "btn")}<a class="btn pri" href="#probador">${ic("shirt")}Ir al probador</a></div>
+      <button class="lnk" data-act="av-del" style="align-self:flex-start">${ic("trash")}Quitar mi foto</button>
+    </div>`;
+  }
+  return `<div class="stack" style="gap:14px">
+    <h2 class="av-h">Tu foto, tu avatar</h2>
+    <p class="muted" style="margin:0">Sube una foto de cuerpo entero. Recortamos el fondo en tu móvil, sin enviarla a nadie, y te pruebas la ropa encima.</p>
+    <ul class="av-tips"><li>De frente y de pie, brazos un poco separados</li><li>Ropa ajustada y buena luz</li><li>Que se vea de la cabeza a los pies</li></ul>
+    <div class="row">${pick("Subir mi foto")}</div>
+  </div>`;
+}
+function avatarStage(){
+  const me = meAvatar();
+  if (avatarMode() === "foto" && me) return `<div class="av-stage photo"><img class="me-img" data-img="${me.cut}" alt="Tu avatar"></div>`;
+  if (avatarMode() === "foto") return `<div class="av-stage photo empty">${S.avDraft?.cut ? `<img class="me-img" data-img="${S.avDraft.cut}" alt="">` : `<span class="ph-ghost">${ic("user")}</span>`}</div>`;
+  return `<div class="av-stage" id="av-stage">${avatarSVG(avatarCfg())}</div>`;
+}
+function vAvatar(){
+  const c = avatarCfg(), mode = avatarMode();
+  const sw = (key, list) => `<div class="swatches">${list.map((v, i) => `<input type="radio" name="av-${key}" id="av-${key}-${i}" value="${v}"${c[key] === v ? " checked" : ""} data-av="${key}"><label class="sw" for="av-${key}-${i}" style="background:${v}"></label>`).join("")}</div>`;
+  const seg = (key, list) => `<div class="seg">${list.map(([v, l]) => `<input type="radio" name="av-${key}" id="av-${key}-${v}" value="${v}"${c[key] === v ? " checked" : ""} data-av="${key}"><label for="av-${key}-${v}">${l}</label>`).join("")}</div>`;
+  return `
+  <div class="seg av-mode"><input type="radio" name="av-mode" id="avm-foto" value="foto"${mode === "foto" ? " checked" : ""} data-avmode><label for="avm-foto">${ic("cam")}Con mi foto</label><input type="radio" name="av-mode" id="avm-ilu" value="ilustrado"${mode === "ilustrado" ? " checked" : ""} data-avmode><label for="avm-ilu">${ic("user")}Ilustrado</label></div>
+  <div class="av-wrap">
+    ${avatarStage()}
+    ${mode === "foto" ? avatarPhotoView() : `<div class="stack av-ctrl">
+      <div class="field"><span class="lbl">Tono de piel</span>${sw("skin", SKINS)}</div>
+      <div class="field"><span class="lbl">Peinado</span>${seg("hair", HAIRS)}</div>
+      <div class="field"><span class="lbl">Color de pelo</span>${sw("hairColor", HAIRC)}</div>
+      <div class="field"><span class="lbl">Complexión</span>${seg("body", BODIES)}</div>
+      <div class="field"><span class="lbl">Barba</span>${seg("beard", BEARDS)}</div>
+      <div class="field"><span class="lbl">Gafas</span>${seg("glasses", GLASSES)}</div>
+      <div class="row"><a class="btn pri" href="#probador">${ic("shirt")}Ir al probador</a></div>
+    </div>`}
+  </div>`;
+}
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t.matches && t.matches("[data-avmode]")){ S.settings.profile = {...profile(), avatarMode:t.value}; putSettings(); render(); }
+  if (t.matches && t.matches("[data-av-file]")){ const f = t.files && t.files[0]; t.value = ""; if (f) startAvatarPhoto(f); }
+});
+Object.assign(ACT, {
+  "av-use"(){ const d = S.avDraft; if (!d || !d.cut) return; const old = meAvatar(); S.settings.profile = {...profile(), avatarMode:"foto", photoAvatar:{orig:d.orig, cut:d.cut, w:d.w, h:d.h, pose:d.pose || null}}; putSettings(true); if (old){ IDB.del(old.orig).catch(() => {}); IDB.del(old.cut).catch(() => {}); } S.avDraft = null; S.wearPos = {}; lsSet("orbita.wearpos", S.wearPos); render(); toast("Avatar listo", "Ya puedes probarte tu ropa encima."); },
+  async "av-use-orig"(){ const d = S.avDraft; if (!d || !d.orig) return; const c = await blobCanvas(await IDB.get(d.orig), 1400); S.avDraft = {...d, cut:d.orig, w:c.width, h:c.height, pose:await poseOf(c), err:""}; ACT["av-use"](); },
+  "av-cancel"(){ S.avDraft = null; render(); },
+  "av-del"(){ const me = meAvatar(); if (!me) return; IDB.del(me.orig).catch(() => {}); IDB.del(me.cut).catch(() => {}); const p = {...profile()}; delete p.photoAvatar; p.avatarMode = "foto"; S.settings.profile = p; putSettings(true); render(); }
+});
+
+/* ================= probador (montage on your photo) ================= */
+S.wear = lsGet("orbita.wear", {});
+S.wearPos = lsGet("orbita.wearpos", {});
+S.pbSel = "";
+const LAYER_Z = {Abajo:1, Calzado:2, Vestido:3, Arriba:3, Abrigo:4, Accesorio:5};
+// target box for each category in stage fractions {cx, top, bottom, w}
+function bodyBoxes(pose){
+  const B = {Arriba:{cx:.5, top:.17, bottom:.5, w:.7}, Abrigo:{cx:.5, top:.16, bottom:.6, w:.78}, Vestido:{cx:.5, top:.17, bottom:.72, w:.7}, Abajo:{cx:.5, top:.44, bottom:.95, w:.56}, Calzado:{cx:.5, top:.9, bottom:1, w:.5}, Accesorio:{cx:.5, top:0, bottom:.1, w:.36}};
+  if (!pose || pose.length < 33) return B;
+  const P = i => pose[i], mid = (a, b) => [(P(a)[0] + P(b)[0]) / 2, (P(a)[1] + P(b)[1]) / 2];
+  const sh = mid(11, 12), hip = mid(23, 24), knee = mid(25, 26), ank = mid(27, 28), foot = [(P(29)[0] + P(30)[0] + P(31)[0] + P(32)[0]) / 4, Math.max(P(29)[1], P(30)[1], P(31)[1], P(32)[1])];
+  const shW = Math.abs(P(11)[0] - P(12)[0]), hipW = Math.abs(P(23)[0] - P(24)[0]), torso = hip[1] - sh[1];
+  if (!(shW > .05 && torso > .08)) return B;
+  return {
+    Arriba:{cx:sh[0], top:sh[1] - torso * .16, bottom:hip[1] + torso * .12, w:shW * 2.3},
+    Abrigo:{cx:sh[0], top:sh[1] - torso * .18, bottom:hip[1] + torso * .45, w:shW * 2.5},
+    Vestido:{cx:sh[0], top:sh[1] - torso * .12, bottom:knee[1] + torso * .12, w:shW * 2.2},
+    Abajo:{cx:hip[0], top:hip[1] - torso * .14, bottom:ank[1] + torso * .08, w:Math.max(hipW * 3.4, Math.abs(P(27)[0] - P(28)[0]) + hipW * 1.6)},
+    Calzado:{cx:foot[0], top:foot[1] - torso * .22, bottom:foot[1] + torso * .04, w:Math.max(Math.abs(P(31)[0] - P(32)[0]) + shW * .8, shW * 1.2)},
+    Accesorio:{cx:P(0)[0], top:Math.max(0, P(0)[1] - torso * .45), bottom:P(0)[1] - torso * .05, w:shW * 1.1}
+  };
+}
+function placeLayer(el){
+  if (!el || !el.dataset.g) return;
+  const g = el.dataset.g, st = el.closest(".pb-photo"); if (!st) return;
+  let p = S.wearPos[g];
+  if (!p){
+    const im = $("img,svg", el), me = meAvatar(); if (!me) return;
+    const ar = im && im.naturalWidth ? im.naturalWidth / im.naturalHeight : 1, box = bodyBoxes(me.pose)[el.dataset.c] || bodyBoxes(null).Arriba;
+    const sr = st.clientWidth / st.clientHeight || me.w / me.h, bh = box.bottom - box.top;
+    let w = Math.min(box.w, bh * ar / sr); if (el.dataset.c === "Calzado" || el.dataset.c === "Accesorio") w = box.w;
+    const h = w * sr / ar;
+    p = {x:box.cx, y:el.dataset.c === "Calzado" ? box.bottom - h / 2 : box.top + h / 2, w, r:0, auto:1};
+  }
+  el.style.left = p.x * 100 + "%"; el.style.top = p.y * 100 + "%"; el.style.width = p.w * 100 + "%";
+  el.style.transform = `translate(-50%,-50%) rotate(${p.r || 0}deg)`;
+  el._p = p;
+}
+const SHAPES = {
+  Arriba:"M30 22 Q50 30 70 22 L94 36 L84 54 L74 48 L74 96 L26 96 L26 48 L16 54 L6 36 Z",
+  Abrigo:"M30 14 Q50 24 70 14 L94 30 L86 92 L72 92 L72 50 L56 98 L44 98 L28 50 L28 92 L14 92 L6 30 Z",
+  Vestido:"M36 6 L44 6 Q50 14 56 6 L64 6 L66 30 Q86 70 90 96 L10 96 Q14 70 34 30 Z",
+  Abajo:"M26 4 L74 4 L82 96 L58 96 L50 32 L42 96 L18 96 Z",
+  Calzado:"M4 66 Q14 50 30 54 L40 60 Q56 62 62 72 Q62 80 54 80 L8 80 Q2 76 4 66 Z M44 66 Q54 50 70 54 L80 60 Q94 62 98 72 Q98 80 92 80 L48 80 Q42 76 44 66 Z",
+  Accesorio:"M10 70 Q12 30 50 28 Q88 30 90 70 Z M4 70 L96 70 L96 78 L4 78 Z"
+};
+const shapeSVG = (cat, col) => `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path d="${SHAPES[cat] || SHAPES.Arriba}" fill="${esc(col || "#9a9a96")}" stroke="rgba(0,0,0,.18)" stroke-width="1"/></svg>`;
+function photoProbadorStage(gs){
+  const me = meAvatar();
+  const worn = Object.entries(S.wear).map(([c, id]) => [c, gs.find(g => g.id === id)]).filter(x => x[1]).sort((a, b) => (LAYER_Z[a[0]] || 3) - (LAYER_Z[b[0]] || 3));
+  const sel = worn.find(([, g]) => g.id === S.pbSel);
+  return `<div class="pb-photo" id="pb-photo" style="aspect-ratio:${me.w}/${me.h};width:min(100%, ${(me.w / me.h * 62).toFixed(2)}vh, ${Math.round(me.w / me.h * 560)}px)">
+      <img class="me-img" data-img="${me.cut}" alt="Tú" draggable="false">
+      ${worn.map(([c, g]) => `<div class="pb-l${g.id === S.pbSel ? " sel" : ""}" data-g="${g.id}" data-c="${c}" style="z-index:${(LAYER_Z[c] || 3) + 1}">${g.photo ? `<img data-cut="${g.photo}" alt="${esc(g.title)}" draggable="false">` : shapeSVG(c, g.color)}</div>`).join("")}
+    </div>
+    ${sel ? `<div class="pb-tools" role="toolbar" aria-label="Ajustar ${esc(sel[1].title)}">
+      <b>${esc(sel[1].title)}</b>
+      <button class="ibtn" data-act="pb-scale" data-d="-1" aria-label="Más pequeña">${ic("minus")}</button><button class="ibtn" data-act="pb-scale" data-d="1" aria-label="Más grande">${ic("plus")}</button>
+      <button class="ibtn" data-act="pb-rot" data-d="-1" aria-label="Girar a la izquierda">${ic("rot")}</button><button class="ibtn" data-act="pb-rot" data-d="1" aria-label="Girar a la derecha"><span style="transform:scaleX(-1);display:grid">${ic("rot")}</span></button>
+      ${sel[1].photo ? `<button class="chip" data-act="pb-bg" data-p="${sel[1].photo}">${S.cutPref[sel[1].photo] === "orig" ? "Quitar fondo" : "Ver con fondo"}</button>` : ""}
+      <button class="chip" data-act="pb-reset">Recolocar</button>
+    </div>` : `<p class="muted small" style="margin:0;text-align:center">${worn.length ? "Toca una prenda para moverla; pellizca para ajustar tamaño y giro." : "Elige prendas abajo para ponértelas."}</p>`}`;
+}
+function vProbador(){
+  const arm = armarioSec();
+  if (!arm) return `<div class="empty"><b>Primero necesitas un Armario.</b>Crea la sección Armario y añade tus prendas con sus fotos.<button class="btn sm" data-act="tpl-pick" data-tpl="armario" data-parent="">${ic("plus")}Crear Armario</button></div>`;
+  const gs = garments(), cat = S.wearCat || "Arriba", photo = avatarMode() === "foto" && meAvatar();
+  for (const k of Object.keys(S.wear)) if (!S.items.has(S.wear[k])) delete S.wear[k];
+  const worn = Object.values(S.wear).map(id => gs.find(g => g.id === id)).filter(Boolean);
+  const list = gs.filter(g => g.cat === cat);
+  return `
+  <div class="probador">
+    <div class="pb-stage">${photo ? photoProbadorStage(gs) : `<div class="av-stage">${avatarSVG({}, S.wear)}</div>`}
+      <a class="lnk" href="#avatar" style="justify-content:center">${ic(photo ? "cam" : "edit")}${photo ? "Cambiar mi foto" : avatarMode() === "foto" ? "Sube tu foto para probarte la ropa encima" : "Editar avatar"}</a></div>
+    <div class="stack" style="min-width:0">
+      <div class="chips">${CATS.map(k => `<button class="chip${k === cat ? " on" : ""}" data-act="wear-cat" data-c="${k}">${k}${S.wear[k] ? " ·" : ""}<span class="n">${gs.filter(g => g.cat === k).length}</span></button>`).join("")}</div>
+      ${list.length ? `<div class="g-grid">${list.map(g => `<button class="g-card${S.wear[cat] === g.id ? " on" : ""}" data-act="wear" data-id="${g.id}" data-c="${cat}">${gThumb(g)}<span>${esc(g.title)}</span></button>`).join("")}</div>`
+        : `<div class="empty"><b>No tienes prendas de «${esc(cat)}».</b>Añádelas con una foto o pegando el enlace de la tienda.</div>`}
+      <div class="row"><button class="btn sm" data-act="add" data-kind="entry" data-sec="${arm.id}">${ic("cam")}Prenda con foto</button><button class="btn sm" data-act="g-link">${ic("link")}Desde un enlace</button></div>
+      <div class="box stack" style="gap:12px">
+        <span class="lbl">Outfit actual</span>
+        ${worn.length ? `<div class="g-strip">${worn.map(g => `<span class="g-mini">${gThumb(g)}<b>${esc(g.title)}</b></span>`).join("")}</div>` : `<p class="muted small" style="margin:0">Toca prendas para probártelas.</p>`}
+        <div class="row"><input type="date" class="inp" id="pb-date" value="${todayKey()}" style="width:auto;flex:1;min-width:150px" aria-label="Día del outfit"><button class="btn pri" data-act="wear-save"${worn.length ? "" : " disabled"}>${ic("cal")}Guardar en el calendario</button></div>
+        ${worn.length ? `<button class="lnk" data-act="wear-clear" style="align-self:flex-start">Quitar todo</button>` : ""}
+      </div>
+    </div>
+  </div>`;
+}
+const savePos = () => lsSet("orbita.wearpos", S.wearPos);
+function setPos(el, p){ S.wearPos[el.dataset.g] = {x:p.x, y:p.y, w:p.w, r:p.r || 0}; placeLayer(el); }
+function selectLayer(g){
+  if (S.pbSel === g) return;
+  S.pbSel = g; render();
+}
+// drag / pinch / rotate garments on the photo
+(() => {
+  const pts = new Map(); let el = null, start = null;
+  const snap = () => { const a = [...pts.values()]; return a.length > 1 ? {cx:(a[0].x + a[1].x) / 2, cy:(a[0].y + a[1].y) / 2, d:Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y), ang:Math.atan2(a[1].y - a[0].y, a[1].x - a[0].x)} : {cx:a[0].x, cy:a[0].y, d:1, ang:0}; };
+  const begin = () => { start = {...snap(), p:{...el._p}, n:pts.size}; };
+  document.addEventListener("pointerdown", e => {
+    const l = e.target.closest && e.target.closest(".pb-l"); if (!l) return;
+    if (!l.classList.contains("sel")){ selectLayer(l.dataset.g); return; }
+    e.preventDefault(); el = l; el.setPointerCapture?.(e.pointerId);
+    pts.set(e.pointerId, {x:e.clientX, y:e.clientY}); begin(); el.classList.add("drag");
+  });
+  document.addEventListener("pointermove", e => {
+    if (!el || !pts.has(e.pointerId)) return;
+    pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+    if (pts.size !== start.n) begin();
+    const st = el.parentElement, W = st.clientWidth, H = st.clientHeight, s = snap(), p = start.p;
+    const k = pts.size > 1 ? s.d / start.d : 1, r = pts.size > 1 ? (s.ang - start.ang) * 180 / Math.PI : 0;
+    setPos(el, {x:p.x + (s.cx - start.cx) / W, y:p.y + (s.cy - start.cy) / H, w:Math.max(.08, Math.min(1.6, p.w * k)), r:(p.r || 0) + r});
+  });
+  const end = e => { if (!pts.delete(e.pointerId) || !el) return; if (pts.size) begin(); else { el.classList.remove("drag"); el = null; savePos(); } };
+  document.addEventListener("pointerup", end); document.addEventListener("pointercancel", end);
+  document.addEventListener("pointerdown", e => { if (S.pbSel && location.hash === "#probador" && e.target.closest && e.target.closest(".pb-photo") && !e.target.closest(".pb-l")){ S.pbSel = ""; render(); } });
+  document.addEventListener("wheel", e => { const l = e.target.closest && e.target.closest(".pb-l.sel"); if (!l || !l._p) return; e.preventDefault(); setPos(l, {...l._p, w:Math.max(.08, Math.min(1.6, l._p.w * (1 - e.deltaY / 600)))}); clearTimeout(savePos._t); savePos._t = setTimeout(savePos, 300); }, {passive:false});
+})();
+const selEl = () => S.pbSel && $(`.pb-l[data-g="${S.pbSel}"]`);
+// flattened image of the look, saved with the outfit
+async function composeLook(){
+  const st = $("#pb-photo"), me = meAvatar(); if (!st || !me) return null;
+  const W = 720, H = Math.round(W * me.h / me.w), c = document.createElement("canvas"); c.width = W; c.height = H;
+  const x = c.getContext("2d"); x.fillStyle = "#f4f4f3"; x.fillRect(0, 0, W, H);
+  const meImg = $(".me-img", st); if (meImg && meImg.complete && meImg.naturalWidth) x.drawImage(meImg, 0, 0, W, H);
+  const layers = $$(".pb-l", st).sort((a, b) => (+a.style.zIndex || 0) - (+b.style.zIndex || 0));
+  for (const l of layers){
+    const p = l._p; if (!p) continue;
+    let im = $("img", l);
+    if (!im){ const svg = $("svg", l); if (!svg) continue; try { im = await loadImg("data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg.outerHTML.replace("<svg", '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"'))); } catch { continue; } }
+    if (!im.naturalWidth) continue;
+    const w = p.w * W, h = w * im.naturalHeight / im.naturalWidth;
+    x.save(); x.translate(p.x * W, p.y * H); x.rotate((p.r || 0) * Math.PI / 180); x.drawImage(im, -w / 2, -h / 2, w, h); x.restore();
+  }
+  try { return await canvasBlob(c, "image/jpeg", .86); } catch { return null; }
+}
+Object.assign(ACT, {
+  "pb-scale"(el){ const l = selEl(); if (l && l._p){ setPos(l, {...l._p, w:Math.max(.08, Math.min(1.6, l._p.w * (+el.dataset.d > 0 ? 1.08 : 1 / 1.08)))}); savePos(); } },
+  "pb-rot"(el){ const l = selEl(); if (l && l._p){ setPos(l, {...l._p, r:(l._p.r || 0) + 4 * el.dataset.d}); savePos(); } },
+  "pb-reset"(){ if (!S.pbSel) return; delete S.wearPos[S.pbSel]; savePos(); const l = selEl(); if (l){ l._p = null; placeLayer(l); } },
+  "pb-bg"(el){ const p = el.dataset.p; if (S.cutPref[p] === "orig") delete S.cutPref[p]; else S.cutPref[p] = "orig"; lsSet("orbita.cutpref", S.cutPref); if (S.pbSel){ delete S.wearPos[S.pbSel]; savePos(); } render(); },
   "wear-cat"(el){ S.wearCat = el.dataset.c; render(); },
-  wear(el){ const c = el.dataset.c; S.wear[c] = S.wear[c] === el.dataset.id ? undefined : el.dataset.id; if (!S.wear[c]) delete S.wear[c]; if (c === "Vestido" && S.wear.Vestido){ delete S.wear.Arriba; delete S.wear.Abajo; } if ((c === "Arriba" || c === "Abajo") && S.wear[c]) delete S.wear.Vestido; lsSet("orbita.wear", S.wear); buzz(); render(); },
-  "wear-clear"(){ S.wear = {}; lsSet("orbita.wear", S.wear); render(); },
-  "wear-save"(){
+  wear(el){ const c = el.dataset.c; S.wear[c] = S.wear[c] === el.dataset.id ? undefined : el.dataset.id; if (!S.wear[c]) delete S.wear[c]; if (c === "Vestido" && S.wear.Vestido){ delete S.wear.Arriba; delete S.wear.Abajo; } if ((c === "Arriba" || c === "Abajo") && S.wear[c]) delete S.wear.Vestido; S.pbSel = S.wear[c] || ""; lsSet("orbita.wear", S.wear); buzz(); render(); },
+  "wear-clear"(){ S.wear = {}; S.pbSel = ""; lsSet("orbita.wear", S.wear); render(); },
+  async "wear-save"(){
     const ids = Object.values(S.wear).filter(id => S.items.has(id)); if (!ids.length) return;
     const s = ensureOutfitSec(), d = $("#pb-date")?.value || todayKey();
-    const dateF = s.fields.find(f => f.type === "date"), gF = s.fields.find(f => f.type === "garments");
+    const dateF = s.fields.find(f => f.type === "date"), gF = s.fields.find(f => f.type === "garments"), pF = s.fields.find(f => f.type === "photos");
     const names = ids.map(id => S.items.get(id).title);
     const fields = {}; if (dateF) fields[dateF.key] = d; if (gF) fields[gF.key] = ids;
     const txt = s.fields.find(f => f.type === "longtext" && /prenda/i.test(f.label)); if (txt) fields[txt.key] = names.join(", ");
+    if (pF && avatarMode() === "foto" && meAvatar()){ const b = await composeLook(); if (b){ const pid = "img" + uid(); await IDB.put(pid, b); fields[pF.key] = [pid]; } }
     putItem({id:uid(), kind:"entry", sectionId:s.id, title:"Outfit " + relDay(d).toLowerCase(), fields});
     toast("Outfit guardado", `En tu calendario de outfits, ${relDay(d).toLowerCase()}.`);
-  },
-  "oc-move"(el){ let {y, m} = S.ocal; m += +el.dataset.d; if (m < 0){ m = 11; y--; } if (m > 11){ m = 0; y++; } S.ocal = {y, m}; render(); }
+  }
+});
+
+/* ================= garment from a shop link (free, with your Gemini key) ================= */
+async function geminiOnce(prompt, tools){
+  let last = null;
+  for (let t = 0; t < 5; t++){
+    const model = GEM_MODELS[(gemIdx + t) % GEM_MODELS.length], ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 60000);
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {method:"POST", signal:ctl.signal, headers:{"content-type":"application/json", "x-goog-api-key":provKey("gemini")},
+        body:JSON.stringify({contents:[{role:"user", parts:[{text:prompt}]}], tools, generationConfig:{temperature:.1, maxOutputTokens:2000}})});
+      const data = await res.json().catch(() => ({}));
+      clearTimeout(timer);
+      if (res.ok) return data;
+      last = {status:res.status, message:data?.error?.message || ""};
+      if (res.status === 400 || res.status === 401 || res.status === 403 || res.status === 429) break;
+      await new Promise(r => setTimeout(r, 500 + t * 500));
+    } catch (e){ clearTimeout(timer); last = {status:0, message:ctl.signal.aborted ? "slow" : "net"}; }
+  }
+  throw last || {status:0};
+}
+const absURL = (u, base) => { try { return new URL(String(u).trim(), base).href; } catch { return ""; } };
+async function fetchImageBlob(u){
+  const tries = [u, `https://images.weserv.nl/?url=${encodeURIComponent(u.replace(/^https?:\/\//, ""))}&w=1400&we`];
+  for (const t of tries){
+    try {
+      const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 20000);
+      const r = await fetch(t, {signal:ctl.signal, referrerPolicy:"no-referrer"}); clearTimeout(timer);
+      if (!r.ok) continue;
+      const b = await r.blob();
+      if (b.size > 2000 && /^image\//.test(b.type)) return b;
+    } catch {}
+  }
+  return null;
+}
+function nearestSwatch(hex){
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || ""); if (!m) return "";
+  const rgb = v => [0, 2, 4].map(i => parseInt(v.slice(i, i + 2), 16)), a = rgb(m[1]);
+  let best = "", bd = Infinity;
+  for (const c of ["#111111","#f4f4f2","#8a8f98","#2f4f8f","#7fb0e8","#2f6b4f","#c9a66b","#8b5a3c","#b23a48","#f2a7b8","#f2d16b","#6b4f9e"]){ const b = rgb(c.slice(1)), d = (a[0] - b[0]) ** 2 * 2 + (a[1] - b[1]) ** 2 * 4 + (a[2] - b[2]) ** 2 * 3; if (d < bd){ bd = d; best = c; } }
+  return best;
+}
+async function importGarment(url, onStep){
+  const prompt = `Lee esta página de producto de una tienda de ropa: ${url}
+Devuelve SOLO un objeto JSON, sin texto alrededor, con estas claves:
+"nombre": nombre corto de la prenda en español (por ejemplo "Camisa de lino blanca"),
+"categoria": exactamente una de ${CATS.map(c => `"${c}"`).join(", ")},
+"color": color principal en hexadecimal #rrggbb,
+"marca": la tienda o marca,
+"precio": precio con moneda, o "",
+"imagenes": lista de hasta 4 URLs absolutas de las fotos del producto (busca og:image, la galería del producto o el JSON-LD "image"); primero la de la prenda sola sobre fondo liso si existe.
+Si no puedes leer la página devuelve {"error":"motivo breve"}.`;
+  onStep("Leyendo la tienda…");
+  const data = await geminiOnce(prompt, [{url_context:{}}]);
+  const cand = data.candidates?.[0], text = (cand?.content?.parts || []).map(p => p.text || "").join("");
+  const meta = cand?.urlContextMetadata?.urlMetadata?.[0];
+  let j = null; try { j = JSON.parse((text.match(/\{[\s\S]*\}/) || ["{}"])[0]); } catch {}
+  if (!j || j.error || !j.nombre){
+    const blocked = meta && !/SUCCESS/.test(meta.urlRetrievalStatus || "");
+    throw {code:"read", message:blocked ? "La tienda no deja leer esa página." : (j && j.error) || "No he encontrado una prenda en esa página."};
+  }
+  const imgs = [...new Set((Array.isArray(j.imagenes) ? j.imagenes : [j.imagen]).filter(Boolean).map(u => absURL(u, url)).filter(u => /^https?:/.test(u)))].slice(0, 4);
+  onStep("Descargando la foto…");
+  const ids = [];
+  for (const u of imgs){ const b = await fetchImageBlob(u); if (b){ const id = (await addImages([b]))[0]; if (id) ids.push(id); } if (ids.length >= 2) break; }
+  return {nombre:String(j.nombre).slice(0, 80), categoria:CATS.includes(j.categoria) ? j.categoria : "Arriba", color:nearestSwatch(j.color), marca:String(j.marca || "").slice(0, 40), precio:String(j.precio || "").slice(0, 30), fotos:ids};
+}
+function openLinkImport(){
+  const arm = armarioSec();
+  if (!provKey("gemini")){
+    openLayer(`${sheetHead("Prenda desde un enlace")}
+      <div class="stack"><p class="muted" style="margin:0">Para leer la tienda uso tu asistente Gemini, que es gratis. Conéctalo una vez con tu clave y vuelve aquí.</p>
+      <div class="sheet-f"><span></span><div class="r"><button class="btn ghost" data-act="close">Ahora no</button><button class="btn pri" data-act="g-link-key">Conectar Gemini gratis</button></div></div></div>`);
+    return;
+  }
+  openLayer(`${sheetHead("Prenda desde un enlace")}
+    <form class="stack" data-form="g-link" autocomplete="off">
+      <p class="muted" style="margin:0">Pega el enlace de la prenda (Zara, Mango, H&amp;M…). Leo el nombre, el color y la foto, y la guardo en tu Armario.</p>
+      <div class="field"><input type="url" class="inp" name="url" id="gl-url" placeholder="https://www.zara.com/es/es/…" inputmode="url" required aria-label="Enlace de la prenda"></div>
+      <button type="button" class="lnk" data-act="g-paste" style="align-self:flex-start">${ic("doc")}Pegar del portapapeles</button>
+      <div id="gl-status" aria-live="polite"></div>
+      <div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="submit" class="btn pri" id="gl-go">${ic("link")}Importar</button></div></div>
+    </form>`);
+  if (!arm){ S.settings.sections = [...sections(), makeSection("armario")]; putSettings(true); }
+}
+document.addEventListener("submit", async e => {
+  const f = e.target; if (f.dataset.form !== "g-link") return;
+  e.preventDefault();
+  const url = absURL($("#gl-url", f).value, location.href), st = $("#gl-status", f), go = $("#gl-go", f);
+  if (!/^https?:\/\//.test(url)){ st.innerHTML = `<div class="note-box">Ese enlace no parece válido. Cópialo entero desde la tienda.</div>`; return; }
+  go.disabled = true;
+  const step = t => { st.innerHTML = `<div class="gl-step"><span class="spin"></span>${esc(t)}</div>`; };
+  try {
+    const g = await importGarment(url, step);
+    const s = armarioSec() || (() => { const x = makeSection("armario"); S.settings.sections = [...sections(), x]; putSettings(true); return x; })();
+    const fk = t => s.fields.find(x => x.type === t), sel = s.fields.find(x => x.type === "select" && (x.options || []).some(o => CATS.includes(o)));
+    const fields = {};
+    if (fk("photos")) fields[fk("photos").key] = g.fotos;
+    if (sel) fields[sel.key] = g.categoria;
+    if (fk("color") && g.color) fields[fk("color").key] = g.color;
+    const brand = s.fields.find(x => x.type === "text" && /marca/i.test(x.label)); if (brand) fields[brand.key] = g.marca;
+    const notes = fk("longtext"); if (notes) fields[notes.key] = [g.precio && "Precio: " + g.precio, url].filter(Boolean).join("\n");
+    const it = putItem({id:uid(), kind:"entry", sectionId:s.id, title:g.nombre, fields});
+    if (g.fotos[0]) garmentURL(g.fotos[0]);
+    swapLayer(() => openEntry(s.id, it));
+    toast("Prenda añadida", g.fotos.length ? `${g.nombre} ya está en tu Armario.` : "No pude bajar la foto: añádela tú desde la ficha.");
+  } catch (err){
+    go.disabled = false;
+    const m = err && err.status === 429 ? "Has usado el cupo gratis de Gemini por ahora. Prueba dentro de un rato." : err && (err.status === 400 || err.status === 403) ? "Tu clave de Gemini no funciona. Revísala en Perfil → Asistente." : err && err.message === "slow" ? "La tienda tarda demasiado en responder. Prueba otra vez." : (err && err.code === "read" && err.message) || "No he podido leer esa página.";
+    st.innerHTML = `<div class="note-box">${esc(m)} Si no, añade la prenda con una foto o una captura de pantalla.</div><div class="row" style="margin-top:10px"><button type="button" class="btn sm" data-act="g-photo">${ic("cam")}Añadir con foto</button></div>`;
+  }
+});
+Object.assign(ACT, {
+  "g-link"(){ swapLayer(openLinkImport); },
+  "g-link-key"(){ swapLayer(() => openAIKey("", "gemini")); },
+  async "g-paste"(){ try { const t = await navigator.clipboard.readText(); if (t) $("#gl-url").value = t.trim(); } catch { toast("No puedo leer el portapapeles", "Mantén pulsado el campo y elige Pegar."); } },
+  "g-photo"(){ const s = armarioSec(); if (s) swapLayer(() => openEntry(s.id)); }
 });
 
 /* ================= boot ================= */
