@@ -1085,7 +1085,7 @@ function vProfile(){
         ${hasPin ? row("pin-off", "shield", "Quitar el PIN", "Órbita se abrirá sin código") + row("lock-now", "lock", "Bloquear ahora", "Vuelve a pedir el PIN") : ""}
       </div></div>
       <div class="box"><span class="lbl">Asistente</span><div class="set-list">
-        ${row("ai-key", "spark", hasKey ? "Clave de Claude conectada" : "Conectar tu clave de Claude", hasKey ? "Toca para cambiarla o quitarla" : "Para usar el asistente con inteligencia artificial")}
+        ${row("ai-key", "spark", hasKey ? `Conectado a ${PROV_NAME[aiProv()]}` : "Conectar el asistente", hasKey ? "Toca para cambiar de servicio o de clave" : "Gratis con Gemini, o con Claude de pago")}
         ${row("ai", "spark", "Abrir el asistente", "Pídele que te organice algo")}
       </div></div>
       <form class="box stack" data-form="prefs"><span class="lbl">Preferencias</span>
@@ -1112,7 +1112,7 @@ const PAGES = {
     <details class="faq"><summary>¿Puedo entrar con Google o recuperar una contraseña?</summary><p>Órbita no tiene cuentas, así que no hay inicio de sesión con Google ni recuperación por email. Puedes proteger la app con un PIN en este dispositivo.</p></details>
     <details class="faq"><summary>He olvidado el PIN, ¿qué hago?</summary><p>El PIN no se puede recuperar. En la pantalla de bloqueo puedes borrar todo y empezar de nuevo, y después importar tu última copia de seguridad.</p></details>
     <details class="faq"><summary>¿El PIN cifra mis datos?</summary><p>No. Es una pantalla de bloqueo que evita miradas indiscretas, pero los datos siguen guardados sin cifrar en el navegador.</p></details>
-    <details class="faq"><summary>¿Cómo funciona el asistente?</summary><p>Usa Claude, la inteligencia artificial de Anthropic, con tu propia clave. Puede crear tareas, eventos, avisos, notas, secciones y entradas por ti. Cada mensaje tiene un coste pequeño que se cobra en tu cuenta de Anthropic.</p></details>
+    <details class="faq"><summary>¿Cómo funciona el asistente?</summary><p>Puede crear tareas, eventos, avisos, notas, secciones y entradas por ti. Funciona con tu propia clave: Gemini de Google (gratis, con un límite diario) o Claude de Anthropic (de pago, se cobra por uso en tu cuenta).</p></details>
     <details class="faq"><summary>¿Recibiré avisos con la app cerrada?</summary><p>Por ahora no. Los avisos saltan con sonido si Órbita está abierta; si no, los verás pendientes al volver.</p></details>
     <details class="faq"><summary>¿Cómo la pongo en la pantalla de inicio?</summary><p>En Safari toca Compartir y luego «Añadir a pantalla de inicio». En Android, en Chrome, menú ⋮ y «Añadir a pantalla de inicio».</p></details>
     <details class="faq"><summary>¿Qué son las subsecciones?</summary><p>Secciones dentro de otra sección, cada una con sus campos. Por ejemplo, dentro de Entrenamiento puedes tener Gimnasio, Artes marciales, Horarios o Progreso.</p></details>`],
@@ -1120,8 +1120,8 @@ const PAGES = {
     <p>Órbita es una herramienta personal. Esta página explica qué datos maneja y dónde quedan.</p>
     <h3>Qué guarda</h3><p>Lo que tú escribes: tu perfil (nombre, usuario, cumpleaños y foto), tareas, eventos, avisos, notas, secciones y sus entradas, y tus preferencias.</p>
     <h3>Dónde lo guarda</h3><p>Solo en el almacenamiento local de tu navegador, en este dispositivo. Órbita no tiene servidor propio y no envía tus datos a ningún sitio.</p>
-    <h3>Servicios externos</h3><p>Las fuentes tipográficas se cargan desde Google Fonts, que puede ver tu dirección IP. La web se aloja en GitHub Pages. Si usas el asistente, el texto que escribes y un resumen de tu agenda y secciones se envían a Anthropic con tu clave para generar la respuesta, según la política de privacidad de Anthropic.</p>
-    <h3>Tu clave de Claude</h3><p>Se guarda solo en este dispositivo y no se incluye en las copias de seguridad.</p>
+    <h3>Servicios externos</h3><p>Las fuentes tipográficas se cargan desde Google Fonts, que puede ver tu dirección IP. La web se aloja en GitHub Pages. Si usas el asistente, el texto que escribes y lo que el asistente consulta de tu agenda y secciones se envían al servicio que elijas (Google o Anthropic) con tu clave, según su política de privacidad. En el plan gratuito de Gemini, Google puede usar esos datos para mejorar sus modelos.</p>
+    <h3>Tu clave del asistente</h3><p>Se guarda solo en este dispositivo y no se incluye en las copias de seguridad.</p>
     <h3>Tus derechos</h3><p>Puedes exportar tus datos cuando quieras y borrarlos todos desde Perfil y ajustes. Borrar los datos del navegador también los elimina.</p></div>`],
   cookies:["Cookies y almacenamiento", `<div class="prose">
     <p>Órbita no usa cookies ni herramientas de seguimiento o publicidad.</p>
@@ -1355,7 +1355,7 @@ function openTemplates(parentId){
   openLayer(`${sheetHead(parent ? `Nueva subsección en ${esc(parent.name)}` : "Nueva sección")}
     <form class="stack" data-form="sec-ai" data-parent="${parentId || ""}" style="gap:10px">
       <div class="field"><label for="sa-text">¿Qué quieres organizar${parent ? " aquí" : ""}?</label><textarea id="sa-text" name="text" placeholder="${esc(ex)}" style="min-height:84px"></textarea></div>
-      <div class="row"><button type="submit" class="btn pri">${ic("spark")}Crear con el asistente</button><span class="muted small">${aiKey() ? "Diseña los campos y subsecciones por ti." : "Necesita tu clave de Claude (Perfil y ajustes)."}</span></div>
+      <div class="row"><button type="submit" class="btn pri">${ic("spark")}Crear con el asistente</button><span class="muted small">${aiKey() ? "Diseña los campos y subsecciones por ti." : "Antes conecta el asistente en Perfil y ajustes (Gemini es gratis)."}</span></div>
     </form>
     <div class="group-t" style="padding-top:22px">O empieza con una plantilla</div>
     <div class="qa">${Object.entries(TEMPLATES).map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${parentId || ""}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="d">${esc(t.d)}</span></button>`).join("")}</div>`);
@@ -1478,12 +1478,18 @@ document.addEventListener("visibilitychange", () => {
 /* ================= AI assistant ================= */
 const SDK_URL = "https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.133.0/+esm";
 const AI_MODEL = "claude-opus-5-5";
-const aiKey = () => { try { return localStorage.getItem(AI_KEY) || ""; } catch { return ""; } };
+const GEM_KEY = "orbita.geminikey", PROV_KEY = "orbita.aiprov";
+const GEM_MODEL = "gemini-2.5-flash";
+const lsRaw = k => { try { return localStorage.getItem(k) || ""; } catch { return ""; } };
+const aiProv = () => lsRaw(PROV_KEY) || (lsRaw(AI_KEY) && !lsRaw(GEM_KEY) ? "claude" : "gemini");
+const provKey = p => lsRaw(p === "claude" ? AI_KEY : GEM_KEY);
+const aiKey = () => provKey(aiProv());
+const PROV_NAME = {gemini:"Gemini", claude:"Claude"};
 let sdk = null, aiClient = null, aiClientKey = "";
-const AI = {history:[], view:[], busy:false};
+const AI = {history:[], gHist:[], view:[], busy:false};
 async function getClient(){
   if (!sdk) sdk = await import(SDK_URL);
-  const key = aiKey();
+  const key = provKey("claude");
   if (!aiClient || aiClientKey !== key){ const Anthropic = sdk.default || sdk.Anthropic; aiClient = new Anthropic({apiKey:key, dangerouslyAllowBrowser:true}); aiClientKey = key; }
   return aiClient;
 }
@@ -1513,7 +1519,7 @@ const AI_TOOLS = [
     en_calendario:{type:"boolean"}, tareas_vinculadas:{type:"boolean"},
     subsecciones:{type:"array", items:{type:"object", properties:{nombre:{type:"string"}, icono:{type:"string", enum:SEC_ICONS}, campos:{type:"array", items:{type:"object", properties:{nombre:{type:"string"}, tipo:{type:"string", enum:Object.keys(FIELD_TYPES)}, opciones:{type:"array", items:{type:"string"}}}, required:["nombre","tipo"]}}, en_calendario:{type:"boolean"}}, required:["nombre","campos"]}}
   }, ["nombre","campos"])},
-  {name:"anadir_entrada", description:"Añade una entrada a una sección. valores usa los nombres de los campos.", input_schema:sch({seccion_id:{type:"string"}, titulo:{type:"string"}, valores:{type:"object", description:"{nombre del campo: valor}"}}, ["seccion_id","titulo"])},
+  {name:"anadir_entrada", description:"Añade una entrada a una sección. valores usa los nombres de los campos.", input_schema:sch({seccion_id:{type:"string"}, titulo:{type:"string"}, valores:{type:"array", description:"Valor de cada campo", items:{type:"object", properties:{campo:{type:"string", description:"nombre del campo"}, valor:{type:"string"}}, required:["campo","valor"]}}}, ["seccion_id","titulo"])},
   {name:"completar_tarea", description:"Marca una tarea o un aviso como hecho o pendiente.", input_schema:sch({id:{type:"string"}, hecho:{type:"boolean"}}, ["id"])}
 ];
 function buildSection(spec, parentId){
@@ -1543,10 +1549,10 @@ function runTool(name, a){
     }
     case "anadir_entrada": {
       const s = secById(a.seccion_id); if (!s) return {error:"sección no encontrada; usa ver_secciones"};
-      const vals = a.valores && typeof a.valores === "object" ? a.valores : {}, fields = {};
+      const vals = Array.isArray(a.valores) ? Object.fromEntries(a.valores.filter(x => x && x.campo).map(x => [x.campo, x.valor])) : (a.valores && typeof a.valores === "object" ? a.valores : {}), fields = {};
       for (const [k, v] of Object.entries(vals)){
         const f = s.fields.find(f => f.label.toLowerCase() === String(k).toLowerCase() || f.key === k); if (!f) continue;
-        if (f.type === "check") fields[f.key] = !!v; else if (["rating","progress","number"].includes(f.type)) fields[f.key] = +v || 0; else fields[f.key] = String(v);
+        if (f.type === "check") fields[f.key] = v === true || /^(s[ií]|true|1|yes)$/i.test(String(v)); else if (["rating","progress","number"].includes(f.type)) fields[f.key] = +v || 0; else fields[f.key] = String(v);
       }
       const e = putItem({id:uid(), kind:"entry", sectionId:s.id, title:String(a.titulo).slice(0, 200), fields});
       return {ok:true, id:e.id, _act:`Añadido a ${s.name}: ${e.title}`};
@@ -1560,8 +1566,60 @@ async function callModel(client){
   try { return await client.beta.messages.create({...base, betas:["server-side-fallback-2026-07-01"], fallbacks:"default"}); }
   catch (e){ if (e && e.status === 400 && /fallback/i.test(String(e.message))) return await client.messages.create(base); throw e; }
 }
+function geminiSchema(x){
+  if (Array.isArray(x)) return x.map(geminiSchema);
+  if (!x || typeof x !== "object") return x;
+  const o = {};
+  for (const [k, v] of Object.entries(x)) o[k] = k === "properties" ? Object.fromEntries(Object.entries(v).map(([pk, pv]) => [pk, geminiSchema(pv)])) : geminiSchema(v);
+  return o;
+}
+const GEM_TOOLS = [{functionDeclarations:AI_TOOLS.map(t => { const d = {name:t.name, description:t.description}; if (Object.keys(t.input_schema.properties || {}).length) d.parameters = geminiSchema(t.input_schema); return d; })}];
+async function geminiCall(){
+  let res;
+  try {
+    res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEM_MODEL}:generateContent`, {method:"POST", headers:{"content-type":"application/json", "x-goog-api-key":provKey("gemini")},
+      body:JSON.stringify({systemInstruction:{parts:[{text:aiSystem()}]}, contents:AI.gHist, tools:GEM_TOOLS, generationConfig:{maxOutputTokens:8000}})});
+  } catch { throw {code:"net"}; }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw {status:res.status, message:data?.error?.message || "", gemini:true};
+  return data;
+}
+async function geminiSend(){
+  let goto = null;
+  for (let step = 0; step < 8; step++){
+    const data = await geminiCall();
+    const cand = data.candidates?.[0];
+    if (!cand || !cand.content){ AI.view.push({r:"err", t:data.promptFeedback?.blockReason ? "El asistente no puede ayudar con esto." : "No he recibido respuesta. Prueba otra vez."}); break; }
+    const parts = cand.content.parts || [];
+    AI.gHist.push({role:"model", parts});
+    const txt = parts.filter(p => p.text && !p.thought).map(p => p.text).join("\n").trim();
+    if (txt) AI.view.push({r:"a", t:txt});
+    const calls = parts.filter(p => p.functionCall);
+    if (!calls.length){ if (cand.finishReason === "MAX_TOKENS") AI.view.push({r:"err", t:"La respuesta se ha cortado por larga."}); break; }
+    const resp = [];
+    for (const c of calls){
+      let out;
+      try { out = runTool(c.functionCall.name, c.functionCall.args || {}); } catch (err){ out = {error:String(err && err.message || err)}; }
+      if (out._act) AI.view.push({r:"act", t:"✓ " + out._act});
+      if (out._goto) goto = out._goto;
+      const {_act, _goto, ...pub} = out;
+      resp.push({functionResponse:{name:c.functionCall.name, response:pub}});
+    }
+    AI.gHist.push({role:"user", parts:resp});
+    drawChat();
+  }
+  return goto;
+}
 function aiErrorText(e){
   if (e && e.code === "nosdk") return "No se pudo cargar el asistente. Comprueba tu conexión.";
+  if (e && e.code === "net") return "No he podido conectar con el asistente. Comprueba tu conexión.";
+  if (e && e.gemini){
+    const st = e.status, m = String(e.message);
+    if (st === 400 && /api key|API_KEY/i.test(m) || st === 401 || st === 403) return "La clave de Gemini no es válida. Revísala en Perfil y ajustes.";
+    if (st === 429) return "Has llegado al límite gratuito de Gemini por ahora. Espera un rato y vuelve a probar.";
+    if (st >= 500) return "Gemini no responde ahora mismo. Inténtalo en unos minutos.";
+    return "Gemini ha devuelto un error: " + m.slice(0, 160);
+  }
   const st = e && e.status;
   if (st === 401) return "La clave de Claude no es válida. Revísala en Perfil y ajustes.";
   if (st === 403) return "Tu clave no tiene permiso para usar este modelo.";
@@ -1573,8 +1631,17 @@ function aiErrorText(e){
 async function aiSend(text){
   if (AI.busy || !text.trim()) return;
   AI.busy = true;
-  AI.view.push({r:"u", t:text}); AI.history.push({role:"user", content:text}); drawChat();
+  AI.view.push({r:"u", t:text}); drawChat();
   let goto = null;
+  if (aiProv() === "gemini"){
+    AI.gHist.push({role:"user", parts:[{text}]});
+    try { goto = await geminiSend(); }
+    catch (e){ AI.view.push({r:"err", t:aiErrorText(e)}); const last = AI.gHist[AI.gHist.length - 1]; if (last && last.role === "user" && last.parts[0]?.text) AI.gHist.pop(); }
+    AI.busy = false; drawChat();
+    if (goto){ AI.view.push({r:"act", t:"", goto}); drawChat(); }
+    return;
+  }
+  AI.history.push({role:"user", content:text});
   try {
     let client;
     try { client = await getClient(); } catch { throw {code:"nosdk"}; }
@@ -1604,7 +1671,7 @@ async function aiSend(text){
     if (last && last.role === "user" && typeof last.content === "string") AI.history.pop();
   }
   AI.busy = false; drawChat();
-  if (goto){ AI.view.push({r:"act", t:"Abre el menú ☰ para verla, o toca aquí", goto}); drawChat(); }
+  if (goto){ AI.view.push({r:"act", t:"", goto}); drawChat(); }
 }
 function drawChat(){
   const box = $("#chat"); if (!box) return;
@@ -1616,7 +1683,7 @@ function drawChat(){
 }
 function openAI(prefill){
   if (!aiKey()) return openAIKey(prefill);
-  openLayer(`${sheetHead(`<span class="row" style="gap:8px">Asistente <span class="tag">Claude</span></span>`, AI.view.length ? `<button class="lnk" data-act="ai-clear" style="margin-right:6px">Nueva charla</button>` : "")}
+  openLayer(`${sheetHead(`<span class="row" style="gap:8px">Asistente <span class="tag">${PROV_NAME[aiProv()]}</span></span>`, AI.view.length ? `<button class="lnk" data-act="ai-clear" style="margin-right:6px">Nueva charla</button>` : "")}
     <div class="chat" id="chat"></div>
     <form class="chat-in" data-form="ai"><textarea id="ai-in" name="t" rows="1" placeholder="Escribe lo que necesites…" aria-label="Mensaje para el asistente" enterkeyhint="send"></textarea><button class="btn pri" id="chat-send" type="submit" aria-label="Enviar">${ic("send")}</button></form>`, {onMount(sh){
       drawChat();
@@ -1626,20 +1693,25 @@ function openAI(prefill){
       if (prefill) setTimeout(() => aiSend(prefill), 200);
     }});
 }
-function openAIKey(after){
-  const has = !!aiKey();
+function openAIKey(after, provArg){
   if (window.claude){
     openLayer(`${sheetHead("Asistente")}<div class="note-box">El asistente funciona en tu web de Órbita (la versión instalada en la pantalla de inicio). Aquí, dentro de Claude, no está disponible.</div>`);
     return;
   }
-  openLayer(`${sheetHead(has ? "Tu clave de Claude" : "Conecta el asistente")}
-    <form class="stack" data-form="ai-key" data-after="${esc(after || "")}" autocomplete="off">
-      <p class="muted" style="margin:0">El asistente usa Claude con tu propia clave de Anthropic. Se guarda solo en este dispositivo y no va en las copias de seguridad.</p>
-      <div class="note-box"><b>Cómo conseguirla</b><br>1. Entra en <span style="font-weight:800">console.anthropic.com</span> y crea una cuenta.<br>2. En Billing añade un poco de saldo (con 5 € hay para mucho uso personal).<br>3. En API Keys pulsa «Create Key», copia la clave y pégala aquí.</div>
-      <a class="lnk" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Abrir console.anthropic.com ${ic("right")}</a>
-      <div class="field"><label for="ak-in">Clave</label><input type="password" id="ak-in" name="key" placeholder="sk-ant-…" value="${esc(aiKey())}" autocapitalize="none" spellcheck="false"></div>
-      <div class="sheet-f">${has ? `<button type="button" class="btn danger" data-act="ai-key-del"><span>Quitar clave</span></button>` : "<span></span>"}<div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="submit" class="btn pri">Guardar</button></div></div>
-    </form>`);
+  const prov = provArg || aiProv(), has = !!provKey(prov), g = prov === "gemini";
+  const help = g
+    ? `<div class="note-box"><b>Cómo conseguirla gratis</b><br>1. Entra en <span style="font-weight:800">aistudio.google.com/apikey</span> con tu cuenta de Google.<br>2. Pulsa «Create API key».<br>3. Copia la clave (empieza por AIza…) y pégala aquí.<br><span class="muted small">Plan gratuito con un límite diario de mensajes. Google puede usar lo que escribes para mejorar sus modelos.</span></div><a class="lnk" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Abrir Google AI Studio ${ic("right")}</a>`
+    : `<div class="note-box"><b>Cómo conseguirla</b><br>1. Entra en <span style="font-weight:800">console.anthropic.com</span> y crea una cuenta.<br>2. En Billing añade un poco de saldo (con 5 € hay para mucho uso personal).<br>3. En API Keys pulsa «Create Key», copia la clave y pégala aquí.</div><a class="lnk" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Abrir console.anthropic.com ${ic("right")}</a>`;
+  openLayer(`${sheetHead(has ? "Tu asistente" : "Conecta el asistente")}
+    <form class="stack" data-form="ai-key" data-after="${esc(after || "")}" data-prov="${prov}" autocomplete="off">
+      <div class="field"><span class="lbl">Servicio</span><div class="seg">
+        <input type="radio" name="prov" id="pv-g" value="gemini"${g ? " checked" : ""} data-prov-pick="gemini"><label for="pv-g">Gemini · gratis</label>
+        <input type="radio" name="prov" id="pv-c" value="claude"${!g ? " checked" : ""} data-prov-pick="claude"><label for="pv-c">Claude · de pago</label></div></div>
+      ${help}
+      <div class="field"><label for="ak-in">Clave de ${PROV_NAME[prov]}</label><input type="password" id="ak-in" name="key" placeholder="${g ? "AIza…" : "sk-ant-…"}" value="${esc(provKey(prov))}" autocapitalize="none" spellcheck="false"></div>
+      <p class="muted small" style="margin:0">Se guarda solo en este dispositivo y no va en las copias de seguridad.</p>
+      <div class="sheet-f">${has ? `<button type="button" class="btn danger" data-act="ai-key-del" data-prov="${prov}"><span>Quitar clave</span></button>` : "<span></span>"}<div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="submit" class="btn pri">Guardar</button></div></div>
+    </form>`, {onMount(sh){ sh.addEventListener("change", e => { const p = e.target.dataset?.provPick; if (p){ const a = sh.querySelector("form").dataset.after; closeLayer(); setTimeout(() => openAIKey(a, p), 300); } }); }});
 }
 
 /* ================= onboarding ================= */
@@ -1785,9 +1857,9 @@ const ACT = {
   search(){ swapLayer(openSearch); },
   ai(){ swapLayer(() => openAI()); },
   "ai-key"(){ swapLayer(() => openAIKey()); },
-  "ai-key-del"(){ try { localStorage.removeItem(AI_KEY); } catch {} closeLayer(); render(); toast("Clave quitada"); },
+  "ai-key-del"(el){ try { localStorage.removeItem(el.dataset.prov === "claude" ? AI_KEY : GEM_KEY); } catch {} closeLayer(); render(); toast("Clave quitada"); },
   "ai-sugg"(el){ aiSend(el.dataset.t); },
-  "ai-clear"(){ AI.history = []; AI.view = []; drawChat(); },
+  "ai-clear"(){ AI.history = []; AI.gHist = []; AI.view = []; drawChat(); },
   day(el){ const k = el.dataset.date || todayKey(); swapLayer(() => openDay(k)); },
   "day-move"(el){ const sh = $(".sheet"); if (!sh?._day) return; const d = +el.dataset.d; sh._day.set(d === 0 ? todayKey() : ymd(addDays(parseYmd(sh._day.get()), d))); },
   slot(el){ ACT.add({dataset:{kind:"event", date:el.dataset.date, time:`${el.dataset.h}:00`}}); },
@@ -1935,9 +2007,11 @@ document.addEventListener("submit", e => {
   } else if (kind === "ai"){
     const ta = $("#ai-in"); const t = ta.value; ta.value = ""; ta.style.height = "auto"; aiSend(t);
   } else if (kind === "ai-key"){
-    const key = (fd.get("key") || "").trim();
-    if (!/^sk-ant-/.test(key)){ toast("Esa clave no parece de Anthropic", "Empieza por «sk-ant-». Cópiala entera desde console.anthropic.com."); return; }
-    try { localStorage.setItem(AI_KEY, key); } catch {}
+    const key = (fd.get("key") || "").trim(), prov = f.dataset.prov;
+    if (prov === "gemini" && !/^AIza[\w-]{20,}$/.test(key)){ toast("Esa clave no parece de Gemini", "Empieza por «AIza». Cópiala entera desde aistudio.google.com."); return; }
+    if (prov === "claude" && !/^sk-ant-/.test(key)){ toast("Esa clave no parece de Anthropic", "Empieza por «sk-ant-». Cópiala entera desde console.anthropic.com."); return; }
+    try { localStorage.setItem(prov === "claude" ? AI_KEY : GEM_KEY, key); localStorage.setItem(PROV_KEY, prov); } catch {}
+    AI.history = []; AI.gHist = []; AI.view = [];
     const after = f.dataset.after; closeLayer(); render(); toast("Asistente conectado"); setTimeout(() => openAI(after || ""), 320);
   } else if (kind === "sec-ai"){
     const t = (fd.get("text") || "").trim();
