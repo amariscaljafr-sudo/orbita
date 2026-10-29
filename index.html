@@ -1485,7 +1485,8 @@ document.addEventListener("visibilitychange", () => {
 const SDK_URL = "https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.133.0/+esm";
 const AI_MODEL = "claude-opus-5-5";
 const GEM_KEY = "orbita.geminikey", PROV_KEY = "orbita.aiprov";
-const GEM_MODEL = "gemini-2.5-flash";
+const GEM_MODELS = ["gemini-3.5-flash", "gemini-flash-lite-latest", "gemini-flash-latest"];
+let gemIdx = 0;
 const lsRaw = k => { try { return localStorage.getItem(k) || ""; } catch { return ""; } };
 const aiProv = () => lsRaw(PROV_KEY) || (lsRaw(AI_KEY) && !lsRaw(GEM_KEY) ? "claude" : "gemini");
 const provKey = p => lsRaw(p === "claude" ? AI_KEY : GEM_KEY);
@@ -1580,13 +1581,25 @@ function geminiSchema(x){
   return o;
 }
 const GEM_TOOLS = [{functionDeclarations:AI_TOOLS.map(t => { const d = {name:t.name, description:t.description}; if (Object.keys(t.input_schema.properties || {}).length) d.parameters = geminiSchema(t.input_schema); return d; })}];
-async function geminiCall(){
-  let res;
+async function geminiCall(tries=0){
+  let res, data;
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 40000);
   try {
-    res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEM_MODEL}:generateContent`, {method:"POST", headers:{"content-type":"application/json", "x-goog-api-key":provKey("gemini")},
+    res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEM_MODELS[gemIdx]}:generateContent`, {method:"POST", signal:ctl.signal, headers:{"content-type":"application/json", "x-goog-api-key":provKey("gemini")},
       body:JSON.stringify({systemInstruction:{parts:[{text:aiSystem()}]}, contents:AI.gHist, tools:GEM_TOOLS, generationConfig:{maxOutputTokens:8000}})});
-  } catch { throw {code:"net"}; }
-  const data = await res.json().catch(() => ({}));
+    data = await res.json().catch(() => ({}));
+  } catch (e){
+    clearTimeout(timer);
+    if (ctl.signal.aborted && tries < 3){ gemIdx = (gemIdx + 1) % GEM_MODELS.length; return geminiCall(tries + 1); }
+    throw {code:ctl.signal.aborted ? "slow" : "net"};
+  }
+  clearTimeout(timer);
+  if (res.status === 404 && gemIdx < GEM_MODELS.length - 1){ gemIdx++; return geminiCall(tries); }
+  if ((res.status === 503 || res.status === 500) && tries < 4){
+    gemIdx = (gemIdx + 1) % GEM_MODELS.length;
+    await new Promise(r => setTimeout(r, 600 + tries * 600));
+    return geminiCall(tries + 1);
+  }
   if (!res.ok) throw {status:res.status, message:data?.error?.message || "", gemini:true};
   return data;
 }
@@ -1619,11 +1632,12 @@ async function geminiSend(){
 function aiErrorText(e){
   if (e && e.code === "nosdk") return "No se pudo cargar el asistente. Comprueba tu conexión.";
   if (e && e.code === "net") return "No he podido conectar con el asistente. Comprueba tu conexión.";
+  if (e && e.code === "slow") return "Gemini está tardando demasiado (suele pasar cuando está saturado). Prueba otra vez en un momento.";
   if (e && e.gemini){
     const st = e.status, m = String(e.message);
     if (st === 400 && /api key|API_KEY/i.test(m) || st === 401 || st === 403) return "La clave de Gemini no es válida. Revísala en Perfil y ajustes.";
     if (st === 429) return "Has llegado al límite gratuito de Gemini por ahora. Espera un rato y vuelve a probar.";
-    if (st >= 500) return "Gemini no responde ahora mismo. Inténtalo en unos minutos.";
+    if (st >= 500) return "Gemini está saturado ahora mismo. Inténtalo de nuevo en unos minutos.";
     return "Gemini ha devuelto un error: " + m.slice(0, 160);
   }
   const st = e && e.status;
@@ -1706,7 +1720,7 @@ function openAIKey(after, provArg){
   }
   const prov = provArg || aiProv(), has = !!provKey(prov), g = prov === "gemini";
   const help = g
-    ? `<div class="note-box"><b>Cómo conseguirla gratis</b><br>1. Entra en <span style="font-weight:800">aistudio.google.com/apikey</span> con tu cuenta de Google.<br>2. Pulsa «Create API key».<br>3. Copia la clave (empieza por AIza…) y pégala aquí.<br><span class="muted small">Plan gratuito con un límite diario de mensajes. Google puede usar lo que escribes para mejorar sus modelos.</span></div><a class="lnk" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Abrir Google AI Studio ${ic("right")}</a>`
+    ? `<div class="note-box"><b>Cómo conseguirla gratis</b><br>1. Entra en <span style="font-weight:800">aistudio.google.com/apikey</span> con tu cuenta de Google.<br>2. Pulsa «Create API key».<br>3. Copia la clave (empieza por AIza… o AQ.…) y pégala aquí.<br><span class="muted small">Plan gratuito con un límite diario de mensajes. Google puede usar lo que escribes para mejorar sus modelos.</span></div><a class="lnk" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Abrir Google AI Studio ${ic("right")}</a>`
     : `<div class="note-box"><b>Cómo conseguirla</b><br>1. Entra en <span style="font-weight:800">console.anthropic.com</span> y crea una cuenta.<br>2. En Billing añade un poco de saldo (con 5 € hay para mucho uso personal).<br>3. En API Keys pulsa «Create Key», copia la clave y pégala aquí.</div><a class="lnk" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Abrir console.anthropic.com ${ic("right")}</a>`;
   openLayer(`${sheetHead(has ? "Tu asistente" : "Conecta el asistente")}
     <form class="stack" data-form="ai-key" data-after="${esc(after || "")}" data-prov="${prov}" autocomplete="off">
@@ -1714,7 +1728,7 @@ function openAIKey(after, provArg){
         <input type="radio" name="prov" id="pv-g" value="gemini"${g ? " checked" : ""} data-prov-pick="gemini"><label for="pv-g">Gemini · gratis</label>
         <input type="radio" name="prov" id="pv-c" value="claude"${!g ? " checked" : ""} data-prov-pick="claude"><label for="pv-c">Claude · de pago</label></div></div>
       ${help}
-      <div class="field"><label for="ak-in">Clave de ${PROV_NAME[prov]}</label><input type="password" id="ak-in" name="key" placeholder="${g ? "AIza…" : "sk-ant-…"}" value="${esc(provKey(prov))}" autocapitalize="none" spellcheck="false"></div>
+      <div class="field"><label for="ak-in">Clave de ${PROV_NAME[prov]}</label><input type="password" id="ak-in" name="key" placeholder="${g ? "AIza… o AQ.…" : "sk-ant-…"}" value="${esc(provKey(prov))}" autocapitalize="none" spellcheck="false"></div>
       <p class="muted small" style="margin:0">Se guarda solo en este dispositivo y no va en las copias de seguridad.</p>
       <div class="sheet-f">${has ? `<button type="button" class="btn danger" data-act="ai-key-del" data-prov="${prov}"><span>Quitar clave</span></button>` : "<span></span>"}<div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="submit" class="btn pri">Guardar</button></div></div>
     </form>`, {onMount(sh){ sh.addEventListener("change", e => { const p = e.target.dataset?.provPick; if (p){ const a = sh.querySelector("form").dataset.after; closeLayer(); setTimeout(() => openAIKey(a, p), 300); } }); }});
@@ -2014,7 +2028,7 @@ document.addEventListener("submit", e => {
     const ta = $("#ai-in"); const t = ta.value; ta.value = ""; ta.style.height = "auto"; aiSend(t);
   } else if (kind === "ai-key"){
     const key = (fd.get("key") || "").trim(), prov = f.dataset.prov;
-    if (prov === "gemini" && !/^AIza[\w-]{20,}$/.test(key)){ toast("Esa clave no parece de Gemini", "Empieza por «AIza». Cópiala entera desde aistudio.google.com."); return; }
+    if (prov === "gemini" && !/^(AIza[\w-]{20,}|AQ\.[\w.-]{20,})$/.test(key)){ toast("Esa clave no parece de Gemini", "Suele empezar por «AIza» o «AQ.». Cópiala entera desde aistudio.google.com."); return; }
     if (prov === "claude" && !/^sk-ant-/.test(key)){ toast("Esa clave no parece de Anthropic", "Empieza por «sk-ant-». Cópiala entera desde console.anthropic.com."); return; }
     try { localStorage.setItem(prov === "claude" ? AI_KEY : GEM_KEY, key); localStorage.setItem(PROV_KEY, prov); } catch {}
     AI.history = []; AI.gHist = []; AI.view = [];
