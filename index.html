@@ -89,15 +89,25 @@ main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-ar
 @media (min-width:900px){.home{grid-template-columns:minmax(0,1.6fr) minmax(320px,1fr);align-items:start;gap:40px}}
 body.static{position:fixed;inset:0;width:100%;overflow:hidden;overscroll-behavior:none}
 body.static main{padding-bottom:0}
-.view.home-v{height:calc(100vh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);height:calc(100dvh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);gap:14px;overflow:hidden}
-.home-v .home{flex:1;min-height:0;display:flex;flex-direction:column;gap:16px}
-.home-v .agenda{flex:1;min-height:0;overflow:hidden}
-.home-v .d{aspect-ratio:auto;height:clamp(36px,calc((100dvh - 440px) / 6),62px)}
+.view.home-v{height:calc(100vh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);height:calc(100dvh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);gap:0;overflow:hidden}
+.home-v .home{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,3.5vh,34px);padding-block:clamp(14px,3vh,30px) clamp(14px,3vh,28px);width:100%;max-width:400px;margin-inline:auto}
+.home-v .cal{width:100%;margin-inline:0;flex:none}
+.home-v .cal-h{margin-bottom:8px;padding-inline:4px}
+.home-v .cal-h .m{font-size:clamp(1.3rem,5vw,1.7rem)}
+.home-v .grid7{gap:2px}
+.home-v .wk{font-size:11px;padding-bottom:4px}
+.home-v .d{aspect-ratio:auto;height:clamp(32px,calc((100dvh - 520px) / 6),46px);font-size:clamp(15px,4.3vw,20px);border-radius:12px}
+.home-v .d .pip{bottom:6%}
+.home-v .agenda{flex:0 1 auto;min-height:0;overflow:hidden}
+.home-v .sec-t{margin-bottom:2px}
+.home-v .sec-t h2{font-size:clamp(1.25rem,4.4vw,1.5rem)}
+.home-v .row-it{padding:10px 4px}
 .more-btn{align-self:flex-start;margin-top:8px}
 @media (min-width:900px){
-  .home-v .home{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(320px,1fr);gap:40px;align-items:stretch}
-  .home-v .cal{display:flex;flex-direction:column;min-height:0}
-  .home-v .d{height:clamp(44px,calc((100dvh - 340px) / 6),104px)}
+  .home-v .home{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.8fr);gap:clamp(40px,6vw,80px);align-items:center;align-content:center;max-width:1040px;padding-block:24px 28px}
+  .home-v .cal{max-width:540px;justify-self:end}
+  .home-v .d{height:clamp(38px,calc((100dvh - 430px) / 6),68px);font-size:clamp(17px,2vw,24px)}
+  .home-v .agenda{max-height:100%;align-self:center;max-width:440px}
 }
 
 /* calendar */
@@ -858,7 +868,7 @@ function greetHtml(animate){
 }
 function fitGreet(){
   const g = $("#greet"); if (!g) return;
-  let size = Math.min(78, Math.max(34, window.innerWidth * .13));
+  let size = Math.min(58, Math.max(32, window.innerWidth * .12));
   g.style.fontSize = size + "px";
   let guard = 0;
   while (g.scrollWidth > g.clientWidth + 1 && size > 16 && guard++ < 60){ size -= 1.5; g.style.fontSize = size + "px"; }
