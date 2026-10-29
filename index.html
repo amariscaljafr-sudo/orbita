@@ -550,6 +550,7 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .kstats div{padding:12px 14px;border-radius:16px;background:var(--ink);color:var(--paper);display:flex;flex-direction:column;gap:2px;min-width:0}
 .kstats div:first-child{background:var(--red)}
 .kstats b{font-size:clamp(22px,6vw,28px);font-weight:900;letter-spacing:-.03em;line-height:1}
+.kstats b.lg{font-size:clamp(17px,4.6vw,22px)}
 .kstats span{font-size:12px;font-weight:600;opacity:.8;line-height:1.2}
 .plus-sm{flex:none;width:30px;height:30px;border-radius:50%;background:var(--paper-2);display:grid;place-items:center;color:var(--ink);transition:transform .2s var(--spring),background .2s}
 .plus-sm svg{width:16px;height:16px}
@@ -740,6 +741,76 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.secs-bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sb-opt{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:14px;border-radius:18px;background:var(--paper-2);text-align:left;transition:transform .2s var(--spring),background .2s}
+.sb-opt:first-child{background:var(--ink);color:var(--paper)}
+.sb-opt svg{width:20px;height:20px}
+.sb-opt:first-child svg{color:var(--red)}
+.sb-opt b{font-size:14px;font-weight:850;line-height:1.15}
+.sb-opt.on{background:var(--paper);box-shadow:inset 0 0 0 2px var(--ink)}
+.sb-opt.on.red{box-shadow:inset 0 0 0 2px var(--red);color:var(--red)}
+.sb-opt:active{transform:scale(.96)}
+.tdel.ed{background:var(--ink);box-shadow:0 6px 14px -6px rgba(13,13,13,.5)}
+.xblock{padding-top:10px;border-top:1px solid var(--line)}
+
+.bd-dots{display:flex;gap:6px;margin:-4px 0 16px}
+.bd-dots i{width:22px;height:5px;border-radius:3px;background:var(--line)}
+.bd-dots i.done{background:var(--ink-2)}
+.bd-dots i.on{background:var(--red);width:34px}
+.bd-opts{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.bd-opt{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px;border-radius:20px;background:var(--paper-2);text-align:left;transition:transform .2s var(--spring)}
+.bd-opt:active{transform:scale(.97)}
+.bd-opt .ic{width:38px;height:38px;border-radius:12px;background:var(--paper);display:grid;place-items:center;margin-bottom:4px}
+.bd-opt .ic svg{width:20px;height:20px;color:var(--red)}
+.bd-opt b{font-size:16px;font-weight:900}
+.bd-opt span:last-child{font-size:13px;color:var(--mute);font-weight:600}
+.bd-opt.pri{background:var(--ink);color:var(--paper)}
+.bd-opt.pri .ic{background:rgba(255,255,255,.12)}
+.bd-opt.pri span:last-child{color:#bdbdb9}
+.bd-tpl summary{cursor:pointer;font-weight:800;font-size:14px;color:var(--ink-2);padding:6px 0}
+.bd-mods{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
+.bd-mod{border-radius:18px;background:var(--paper-2);transition:background .2s,box-shadow .2s}
+.bd-mod.on{background:var(--paper);box-shadow:inset 0 0 0 2px var(--ink)}
+.bd-mh{display:flex;align-items:flex-start;gap:12px;padding:14px;width:100%;text-align:left}
+.bd-mh .ic{flex:none;width:36px;height:36px;border-radius:11px;background:var(--paper);display:grid;place-items:center}
+.bd-mod.on .bd-mh .ic{background:var(--ink);color:var(--paper)}
+.bd-mh .ic svg{width:18px;height:18px}
+.bd-mt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.bd-mt b{font-weight:900;font-size:15px}
+.bd-mt span{font-size:12.5px;color:var(--mute);font-weight:600;line-height:1.3}
+.bd-mt i{font-style:normal;font-size:11px;font-weight:800;color:var(--red);margin-top:2px}
+.bd-ck{flex:none;width:24px;height:24px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line-2);display:grid;place-items:center;color:transparent}
+.bd-ck svg{width:14px;height:14px}
+.bd-mod.on .bd-ck{background:var(--red);box-shadow:none;color:#fff}
+.bd-cfg{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+.bd-cfg .field label{font-size:12px}
+.bd-x{display:grid;grid-template-columns:1fr 130px auto;gap:6px;align-items:center}
+.bd-x .bd-xo{grid-column:1/-1}
+.bd-prev{display:flex;align-items:center;gap:14px;padding:16px;border-radius:20px;background:var(--ink);color:var(--paper)}
+.bd-prev .ic{flex:none;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.12);display:grid;place-items:center}
+.bd-prev .ic svg{width:24px;height:24px;color:var(--red)}
+.bd-prev b{font-size:22px;font-weight:900;letter-spacing:-.02em;display:block}
+.bd-prev span{font-size:13px;opacity:.75}
+.tile-ed{position:relative}
+.tile-ed .tile{pointer-events:none;opacity:.85}
+.tdel{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border-radius:999px;background:var(--red);color:#fff;font-size:12.5px;font-weight:800;box-shadow:0 6px 14px -6px rgba(224,20,28,.6);animation:avIn .3s var(--spring)}
+.tdel svg{width:15px;height:15px}
+.tdel.armed{background:var(--ink)}
+.ccards{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.ccard{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:18px;background:var(--paper-2);min-width:0}
+.ccard.done .kr-t b{text-decoration:line-through;color:var(--mute)}
+.ccard .ck{flex:none;margin-top:2px}
+.cc-img{flex:none;width:64px;height:64px;border-radius:12px;overflow:hidden;background:var(--paper-3)}
+.cc-img img{width:100%;height:100%;object-fit:cover}
+.cc-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.cc-b .kr-t span{white-space:normal}
+.cc-a{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.cc-a:empty{display:none}
+.cc-a .chip.on{background:var(--ink);color:var(--paper)}
+.cc-tags{display:flex;flex-wrap:wrap;gap:4px}
+.cc-tags i{font-style:normal;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--paper);color:var(--ink-2)}
+.lbar.sm{height:7px}
+
 .genres{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(46%,180px),1fr))}
 .gq{position:relative;overflow:hidden;min-height:118px;border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;color:#fff;background:linear-gradient(150deg,hsl(var(--h) 58% 36%),hsl(calc(var(--h) + 30) 62% 15%));box-shadow:0 12px 24px -16px hsl(var(--h) 60% 20%);transition:transform .2s var(--spring)}
 .gq:active{transform:scale(.96)}
@@ -1046,7 +1117,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "19";
+const APP_VERSION = "20";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1150,7 +1221,7 @@ function nextOcc(ev, fromKey = todayKey()){
   return null;
 }
 function entryOn(e, s, key){
-  if (s.daysKey){ const ds = e.fields?.[s.daysKey]; return Array.isArray(ds) && ds.includes(dowOf(key)); }
+  if (s.daysKey){ const ds = e.fields?.[s.daysKey]; if (Array.isArray(ds) && ds.length) return ds.includes(dowOf(key)); if (!s.dateKey) return false; }
   const d = e.fields?.[s.dateKey]; if (!isDate(d)) return false;
   if (s.repeatKey && e.fields?.[s.repeatKey]) return occursOn({date:d, repeat:"weekly"}, key);
   return d === key;
@@ -1449,8 +1520,11 @@ function tileHtml(s){
   const n = deepCount(s.id), subs = childrenOf(s.id).length;
   return `<a class="tile" href="#s-${s.id}"><div class="ic">${ic(s.icon)}</div><div><div class="nm">${esc(s.name)}</div><div class="ct">${n} ${n === 1 ? "entrada" : "entradas"}${subs ? ` · ${subs} ${subs === 1 ? "apartado" : "apartados"}` : ""}</div></div></a>`;
 }
-const vSections = () => `<p class="muted" style="margin:0;max-width:56ch">Cada sección tiene sus propios campos y puede tener apartados dentro. Por ejemplo, Entrenamientos con Gimnasio y Artes marciales.</p>
-  <div class="tiles">${topSections().map(tileHtml).join("")}<button class="tile add" data-act="sec-new"><div class="ic">${ic("plus")}</div><div><div class="nm">Nueva sección</div><div class="ct">Dime qué quieres organizar</div></div></button></div>`;
+const vSections = () => { const md = S.secMode || "";
+  const tip = md === "del" ? "Toca «Eliminar» en la sección que quieras borrar (dos veces para confirmar). Se borra con todo lo que tenga dentro." : md === "edit" ? "Elige la sección que quieres editar: puedes añadirle géneros, horario, top, racha, campos propios…" : "Crea, edita o borra tus secciones.";
+  return `<div class="secs-bar"><button class="sb-opt" data-act="sec-new">${ic("plus")}<b>Nueva sección</b></button><button class="sb-opt${md === "edit" ? " on" : ""}" data-act="secs-mode" data-m="edit">${ic("edit")}<b>Editar sección</b></button><button class="sb-opt${md === "del" ? " on red" : ""}" data-act="secs-mode" data-m="del">${ic("trash")}<b>Borrar sección</b></button></div>
+  <p class="muted" style="margin:0">${tip}</p>
+  <div class="tiles">${topSections().map(s => md === "del" ? `<div class="tile-ed">${tileHtml(s)}<button class="tdel" data-act="sec-del2" data-sec="${s.id}" aria-label="Eliminar ${esc(s.name)}">${ic("trash")}<span>Eliminar</span></button></div>` : md === "edit" ? `<div class="tile-ed">${tileHtml(s)}<button class="tdel ed" data-act="sec-edit" data-sec="${s.id}" aria-label="Editar ${esc(s.name)}">${ic("edit")}<span>Editar</span></button></div>` : tileHtml(s)).join("")}</div>`; };
 function fieldDisplay(f, v){
   if (v === undefined || v === null || v === "") return "";
   switch (f.type){
@@ -1473,7 +1547,7 @@ function fieldDisplay(f, v){
 }
 function vSection(s){
   const parent = s.parentId ? secById(s.parentId) : null;
-  if (KIT_VIEWS[s.tpl]) return `${parent ? `<a class="crumb" href="#s-${parent.id}">${ic("left")}${esc(parent.name)}</a>` : ""}${KIT_VIEWS[s.tpl](s)}${s.tpl === "conocimientos" ? "" : subsBlock(s, true)}`;
+  if (KIT_VIEWS[s.tpl]) return `${parent ? `<a class="crumb" href="#s-${parent.id}">${ic("left")}${esc(parent.name)}</a>` : ""}${KIT_VIEWS[s.tpl](s)}${extrasBlock(s)}${s.tpl === "conocimientos" ? "" : subsBlock(s, true)}`;
   const subs = childrenOf(s.id);
   const all_ = entriesOf(s.id);
   const sf = s.fields.find(f => f.key === s.statusKey && f.type === "select");
@@ -1508,6 +1582,7 @@ function vSection(s){
       ${metas.length || tc.n || e.example ? `<div class="em">${metas.join("")}${tc.n ? `<span class="tag">${tc.d}/${tc.n} tareas</span>` : ""}${e.example ? '<span class="tag ex">Ejemplo</span>' : ""}</div>` : ""}
     </button>`; }).join("")}</div>`
   : `<div class="empty"><b>${q || filt ? "Nada coincide con el filtro." : "Aquí aún no hay entradas."}</b>${q || filt ? "Prueba con otro filtro." : "Pulsa «Añadir» para crear la primera."}</div>`}
+  ${extrasBlock(s)}
   ${special ? subsHtml : ""}`;
 }
 
@@ -1771,7 +1846,7 @@ function fieldInput(f, v, id){
     case "rating": return `<div class="stars" data-stars>${[0,1,2,3,4,5].map(i => `<input type="radio" name="${n}" id="${id}-${i}" value="${i}"${(+v || 0) === i ? " checked" : ""}>${i ? `<label for="${id}-${i}" class="${i <= (+v || 0) ? "on" : ""}" aria-label="${i} estrellas"><svg viewBox="0 0 24 24"><path d="${P.star}"/></svg></label>` : ""}`).join("")}<button type="button" class="lnk" data-act="stars-clear" style="margin-left:8px">Quitar</button></div>`;
     case "date": return `<input type="date" id="${id}" name="${n}" value="${esc(v || "")}">`;
     case "time": return `<input type="time" id="${id}" name="${n}" value="${esc(v || "")}">`;
-    case "number": return `<input type="number" inputmode="decimal" id="${id}" name="${n}" value="${esc(v ?? "")}">`;
+    case "number": return `<input type="number" inputmode="decimal" step="any" id="${id}" name="${n}" value="${esc(v ?? "")}">`;
     case "progress": return `<div class="row" style="flex-wrap:nowrap"><input type="range" min="0" max="100" step="5" id="${id}" name="${n}" value="${+v || 0}" oninput="this.nextElementSibling.textContent=this.value+'%'"><span style="width:48px;text-align:right;font-weight:800">${+v || 0}%</span></div>`;
     case "link": return `<div class="row" style="flex-wrap:nowrap"><input type="url" id="${id}" name="${n}" value="${esc(v || "")}" placeholder="https://…">${v ? `<a class="ibtn" style="flex:none;background:var(--paper-2)" href="${esc(safeUrl(v))}" target="_blank" rel="noopener" aria-label="Abrir enlace">${ic("link")}</a>` : ""}</div>`;
     case "check": return `<label class="toggle"><span><b>${esc(f.label)}</b></span><input type="checkbox" id="${id}" name="${n}"${v ? " checked" : ""}></label>`;
@@ -1789,7 +1864,7 @@ function openEntry(sid, item, preset={}){
   const isNew = !item;
   const e = item ? {...item, fields:{...(item.fields || {})}} : {id:uid(), kind:"entry", sectionId:sid, title:"", fields:{}};
   const kd = kindDef(s, item || {sub:preset.sub}); if (kd) e.sub = subOf(s, item || {sub:preset.sub});
-  const flds = kd ? kd.fields : s.fields, sch = kd || s;
+  const flds = kd ? kd.fields : mergeF(s.fields, s), sch = kd || schedOf(s, e);
   if (isNew && preset.fields) Object.assign(e.fields, preset.fields);
   if (isNew && sch.dateKey && (sch.calendar || kd) && !e.fields[sch.dateKey]) e.fields[sch.dateKey] = preset.date || todayKey();
   if (isNew && sch.timeKey && preset.time) e.fields[sch.timeKey] = preset.time;
@@ -1803,7 +1878,7 @@ function openEntry(sid, item, preset={}){
       <div class="list">${ts.map(t => `<div class="it${t.done ? " done" : ""}"><button type="button" class="ck${t.done ? " on" : ""}" data-act="toggle" data-id="${t.id}" aria-label="Completar">${ic("check")}</button><div class="tx"><div class="tt">${esc(t.title)}</div>${t.date ? `<div class="mt">${esc(relDay(t.date))}</div>` : ""}</div></div>`).join("")}</div>
       <div class="addline"><input type="text" id="lt-in" placeholder="Nueva tarea para esto" aria-label="Nueva tarea vinculada" enterkeyhint="done"><button type="button" class="btn sm" data-act="link-task" data-id="${e.id}">${ic("plus")}Añadir</button></div></div>`;
   };
-  openLayer(`${sheetHead(esc(secPath(s)) + (kd ? ` <span class="kd-l">· ${esc(kd.label)}</span>` : ""), e.example ? '<span class="tag ex">Ejemplo</span>' : "")}
+  openLayer(`${sheetHead(esc(secPath(s)) + (kd && kd.label ? ` <span class="kd-l">· ${esc(kd.label)}</span>` : ""), e.example ? '<span class="tag ex">Ejemplo</span>' : "")}
     <form class="stack" data-form="entry" data-id="${e.id}" data-sec="${s.id}" data-sub="${kd ? e.sub : ""}" autocomplete="off">
       ${kd && kd.autoTitle ? `<input type="hidden" name="title" value="${esc(e.title || "-")}">` : `<div class="field"><input type="text" class="title-in" id="en-title" name="title" value="${esc(e.title)}" placeholder="${esc(kd?.title || "Nombre")}" aria-label="Nombre" required></div>`}
       ${kd && kd.meal ? mealFormTop(s, e) : ""}
@@ -2374,9 +2449,10 @@ const ACT = {
   "cal-today"(){ const d = new Date(); S.calAnim = new Date(S.cal.y, S.cal.m, 1) > d ? "prev" : "next"; S.cal = {y:d.getFullYear(), m:d.getMonth(), sel:todayKey()}; S.listAnim = true; renderPartial(); },
   "task-filter"(el){ S.taskFilter = el.dataset.f; S.listAnim = true; render(); },
   "rem-tab"(el){ S.remTab = el.dataset.t; S.listAnim = true; render(); },
-  "sec-new"(el){ const p = el.dataset.parent || ""; swapLayer(() => openTemplates(p)); },
+  "sec-new"(el){ const p = el.dataset.parent || ""; swapLayer(() => openBuilder(p)); },
   "tpl-pick"(el){ const s = makeSection(el.dataset.tpl, el.dataset.parent || ""); S.settings.sections = [...sections(), s]; putSettings(true); closeLayer(); location.hash = "s-" + s.id; render(); if (el.dataset.tpl === "blanco") setTimeout(() => openSecEditor(s.id), 450); },
-  "sec-edit"(el){ openSecEditor(el.dataset.sec); },
+  "sec-edit"(el){ const s = secById(el.dataset.sec); S.secMode = ""; if (s) swapLayer(() => openBuilder("", s.id)); },
+  "sec-basic"(el){ const id = el.dataset.sec; S.bd = null; swapLayer(() => openSecEditor(id)); },
   "sec-filter"(el){ S.secFilter[el.dataset.sec] = el.dataset.v; S.listAnim = true; render(); },
   "sec-view"(el){ S.settings.sections = sections().map(x => x.id === el.dataset.sec ? {...x, view:x.view === "list" ? "grid" : "list"} : x); putSettings(); S.listAnim = true; render(); },
   "field-add"(){ syncDraftSec(); draftSec.fields.push({key:"f" + uid(), label:"Nuevo campo", type:"text"}); redrawSecEditor(); },
@@ -2485,7 +2561,7 @@ document.addEventListener("submit", e => {
     const old = S.items.get(f.dataset.id) || {};
     const sub = f.dataset.sub || "", kd = sub ? kindDef(s, {sub}) : null;
     const fields = {};
-    for (const fl of (kd ? kd.fields : s.fields)){
+    for (const fl of (kd ? kd.fields : mergeF(s.fields, s))){
       const v = fd.get("f_" + fl.key);
       if (fl.type === "days") fields[fl.key] = fd.getAll("f_" + fl.key).map(Number).filter(Boolean);
       else if (fl.type === "rows") fields[fl.key] = readRows(fd, fl);
@@ -2867,7 +2943,7 @@ function photosField(f, v, id){
   return `<div class="ph-field" data-phf="f_${f.key}"><input type="hidden" name="f_${f.key}" value="${esc(JSON.stringify(ids))}">
     <div class="ph-list">${ids.map(pid => `<span class="ph"><img data-img="${pid}" alt="" data-act="ph-view" data-id="${pid}"><button type="button" class="x" data-act="ph-del" data-id="${pid}" aria-label="Quitar foto">${ic("x")}</button></span>`).join("")}
       <label class="ph-add" for="${id}">${ic("cam")}<span>${ids.length ? "Más fotos" : "Añadir fotos"}</span></label><input type="file" id="${id}" accept="image/*" multiple hidden data-ph-in></div>
-    ${ids.length ? `<button type="button" class="lnk" data-act="ph-3d">${ic("spark")}Ver en 3D</button>` : `<span class="muted small">Haz varias fotos (delante, detrás, lado) para poder girar la prenda en 3D.</span>`}</div>`;
+    ${ids.length ? `<button type="button" class="lnk" data-act="ph-3d">${ic("spark")}Ver en 3D</button>` : `<span class="muted small">Añade varias fotos (delante, detrás, lado) para girarla en 3D.</span>`}</div>`;
 }
 function garmentsField(f, v){
   const sel = Array.isArray(v) ? v : [], gs = garments();
@@ -3437,16 +3513,28 @@ const KITS = {
   }}
 };
 const SUBJ_COL = ["#2f4f8f","#b23a48","#2f6b4f","#c9a66b","#6b4f9e","#7fb0e8","#8b5a3c","#f2a7b8"];
-const subOf = (s, e) => { const k = KITS[s?.tpl]; return k ? (e && e.sub && k.kinds[e.sub] ? e.sub : k.def) : ""; };
-const kindDef = (s, e) => { const k = KITS[s?.tpl]; return k ? k.kinds[subOf(s, e)] : null; };
-const fieldsOf = (s, e) => { const kd = kindDef(s, e); return kd ? kd.fields : s.fields; };
+const subOf = (s, e) => { const k = kitOf(s); return k ? (e && e.sub && k.kinds[e.sub] ? e.sub : k.def) : ""; };
+const kindDef = (s, e) => { const k = kitOf(s); if (!k) return null; const kd = k.kinds[subOf(s, e)]; return s.tpl === "custom" || !s.mods ? kd : mergeKd(s, kd); };
+const extraFields = s => s && s.tpl !== "custom" && (s.mods || s.extra) ? customFields(s) : [];
+const mergeF = (base, s) => { const ex = extraFields(s); if (!ex.length) return base; const keys = new Set(base.map(f => f.key)); return [...base, ...ex.filter(f => !keys.has(f.key))]; };
+function mergeKd(s, kd){
+  const fields = mergeF(kd.fields, s), add = {};
+  if (!kd.dateKey && fields.some(f => f.key === "fecha") && (mOn(s, "calendario") || mOn(s, "cuenta"))){ add.dateKey = "fecha"; add.calendar = true; }
+  if (!kd.daysKey && mOn(s, "horario")){ add.daysKey = "dias"; add.timeKey = kd.timeKey || "hora"; add.calendar = true; }
+  return {...kd, fields, ...add};
+}
+const fieldsOf = (s, e) => { const kd = kindDef(s, e); return kd ? kd.fields : mergeF(s.fields, s); };
 const byKind = (s, k) => entriesOf(s.id).filter(e => subOf(s, e) === k);
 const refName = id => (id && S.items.get(id)?.title) || "";
 function schedOf(s, e){
   const kd = kindDef(s, e);
-  if (kd) return {calendar:!!kd.calendar, dateKey:kd.dateKey || "", timeKey:kd.timeKey || "", daysKey:kd.daysKey || "", label:`${s.name} · ${kd.short || kd.label}`, red:kd.red};
-  if (s.tpl === "outfits") return {...s, label:"Outfit"};
-  return s;
+  if (kd) return {calendar:!!kd.calendar, dateKey:kd.dateKey || "", timeKey:kd.timeKey || "", daysKey:kd.daysKey || "", label:kd.short || kd.label ? `${s.name} · ${kd.short || kd.label}` : s.name, red:kd.red};
+  const base = s.tpl === "outfits" ? {...s, label:"Outfit"} : s;
+  if (s.mods && s.tpl !== "custom"){
+    if (!base.dateKey && (mOn(s, "calendario") || mOn(s, "cuenta"))) return {...base, dateKey:"fecha", timeKey:base.timeKey || "hora", calendar:true};
+    if (!base.daysKey && mOn(s, "horario")) return {...base, daysKey:"dias", timeKey:base.timeKey || "hora", calendar:true};
+  }
+  return base;
 }
 function refOptions(f){
   const s = secById(S.formSec); if (!s) return [];
@@ -3595,9 +3683,9 @@ function openRate(id){
   openLayer(`${sheetHead("¿Qué nota le das?")}<div class="stack" style="align-items:center;gap:18px;padding:8px 0 18px"><b style="font-size:20px;text-align:center">${esc(e.title)}</b><span class="mrate big">${[1,2,3,4,5].map(i => `<button data-act="m-rate" data-id="${id}" data-v="${i}" data-close="1" aria-label="${i} estrellas"><svg viewBox="0 0 24 24"><path d="${P.star}"/></svg></button>`).join("")}</span><button class="lnk" data-act="close">Ahora no</button></div>`);
 }
 function openTopPick(sid, key){
-  const s = secById(sid), c = MEDIA_CFG[s.tpl], ids = topIds(s, key), g = key.startsWith("g:") ? key.slice(2) : "";
+  const s = secById(sid), c = MEDIA_CFG[s.tpl] || {st:["", "", "\u0000"], one:"entrada"}, ids = topIds(s, key), g = key.startsWith("g:") ? key.slice(2) : "";
   const pool = entriesOf(sid).filter(e => (!g || genOf(e) === g) && !ids.includes(e.id)).sort((a, b) => (b.fields?.estado === c.st[2]) - (a.fields?.estado === c.st[2]) || (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0));
-  openLayer(`${sheetHead(g ? "Tu top 5 de " + esc(g.toLowerCase()) : "Tu top 10")}${pool.length ? `<div class="klist">${pool.map(e => `<button class="krow" data-act="top-set" data-sec="${sid}" data-key="${esc(key)}" data-id="${e.id}"><span class="tp sm">${poster(e)}</span><span class="kr-t"><b>${esc(e.title)}</b><span>${esc([e.fields?.tipo, e.fields?.estado, g ? "" : e.fields?.genero].filter(Boolean).join(" · "))}</span></span>${mstars(e.fields?.valoracion)}</button>`).join("")}</div>` : kempty(`No hay nada para elegir${g ? " en " + esc(g.toLowerCase()) : ""}.`, `Añade alguna ${esc(c.one)} y vuelve aquí.`)}`);
+  openLayer(`${sheetHead(g ? "Tu top de " + esc(g.toLowerCase()) : "Tu top")}${pool.length ? `<div class="klist">${pool.map(e => `<button class="krow" data-act="top-set" data-sec="${sid}" data-key="${esc(key)}" data-id="${e.id}"><span class="tp sm">${poster(e)}</span><span class="kr-t"><b>${esc(e.title)}</b><span>${esc([e.fields?.tipo, e.fields?.estado, g ? "" : e.fields?.genero].filter(Boolean).join(" · "))}</span></span>${mstars(e.fields?.valoracion)}</button>`).join("")}</div>` : kempty(`No hay nada para elegir${g ? " en " + esc(g.toLowerCase()) : ""}.`, `Añade algo y vuelve aquí.`)}`);
 }
 
 /* ---------- Comidas y salud ---------- */
@@ -3861,7 +3949,7 @@ Object.assign(ACT, {
   "m-move"(el){ const e = S.items.get(el.dataset.id); if (!e) return; const c = MEDIA_CFG[secById(e.sectionId)?.tpl]; const to = +el.dataset.to; kitPut(e, {estado:c.st[to]}); buzz(); if (to === 2) openRate(e.id); },
   "m-rate"(el){ const e = S.items.get(el.dataset.id); if (!e) return; kitPut(e, {valoracion:+el.dataset.v}); buzz(); if (el.dataset.close){ closeLayer(); toast("Nota guardada", `${e.title}: ${el.dataset.v} de 5`); } },
   "top-pick"(el){ swapLayer(() => openTopPick(el.dataset.sec, el.dataset.key)); },
-  "top-set"(el){ const s = secById(el.dataset.sec); if (!s) return; const k = el.dataset.key, top = {...(s.top || {})}; top[k] = [...topIds(s, k), el.dataset.id].slice(0, k === "__all" ? 10 : 5); closeLayer(); secPatch(s.id, {top}); },
+  "top-set"(el){ const s = secById(el.dataset.sec); if (!s) return; const k = el.dataset.key, top = {...(s.top || {})}; top[k] = [...topIds(s, k), el.dataset.id].slice(0, !MEDIA_CFG[s.tpl] && mOn(s, "top") ? (+s.mods.top.n || 5) : k === "__all" ? 10 : 5); closeLayer(); secPatch(s.id, {top}); },
   "top-del"(el){ const s = secById(el.dataset.sec); if (!s) return; const k = el.dataset.key, top = {...(s.top || {})}, a = topIds(s, k); a.splice(+el.dataset.i, 1); top[k] = a; secPatch(s.id, {top}); },
   "top-up"(el){ const s = secById(el.dataset.sec); if (!s) return; const k = el.dataset.key, top = {...(s.top || {})}, a = topIds(s, k), i = +el.dataset.i; [a[i - 1], a[i]] = [a[i], a[i - 1]]; top[k] = a; secPatch(s.id, {top}); },
   mday(el){ const k = S.mday[el.dataset.sec] || todayKey(); S.mday[el.dataset.sec] = ymd(addDays(parseYmd(k), +el.dataset.d)); render(); },
@@ -3946,6 +4034,344 @@ function normalizeKits(){
   if (ch) putSettings(true);
   if (n) flushBulk();
 }
+
+/* ================= custom sections: build your own from blocks ================= */
+const MODS = [
+  ["estados","Estados","list","Separa por estado, como Quiero ver · Viendo · Vistas.","Como en Películas"],
+  ["cats","Géneros o categorías","grid","Cuadrantes con el nombre y las opciones que tú quieras.","Como en Películas"],
+  ["top","Top","star","Tu ranking de favoritos: top 3, 5 o 10.","Como en Películas"],
+  ["horario","Horario semanal","clock","Tabla por días y horas, como un horario escolar.","Como en Estudios"],
+  ["calendario","Calendario","cal","Cada cosa en su día; también sale en el calendario de inicio.","Como en Entrenamientos"],
+  ["tareas","Casillas de hecho","check","Marca cada cosa como hecha y ve cuántas llevas.","Como en Estudios"],
+  ["valor","Valoración","star","Nota de 1 a 5 estrellas.","Como en Películas"],
+  ["progreso","Barra de progreso","trend","Sube el porcentaje con +5 % y +10 %.","Como en Quiero aprender"],
+  ["fotos","Fotos","cam","Fotos o portada de cada cosa.","Como en Armario"],
+  ["notas","Notas","note","Texto largo para apuntar lo que quieras.","Como en Conocimientos"],
+  ["enlace","Enlace","link","Un enlace a una web, un vídeo o una tienda.",""],
+  ["racha","Racha diaria","spark","Toca «Hecho hoy» y cuenta los días seguidos. Ideal para hábitos.","Nuevo"],
+  ["dinero","Dinero","wallet","Importe de cada cosa, el total y una meta de ahorro o presupuesto.","Nuevo"],
+  ["cuenta","Cuenta atrás","clock","Los días que faltan para cada fecha.","Nuevo"],
+  ["lugar","Lugar","pin","Una dirección o sitio, con botón para abrirlo en el mapa.","Nuevo"],
+  ["cantidad","Cantidad","data","Un número con su unidad: páginas, km, raciones…","Nuevo"],
+  ["etiquetas","Etiquetas","bookmark","Palabras para agrupar y encontrar las cosas.","Nuevo"]
+];
+const CAT_PRESETS = [
+  ["Cine y series","Género",GEN_PELI],["Literarios","Género literario",GEN_LIB],
+  ["Musicales","Género musical",["Pop","Rock","Hip hop","Reguetón","Electrónica","Indie","Jazz","Clásica","Flamenco","R&B","Metal","Latina"]],
+  ["Videojuegos","Género",["Acción","Aventura","RPG","Shooter","Deportes","Estrategia","Plataformas","Puzles","Carreras","Terror","Simulación","Mundo abierto"]],
+  ["Platos","Tipo de plato",["Entrantes","Pasta","Arroces","Carnes","Pescados","Verduras","Postres","Desayunos","Salsas"]],
+  ["Continentes","Continente",["Europa","Asia","África","América del Norte","América del Sur","Oceanía"]]
+];
+const EXTRA_TYPES = [["text","Texto"],["longtext","Texto largo"],["number","Número"],["date","Fecha"],["time","Hora"],["select","Opciones"],["rating","Estrellas"],["check","Sí / No"],["link","Enlace"],["progress","Progreso"],["color","Color"]];
+const splitList = v => (Array.isArray(v) ? v : String(v || "").split(",")).map(x => String(x).trim()).filter(Boolean).slice(0, 30);
+const mOn = (s, k) => !!(s.mods && s.mods[k] && s.mods[k].on);
+function customFields(s){
+  const m = s.mods || {}, on = k => mOn(s, k), out = [];
+  if (on("cats")) out.push(F("genero", m.cats.label || "Categoría", "select", {options:splitList(m.cats.opts)}));
+  if (on("estados")) out.push(F("estado", "Estado", "select", {options:splitList(m.estados.opts)}));
+  if (on("horario")) out.push(F("dias","Días","days"), F("hora","Empieza","time"), F("fin","Termina","time"));
+  if (on("calendario") || on("cuenta")) out.push(F("fecha", on("cuenta") && !on("calendario") ? "Fecha objetivo" : "Fecha", "date"));
+  if (on("calendario") && !on("horario")) out.push(F("hora","Hora","time"));
+  if (on("tareas")) out.push(F("hecho","Hecho","check"));
+  if (on("valor")) out.push(F("valoracion","Valoración","rating"));
+  if (on("progreso")) out.push(F("progreso","Progreso","progress"));
+  if (on("dinero")) out.push(F("importe", `Importe (${m.dinero.moneda || "€"})`, "number"));
+  if (on("cantidad")) out.push(F("cantidad", `Cantidad${m.cantidad.unidad ? ` (${m.cantidad.unidad})` : ""}`, "number"));
+  if (on("lugar")) out.push(F("lugar","Lugar","text"));
+  if (on("etiquetas")) out.push(F("etiquetas","Etiquetas (separadas por comas)","text"));
+  if (on("fotos")) out.push(F("portada","Fotos","photos"));
+  if (on("enlace")) out.push(F("enlace","Enlace","link"));
+  for (const x of (s.extra || [])) if (x.label) out.push(F(x.key, x.label, x.type, x.type === "select" ? {options:splitList(x.opts).length ? splitList(x.opts) : ["Opción 1","Opción 2"]} : {}));
+  if (on("notas")) out.push(F("notas","Notas","longtext"));
+  return out;
+}
+function customKit(s){
+  const fields = customFields(s), has = k => fields.some(f => f.key === k);
+  return {def:"item", kinds:{item:{label:"", title:s.mods?.titulo || "Nombre", fields, dateKey:has("fecha") ? "fecha" : "", timeKey:has("hora") ? "hora" : "", daysKey:mOn(s, "horario") ? "dias" : "", calendar:mOn(s, "calendario") || mOn(s, "horario") || mOn(s, "cuenta"),
+    red:mOn(s, "cuenta") ? e => isDate(e.fields?.fecha) && !e.fields?.hecho && daysBetween(todayKey(), e.fields.fecha) >= 0 && daysBetween(todayKey(), e.fields.fecha) <= 3 : null}}};
+}
+const kitOf = s => !s ? null : s.tpl === "custom" ? customKit(s) : KITS[s.tpl];
+const streakOf = e => { const set = new Set(e.days || []); let d = new Date(), n = 0; if (!set.has(ymd(d))) d = addDays(d, -1); while (set.has(ymd(d))){ n++; d = addDays(d, -1); } return n; };
+
+/* ---------- weekly timetable (shared with Estudios) ---------- */
+function ttHtml(s, items, sub, colOf){
+  const toM = t => { const m = /^(\d{1,2}):(\d{2})$/.exec(t || ""); return m ? +m[1] * 60 + +m[2] : null; };
+  const blocks = items.flatMap(c => (c.fields?.dias || []).map(d => { const a = toM(c.fields?.hora); if (a === null) return null; let b = toM(c.fields?.fin); if (b === null || b <= a) b = a + 60; return {c, d, a, b}; })).filter(Boolean);
+  const h0 = Math.min(8, ...blocks.map(x => Math.floor(x.a / 60))), h1 = Math.max(15, ...blocks.map(x => Math.ceil(x.b / 60)));
+  const hours = [...Array(h1 - h0)].map((_, i) => h0 + i), HH = 52, wk = [...Array(7)].map((_, i) => ymd(addDays(weekStart(), i))), tk = todayKey();
+  const loose = items.filter(c => toM(c.fields?.hora) === null || !(c.fields?.dias || []).length);
+  return `<div class="tt-wrap"><div class="tt" style="--hh:${HH}px;--rows:${hours.length}">
+      <div class="tt-corner"></div>${DOW.map((x, i) => `<div class="tt-day${wk[i] === tk ? " today" : ""}${i > 4 ? " we" : ""}"><b>${x}</b><span>${parseYmd(wk[i]).getDate()}</span></div>`).join("")}
+      <div class="tt-hours">${hours.map(h => `<span>${h}:00<i>${h + 1}:00</i></span>`).join("")}</div>
+      ${DOW.map((x, i) => { const d = i + 1;
+        return `<div class="tt-col${wk[i] === tk ? " today" : ""}${i > 4 ? " we" : ""}">${hours.map(h => `<button class="tt-slot" data-act="kadd" data-sec="${s.id}" data-sub="${sub}" data-f="${esc(JSON.stringify({dias:[d], hora:pad(h) + ":00", fin:pad(h + 1) + ":00"}))}" aria-label="Añadir el ${DOWL[i].toLowerCase()} a las ${h}:00"></button>`).join("")}
+          ${blocks.filter(x => x.d === d).map(x => `<button class="tt-cls" style="--c:${colOf(x.c)};top:${((x.a - h0 * 60) / 60 * HH).toFixed(1)}px;height:${((x.b - x.a) / 60 * HH - 3).toFixed(1)}px" data-act="open" data-id="${x.c.id}"><b>${esc(x.c.title)}</b><span>${esc(x.c.fields?.hora || "")}${x.c.fields?.aula ? " · " + esc(x.c.fields.aula) : x.c.fields?.lugar ? " · " + esc(x.c.fields.lugar) : ""}</span></button>`).join("")}</div>`; }).join("")}
+    </div></div>
+    <p class="muted small" style="margin:0">Toca un hueco para añadir algo a esa hora.</p>
+    ${loose.length ? `<div class="klist">${loose.map(c => krow(c, ["Sin día u hora"])).join("")}</div>` : ""}`;
+}
+
+/* ---------- custom section view ---------- */
+S.cst = {};
+function customCard(s, e){
+  const f = e.fields || {}, m = s.mods || {}, on = k => mOn(s, k), tk = todayKey();
+  const ph = (f.portada || [])[0], st = splitList(m.estados?.opts), si = st.indexOf(f.estado);
+  const meta = [];
+  if (on("cats") && f.genero) meta.push(f.genero);
+  if (on("estados") && f.estado) meta.push(f.estado);
+  if (isDate(f.fecha)){ const n = daysBetween(tk, f.fecha); meta.push(on("cuenta") && n >= 0 ? (n === 0 ? "¡Es hoy!" : n === 1 ? "Mañana" : `Faltan ${n} días`) : relDay(f.fecha)); }
+  if (on("horario") && Array.isArray(f.dias) && f.dias.length) meta.push(f.dias.map(d => DOW[d - 1]).join(" ") + (f.hora ? " · " + f.hora : ""));
+  else if (f.hora) meta.push(f.hora);
+  if (on("dinero") && f.importe !== "" && f.importe != null) meta.push(`${(+f.importe).toLocaleString("es-ES")} ${m.dinero.moneda || "€"}`);
+  if (on("cantidad") && f.cantidad !== "" && f.cantidad != null) meta.push(`${f.cantidad} ${m.cantidad.unidad || ""}`.trim());
+  const tags = on("etiquetas") ? splitList(f.etiquetas) : [];
+  const p = Math.max(0, Math.min(100, +f.progreso || 0)), streak = on("racha") ? streakOf(e) : 0, doneToday = on("racha") && (e.days || []).includes(tk);
+  return `<article class="ccard${on("tareas") && f.hecho ? " done" : ""}">
+    ${on("tareas") ? `<button class="ck${f.hecho ? " on" : ""}" data-act="c-done" data-id="${e.id}" aria-label="${f.hecho ? "Marcar pendiente" : "Marcar hecho"}">${ic("check")}</button>` : ""}
+    ${ph ? `<button class="cc-img" data-act="open" data-id="${e.id}"><img data-img="${ph}" alt=""></button>` : ""}
+    <div class="cc-b"><button class="kr-t" data-act="open" data-id="${e.id}"><b>${esc(e.title)}</b>${meta.length ? `<span>${esc(meta.join(" · "))}</span>` : ""}</button>
+      ${on("valor") && +f.valoracion ? mstars(f.valoracion) : ""}
+      ${on("progreso") ? `<div class="lbar sm"><i style="width:${p}%"></i></div>` : ""}
+      ${tags.length ? `<span class="cc-tags">${tags.map(t => `<i>${esc(t)}</i>`).join("")}</span>` : ""}
+      ${on("lugar") && f.lugar ? `<a class="lnk" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(f.lugar)}" target="_blank" rel="noopener">${ic("pin")}${esc(f.lugar)}</a>` : ""}
+      <div class="cc-a">
+        ${on("estados") && si < st.length - 1 ? `<button class="chip sm" data-act="c-next" data-id="${e.id}">${ic("right")}${esc(st[si + 1] || st[0])}</button>` : ""}
+        ${on("progreso") && p < 100 ? `<button class="chip sm" data-act="c-inc" data-id="${e.id}" data-v="10">+10%</button><b class="small">${p}%</b>` : on("progreso") ? `<b class="small">Completado</b>` : ""}
+        ${on("racha") ? `<button class="chip sm${doneToday ? " on" : ""}" data-act="c-day" data-id="${e.id}">${ic("check")}${doneToday ? "Hecho hoy" : "Marcar hoy"}</button><span class="small muted">${streak ? `Racha: ${streak} ${streak === 1 ? "día" : "días"}` : "Sin racha"}</span>` : ""}
+      </div></div>
+  </article>`;
+}
+function vCustom(s, extras=false){
+  const m = s.mods || {}, on = k => mOn(s, k), es = entriesOf(s.id), tk = todayKey(), n = Math.max(3, Math.min(10, +m.top?.n || 5));
+  const track = ["tareas","racha","progreso","dinero","cantidad","valor","estados","lugar","etiquetas","cuenta"].some(on) || (s.extra || []).some(x => x.label);
+  const catL = m.cats?.label || "Categoría", tabs = extras ? (track ? [["lista", "Seguimiento", es.length]] : []) : [["lista", "Todo", es.length]];
+  const sx = extras ? {id:"x" + s.id} : s;
+  if (on("cats")) tabs.push(["cats", catL]);
+  if (on("top")) tabs.push(["top", "Top " + n]);
+  if (on("horario")) tabs.push(["horario", "Horario"]);
+  if (on("calendario")) tabs.push(["calendario", "Calendario"]);
+  if (!tabs.length) return "";
+  const tab = tabs.some(t => t[0] === kitTab(sx, "")) ? kitTab(sx, "") : (on("cats") ? "cats" : tabs[0][0]);
+  const st = splitList(m.estados?.opts), cur = S.cst[s.id] || "";
+  const stats = [];
+  if (on("tareas")) stats.push([`${es.filter(e => e.fields?.hecho).length}/${es.length}`, "hechas"]);
+  if (on("dinero")){ const tot = es.reduce((a, e) => a + (+e.fields?.importe || 0), 0), meta = +m.dinero.meta || 0; stats.push([`${tot.toLocaleString("es-ES", {maximumFractionDigits:2})} ${m.dinero.moneda || "€"}`, meta ? `de ${meta.toLocaleString("es-ES")} ${m.dinero.moneda || "€"}` : "en total"]); }
+  if (on("progreso") && es.length) stats.push([`${Math.round(es.reduce((a, e) => a + (+e.fields?.progreso || 0), 0) / es.length)}%`, "de media"]);
+  if (on("racha") && es.length) stats.push([String(Math.max(0, ...es.map(streakOf))), "mejor racha"]);
+  if (on("cantidad")){ const tot = es.reduce((a, e) => a + (+e.fields?.cantidad || 0), 0); stats.push([tot.toLocaleString("es-ES"), m.cantidad.unidad || "en total"]); }
+  if (on("cuenta")){ const nx = es.filter(e => isDate(e.fields?.fecha) && e.fields.fecha >= tk).sort((a, b) => a.fields.fecha < b.fields.fecha ? -1 : 1)[0]; if (nx) stats.push([String(daysBetween(tk, nx.fields.fecha)), "días para " + nx.title]); }
+  const stChips = list => on("estados") && st.length ? `<div class="chips"><button class="chip${!cur ? " on" : ""}" data-act="c-st" data-sec="${s.id}" data-v="">Todo<span class="n">${list.length}</span></button>${st.map(o => `<button class="chip${cur === o ? " on" : ""}" data-act="c-st" data-sec="${s.id}" data-v="${esc(o)}">${esc(o)}<span class="n">${list.filter(e => e.fields?.estado === o).length}</span></button>`).join("")}</div>` : "";
+  const filt = list => list.filter(e => !cur || e.fields?.estado === cur);
+  const cards = list => list.length ? `<div class="ccards">${list.sort((a, b) => (on("tareas") ? (a.fields?.hecho ? 1 : 0) - (b.fields?.hecho ? 1 : 0) : 0) || (b.updatedAt || 0) - (a.updatedAt || 0)).map(e => customCard(s, e)).join("")}</div>` : kempty("Aún no hay nada aquí.", "Toca «Añadir» para crear la primera.");
+  const preset = extra => ({...(cur ? {estado:cur} : on("estados") && st[0] ? {estado:st[0]} : {}), ...extra});
+  let body = "";
+  if (tab === "cats"){
+    const g = S.mgenre[s.id], opts = splitList(m.cats?.opts);
+    if (g){
+      const inG = es.filter(e => genOf(e) === g);
+      body = `<button class="crumb" data-act="m-genre" data-sec="${s.id}" data-g="">${ic("left")}${esc(catL)}: todas</button>
+        <div class="genre-h" style="--h:${hue(g)}"><b>${esc(g)}</b><span>${inG.length}</span></div>
+        ${stChips(inG)}${cards(filt(inG))}
+        <div class="row">${kbtn(s, "item", "Añadir", preset(g !== NOGEN ? {genero:g} : {}))}</div>
+        ${on("top") && m.top.perCat ? topBlock(s, "g:" + g, `Top ${n} · ${g}`, n) : ""}`;
+    } else {
+      const gens = [...opts, ...(es.some(e => genOf(e) === NOGEN) ? [NOGEN] : []), ...[...new Set(es.map(genOf))].filter(x => x !== NOGEN && !opts.includes(x))];
+      body = `<div class="genres">${gens.map(x => { const xs = es.filter(e => genOf(e) === x), pics = xs.slice(0, 3);
+        return `<button class="gq${xs.length ? "" : " empty0"}" style="--h:${hue(x)}" data-act="m-genre" data-sec="${s.id}" data-g="${esc(x)}"><b>${esc(x)}</b><span>${xs.length || "Vacío"}</span>${pics.length ? `<span class="gq-p">${pics.map(e => `<span class="tp">${poster(e)}</span>`).join("")}</span>` : ""}</button>`; }).join("")}</div>
+        <div class="row">${kbtn(s, "item", "Añadir", preset({}))}</div>`;
+    }
+  } else if (tab === "top") body = topBlock(s, "__all", `Top ${n}`, n);
+  else if (tab === "horario") body = ttHtml(s, es, "item", e => e.fields?.genero ? `hsl(${hue(e.fields.genero)} 50% 36%)` : "var(--ink)");
+  else if (tab === "calendario"){
+    const marks = {}; es.forEach(e => { if (isDate(e.fields?.fecha)) marks[e.fields.fecha] = "k"; });
+    const sel = (S.mm["cu" + s.id] || {}).sel;
+    const list = sel ? es.filter(e => e.fields?.fecha === sel) : es.filter(e => isDate(e.fields?.fecha) && e.fields.fecha >= tk).sort((a, b) => a.fields.fecha < b.fields.fecha ? -1 : 1).slice(0, 20);
+    body = `${miniMonth("cu" + s.id, marks)}<div class="sec-t"><h2 class="sub-h">${sel ? esc(cap1(relDay(sel))) : "Lo próximo"}</h2><span class="sp"></span>${kbtn(s, "item", "Añadir", preset({fecha:sel || tk}), "btn sm pri")}</div>${cards(list)}`;
+  } else body = `${stChips(es)}${cards(filt(es))}<div class="row">${kbtn(s, "item", "Añadir", preset({}))}</div>`;
+  const statsH = stats.length ? `<div class="kstats">${stats.slice(0, 3).map(([v, l]) => `<div><b class="${String(v).length > 6 ? "lg" : ""}">${esc(v)}</b><span>${esc(l)}</span></div>`).join("")}</div>` : "";
+  if (extras) return `<section class="xblock stack"><div class="sec-t"><h2 class="sub-h">Añadido por ti</h2><span class="sp"></span><button class="lnk" data-act="sec-edit" data-sec="${s.id}">${ic("edit")}Editar</button></div>${statsH}${tabs.length > 1 ? kitTabs(sx, tabs, tab) : ""}${body}</section>`;
+  return `${kitHead(s, esc(s.purpose || "Tu sección a medida."))}${statsH}${tabs.length > 1 ? kitTabs(s, tabs, tab) : ""}${body}`;
+}
+KIT_VIEWS.custom = s => vCustom(s);
+const extrasBlock = s => s && s.tpl !== "custom" && (s.mods || s.extra) ? vCustom(s, true) : "";
+
+/* ---------- builder ---------- */
+S.bd = null;
+const BD_IDEAS = ["Videojuegos por género con top 10","Hábitos diarios con racha","Viajes y lugares con fotos","Gastos del mes con presupuesto","Recetas por tipo de plato","Conciertos y eventos con cuenta atrás","Plantas y cuándo regarlas","Discos y canciones por género"];
+function bdSuggest(text){
+  const t = text.toLowerCase(), mods = {}, add = (k, c={}) => { mods[k] = {on:true, ...c}; };
+  const preset = name => { const p = CAT_PRESETS.find(x => x[0] === name); return {label:p[1], opts:p[2].join(", ")}; };
+  if (/g[eé]nero|categor|tipo|estilo|clase de/.test(t)) add("cats", /libro|lectur|novela|podcast/.test(t) ? preset("Literarios") : /m[uú]sic|canci|disco|album|álbum/.test(t) ? preset("Musicales") : /juego/.test(t) ? preset("Videojuegos") : /receta|plato|comida|cocina/.test(t) ? preset("Platos") : /pel[ií]|serie|anime|cine/.test(t) ? preset("Cine y series") : /viaj|pa[ií]s/.test(t) ? preset("Continentes") : {label:"Categoría", opts:""});
+  if (/receta|plato/.test(t) && !mods.cats) add("cats", preset("Platos"));
+  if (/top|mejor|favorit|ranking/.test(t)) add("top", {n:/\b10\b|diez/.test(t) ? 10 : /\b3\b|tres/.test(t) ? 3 : 5, perCat:!!mods.cats});
+  if (/horario|clase|turno|semana|gimnas|entren|regar/.test(t)) add("horario");
+  if (/gast|dinero|ahorr|precio|presupuest|compra/.test(t)) add("dinero", {moneda:"€", meta:""});
+  if (/h[aá]bito|racha|diari|cada d[ií]a|medita|beber|regar/.test(t)) add("racha");
+  if (/viaj|lugar|restaur|sitio|ruta|concierto/.test(t)){ add("lugar"); add("fotos"); }
+  if (/juego|jug/.test(t)) add("estados", {opts:"Quiero jugar, Jugando, Terminado"});
+  else if (/leer|libro|c[oó]mic/.test(t)) add("estados", {opts:"Por leer, Leyendo, Leído"});
+  else if (/escuch|disco|m[uú]sic|canci/.test(t)) add("estados", {opts:"Por escuchar, Escuchando, Escuchado"});
+  else if (/\bver\b|serie|anime|pel[ií]/.test(t)) add("estados", {opts:"Quiero ver, Viendo, Visto"});
+  else if (/viaj/.test(t)) add("estados", {opts:"Quiero ir, Planeado, Visitado"});
+  if (mods.estados || mods.top) add("valor");
+  if (/fecha|evento|cumple|plazo|concierto|cita|boda|examen|viaj/.test(t)){ add("calendario"); add("cuenta"); }
+  if (/tarea|pendiente|lista|checklist|por hacer/.test(t)) add("tareas");
+  if (/aprend|progreso|nivel|curso|idioma/.test(t)) add("progreso");
+  if (/foto|imagen|planta|receta|ropa|juego|disco/.test(t)) add("fotos");
+  if (/receta|cocina|enlace|web|v[ií]deo(?!juego)/.test(t)) add("enlace");
+  if (/\bkm\b|kil[oó]metro|p[aá]gina|raci[oó]n|litro/.test(t)) add("cantidad", {unidad:/km|kil/.test(t) ? "km" : /p[aá]gina/.test(t) ? "páginas" : /litro/.test(t) ? "litros" : "raciones"});
+  add("notas");
+  const words = text.replace(/[.,;:¡!¿?]/g, " ").split(/\s+/).filter(Boolean);
+  const stop = /^(quiero|quisiera|para|apuntar|guardar|organizar|llevar|controlar|registrar|mis|mi|los|las|el|la|que|un|una|unos|unas|de|del|y|con|por|en|lo|me)$/i;
+  let i = 0; while (i < words.length && stop.test(words[i])) i++;
+  const nameW = []; for (; i < words.length && nameW.length < 3; i++){ if (/^(con|por|y|para|en|que)$/i.test(words[i])) break; nameW.push(words[i]); }
+  const name = nameW.length ? cap1(nameW.join(" ").toLowerCase()) : "";
+  const icon = [[/juego/, "play"],[/viaj|lugar/, "plane"],[/gast|dinero|ahorr|presupuest/, "wallet"],[/receta|comida|plato|cocina/, "utensils"],[/m[uú]sic|disco|canci/, "music"],[/libro|lectur/, "book"],[/pel[ií]|serie|anime|cine/, "film"],[/planta|jard/, "leaf"],[/h[aá]bito|racha/, "spark"],[/deporte|entren|gimnas/, "dumbbell"],[/concierto|evento|cumple/, "gift"]].find(([r]) => r.test(t));
+  return {mods, name, icon:icon ? icon[1] : "star"};
+}
+const MOD_KEYS = {cats:"genero", estados:"estado", horario:"dias", calendario:"fecha", cuenta:"fecha", tareas:"hecho", valor:"valoracion", progreso:"progreso", dinero:"importe", cantidad:"cantidad", lugar:"lugar", etiquetas:"etiquetas", fotos:"portada", enlace:"enlace", notas:"notas"};
+const MOD_TYPES = {fotos:"photos", valor:"rating", progreso:"progress", calendario:"date", cuenta:"date", horario:"days"};
+function ownFields(s){ const k = KITS[s.tpl]; return k ? Object.values(k.kinds).flatMap(x => x.fields) : (s.fields || []).filter(f => !(s.extra || []).some(x => x.key === f.key)); }
+function modTaken(s, k){
+  if (!s || s.tpl === "custom") return false;
+  if (MEDIA_CFG[s.tpl] && (k === "top" || k === "cats")) return true;
+  const own = ownFields(s);
+  return own.some(f => f.key === MOD_KEYS[k] || (MOD_TYPES[k] && f.type === MOD_TYPES[k]));
+}
+function openBuilder(parentId, editId){
+  const ex = editId && secById(editId);
+  if (ex){
+    const mods = clean(ex.mods || {});
+    for (const k of ["estados","cats"]) if (mods[k] && Array.isArray(mods[k].opts)) mods[k].opts = mods[k].opts.join(", ");
+    S.bd = {step:3, edit:ex.id, base:ex.tpl !== "custom", parentId:ex.parentId || "", purpose:ex.purpose || "", name:ex.name, icon:ex.icon, mods, extra:clean(ex.extra || []).map(x => ({...x, opts:Array.isArray(x.opts) ? x.opts.join(", ") : x.opts || ""})), touched:true};
+  } else S.bd = {step:1, parentId:parentId || "", purpose:"", name:"", icon:"star", mods:{notas:{on:true}}, extra:[], touched:false};
+  openLayer(`<div id="bd">${bdBody()}</div>`, {onMount(sh){ sh._bd = true; }});
+}
+function bdRedraw(top){ const el = $("#bd"); if (!el) return; const sh = el.closest(".sheet"), y = sh ? sh.scrollTop : 0; el.innerHTML = bdBody(); if (sh) sh.scrollTop = top ? 0 : y; }
+const MOD_DEF = {estados:{opts:"Pendiente, En curso, Hecho"}, cats:{label:"Categoría", opts:""}, top:{n:5, perCat:false}, dinero:{moneda:"€", meta:""}, cantidad:{unidad:""}};
+function bdModCfg(k, c){
+  const inp = (path, val, ph, lbl, type="text") => `<div class="field"><label>${lbl}</label><input class="inp" type="${type}" data-bd="${path}" value="${esc(val ?? "")}" placeholder="${esc(ph)}"></div>`;
+  if (k === "estados") return `${inp("mods.estados.opts", c.opts, "Pendiente, En curso, Hecho", "Estados, separados por comas")}<div class="chips wrap">${["Quiero ver, Viendo, Visto","Por leer, Leyendo, Leído","Quiero jugar, Jugando, Terminado","Idea, En marcha, Hecho","Quiero ir, Planeado, Visitado"].map(x => `<button type="button" class="chip sm" data-act="bd-set" data-path="mods.estados.opts" data-v="${esc(x)}">${esc(x)}</button>`).join("")}</div>`;
+  if (k === "cats") return `<div class="chips wrap">${CAT_PRESETS.map(([n]) => `<button type="button" class="chip sm" data-act="bd-catp" data-n="${esc(n)}">${esc(n)}</button>`).join("")}</div>${inp("mods.cats.label", c.label, "Género, Género literario, Tipo…", "Cómo se llama")}<div class="field"><label>Opciones, separadas por comas</label><textarea class="inp" data-bd="mods.cats.opts" placeholder="Ej.: Fantasía, Terror, Romance">${esc(c.opts || "")}</textarea></div>`;
+  if (k === "top") return `<div class="field"><label>Tamaño</label><div class="seg">${[3,5,10].map(n => `<input type="radio" name="bd-topn" id="bd-topn-${n}" value="${n}" data-bd="mods.top.n"${+c.n === n ? " checked" : ""}><label for="bd-topn-${n}">Top ${n}</label>`).join("")}</div></div>${S.bd.mods.cats?.on ? `<label class="toggle"><span><b>Un top por cada ${esc((S.bd.mods.cats.label || "categoría").toLowerCase())}</b><span class="sub">Además del top general.</span></span><input type="checkbox" data-bd="mods.top.perCat"${c.perCat ? " checked" : ""}></label>` : ""}`;
+  if (k === "dinero") return `<div class="grid3" style="grid-template-columns:1fr 2fr">${inp("mods.dinero.moneda", c.moneda, "€", "Moneda")}${inp("mods.dinero.meta", c.meta, "Opcional", "Meta o presupuesto", "number")}</div>`;
+  if (k === "cantidad") return inp("mods.cantidad.unidad", c.unidad, "km, páginas, raciones…", "Unidad");
+  return "";
+}
+function bdBody(){
+  const d = S.bd, parent = d.parentId ? secById(d.parentId) : null, dots = `<div class="bd-dots">${[1,2,3,4].map(i => `<i class="${i === d.step ? "on" : i < d.step ? "done" : ""}"></i>`).join("")}</div>`;
+  const title = d.edit ? "Editar sección" : parent ? `Nuevo apartado en ${esc(parent.name)}` : "Nueva sección";
+  const nav = (back, next, nextLbl="Siguiente", cls="btn pri") => `<div class="sheet-f">${back ? `<button type="button" class="btn ghost" data-act="bd-go" data-s="${back}">${ic("left")}Atrás</button>` : "<span></span>"}<div class="r">${next ? `<button type="button" class="${cls}" data-act="${next}">${nextLbl}</button>` : ""}</div></div>`;
+  if (d.step === 1) return `${sheetHead(title)}${dots}
+    <div class="stack" style="gap:14px">
+      <div class="field"><label for="bd-purpose">¿Para qué quieres usarla?</label><textarea id="bd-purpose" class="inp" data-bd="purpose" placeholder="Ej.: apuntar los videojuegos que juego, por género, con un top 10" style="min-height:84px">${esc(d.purpose)}</textarea></div>
+      <div class="chips wrap">${BD_IDEAS.map(x => `<button type="button" class="chip sm" data-act="bd-set" data-path="purpose" data-v="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+      <div class="bd-opts">
+        <button type="button" class="bd-opt pri" data-act="bd-start"><span class="ic">${ic("grid")}</span><b>Crearla yo, paso a paso</b><span>Te propongo nombre y elementos según lo que me cuentes, y tú lo ajustas todo.</span></button>
+        <button type="button" class="bd-opt" data-act="bd-ai"><span class="ic">${ic("spark")}</span><b>Que la diseñe el asistente</b><span>${aiKey() ? "La crea por ti a partir de tu descripción." : "Antes conecta el asistente en Perfil y ajustes (Gemini es gratis)."}</span></button>
+      </div>
+      <details class="bd-tpl"><summary>O empieza con una plantilla</summary><div class="qa" style="margin-top:12px">${Object.entries(TEMPLATES).map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${d.parentId}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="qd">${esc(t.d)}</span></button>`).join("")}</div></details>
+    </div>`;
+  if (d.step === 2) return `${sheetHead(title)}${dots}
+    <div class="stack" style="gap:14px">
+      <div class="field"><label for="bd-name">¿Qué nombre le ponemos?</label><input id="bd-name" class="inp title-in" data-bd="name" value="${esc(d.name)}" placeholder="Ej.: Videojuegos"></div>
+      <div class="field"><span class="lbl">Icono</span><div class="iconpick">${SEC_ICONS.map(n => `<input type="radio" name="bd-icon" id="bd-ic-${n}" value="${n}" data-bd="icon"${d.icon === n ? " checked" : ""}><label for="bd-ic-${n}">${ic(n)}</label>`).join("")}</div></div>
+      ${d.edit ? `<button type="button" class="lnk" data-act="sec-basic" data-sec="${d.edit}" style="align-self:flex-start">${ic("edit")}Mover de sitio${d.base && !KITS[secById(d.edit)?.tpl] && secById(d.edit)?.tpl !== "armario" ? " o cambiar sus campos" : ""}</button>` : ""}
+      ${nav(d.edit ? "" : "1", "bd-to3")}
+    </div>`;
+  if (d.step === 3){
+    const exS = d.edit ? secById(d.edit) : null, avail = MODS.filter(x => !modTaken(exS, x[0]));
+    const groups = [["De otras secciones", avail.filter(x => x[4] && x[4] !== "Nuevo")], ["Nuevos", avail.filter(x => !x[4] || x[4] === "Nuevo")]].filter(g => g[1].length);
+    return `${sheetHead(title)}${dots}
+    <div class="stack" style="gap:14px">
+      <p class="muted" style="margin:0">${d.base ? `Añade elementos a <b>${esc(d.name)}</b>. Se suman a lo que ya tiene; solo te enseño los que aún no tiene.` : `¿Qué elementos quieres en <b>${esc(d.name || "tu sección")}</b>? ${d.touched ? "" : "Te he marcado los que encajan con lo que me has contado."}`}</p>
+      ${groups.map(([gl, list]) => `<div class="group-t">${gl}</div><div class="bd-mods">${list.map(([k, n, icn, desc, from]) => { const c = d.mods[k], on = !!(c && c.on);
+        return `<div class="bd-mod${on ? " on" : ""}"><button type="button" class="bd-mh" data-act="bd-mod" data-k="${k}" aria-pressed="${on}"><span class="ic">${ic(icn)}</span><span class="bd-mt"><b>${esc(n)}</b><span>${esc(desc)}</span>${from && from !== "Nuevo" ? `<i>${esc(from)}</i>` : ""}</span><span class="bd-ck">${ic("check")}</span></button>${on && bdModCfg(k, c) ? `<div class="bd-cfg">${bdModCfg(k, c)}</div>` : ""}</div>`; }).join("")}</div>`).join("")}
+      <div class="group-t">Tus propios campos</div>
+      <div class="stack" style="gap:8px">${d.extra.map((x, i) => `<div class="bd-x"><input class="inp" data-bd="extra.${i}.label" value="${esc(x.label)}" placeholder="Nombre del campo" aria-label="Nombre del campo"><select class="inp" data-bd="extra.${i}.type" aria-label="Tipo">${EXTRA_TYPES.map(([v, l]) => `<option value="${v}"${x.type === v ? " selected" : ""}>${l}</option>`).join("")}</select><button type="button" class="ibtn" data-act="bd-xdel" data-i="${i}" aria-label="Quitar campo">${ic("x")}</button>${x.type === "select" ? `<input class="inp bd-xo" data-bd="extra.${i}.opts" value="${esc(x.opts || "")}" placeholder="Opciones, separadas por comas">` : ""}</div>`).join("")}
+        <button type="button" class="btn sm" data-act="bd-xadd" style="align-self:flex-start">${ic("plus")}Añadir un campo</button></div>
+      ${nav("2", "bd-to4")}
+    </div>`;
+  }
+  const s = bdSection(), flds = customFields(s), tabs = [d.base ? "Seguimiento" : "Todo", ...(mOn(s, "cats") ? [s.mods.cats.label] : []), ...(mOn(s, "top") ? ["Top " + s.mods.top.n] : []), ...(mOn(s, "horario") ? ["Horario"] : []), ...(mOn(s, "calendario") ? ["Calendario"] : [])];
+  return `${sheetHead(title)}${dots}
+    <div class="stack" style="gap:14px">
+      <div class="bd-prev"><span class="ic">${ic(s.icon)}</span><div><b>${esc(s.name || "Sin nombre")}</b><span>${esc(s.purpose || "")}</span></div></div>
+      ${d.base ? `<p class="muted small" style="margin:0">Su diseño actual se queda igual. Lo que añadas aparece debajo, en «Añadido por ti», y sus campos salen al crear o editar cada cosa.</p>` : ""}
+      <div class="field"><span class="lbl">${d.base ? "Nuevas pestañas" : "Pestañas"}</span><div class="chips wrap">${tabs.map(t => `<span class="chip sm">${esc(t)}</span>`).join("")}</div></div>
+      <div class="field"><span class="lbl">${d.base ? "Campos nuevos" : "Cada entrada tendrá"}</span><div class="chips wrap">${d.base ? "" : '<span class="chip sm">Nombre</span>'}${flds.map(f => `<span class="chip sm">${esc(f.label)}</span>`).join("")}</div></div>
+      ${mOn(s, "cats") && !splitList(s.mods.cats.opts).length ? `<div class="note-box">Faltan las opciones de «${esc(s.mods.cats.label)}». Vuelve atrás y escríbelas, o elige un grupo ya hecho.</div>` : ""}
+      ${d.edit ? `<button type="button" class="btn danger" data-act="sec-del" data-sec="${d.edit}" style="align-self:flex-start">${ic("trash")}<span>Eliminar sección</span></button>` : ""}
+      ${nav("3", "bd-save", d.edit ? "Guardar cambios" : "Crear sección")}
+    </div>`;
+}
+function bdSection(){
+  const d = S.bd, mods = clean(d.mods);
+  for (const k of ["estados","cats"]) if (mods[k]) mods[k].opts = splitList(mods[k].opts);
+  if (mods.top) mods.top.n = +mods.top.n || 5;
+  const extra = d.extra.filter(x => x.label && x.label.trim()).map(x => ({key:x.key, label:x.label.trim().slice(0, 40), type:x.type, ...(x.type === "select" ? {opts:splitList(x.opts)} : {})}));
+  return {name:(d.name || "").trim().slice(0, 40), icon:d.icon || "star", purpose:(d.purpose || "").trim().slice(0, 140), mods, extra};
+}
+const bdSetPath = (path, v) => { const ps = path.split("."); let o = S.bd; for (let i = 0; i < ps.length - 1; i++){ o[ps[i]] = o[ps[i]] ?? {}; o = o[ps[i]]; } o[ps[ps.length - 1]] = v; };
+document.addEventListener("input", e => { const t = e.target; if (!t.dataset || !t.dataset.bd || !S.bd) return; if (t.type === "radio" || t.type === "checkbox") return; bdSetPath(t.dataset.bd, t.value); });
+document.addEventListener("change", e => {
+  const t = e.target; if (!t.dataset || !t.dataset.bd || !S.bd) return;
+  bdSetPath(t.dataset.bd, t.type === "checkbox" ? t.checked : t.value);
+  if (t.tagName === "SELECT" && /^extra\.\d+\.type$/.test(t.dataset.bd)) bdRedraw();
+});
+Object.assign(ACT, {
+  "bd-go"(el){ S.bd.step = +el.dataset.s; bdRedraw(true); },
+  "bd-set"(el){ bdSetPath(el.dataset.path, el.dataset.v); bdRedraw(); },
+  "bd-start"(){
+    const d = S.bd;
+    if (d.purpose.trim() && !d.touched){ const g = bdSuggest(d.purpose); d.mods = g.mods; if (!d.name) d.name = g.name; d.icon = g.icon; }
+    d.step = 2; bdRedraw(true); setTimeout(() => $("#bd-name")?.focus(), 60);
+  },
+  "bd-ai"(){
+    const d = S.bd, t = d.purpose.trim(); if (!t){ $("#bd-purpose")?.focus(); toast("Cuéntame para qué la quieres", "Así el asistente sabe qué crear."); return; }
+    const p = d.parentId ? secById(d.parentId) : null;
+    const msg = p ? `Crea una subsección dentro de «${p.name}» (id ${p.id}) para: ${t}` : `Crea una sección para organizar: ${t}. Si tiene partes distintas, añade subsecciones.`;
+    S.bd = null; swapLayer(() => openAI(msg));
+  },
+  "bd-to3"(){ if (!S.bd.name.trim()){ $("#bd-name")?.focus(); toast("Ponle un nombre", "Por ejemplo: «Videojuegos» o «Viajes»."); return; } S.bd.step = 3; bdRedraw(true); },
+  "bd-to4"(){ S.bd.step = 4; bdRedraw(true); },
+  "bd-mod"(el){ const k = el.dataset.k, d = S.bd; d.touched = true; const c = d.mods[k]; d.mods[k] = c ? {...c, on:!c.on} : {on:true, ...(MOD_DEF[k] || {})}; if (k === "cats" && !d.mods.cats.on && d.mods.top) d.mods.top.perCat = false; buzz(); bdRedraw(); },
+  "bd-catp"(el){ const p = CAT_PRESETS.find(x => x[0] === el.dataset.n); if (!p) return; S.bd.mods.cats = {...S.bd.mods.cats, on:true, label:p[1], opts:p[2].join(", ")}; bdRedraw(); },
+  "bd-xadd"(){ S.bd.extra.push({key:"x" + uid(), label:"", type:"text", opts:""}); bdRedraw(); setTimeout(() => { const ins = $$(".bd-x input"); const last = $$(".bd-x").pop(); last && $("input", last).focus(); }, 30); },
+  "bd-xdel"(el){ S.bd.extra.splice(+el.dataset.i, 1); bdRedraw(); },
+  "bd-save"(){
+    const d = S.bd, b = bdSection();
+    if (!b.name){ S.bd.step = 2; bdRedraw(true); return; }
+    if (b.mods.cats?.on && !b.mods.cats.opts.length) b.mods.cats.on = false;
+    if (b.mods.estados?.on && !b.mods.estados.opts.length) b.mods.estados.on = false;
+    if (d.edit && d.base){
+      const ex = secById(d.edit); if (!ex) return;
+      const sec = {...ex, name:b.name, icon:b.icon, mods:b.mods, extra:b.extra};
+      if (!KITS[ex.tpl] && ex.tpl !== "armario" && ex.tpl !== "outfits") sec.fields = [...ownFields(ex), ...b.extra.map(x => F(x.key, x.label, x.type, x.type === "select" ? {options:x.opts.length ? x.opts : ["Opción 1","Opción 2"]} : {}))];
+      S.settings.sections = sections().map(x => x.id === sec.id ? sec : x);
+      putSettings(true); S.bd = null; closeLayer(); toast("Sección actualizada", sec.name); location.hash = "s-" + sec.id; render(); return;
+    }
+    const base = d.edit ? secById(d.edit) : {id:uid(), tpl:"custom", parentId:d.parentId || "", view:"grid", statusKey:"", dateKey:"", timeKey:"", repeatKey:"", calendar:false, tasks:false};
+    const sec = {...base, ...b}; sec.fields = customFields(sec);
+    S.settings.sections = d.edit ? sections().map(x => x.id === sec.id ? sec : x) : [...sections(), sec];
+    putSettings(true); S.bd = null; closeLayer(); toast(d.edit ? "Sección actualizada" : "Sección creada", sec.name);
+    location.hash = "s-" + sec.id; render();
+  },
+  "secs-mode"(el){ S.secMode = S.secMode === el.dataset.m ? "" : el.dataset.m; buzz(); render(); },
+  "sec-del2"(el){
+    const id = el.dataset.sec, s = secById(id), subs = descendants(id); if (!s) return;
+    if (!armed(el, subs.length ? `¿Borrar con ${subs.length} apartados?` : "¿Seguro? Toca otra vez")) return;
+    const ids = [id, ...subs.map(x => x.id)];
+    for (const e of ofKind("entry").filter(e => ids.includes(e.sectionId))) delItem(e.id, true);
+    S.settings.sections = sections().filter(x => !ids.includes(x.id));
+    putSettings(true); flushBulk(); toast("Sección eliminada", s.name); render();
+  },
+  "c-done"(el){ const e = S.items.get(el.dataset.id); if (e){ kitPut(e, {hecho:!e.fields?.hecho}); buzz(); } },
+  "c-next"(el){ const e = S.items.get(el.dataset.id), s = e && secById(e.sectionId); if (!s) return; const st = splitList(s.mods?.estados?.opts), i = st.indexOf(e.fields?.estado); kitPut(e, {estado:st[Math.min(st.length - 1, i + 1)] || st[0]}); buzz(); },
+  "c-inc"(el){ const e = S.items.get(el.dataset.id); if (!e) return; const p = Math.min(100, (+e.fields?.progreso || 0) + +el.dataset.v); kitPut(e, {progreso:p}); buzz(); if (p >= 100) toast("¡Completado!", e.title); },
+  "c-day"(el){ const e = S.items.get(el.dataset.id); if (!e) return; const tk = todayKey(), ds = new Set(e.days || []); ds.has(tk) ? ds.delete(tk) : ds.add(tk); putItem({...e, days:[...ds].sort().slice(-400)}); buzz(); },
+  "c-st"(el){ S.cst[el.dataset.sec] = el.dataset.v; render(); }
+});
 
 /* ================= boot ================= */
 (async function boot(){
