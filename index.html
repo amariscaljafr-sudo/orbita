@@ -90,27 +90,40 @@ main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-ar
 body.static{position:fixed;inset:0;width:100%;overflow:hidden;overscroll-behavior:none}
 body.static main{padding-bottom:0}
 .view.home-v{height:calc(100vh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);height:calc(100dvh - var(--foot) - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px) - 8px);gap:0;overflow:hidden}
-.home-v .home{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(26px,5vh,48px);padding-block:clamp(22px,5vh,48px) clamp(20px,4vh,40px);width:100%;max-width:340px;margin-inline:auto}
+.home-v .home{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,3vh,30px);padding-block:clamp(14px,2.6vh,26px) clamp(12px,2.4vh,24px);width:100%;max-width:420px;margin-inline:auto}
 .home-v .cal{width:100%;margin-inline:0;flex:none}
-.home-v .cal-h{margin-bottom:10px;padding-inline:4px}
-.home-v .cal-h .m{font-size:clamp(1.15rem,4.4vw,1.4rem)}
-.home-v .cal-h .ibtn{width:38px;height:38px}
+.home-v .cal-h{margin-bottom:8px;padding-inline:4px}
+.home-v .cal-h .m{font-size:clamp(1.35rem,5.4vw,1.7rem)}
+.home-v .cal-h .ibtn{width:40px;height:40px}
 .home-v .grid7{gap:3px}
-.home-v .wk{font-size:10.5px;padding-bottom:6px}
-.home-v .d{aspect-ratio:auto;height:clamp(30px,calc((100dvh - 600px) / 6),40px);font-size:clamp(14px,4vw,17px);border-radius:10px;font-weight:700}
-.home-v .d .pip{bottom:4%}
+.home-v .wk{font-size:11px;padding-bottom:5px}
+.home-v .d{aspect-ratio:auto;height:clamp(30px,calc((100dvh - 600px) / 6),46px);font-size:clamp(15px,4.6vw,20px);border-radius:12px;font-weight:750}
+.home-v .d .pip{bottom:5%}
 .home-v .d .pip i{width:4px;height:4px}
-.home-v .agenda{flex:0 1 auto;min-height:0;overflow:hidden}
+.home-v .agenda{flex:0 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:clamp(14px,2.4vh,22px)}
+.ag-block{display:flex;flex-direction:column;min-height:0}
+.free-sub{margin:-4px 0 4px;font-size:13px;color:var(--mute)}
+@media (max-width:899px){.home-v .free-sub{display:none}}
+.more-btn{color:var(--red)!important}
+.home-v .ag-block .it{padding:8px 4px}
+.home-v .ag-block .it .tt{font-size:15px}
+.home-v .ag-block .ck{width:24px;height:24px}
+.home-v .row-it .ck{width:26px;height:26px}
+.agenda .ag-block + .ag-block{border-top:1px solid var(--line);padding-top:clamp(12px,2vh,18px)}
+.page-h h1,.day-h h1{margin:0;font-weight:900;font-stretch:112%;font-size:clamp(1.7rem,6.5vw,2.4rem);letter-spacing:-.03em;line-height:1}
+.page-h p,.day-h p{margin:6px 0 0;color:var(--mute);font-size:14px}
+.day-h{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 66px);z-index:15;background:var(--paper);padding-block:6px 12px}
 .home-v .sec-t{margin-bottom:2px}
-.home-v .sec-t h2{font-size:clamp(1.1rem,4vw,1.3rem)}
+.home-v .sec-t h2{font-size:clamp(1.2rem,4.4vw,1.45rem)}
 .home-v .row-it{padding:9px 4px;grid-template-columns:54px minmax(0,1fr) auto}
 .home-v .row-it .tt{font-size:15px}
 .home-v .eyebrow{font-size:10.5px}
 .more-btn{align-self:flex-start;margin-top:8px}
 @media (min-width:900px){
-  .home-v .home{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.9fr);gap:clamp(48px,7vw,96px);align-items:center;align-content:center;max-width:960px;padding-block:32px 40px}
-  .home-v .cal{max-width:440px;justify-self:end}
-  .home-v .d{height:clamp(36px,calc((100dvh - 480px) / 6),56px);font-size:clamp(16px,1.7vw,20px)}
+  .home-v .home{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:clamp(40px,5vw,72px);align-items:center;align-content:center;max-width:1060px;padding-block:24px 28px}
+  .home-v .cal{max-width:520px;justify-self:end}
+  .home-v .d{height:clamp(40px,calc((100dvh - 420px) / 6),68px);font-size:clamp(17px,2vw,23px)}
+  .home-v .agenda{max-height:100%}
   .home-v .agenda{max-height:100%;align-self:center;max-width:440px}
 }
 
@@ -185,8 +198,10 @@ body.static main{padding-bottom:0}
 .dock .ft{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;border-radius:14px;font-size:11.5px;font-weight:750;letter-spacing:.02em;color:var(--ink-2);transition:background .2s,transform .2s var(--spring)}
 .dock .ft:hover{background:var(--paper-2)}
 .dock .ft:active{transform:scale(.9)}
-.dock .ft.on{color:var(--ink)}
+.dock .ft.on{color:var(--ink);background:var(--paper-2)}
 .dock .ft.on svg{stroke:var(--red)}
+.dock .ft.add.on .plus{background:var(--red)}
+.dock .ft.add.on svg{stroke:#fff}
 .dock .add .plus{width:34px;height:24px;border-radius:9px;background:var(--ink);color:var(--paper);display:grid;place-items:center;margin-block:-1px}
 .dock .add .plus svg{width:17px;height:17px;stroke-width:2.6}
 .dock .add{color:var(--ink)}
@@ -206,7 +221,7 @@ body.static main{padding-bottom:0}
 .sec-hit:hover{background:var(--paper-2)}
 .sec-hit .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--ink);color:var(--paper);flex:none}
 .sec-hit .tx{flex:1;min-width:0}
-.sec-hit b{display:block;font-weight:800;font-size:15.5px}
+.sec-hit b{display:block;font-weight:800;font-size:15.5px;color:var(--ink)}
 .sec-hit span{font-size:12.5px;color:var(--mute)}
 .mark{background:var(--red-soft);color:var(--red);border-radius:4px;padding:0 2px}
 
@@ -379,11 +394,11 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 .qa button:active{transform:scale(.94)}
 .qa .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--ink);color:var(--paper)}
 .qa .ic.red{background:var(--red)}
-.qa .d{font-size:12.5px;color:var(--mute);font-weight:500;margin-top:-6px}
+.qa .qd{font-size:12.5px;color:var(--mute);font-weight:500;margin-top:-6px}
 .ai-card{display:flex;align-items:center;gap:14px;width:100%;padding:16px;border-radius:18px;background:var(--ink);color:var(--paper);text-align:left;margin-bottom:12px;transition:transform .2s var(--spring)}
 .ai-card:active{transform:scale(.97)}
 .ai-card .ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:var(--red);flex:none}
-.ai-card b{display:block;font-size:16px}
+.ai-card b{display:block;font-size:16px;color:#fff}
 .ai-card span{font-size:13px;color:#bdbdb9}
 .fieldrow{display:grid;grid-template-columns:1fr 150px 46px;gap:8px;align-items:start;padding:10px;border-radius:14px;background:var(--paper-2)}
 .fieldrow .inp{background:var(--paper)}
@@ -626,7 +641,7 @@ const PURPOSES = [
 /* ================= state & storage ================= */
 const S = {
   mode:"local", settings:null, items:new Map(), ready:false, locked:false,
-  cal:{y:new Date().getFullYear(), m:new Date().getMonth(), sel:todayKey()}, calAnim:"", listAnim:true,
+  cal:{y:new Date().getFullYear(), m:new Date().getMonth(), sel:todayKey()}, calAnim:"", listAnim:true, dayKey:todayKey(), addDate:"", searchQ:"",
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
@@ -781,8 +796,8 @@ function toast(title, text, opts={}){
 }
 
 /* ================= routing ================= */
-const ROUTES = ["inicio","calendario","tareas","avisos","notas","secciones","perfil"];
-const ROUTE_TITLE = {calendario:"Calendario", tareas:"Tareas", avisos:"Avisos y fechas", notas:"Notas", secciones:"Secciones", perfil:"Perfil y ajustes"};
+const ROUTES = ["inicio","buscar","nuevo","horario","calendario","tareas","avisos","notas","secciones","perfil"];
+const ROUTE_TITLE = {buscar:"Buscar", nuevo:"Añadir", horario:"Horario", calendario:"Calendario", tareas:"Tareas", avisos:"Avisos y fechas", notas:"Notas", secciones:"Secciones", perfil:"Perfil y ajustes"};
 function currentRoute(){
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith("s-") && secById(h.slice(2))) return h;
@@ -802,7 +817,7 @@ function render(){
   if (r === "inicio") html = vHome(changed);
   else {
     const sec = r.startsWith("s-") ? secById(r.slice(2)) : null;
-    const fn = {calendario:vCalendar, tareas:vTasks, avisos:vReminders, notas:vNotes, secciones:vSections, perfil:vProfile}[r];
+    const fn = {buscar:vSearch, nuevo:vNew, horario:vDay, calendario:vCalendar, tareas:vTasks, avisos:vReminders, notas:vNotes, secciones:vSections, perfil:vProfile}[r];
     html = topBar(sec ? sec.name : ROUTE_TITLE[r]) + (fn ? fn() : vSection(sec));
   }
   document.body.classList.toggle("static", r === "inicio");
@@ -815,7 +830,7 @@ function render(){
     window.scrollTo(0, y);
     if (focusId){ const f = document.getElementById(focusId); if (f){ f.focus(); try { if (typeof f.value === "string" && f.setSelectionRange) f.setSelectionRange(f.value.length, f.value.length); } catch {} } }
   }
-  bindSwipe(); fitGreet(); fitAgenda();
+  bindSwipe(); fitGreet(); fitAgenda(); afterView(r, changed);
 }
 function onData(){
   if (!S.ready) return;
@@ -834,23 +849,24 @@ function avatarHtml(cls=""){
 const topBar = title => `<div class="top"><button class="ibtn" data-act="drawer" aria-label="Abrir menú">${ic("menu")}</button><div class="ttl">${esc(title)}</div><a class="ibtn" href="#perfil" aria-label="Perfil y ajustes">${avatarHtml()}</a></div>`;
 function renderDock(){
   if (!S.settings || S.locked){ $("#dock").innerHTML = ""; return; }
-  const home = currentRoute() === "inicio";
-  if ($("#dock").childElementCount) { const b = $("#dock .today-n b"); if (b) b.textContent = new Date().getDate(); $("#dock .today-n").dataset.date = todayKey(); $("#dock [data-to=inicio]").classList.toggle("on", home); return; }
-  $("#dock").innerHTML = `
-    <button class="ft${home ? " on" : ""}" data-act="nav" data-to="inicio">${ic("home")}Inicio</button>
-    <button class="ft" data-act="search">${ic("search")}Buscar</button>
-    <button class="ft add" data-act="quick"><span class="plus">${ic("plus")}</span>Añadir</button>
-    <button class="ft today-n" data-act="day" data-date="${todayKey()}"><span class="ic-wrap">${ic("cal")}<b>${new Date().getDate()}</b></span>Horario</button>`;
+  const r = currentRoute();
+  const tabs = [["inicio","Inicio","home"],["buscar","Buscar","search"],["nuevo","Añadir","plus"],["horario","Horario","cal"]];
+  $("#dock").innerHTML = tabs.map(([k, l, i]) => k === "nuevo"
+    ? `<button class="ft add${r === k ? " on" : ""}" data-act="tab" data-to="${k}"${r === k ? ' aria-current="page"' : ""}><span class="plus">${ic(i)}</span>${l}</button>`
+    : `<button class="ft${k === "horario" ? " today-n" : ""}${r === k ? " on" : ""}" data-act="tab" data-to="${k}"${r === k ? ' aria-current="page"' : ""}>${k === "horario" ? `<span class="ic-wrap">${ic(i)}<b>${new Date().getDate()}</b></span>` : ic(i)}${l}</button>`).join("");
 }
 
 /* ================= greeting ================= */
 const PHRASES = {
-  any:["¿Qué liamos hoy, {n}?","Hola, {n}. ¿Café primero?","Hoy sí que sí, {n}","{n}, a por el día","Modo productivo: ON","El caos, bajo control","Respira. Vamos por partes","¿Y si hoy lo petas, {n}?","Tú puedes. Casi seguro","{n}, el sofá puede esperar","Hidrátate y conquista","Otro día, otra misión","Qué bien verte, {n}","Plan del día: brillar","Ni un post-it más, {n}","Aquí mandas tú, {n}","Hoy toca ser leyenda","Agenda lista, {n}","Paso a paso, {n}"],
-  morning:["Buenos días, {n}","¿Ya en pie, {n}?","Arriba, {n}. El día espera","Café, plan y a volar"],
-  afternoon:["Buenas tardes, {n}","Tarde de las buenas, {n}","Media jornada. Vamos bien","Un último empujón, {n}"],
-  night:["Buenas noches, {n}","{n}, ¿tú no duermes?","Planear de noche mola","Mañana lo bordas, {n}"],
-  1:["Lunes. Paciencia, {n}","Lunes con energía, {n}"], 5:["Viernes, por fin, {n}","Huele a finde, {n}"],
-  6:["Sábado sin prisa, {n}"], 0:["Domingo de manta, {n}","Domingo de recargar"]
+  any:["¿Qué liamos hoy, {n}?","Hola, {n}. ¿Café primero?","{n}, el sofá puede esperar","Modo productivo: cargando…","El caos, bajo control. Casi","Tú puedes. Casi seguro","Hidrátate y conquista, {n}","Ni un post-it más, {n}","Hoy toca ser leyenda","Plan del día: no improvisar",
+    "{n}, hoy sin excusas","Respira. Luego, a por todo","Agenda lista. ¿Y tú, {n}?","Menos scroll, más planes","¿Y si hoy lo petas, {n}?","Tu yo de mañana aplaude","Hoy procrastinamos mañana","{n}, a domar el día","Café en mano, caos fuera","Objetivo: tachar cosas",
+    "Hoy sí, {n}. Ahora sí","Nivel de energía: veremos","Misión del día: aceptada","{n}, el calendario te mira","Paso a paso, como los gatos","Pocas reuniones, mucha vida","Qué bien verte, {n}","A organizar se ha dicho","Sin prisa, pero sin pausa","{n}, tú mandas aquí",
+    "Hoy rindes como un cohete","Lista hecha, medio día ganado","Ponle orden a la vida, {n}","Spoiler: hoy sale bien","Que no te pille el viernes","{n}, hoy toca brillar","Menos drama, más agenda","Tranqui, lo tienes apuntado","¿Otra vez tú? Qué alegría","{n}, hoy eres imparable",
+    "Hoy se tacha todo. O casi","Con orden y con estilo","Recuerda: el agua es vida","A por el día, {n}. Sin miedo","Nada como un plan, {n}","Hoy el caos se queda fuera","Productividad modo turbo","Tu agenda y tú: gran equipo","{n}, cero estrés hoy","Primero café, luego el mundo"],
+  morning:["Buenos días, {n}","¿Ya en pie, {n}?","Arriba, {n}. El día espera"],
+  afternoon:["Buenas tardes, {n}","Un último empujón, {n}"],
+  night:["Buenas noches, {n}","{n}, ¿tú no duermes?"],
+  1:["Lunes. Paciencia, {n}"], 5:["Viernes, por fin, {n}"], 6:["Sábado sin prisa, {n}"], 0:["Domingo de manta, {n}"]
 };
 function pickPhrase(next){
   const n = myName(), h = new Date().getHours(), wd = new Date().getDay();
@@ -874,7 +890,7 @@ function greetHtml(animate){
 }
 function fitGreet(){
   const g = $("#greet"); if (!g) return;
-  let size = Math.min(44, Math.max(26, window.innerWidth * .085));
+  let size = Math.min(52, Math.max(30, window.innerWidth * .1));
   g.style.fontSize = size + "px";
   let guard = 0;
   while (g.scrollWidth > g.clientWidth + 1 && size > 16 && guard++ < 60){ size -= 1; g.style.fontSize = size + "px"; }
@@ -915,23 +931,42 @@ function agendaHtml(){
   const late = isToday ? ofKind("task").filter(t => !t.done && t.date && t.date < tk) : [];
   const dd = daysBetween(tk, sel);
   const title = isToday ? "Para hoy" : dd === 1 ? "Para mañana" : dd === -1 ? "Ayer" : `${cap1(fmt(parseYmd(sel), {weekday:"long"}))} ${parseYmd(sel).getDate()}`;
+  const rank = t => ({alta:0, media:1, baja:2}[t.priority] ?? 3);
+  const free = ofKind("task").filter(t => !t.done && (!t.date || t.date > tk)).sort((a, b) => rank(a) - rank(b) || ((a.date || "9") < (b.date || "9") ? -1 : 1));
   return `<section class="agenda">
-    <div class="sec-t"><h2>${esc(title)}</h2><span class="n">${its.length || ""}</span><span class="sp"></span><button class="lnk" data-act="day" data-date="${sel}">Horario${ic("right")}</button></div>
-    <div class="ag-list">${its.length ? its.map(agendaRow).join("") : `<div class="empty"><b>${isToday ? "Hoy no tienes nada apuntado." : "Día libre."}</b>Toca «Añadir» abajo para crear un evento, una tarea o un aviso.</div>`}
-    ${late.length ? `<div class="group-t red">Atrasadas · ${late.length}</div>${late.map(t => agendaRow({t:"task", it:t, time:"", label:"Era para " + relDay(t.date).toLowerCase(), red:true, title:t.title})).join("")}` : ""}</div>
-    <button class="btn sm more-btn" data-act="day" data-date="${sel}" hidden></button>
+    <div class="ag-block" data-more="+{n} más">
+      <div class="sec-t"><h2>${esc(title)}</h2><span class="n">${its.length || ""}</span><span class="sp"></span><button class="lnk def-lnk" data-act="day" data-date="${sel}">Horario${ic("right")}</button><button class="lnk more-btn" data-act="day" data-date="${sel}" hidden></button></div>
+      <div class="ag-list">${its.length ? its.map(agendaRow).join("") : `<div class="empty"><b>${isToday ? "Hoy no tienes nada apuntado." : "Día libre."}</b>Toca «Añadir» abajo para crear un evento, una tarea o un aviso.</div>`}
+      ${late.length ? `<div class="group-t red">Atrasadas · ${late.length}</div>${late.map(t => agendaRow({t:"task", it:t, time:"", label:"Era para " + relDay(t.date).toLowerCase(), red:true, title:t.title})).join("")}` : ""}</div>
+    </div>
+    ${isToday ? `<div class="ag-block free" data-more="+{n} más">
+      <div class="sec-t"><h2>¿Tiempo libre hoy?</h2><span class="n">${free.length || ""}</span><span class="sp"></span><a class="lnk def-lnk" href="#tareas">Tareas${ic("right")}</a><a class="lnk more-btn" href="#tareas" hidden></a></div>
+      <p class="free-sub">Aprovecha para adelantar algo de lo pendiente.</p>
+      <div class="ag-list">${free.length ? free.map(taskRow).join("") : `<div class="empty"><b>Nada pendiente.</b>Disfruta el rato: te lo has ganado.</div>`}</div>
+    </div>` : ""}
   </section>`;
 }
 function fitAgenda(){
   const ag = $(".home-v .agenda"); if (!ag) return;
-  const rows = $$(".ag-list > .row-it, .ag-list > .group-t", ag), more = $(".more-btn", ag);
-  rows.forEach(r => r.hidden = false); more.hidden = true;
-  if (ag.scrollHeight <= ag.clientHeight + 1) return;
-  more.hidden = false;
-  let hidden = 0;
-  for (let i = rows.length - 1; i >= 0 && ag.scrollHeight > ag.clientHeight + 1; i--){ rows[i].hidden = true; if (rows[i].classList.contains("row-it")) hidden++; }
-  const vis = rows.filter(r => !r.hidden); if (vis.length && vis[vis.length - 1].classList.contains("group-t")) vis[vis.length - 1].hidden = true;
-  more.textContent = hidden ? `Ver ${hidden} más en el horario` : "Ver el horario";
+  const blocks = $$(".ag-block", ag).map(b => ({b, rows:$$(".ag-list > .row-it, .ag-list > .it, .ag-list > .group-t", b), more:$(".more-btn", b), def:$(".def-lnk", b)}));
+  blocks.forEach(x => { x.rows.forEach(r => r.hidden = false); x.more.hidden = true; x.def.hidden = false; });
+  const over = () => ag.scrollHeight > ag.clientHeight + 1;
+  const vis = x => x.rows.filter(r => !r.hidden && !r.classList.contains("group-t")).length;
+  const [today, free] = blocks;
+  const trim = x => { const shown = x.rows.filter(r => !r.hidden); if (!shown.length) return false; shown[shown.length - 1].hidden = true; return true; };
+  let guard = 0;
+  while (over() && guard++ < 80){
+    if (today && vis(today) > 2 && trim(today)) continue;
+    if (free && vis(free) > 1 && trim(free)) continue;
+    if (today && vis(today) > 1 && trim(today)) continue;
+    if (free && vis(free) > 0 && trim(free)) continue;
+    if (!(today && trim(today))) break;
+  }
+  blocks.forEach(x => {
+    const shown = x.rows.filter(r => !r.hidden); if (shown.length && shown[shown.length - 1].classList.contains("group-t")) shown[shown.length - 1].hidden = true;
+    const h = x.rows.filter(r => r.hidden && !r.classList.contains("group-t")).length;
+    x.more.hidden = !h; x.def.hidden = !!h; if (h) x.more.innerHTML = esc(x.b.dataset.more.replace("{n}", h)) + ic("right");
+  });
 }
 addEventListener("resize", () => requestAnimationFrame(fitAgenda));
 function vHome(animate){
@@ -1189,13 +1224,15 @@ function openDrawer(){
     ${link("secciones","Gestionar secciones","grid")}
     <div class="dlabel">Tú</div>${link("perfil","Perfil y ajustes","user")}`, {kind:"drawer"});
 }
-function openQuick(){
-  const r = currentRoute(), d = r === "inicio" || r === "calendario" ? S.cal.sel : todayKey();
+function vNew(){
+  const d = S.addDate || todayKey();
   const opts = [["task","Tarea","task","Algo que hacer"],["event","Evento","cal","Con fecha y hora"],["reminder","Aviso","bell","Te avisa a su hora", true],["note","Nota","note","Idea rápida"],["important","Fecha importante","gift","Cumpleaños, plazos…"]];
-  openLayer(`${sheetHead("Añadir" + (d !== todayKey() ? ` · ${esc(relDay(d))}` : ""))}
-    <button class="ai-card" data-act="ai"><span class="ic">${ic("spark")}</span><span><b>Pídeselo al asistente</b><span>«Apúntame BJJ martes y jueves a las 20:00»</span></span></button>
-    <div class="qa">${opts.map(([k,l,i,dsc,red]) => `<button data-act="add" data-kind="${k}" data-date="${k === "note" ? "" : d}"><span class="ic${red ? " red" : ""}">${ic(i)}</span>${l}<span class="d">${dsc}</span></button>`).join("")}</div>
-    ${sections().length ? `<div class="group-t" style="padding-top:22px">En tus secciones</div><div class="qa">${sections().map(s => `<button data-act="add" data-kind="entry" data-sec="${s.id}" data-date="${d}"><span class="ic">${ic(s.icon)}</span>${esc(s.name)}${s.parentId ? `<span class="d">${esc(secById(s.parentId)?.name || "")}</span>` : ""}</button>`).join("")}</div>` : ""}`);
+  return `
+  <div class="page-h"><h1>¿Qué quieres añadir?</h1><p>${d === todayKey() ? "Para hoy, o elige otra fecha al crearlo." : `Para ${esc(relDay(d).toLowerCase())}.`}</p></div>
+  <button class="ai-card" data-act="ai"><span class="ic">${ic("spark")}</span><span><b>Pídeselo al asistente</b><span>«Apúntame BJJ martes y jueves a las 20:00»</span></span></button>
+  <div class="qa">${opts.map(([k,l,i,dsc,red]) => `<button data-act="add" data-kind="${k}" data-date="${k === "note" ? "" : d}"><span class="ic${red ? " red" : ""}">${ic(i)}</span>${l}<span class="qd">${dsc}</span></button>`).join("")}</div>
+  ${sections().length ? `<div class="group-t">En tus secciones</div><div class="qa">${sections().map(s => `<button data-act="add" data-kind="entry" data-sec="${s.id}" data-date="${d}"><span class="ic">${ic(s.icon)}</span>${esc(s.name)}${s.parentId ? `<span class="qd">${esc(secById(s.parentId)?.name || "")}</span>` : ""}</button>`).join("")}</div>` : ""}
+  <div><button class="btn" data-act="sec-new">${ic("grid")}Crear una sección nueva</button></div>`;
 }
 const RECENT_KEY = "orbita.recent";
 const recents = () => lsGet(RECENT_KEY, []);
@@ -1206,71 +1243,57 @@ function hl(text, q){
   const i = norm(t).indexOf(norm(q)); if (i < 0) return esc(t);
   return esc(t.slice(0, i)) + `<span class="mark">${esc(t.slice(i, i + q.length))}</span>` + esc(t.slice(i + q.length));
 }
-function openSearch(){
-  openLayer(`${sheetHead("Buscar")}<input type="search" class="search-in" id="gsearch" placeholder="Busca una sección o algo que guardaste" autocomplete="off" aria-label="Buscar" enterkeyhint="search"><div id="gres"></div>`, {onMount(sh){
-    const inp = $("#gsearch", sh), res = $("#gres", sh);
-    const secRow = s => { const n = deepCount(s.id); return `<button class="sec-hit" data-go="s-${s.id}"><span class="ic">${ic(s.icon)}</span><span class="tx"><b>${hl(s.name, inp.value.trim())}</b><span>${s.parentId ? esc(secById(s.parentId)?.name || "") + " · " : ""}${n} ${n === 1 ? "entrada" : "entradas"}</span></span>${ic("right")}</button>`; };
-    const quick = [["tareas","Tareas pendientes","task"],["avisos","Avisos y fechas","bell"],["notas","Notas","note"],["calendario","Calendario","cal"]];
-    const run = () => {
-      const q = inp.value.trim();
-      if (!q){
-        const rc = recents();
-        res.innerHTML = `
-          ${rc.length ? `<div class="s-group"><span class="lbl">Búsquedas recientes <button class="lnk" data-clear style="font-size:12px;letter-spacing:0;text-transform:none">Borrar</button></span><div class="recent">${rc.map((r, i) => `<span class="chip"><button data-q="${esc(r)}">${esc(r)}</button><button class="x" data-rm="${i}" aria-label="Quitar ${esc(r)}">${ic("x")}</button></span>`).join("")}</div></div>` : ""}
-          <div class="s-group"><span class="lbl">Accesos directos</span><div class="chips" style="flex-wrap:wrap">${quick.map(([k, l, i]) => `<button class="chip" data-go="${k}">${ic(i)}${l}</button>`).join("")}</div></div>
-          <div class="s-group"><span class="lbl">Tus secciones</span>${sections().length ? sections().map(secRow).join("") : `<p class="muted small" style="margin:0">Aún no tienes secciones.</p>`}</div>`;
-        return;
-      }
-      const nq = norm(q);
-      const secs = sections().filter(s => norm(s.name).includes(nq) || s.fields.some(f => norm(f.label).includes(nq)));
-      const hits = all().filter(i => norm(JSON.stringify([i.title, i.body, i.notes, i.fields])).includes(nq)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(0, 40);
-      const label = i => { const s = i.kind === "entry" ? secById(i.sectionId) : null; return s ? secPath(s) : (i.important ? "Fecha importante" : {task:"Tarea", event:"Evento", reminder:"Aviso", note:"Nota"}[i.kind]); };
-      res.innerHTML = `
-        ${secs.length ? `<div class="s-group"><span class="lbl">Secciones · ${secs.length}</span>${secs.map(secRow).join("")}</div>` : ""}
-        ${hits.length ? `<div class="s-group"><span class="lbl">Guardado · ${hits.length}</span><div class="list">${hits.map(i => `<div class="it" data-hit="${i.id}"><div class="tx"><div class="tt">${hl(i.title || (i.body || "").slice(0, 60) || "Sin título", q)}</div><div class="mt">${esc(label(i) || "")}${i.date ? " · " + esc(relDay(i.date)) : ""}</div></div>${ic("right")}</div>`).join("")}</div></div>` : ""}
-        ${!secs.length && !hits.length ? `<div class="empty" style="margin-top:16px"><b>Nada con «${esc(q)}».</b>Prueba con otra palabra o crea una sección nueva.<button class="btn sm" data-new>${ic("plus")}Nueva sección</button></div>` : ""}`;
-    };
-    res.addEventListener("click", e => {
-      const t = e.target.closest("[data-go],[data-hit],[data-q],[data-rm],[data-clear],[data-new]"); if (!t) return;
-      e.stopPropagation();
-      const q = inp.value.trim();
-      if (t.dataset.q !== undefined){ inp.value = t.dataset.q; run(); inp.focus(); }
-      else if (t.dataset.rm !== undefined){ const r = recents(); r.splice(+t.dataset.rm, 1); lsSet(RECENT_KEY, r); run(); }
-      else if (t.hasAttribute("data-clear")){ lsSet(RECENT_KEY, []); run(); }
-      else if (t.hasAttribute("data-new")){ swapLayer(() => openTemplates("")); }
-      else if (t.dataset.go){ if (q) addRecent(q); closeLayer(); location.hash = t.dataset.go; }
-      else if (t.dataset.hit){ if (q) addRecent(q); const it = S.items.get(t.dataset.hit); if (it) swapLayer(() => openItem(it.kind, it)); }
-    }, true);
-    inp.addEventListener("input", run);
-    inp.addEventListener("keydown", e => { if (e.key === "Enter"){ addRecent(inp.value); inp.blur(); } });
-    run(); setTimeout(() => inp.focus(), 80);
-  }});
+function vSearch(){
+  return `
+  <input type="search" class="search-in" id="gsearch" placeholder="Busca una sección o algo que guardaste" autocomplete="off" aria-label="Buscar" enterkeyhint="search" value="${esc(S.searchQ)}">
+  <div id="gres">${searchResults()}</div>`;
 }
-function openDay(key){
-  let cur = key;
-  const draw = () => {
-    const its = dayItems(cur), isToday = cur === todayKey();
-    const allDay = its.filter(x => !x.time), timed = its.filter(x => x.time);
-    let rows = "";
-    for (let h = 0; h < 24; h++){
-      const hh = pad(h), inH = timed.filter(x => x.time.slice(0, 2) === hh);
-      rows += `<div class="hr${isToday && new Date().getHours() === h ? " now" : ""}" id="hr-${h}"><div class="h">${hh}:00</div><div class="slot" data-act="slot" data-date="${cur}" data-h="${hh}" aria-label="Añadir a las ${hh}:00">${inH.map(x => `<button class="blk${x.t === "reminder" && !x.it.done ? " red" : x.t === "entry" || x.t === "task" ? " lite" : ""}${x.it.done ? " done" : ""}" data-act="open" data-id="${x.it.id}">${esc(x.title)}<small>${x.time}${x.end ? "–" + x.end : ""} · ${esc(x.label)}</small></button>`).join("")}</div></div>`;
-    }
-    return `${sheetHead(esc(cap1(fmt(parseYmd(cur), {weekday:"long", day:"numeric", month:"long"}))), `<button class="ibtn" data-act="day-move" data-d="-1" aria-label="Día anterior">${ic("left")}</button><button class="ibtn" data-act="day-move" data-d="1" aria-label="Día siguiente">${ic("right")}</button>`)}
-      ${isToday ? "" : `<div style="margin:-6px 0 12px"><button class="pillbtn" data-act="day-move" data-d="0">Ir a hoy</button></div>`}
-      ${allDay.length ? `<div class="allday">${allDay.map(x => `<button class="blk${x.red && !x.it.done ? " red" : " lite"}${x.it.done ? " done" : ""}" style="width:auto" ${x.t === "bday" ? 'data-act="nav" data-to="perfil"' : `data-act="open" data-id="${x.it.id}"`}>${esc(x.title)}<small>${esc(x.label)}</small></button>`).join("")}</div>` : ""}
-      <div class="sched" id="sched">${rows}</div>
-      <p class="muted small" style="margin:14px 0 0">Toca una hora libre para añadir un evento.</p>`;
-  };
-  const place = (sh, keep) => {
-    const isToday = cur === todayKey(), n = new Date();
-    if (!keep){ const target = $("#hr-" + Math.max(0, (isToday ? n.getHours() : 8) - 1), sh); if (target) sh.scrollTop = target.offsetTop - 90; }
-    if (isToday){ const hr = $("#hr-" + n.getHours(), sh); if (hr){ const ln = document.createElement("div"); ln.className = "nowline"; ln.style.top = (hr.offsetTop + hr.offsetHeight * n.getMinutes() / 60) + "px"; $("#sched", sh).appendChild(ln); } }
-  };
-  openLayer(`<div id="dayw">${draw()}</div>`, {
-    onMount(sh){ sh._day = {get:() => cur, set:k => { cur = k; $("#dayw", sh).innerHTML = draw(); place(sh); }}; setTimeout(() => place(sh), 40); },
-    refresh(){ const sh = $(".sheet"); if (sh && sh._day){ const y = sh.scrollTop; $("#dayw", sh).innerHTML = draw(); place(sh, true); sh.scrollTop = y; } }
-  });
+function searchResults(){
+  const q = S.searchQ.trim();
+  const secRow = s => { const n = deepCount(s.id); return `<button class="sec-hit" data-act="s-go" data-to="s-${s.id}"><span class="ic">${ic(s.icon)}</span><span class="tx"><b>${hl(s.name, q)}</b><span>${s.parentId ? esc(secById(s.parentId)?.name || "") + " · " : ""}${n} ${n === 1 ? "entrada" : "entradas"}</span></span>${ic("right")}</button>`; };
+  if (!q){
+    const rc = recents(), quick = [["tareas","Tareas pendientes","task"],["avisos","Avisos y fechas","bell"],["notas","Notas","note"],["calendario","Calendario","cal"]];
+    return `
+      ${rc.length ? `<div class="s-group"><span class="lbl">Búsquedas recientes <button class="lnk" data-act="s-clear" style="font-size:12px;letter-spacing:0;text-transform:none">Borrar</button></span><div class="recent">${rc.map((r, i) => `<span class="chip"><button data-act="s-q" data-q="${esc(r)}">${esc(r)}</button><button class="x" data-act="s-rm" data-i="${i}" aria-label="Quitar ${esc(r)}">${ic("x")}</button></span>`).join("")}</div></div>` : ""}
+      <div class="s-group"><span class="lbl">Accesos directos</span><div class="chips" style="flex-wrap:wrap">${quick.map(([k, l, i]) => `<button class="chip" data-act="s-go" data-to="${k}">${ic(i)}${l}</button>`).join("")}</div></div>
+      <div class="s-group"><span class="lbl">Tus secciones</span>${sections().length ? sections().map(secRow).join("") : `<p class="muted small" style="margin:0">Aún no tienes secciones.</p>`}</div>`;
+  }
+  const nq = norm(q);
+  const secs = sections().filter(s => norm(s.name).includes(nq) || s.fields.some(f => norm(f.label).includes(nq)));
+  const hits = all().filter(i => norm(JSON.stringify([i.title, i.body, i.notes, i.fields])).includes(nq)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(0, 40);
+  const label = i => { const s = i.kind === "entry" ? secById(i.sectionId) : null; return s ? secPath(s) : (i.important ? "Fecha importante" : {task:"Tarea", event:"Evento", reminder:"Aviso", note:"Nota"}[i.kind]); };
+  return `
+    ${secs.length ? `<div class="s-group"><span class="lbl">Secciones · ${secs.length}</span>${secs.map(secRow).join("")}</div>` : ""}
+    ${hits.length ? `<div class="s-group"><span class="lbl">Guardado · ${hits.length}</span><div class="list">${hits.map(i => `<div class="it" data-act="s-hit" data-id="${i.id}"><div class="tx"><div class="tt">${hl(i.title || (i.body || "").slice(0, 60) || "Sin título", q)}</div><div class="mt">${esc(label(i) || "")}${i.date ? " · " + esc(relDay(i.date)) : ""}</div></div>${ic("right")}</div>`).join("")}</div></div>` : ""}
+    ${!secs.length && !hits.length ? `<div class="empty" style="margin-top:16px"><b>Nada con «${esc(q)}».</b>Prueba con otra palabra o crea una sección nueva.<button class="btn sm" data-act="sec-new">${ic("plus")}Nueva sección</button></div>` : ""}`;
+}
+function vDay(){
+  const cur = S.dayKey || todayKey(), its = dayItems(cur), isToday = cur === todayKey();
+  const allDay = its.filter(x => !x.time), timed = its.filter(x => x.time);
+  let rows = "";
+  for (let h = 0; h < 24; h++){
+    const hh = pad(h), inH = timed.filter(x => x.time.slice(0, 2) === hh);
+    rows += `<div class="hr${isToday && new Date().getHours() === h ? " now" : ""}" id="hr-${h}"><div class="h">${hh}:00</div><div class="slot" data-act="slot" data-date="${cur}" data-h="${hh}" aria-label="Añadir a las ${hh}:00">${inH.map(x => `<button class="blk${x.t === "reminder" && !x.it.done ? " red" : x.t === "entry" || x.t === "task" ? " lite" : ""}${x.it.done ? " done" : ""}" data-act="open" data-id="${x.it.id}">${esc(x.title)}<small>${x.time}${x.end ? "–" + x.end : ""} · ${esc(x.label)}</small></button>`).join("")}</div></div>`;
+  }
+  return `
+  <div class="day-h"><div><h1>${esc(cap1(fmt(parseYmd(cur), {weekday:"long"})))} ${parseYmd(cur).getDate()}</h1><p>${esc(cap1(fmt(parseYmd(cur), {month:"long"})))} ${parseYmd(cur).getFullYear()}${isToday ? " · hoy" : ""}</p></div>
+    <div class="row" style="gap:4px;flex-wrap:nowrap">${isToday ? "" : `<button class="pillbtn" data-act="day-move" data-d="0">Hoy</button>`}<button class="ibtn" data-act="day-move" data-d="-1" aria-label="Día anterior">${ic("left")}</button><button class="ibtn" data-act="day-move" data-d="1" aria-label="Día siguiente">${ic("right")}</button></div></div>
+  ${allDay.length ? `<div class="allday">${allDay.map(x => `<button class="blk${x.red && !x.it.done ? " red" : " lite"}${x.it.done ? " done" : ""}" style="width:auto" ${x.t === "bday" ? 'data-act="nav" data-to="perfil"' : `data-act="open" data-id="${x.it.id}"`}>${esc(x.title)}<small>${esc(x.label)}</small></button>`).join("")}</div>` : ""}
+  <div class="sched" id="sched">${rows}</div>
+  <p class="muted small" style="margin:0">Toca una hora libre para añadir un evento.</p>`;
+}
+function afterView(r, changed){
+  if (r === "buscar"){
+    const inp = $("#gsearch"); if (!inp) return;
+    inp.oninput = () => { S.searchQ = inp.value; $("#gres").innerHTML = searchResults(); };
+    inp.onkeydown = e => { if (e.key === "Enter"){ addRecent(inp.value); inp.blur(); } };
+    if (changed && window.matchMedia("(pointer:fine)").matches) inp.focus();
+  }
+  if (r === "horario"){
+    const n = new Date(), isToday = S.dayKey === todayKey(), sched = $("#sched");
+    if (isToday){ const hr = $("#hr-" + n.getHours()); if (hr){ const ln = document.createElement("div"); ln.className = "nowline"; ln.style.top = (hr.offsetTop + hr.offsetHeight * n.getMinutes() / 60) + "px"; sched.appendChild(ln); } }
+    if (changed || S.dayJump){ S.dayJump = false; const t = $("#hr-" + Math.max(0, (isToday ? n.getHours() : 8) - 1)); if (t) window.scrollTo(0, t.getBoundingClientRect().top + window.scrollY - 140); }
+  }
 }
 
 /* ---------- item editor ---------- */
@@ -1364,7 +1387,7 @@ function openTemplates(parentId){
       <div class="row"><button type="submit" class="btn pri">${ic("spark")}Crear con el asistente</button><span class="muted small">${aiKey() ? "Diseña los campos y subsecciones por ti." : "Antes conecta el asistente en Perfil y ajustes (Gemini es gratis)."}</span></div>
     </form>
     <div class="group-t" style="padding-top:22px">O empieza con una plantilla</div>
-    <div class="qa">${Object.entries(TEMPLATES).map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${parentId || ""}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="d">${esc(t.d)}</span></button>`).join("")}</div>`);
+    <div class="qa">${Object.entries(TEMPLATES).map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${parentId || ""}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="qd">${esc(t.d)}</span></button>`).join("")}</div>`);
 }
 function makeSection(tplKey, parentId){
   const t = TEMPLATES[tplKey];
@@ -1873,15 +1896,28 @@ const ACT = {
   nav(el){ closeLayer(); location.hash = el.dataset.to; },
   close(){ closeLayer(); },
   drawer(){ openDrawer(); },
-  quick(){ swapLayer(openQuick); },
-  search(){ swapLayer(openSearch); },
+  quick(){ ACT.tab({dataset:{to:"nuevo"}}); },
+  search(){ ACT.tab({dataset:{to:"buscar"}}); },
+  tab(el){
+    const to = el.dataset.to, r = currentRoute();
+    if (to === "nuevo") S.addDate = (r === "inicio" || r === "calendario") ? S.cal.sel : todayKey();
+    if (to === "horario"){ S.dayKey = todayKey(); S.dayJump = true; }
+    closeLayer();
+    if (r === to){ if (to === "horario") render(); window.scrollTo({top:0, behavior:"smooth"}); return; }
+    location.hash = to;
+  },
+  "s-go"(el){ if (S.searchQ.trim()) addRecent(S.searchQ); location.hash = el.dataset.to; },
+  "s-hit"(el){ if (S.searchQ.trim()) addRecent(S.searchQ); const it = S.items.get(el.dataset.id); if (it) openItem(it.kind, it); },
+  "s-q"(el){ S.searchQ = el.dataset.q; const i = $("#gsearch"); if (i) i.value = S.searchQ; $("#gres").innerHTML = searchResults(); },
+  "s-rm"(el){ const r = recents(); r.splice(+el.dataset.i, 1); lsSet(RECENT_KEY, r); $("#gres").innerHTML = searchResults(); },
+  "s-clear"(){ lsSet(RECENT_KEY, []); $("#gres").innerHTML = searchResults(); },
   ai(){ swapLayer(() => openAI()); },
   "ai-key"(){ swapLayer(() => openAIKey()); },
   "ai-key-del"(el){ try { localStorage.removeItem(el.dataset.prov === "claude" ? AI_KEY : GEM_KEY); } catch {} closeLayer(); render(); toast("Clave quitada"); },
   "ai-sugg"(el){ aiSend(el.dataset.t); },
   "ai-clear"(){ AI.history = []; AI.gHist = []; AI.view = []; drawChat(); },
-  day(el){ const k = el.dataset.date || todayKey(); swapLayer(() => openDay(k)); },
-  "day-move"(el){ const sh = $(".sheet"); if (!sh?._day) return; const d = +el.dataset.d; sh._day.set(d === 0 ? todayKey() : ymd(addDays(parseYmd(sh._day.get()), d))); },
+  day(el){ S.dayKey = el.dataset.date || todayKey(); S.dayJump = true; closeLayer(); if (currentRoute() === "horario") render(); else location.hash = "horario"; },
+  "day-move"(el){ const d = +el.dataset.d; S.dayKey = d === 0 ? todayKey() : ymd(addDays(parseYmd(S.dayKey || todayKey()), d)); S.dayJump = true; S.listAnim = true; render(); },
   slot(el){ ACT.add({dataset:{kind:"event", date:el.dataset.date, time:`${el.dataset.h}:00`}}); },
   add(el){ const {kind, date, sec, time} = el.dataset; swapLayer(() => openItem(kind, null, {date, sec, time})); },
   open(el){ const it = S.items.get(el.dataset.id); if (it) swapLayer(() => openItem(it.kind, it)); },
