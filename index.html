@@ -740,6 +740,45 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.genres{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(46%,180px),1fr))}
+.gq{position:relative;overflow:hidden;min-height:118px;border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;color:#fff;background:linear-gradient(150deg,hsl(var(--h) 58% 36%),hsl(calc(var(--h) + 30) 62% 15%));box-shadow:0 12px 24px -16px hsl(var(--h) 60% 20%);transition:transform .2s var(--spring)}
+.gq:active{transform:scale(.96)}
+.gq b{font-size:17px;font-weight:900;letter-spacing:-.02em;line-height:1.1;position:relative;z-index:1}
+.gq > span:not(.gq-p){font-size:12px;font-weight:700;opacity:.75;margin-top:3px;position:relative;z-index:1}
+.gq.empty0 > span{opacity:.6}
+.gq-p{position:absolute;right:10px;bottom:10px;display:flex}
+.gq-p .tp{width:30px;margin-left:-12px;box-shadow:0 4px 10px rgba(0,0,0,.4);transform:rotate(6deg);border:2px solid rgba(255,255,255,.85)}
+.gq-p .tp:nth-child(2){transform:rotate(-4deg)}
+.gq-p .tp:nth-child(3){transform:rotate(10deg)}
+.genre-h{padding:18px 16px;border-radius:20px;color:#fff;background:linear-gradient(150deg,hsl(var(--h) 58% 36%),hsl(calc(var(--h) + 30) 62% 15%));display:flex;align-items:baseline;gap:10px}
+.genre-h b{font-size:26px;font-weight:900;letter-spacing:-.03em;font-stretch:112%}
+.genre-h span{font-weight:700;opacity:.75;font-size:13px}
+button.crumb{align-self:flex-start}
+.tsub{font-size:11.5px;color:var(--mute);font-weight:700}
+.tt-wrap{overflow-x:auto;margin:0 -4px;padding:0 4px;scrollbar-width:none}
+.tt-wrap::-webkit-scrollbar{display:none}
+.tt{display:grid;grid-template-columns:38px repeat(5,minmax(44px,1fr)) repeat(2,minmax(30px,.62fr));grid-template-rows:auto calc(var(--hh) * var(--rows));min-width:340px;column-gap:3px}
+.tt-corner{grid-row:1;grid-column:1}
+.tt-day{grid-row:1;display:flex;flex-direction:column;align-items:center;padding:4px 0 8px;line-height:1}
+.tt-day b{font-weight:900;font-size:14px}
+.tt-day span{font-size:11px;color:var(--mute);font-weight:700;margin-top:3px}
+.tt-day.today b{color:var(--red)}
+.tt-day.we b{color:var(--mute)}
+.tt-hours{grid-row:2;grid-column:1;display:flex;flex-direction:column}
+.tt-hours span{height:var(--hh);font-size:11px;font-weight:800;color:var(--ink-2);line-height:1.1;padding-top:3px;font-variant-numeric:tabular-nums}
+.tt-hours i{display:block;font-style:normal;font-weight:600;color:var(--mute);font-size:10px}
+.tt-col{grid-row:2;position:relative;border-radius:10px;background:var(--paper-2);display:flex;flex-direction:column;overflow:hidden}
+.tt-col.today{background:#fbecec}
+.tt-col.we{background:#f8f8f7}
+.tt-slot{height:var(--hh);flex:none;border-top:1px solid var(--line)}
+.tt-slot:first-child{border-top:0}
+.tt-slot:active,.tt-slot:hover{background:rgba(13,13,13,.05)}
+.tt-cls{position:absolute;left:2px;right:2px;border-radius:8px;padding:4px 5px;background:var(--c);color:#fff;text-align:left;display:flex;flex-direction:column;gap:1px;overflow:hidden;box-shadow:0 4px 10px -6px rgba(0,0,0,.5);z-index:1}
+.tt-cls b{font-size:10.5px;font-weight:800;line-height:1.15;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
+.tt-cls span{font-size:9.5px;font-weight:700;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (min-width:700px){.tt{grid-template-columns:56px repeat(5,1fr) repeat(2,.75fr)}.tt-cls{padding:6px 8px}.tt-cls b{font-size:13px}.tt-cls span{font-size:11px}}
+.ktabs.sm .ktab{min-height:36px;font-size:13px}
+
 .ktopics{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr))}
 .ktopic{display:flex;flex-direction:column;gap:4px;padding:14px;border-radius:var(--r-lg);background:var(--ink);color:var(--paper);min-height:132px;min-width:0;transition:transform .2s var(--spring)}
 .ktopic:active{transform:scale(.97)}
@@ -1007,7 +1046,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "18";
+const APP_VERSION = "19";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -2252,7 +2291,7 @@ function seedExamples(secs){
   add({kind:"reminder", title:"Beber agua y estirar", date:k(0), time:hh(2)});
   add({kind:"note", title:"Ideas para el finde", body:"Ruta por la sierra el sábado\nProbar el restaurante nuevo\nTerminar la serie", pinned:true});
   const SAMPLES = {
-    peliculas:[["Dune: Parte dos", {tipo:"Película", estado:"Vista", valoracion:5, autor:"Cine"}],["Severance", {tipo:"Serie", estado:"Viendo", autor:"Streaming", progreso:"T2 · E4"}],["Oppenheimer", {tipo:"Película", estado:"Quiero ver"}]],
+    peliculas:[["Dune: Parte dos", {tipo:"Película", genero:"Ciencia ficción", estado:"Vista", valoracion:5, autor:"Cine"}],["Severance", {tipo:"Serie", genero:"Suspense", estado:"Viendo", autor:"Streaming", progreso:"T2 · E4"}],["Oppenheimer", {tipo:"Película", genero:"Histórica", estado:"Quiero ver"}]],
     armario:[["Vaqueros rectos", {categoria:"Abajo", color:"#2f4f8f", temporada:"Todo el año", estado:"En uso"}],["Jersey de punto", {categoria:"Arriba", color:"#c9a66b", estado:"En uso"}]],
     outfits:[["Casual de oficina", {fecha:k(-1), ocasion:"Trabajo", valoracion:4, notas:"Jersey de punto, vaqueros rectos y zapatillas blancas"}]],
     entrenos:[["Gimnasio", {dias:[1,3,5], hora:"19:00", fin:"20:15", lugar:"Gimnasio del barrio"}, "plan"],["Pierna", {dias:[1,5], grupo:"Pierna y glúteo", ejercicios:[{n:"Sentadilla", s:"4", r:"8", k:"60"},{n:"Peso muerto rumano", s:"3", r:"10", k:"50"},{n:"Zancadas", s:"3", r:"12", k:"14"}]}, "rutina"],["Carrera suave", {fecha:k(-1), hora:"08:00", tipo:"Cardio", duracion:35, intensidad:"Suave", sensacion:4}, "sesion"]],
@@ -2260,7 +2299,7 @@ function seedExamples(secs){
     musica:[["Midnight City", {artista:"M83", genero:"Electrónica", estado:"En bucle", valoracion:5, fecha:k(-3)}]],
     aprender:[["Tocar la guitarra", {prioridad:"Media", progreso:20, recursos:[{n:"Curso de acordes básicos", u:""}]}, "tema"],["Política", {prioridad:"Alta", progreso:10, recursos:[]}, "tema"]],
     conocimientos:[["La regla de los dos minutos", {tema:"Productividad", fecha:k(-2), notas:"Si algo lleva menos de dos minutos, hazlo ya."}]],
-    libros:[["Hábitos atómicos", {tipo:"Libro", autor:"James Clear", estado:"Leyendo", progreso:"Página 120"}, "obra"],["Entiende tu mente", {tipo:"Podcast", autor:"Molo Cebrián", estado:"Quiero leer"}, "obra"]]
+    libros:[["Hábitos atómicos", {tipo:"Libro", genero:"Desarrollo personal", autor:"James Clear", estado:"Leyendo", progreso:"Página 120"}, "obra"],["Entiende tu mente", {tipo:"Podcast", genero:"Psicología", autor:"Molo Cebrián", estado:"Quiero leer"}, "obra"]]
   };
   for (const s of secs) for (const [title, fields, sub] of (SAMPLES[s.tpl] || [])) add({kind:"entry", sectionId:s.id, title, fields, ...(sub ? {sub} : {})});
   const est = secs.find(s => s.tpl === "estudios");
@@ -3361,17 +3400,19 @@ const weekStart = (off=0) => { const t = new Date(); return addDays(new Date(t.g
 const MEALS = ["Desayuno","Comida","Merienda","Cena","Snack"];
 const NUT = [["kcal","Calorías","kcal"],["prot","Proteínas","g"],["carb","Carbohidratos","g"],["grasa","Grasas","g"],["azucar","Azúcares","g"],["fibra","Fibra","g"]];
 const MACROS = NUT.map(([k, l, u]) => F(k, `${l} (${u})`, "number"));
-const KIT_V = 1;
-const mediaFields = (types, states, who, prog) => [F("tipo","Tipo","select",{options:types}),F("estado","Estado","select",{options:states}),F("valoracion","Mi nota","rating"),F("autor",who,"text"),F("progreso",prog,"text"),F("portada","Portada","photos"),F("enlace","Enlace","link"),F("notas","Notas","longtext")];
+const KIT_V = 2;
+const GEN_PELI = ["Acción","Aventura","Comedia","Drama","Terror","Suspense","Ciencia ficción","Fantasía","Romance","Animación","Crimen","Documental","Histórica","Musical","Bélica","Familiar"];
+const GEN_LIB = ["Novela","Fantasía","Ciencia ficción","Thriller","Romance","Terror","Historia","Biografías","Desarrollo personal","Psicología","Negocios y dinero","Ciencia","Filosofía","Tecnología","True crime","Humor","Cómic","Poesía"];
+const mediaFields = (types, states, who, prog, gens) => [F("tipo","Tipo","select",{options:types}),F("genero","Género","select",{options:gens}),F("estado","Estado","select",{options:states}),F("valoracion","Mi nota","rating"),F("autor",who,"text"),F("progreso",prog,"text"),F("portada","Portada","photos"),F("enlace","Enlace","link"),F("notas","Notas","longtext")];
 const KITS = {
   entrenos:{def:"sesion", kinds:{
     plan:{label:"Horario semanal", short:"Horario", title:"Deporte (gimnasio, boxeo, pádel…)", fields:[F("dias","Qué días","days"),F("hora","Hora","time"),F("fin","Hasta","time"),F("lugar","Lugar","text"),F("rutina","Rutina que toca","ref",{ref:"rutina", empty:"Cuando crees rutinas podrás vincular una aquí."}),F("notas","Notas","longtext")], daysKey:"dias", timeKey:"hora", calendar:true},
     rutina:{label:"Rutina", title:"Nombre de la rutina (pierna, torso…)", fields:[F("dias","Días que toca","days"),F("grupo","Grupo muscular","text"),F("ejercicios","Ejercicios","rows",{cols:[["n","Ejercicio"],["s","Series"],["r","Reps"],["k","Kg"]]}),F("notas","Notas","longtext")]},
     sesion:{label:"Entreno hecho", short:"Entreno", title:"Qué entrenaste", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("sensacion","Cómo me sentí","rating"),F("notas","Ejercicios y series","longtext")], dateKey:"fecha", timeKey:"hora", calendar:true}
   }},
-  peliculas:{def:"obra", kinds:{obra:{label:"Película o serie", title:"Título", fields:mediaFields(["Película","Serie"], ["Quiero ver","Viendo","Vista"], "Dónde verla", "Por dónde voy (T2 · E5)")}},
+  peliculas:{def:"obra", kinds:{obra:{label:"Película o serie", title:"Título", fields:mediaFields(["Película","Serie"], ["Quiero ver","Viendo","Vista"], "Dónde verla", "Por dónde voy (T2 · E5)", GEN_PELI)}},
     migrate(e){ const f = e.fields || {}; return {sub:"obra", fields:{estado:{"Por ver":"Quiero ver"}[f.estado] || f.estado || "Quiero ver", tipo:{Documental:"Película", Anime:"Serie"}[f.tipo] || f.tipo || "Película", autor:f.autor || f.plataforma || ""}}; }},
-  libros:{def:"obra", rename:[/^Libros$/, "Libros y podcasts"], kinds:{obra:{label:"Libro o podcast", title:"Título", fields:mediaFields(["Libro","Podcast"], ["Quiero leer","Leyendo","Terminado"], "Autor o presentador", "Por dónde voy (página, episodio)")}},
+  libros:{def:"obra", rename:[/^Libros$/, "Libros y podcasts"], kinds:{obra:{label:"Libro o podcast", title:"Título", fields:mediaFields(["Libro","Podcast"], ["Quiero leer","Leyendo","Terminado"], "Autor o presentador", "Por dónde voy (página, episodio)", GEN_LIB)}},
     migrate(e){ const f = e.fields || {}; return {sub:"obra", fields:{estado:{"Por leer":"Quiero leer", "Leído":"Terminado"}[f.estado] || f.estado || "Quiero leer", tipo:f.tipo || "Libro"}}; }},
   comidas:{def:"comida", rename:[/^Comidas$/, "Comidas y salud"], kinds:{
     comida:{label:"Comida", title:"Qué comes (plato)", fields:[F("fecha","Día","date"),F("momento","Momento","select",{options:MEALS}),...MACROS,F("notas","Ingredientes y notas","longtext")], dateKey:"fecha", meal:true},
@@ -3489,44 +3530,74 @@ function vEntrenos(s){
 
 /* ---------- Películas y series · Libros y podcasts ---------- */
 const MEDIA_CFG = {
-  peliculas:{types:["Película","Serie"], st:["Quiero ver","Viendo","Vista"], tabs:["Quiero ver","Viendo","Vistas"], start:"Empezar", end:"Ya la vi", add:"Añadir película o serie", tops:[["Película","Top 5 películas"],["Serie","Top 5 series"]], sub:"Lo que quieres ver, lo que estás viendo y lo que ya has visto, con tu nota."},
-  libros:{types:["Libro","Podcast"], st:["Quiero leer","Leyendo","Terminado"], tabs:["Por leer","Leyendo","Leídos"], start:"Empezar", end:"Terminado", add:"Añadir libro o podcast", tops:[["Libro","Top 5 libros"],["Podcast","Top 5 podcasts"]], sub:"Lo que quieres leer o escuchar, lo que llevas entre manos y lo que ya terminaste."}
+  peliculas:{types:["Película","Serie"], st:["Quiero ver","Viendo","Vista"], stl:["Quiero ver","Viendo","Vistas"], start:"Empezar", end:"Ya la vi", add:"Añadir película o serie", one:"película o serie", genres:GEN_PELI, sub:"Tus películas y series por género, con tu top 5 de cada uno y tu top 10 general."},
+  libros:{types:["Libro","Podcast"], st:["Quiero leer","Leyendo","Terminado"], stl:["Por leer","Leyendo","Leídos"], start:"Empezar", end:"Terminado", add:"Añadir libro o podcast", one:"libro o podcast", genres:GEN_LIB, sub:"Tus libros y podcasts por género, con tu top 5 de cada uno y tu top 10 general."}
 };
-S.mtype = {};
+S.mtype = {}; S.mgenre = {}; S.mst = {};
 const hue = t => { let h = 0; for (const c of String(t)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
 const poster = (e, cls="") => { const ph = (e.fields?.portada || [])[0]; return ph ? `<img class="${cls}" data-img="${ph}" alt="">` : `<span class="mp-t ${cls}" style="--h:${hue(e.title)}">${esc((e.title || "?").split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase())}</span>`; };
 const rateBtns = e => `<span class="mrate">${[1,2,3,4,5].map(i => `<button class="${i <= (+e.fields?.valoracion || 0) ? "on" : ""}" data-act="m-rate" data-id="${e.id}" data-v="${i}" aria-label="${i} estrellas"><svg viewBox="0 0 24 24"><path d="${P.star}"/></svg></button>`).join("")}</span>`;
+const NOGEN = "Sin género";
+const genOf = e => e.fields?.genero || NOGEN;
+function topIds(s, key){
+  const t = s.top || {};
+  if (key === "__all" && !t.__all){ const old = Object.entries(t).filter(([k]) => !k.startsWith("g:") && k !== "__all").flatMap(([, v]) => v || []); if (old.length) return old.filter(id => S.items.has(id)).slice(0, 10); }
+  return (t[key] || []).filter(id => S.items.has(id));
+}
+function topBlock(s, key, label, n){
+  const ids = topIds(s, key);
+  return `<section class="top5"><h3 class="sub-h">${esc(label)}</h3><ol>${[...Array(n)].map((_, i) => { const e = ids[i] && S.items.get(ids[i]);
+    return e ? `<li class="tslot"><span class="tn">${i + 1}</span><button class="tp" data-act="open" data-id="${e.id}">${poster(e)}</button><span class="tt"><b>${esc(e.title)}</b><span class="tsub">${esc([e.fields?.tipo, key === "__all" && e.fields?.genero ? e.fields.genero : ""].filter(Boolean).join(" · "))}</span>${mstars(e.fields?.valoracion)}</span>${i ? `<button class="ibtn up" data-act="top-up" data-sec="${s.id}" data-key="${esc(key)}" data-i="${i}" aria-label="Subir">${ic("left")}</button>` : ""}<button class="ibtn" data-act="top-del" data-sec="${s.id}" data-key="${esc(key)}" data-i="${i}" aria-label="Quitar del top">${ic("x")}</button></li>`
+      : `<li class="tslot vac"><span class="tn">${i + 1}</span><button class="tpick" data-act="top-pick" data-sec="${s.id}" data-key="${esc(key)}">${ic("plus")}Elegir</button></li>`; }).join("")}</ol></section>`;
+}
+function mediaCard(s, e, c){
+  const f = e.fields || {}, st = Math.max(0, c.st.indexOf(f.estado || c.st[0]));
+  return `<article class="mcard"><button class="mposter" data-act="open" data-id="${e.id}">${poster(e)}${f.tipo ? `<i class="mtype">${esc(f.tipo)}</i>` : ""}</button>
+    <div class="mbody"><b class="mt">${esc(e.title)}</b><span class="ms">${esc([f.autor, st === 1 ? f.progreso : ""].filter(Boolean).join(" · "))}</span>
+    ${st === 2 ? rateBtns(e) : `<button class="chip sm" data-act="m-move" data-id="${e.id}" data-to="${st + 1}">${st === 0 ? ic("play") + c.start : ic("check") + c.end}</button>`}</div></article>`;
+}
 function vMedia(s){
-  const c = MEDIA_CFG[s.tpl], es = entriesOf(s.id), tab = kitTab(s, "0"), tf = S.mtype[s.id] || "";
-  const cnt = i => es.filter(e => (e.fields?.estado || c.st[0]) === c.st[i]).length;
+  const c = MEDIA_CFG[s.tpl], es = entriesOf(s.id), tab = ["generos","general"].includes(kitTab(s, "generos")) ? kitTab(s, "generos") : "generos";
+  const g = S.mgenre[s.id];
   let body = "";
-  if (tab === "top"){
-    body = `<div class="tops">${c.tops.map(([type, label]) => {
-      const ids = ((s.top || {})[type] || []).filter(id => S.items.has(id));
-      return `<section class="top5"><h3 class="sub-h">${esc(label)}</h3><ol>${[0,1,2,3,4].map(i => { const e = ids[i] && S.items.get(ids[i]);
-        return e ? `<li class="tslot"><span class="tn">${i + 1}</span><button class="tp" data-act="open" data-id="${e.id}">${poster(e)}</button><span class="tt"><b>${esc(e.title)}</b>${mstars(e.fields?.valoracion)}</span>${i ? `<button class="ibtn up" data-act="top-up" data-sec="${s.id}" data-type="${esc(type)}" data-i="${i}" aria-label="Subir">${ic("left")}</button>` : ""}<button class="ibtn" data-act="top-del" data-sec="${s.id}" data-type="${esc(type)}" data-i="${i}" aria-label="Quitar del top">${ic("x")}</button></li>`
-          : `<li class="tslot vac"><span class="tn">${i + 1}</span><button class="tpick" data-act="top-pick" data-sec="${s.id}" data-type="${esc(type)}">${ic("plus")}Elegir</button></li>`; }).join("")}</ol></section>`; }).join("")}</div>`;
+  if (tab === "general"){
+    const now = es.filter(e => e.fields?.estado === c.st[1]);
+    const done = es.filter(e => e.fields?.estado === c.st[2]).length;
+    body = `<div class="kstats"><div><b>${es.filter(e => (e.fields?.estado || c.st[0]) === c.st[0]).length}</b><span>${esc(c.stl[0].toLowerCase())}</span></div><div><b>${now.length}</b><span>${esc(c.stl[1].toLowerCase())}</span></div><div><b>${done}</b><span>${esc(c.stl[2].toLowerCase())}</span></div></div>
+      ${topBlock(s, "__all", "Top 10 general", 10)}
+      ${now.length ? `<section class="stack" style="gap:10px"><h2 class="sub-h">${esc(c.stl[1])} ahora</h2><div class="mgrid">${now.map(e => mediaCard(s, e, c)).join("")}</div></section>` : ""}`;
+  } else if (g){
+    const st = S.mst[s.id] || "0", tf = S.mtype[s.id] || "";
+    const inG = es.filter(e => genOf(e) === g);
+    const cnt = i => inG.filter(e => (e.fields?.estado || c.st[0]) === c.st[i]).length;
+    let inner;
+    if (st === "top") inner = topBlock(s, "g:" + g, "Top 5 de " + g.toLowerCase(), 5);
+    else {
+      const list = inG.filter(e => (e.fields?.estado || c.st[0]) === c.st[+st] && (!tf || e.fields?.tipo === tf)).sort((a, b) => +st === 2 ? (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0) : (b.updatedAt || 0) - (a.updatedAt || 0));
+      inner = `<div class="chips">${["", ...c.types].map(t => `<button class="chip${t === tf ? " on" : ""}" data-act="m-type" data-sec="${s.id}" data-t="${esc(t)}">${t ? esc(t) + "s" : "Todo"}</button>`).join("")}</div>
+        ${list.length ? `<div class="mgrid">${list.map(e => mediaCard(s, e, c)).join("")}</div>` : kempty(+st === 0 ? "Nada pendiente en este género." : +st === 1 ? "Nada a medias en este género." : "Aún no has terminado nada de este género.", "Añade algo y aparecerá aquí.")}
+        <div class="row">${kbtn(s, "obra", c.add, {estado:c.st[+st], ...(g !== NOGEN ? {genero:g} : {}), ...(tf ? {tipo:tf} : {})})}</div>`;
+    }
+    body = `<button class="crumb" data-act="m-genre" data-sec="${s.id}" data-g="">${ic("left")}Todos los géneros</button>
+      <div class="genre-h" style="--h:${hue(g)}"><b>${esc(g)}</b><span>${inG.length} ${inG.length === 1 ? "título" : "títulos"}</span></div>
+      <div class="ktabs sm">${[["0", c.stl[0], cnt(0)], ["1", c.stl[1], cnt(1)], ["2", c.stl[2], cnt(2)], ["top", "Top 5"]].map(([k, l, n]) => `<button class="ktab${k === st ? " on" : ""}" data-act="m-st" data-sec="${s.id}" data-t="${k}">${esc(l)}${n ? `<span class="n">${n}</span>` : ""}</button>`).join("")}</div>
+      ${inner}`;
   } else {
-    const st = c.st[+tab] || c.st[0];
-    const list = es.filter(e => (e.fields?.estado || c.st[0]) === st && (!tf || e.fields?.tipo === tf)).sort((a, b) => +tab === 2 ? (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0) : (b.updatedAt || 0) - (a.updatedAt || 0));
-    body = `<div class="chips">${["", ...c.types].map(t => `<button class="chip${t === tf ? " on" : ""}" data-act="m-type" data-sec="${s.id}" data-t="${esc(t)}">${t ? esc(t) + "s" : "Todo"}</button>`).join("")}</div>
-      ${list.length ? `<div class="mgrid">${list.map(e => { const f = e.fields || {};
-        return `<article class="mcard"><button class="mposter" data-act="open" data-id="${e.id}">${poster(e)}${f.tipo ? `<i class="mtype">${esc(f.tipo)}</i>` : ""}</button>
-          <div class="mbody"><b class="mt">${esc(e.title)}</b><span class="ms">${esc([f.autor, +tab === 1 ? f.progreso : ""].filter(Boolean).join(" · "))}</span>
-          ${+tab === 2 ? rateBtns(e) : `<button class="chip sm" data-act="m-move" data-id="${e.id}" data-to="${+tab + 1}">${+tab === 0 ? ic("play") + c.start : ic("check") + c.end}</button>`}</div></article>`; }).join("")}</div>`
-      : kempty(+tab === 0 ? "Tu lista está vacía." : +tab === 1 ? "Ahora mismo no tienes nada a medias." : "Aún no has terminado nada.", +tab === 0 ? "Apunta lo que te recomienden para no olvidarlo." : "Cuando empieces algo de tu lista aparecerá aquí.")}
-      <div class="row">${kbtn(s, "obra", c.add, {estado:st, ...(tf ? {tipo:tf} : {})})}</div>`;
+    const gens = [...c.genres, ...(es.some(e => genOf(e) === NOGEN) ? [NOGEN] : []), ...[...new Set(es.map(genOf))].filter(x => x !== NOGEN && !c.genres.includes(x))];
+    body = `<div class="genres">${gens.map(x => { const xs = es.filter(e => genOf(e) === x), pics = xs.slice(0, 3);
+      return `<button class="gq${xs.length ? "" : " empty0"}" style="--h:${hue(x)}" data-act="m-genre" data-sec="${s.id}" data-g="${esc(x)}"><b>${esc(x)}</b><span>${xs.length ? `${xs.length} ${xs.length === 1 ? "título" : "títulos"}` : "Vacío"}</span>${pics.length ? `<span class="gq-p">${pics.map(e => `<span class="tp">${poster(e)}</span>`).join("")}</span>` : ""}</button>`; }).join("")}</div>
+      <div class="row">${kbtn(s, "obra", c.add, {estado:c.st[0]})}</div>`;
   }
-  return `${kitHead(s, c.sub)}${kitTabs(s, [["0", c.tabs[0], cnt(0)], ["1", c.tabs[1], cnt(1)], ["2", c.tabs[2], cnt(2)], ["top", "Top 5"]], tab)}${body}`;
+  return `${kitHead(s, c.sub)}${kitTabs(s, [["generos", "Géneros"], ["general", "General"]], tab)}${body}`;
 }
 function openRate(id){
   const e = S.items.get(id); if (!e) return;
   openLayer(`${sheetHead("¿Qué nota le das?")}<div class="stack" style="align-items:center;gap:18px;padding:8px 0 18px"><b style="font-size:20px;text-align:center">${esc(e.title)}</b><span class="mrate big">${[1,2,3,4,5].map(i => `<button data-act="m-rate" data-id="${id}" data-v="${i}" data-close="1" aria-label="${i} estrellas"><svg viewBox="0 0 24 24"><path d="${P.star}"/></svg></button>`).join("")}</span><button class="lnk" data-act="close">Ahora no</button></div>`);
 }
-function openTopPick(sid, type){
-  const s = secById(sid), c = MEDIA_CFG[s.tpl], ids = (s.top || {})[type] || [];
-  const pool = entriesOf(sid).filter(e => e.fields?.tipo === type && !ids.includes(e.id)).sort((a, b) => (b.fields?.estado === c.st[2]) - (a.fields?.estado === c.st[2]) || (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0));
-  openLayer(`${sheetHead("Elige para tu top")}${pool.length ? `<div class="klist">${pool.map(e => `<button class="krow" data-act="top-set" data-sec="${sid}" data-type="${esc(type)}" data-id="${e.id}"><span class="tp sm">${poster(e)}</span><span class="kr-t"><b>${esc(e.title)}</b><span>${esc(e.fields?.estado || "")}</span></span>${mstars(e.fields?.valoracion)}</button>`).join("")}</div>` : kempty(`No hay ${type.toLowerCase()}s para elegir.`, "Añade alguna a tu lista y vuelve aquí.")}`);
+function openTopPick(sid, key){
+  const s = secById(sid), c = MEDIA_CFG[s.tpl], ids = topIds(s, key), g = key.startsWith("g:") ? key.slice(2) : "";
+  const pool = entriesOf(sid).filter(e => (!g || genOf(e) === g) && !ids.includes(e.id)).sort((a, b) => (b.fields?.estado === c.st[2]) - (a.fields?.estado === c.st[2]) || (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0));
+  openLayer(`${sheetHead(g ? "Tu top 5 de " + esc(g.toLowerCase()) : "Tu top 10")}${pool.length ? `<div class="klist">${pool.map(e => `<button class="krow" data-act="top-set" data-sec="${sid}" data-key="${esc(key)}" data-id="${e.id}"><span class="tp sm">${poster(e)}</span><span class="kr-t"><b>${esc(e.title)}</b><span>${esc([e.fields?.tipo, e.fields?.estado, g ? "" : e.fields?.genero].filter(Boolean).join(" · "))}</span></span>${mstars(e.fields?.valoracion)}</button>`).join("")}</div>` : kempty(`No hay nada para elegir${g ? " en " + esc(g.toLowerCase()) : ""}.`, `Añade alguna ${esc(c.one)} y vuelve aquí.`)}`);
 }
 
 /* ---------- Comidas y salud ---------- */
@@ -3629,12 +3700,21 @@ function vEstudios(s){
   const evRow = e => { const f = e.fields || {}; return `<div class="evrow${f.hecho ? " done" : ""}" style="--c:${matCol(f.materia)}"><button class="ck${f.hecho ? " on" : ""}" data-act="ev-done" data-id="${e.id}" aria-label="${f.hecho ? "Marcar pendiente" : "Marcar hecho"}">${ic("check")}</button><button class="kr-t" data-act="open" data-id="${e.id}"><b>${esc(e.title)}</b><span>${esc([f.tipo, refName(f.materia), relDay(f.fecha), f.hora].filter(Boolean).join(" · "))}</span></button>${f.tipo === "Examen" && !f.hecho ? '<span class="tag red">Examen</span>' : ""}</div>`; };
   let body = "";
   if (tab === "horario"){
-    const days = [1,2,3,4,5, ...[6,7].filter(d => clases.some(c => (c.fields?.dias || []).includes(d)))];
-    body = `${mats.length ? "" : `<div class="note-box">Empieza creando tus materias en la pestaña «Materias»; luego añade sus clases aquí.</div>`}
-      <div class="wkl">${days.map(d => { const cs = clases.filter(c => (c.fields?.dias || []).includes(d)).sort(byTime("hora")), k = ymd(addDays(weekStart(), d - 1));
-        return `<div class="wkd${k === tk ? " today" : ""}"><div class="wd"><b>${DOW[d - 1]}</b><span>${parseYmd(k).getDate()}</span></div>
-          <div class="wki col">${cs.map(c => `<button class="cls" style="--c:${matCol(c.fields?.materia)}" data-act="open" data-id="${c.id}"><span class="ct">${esc(c.fields?.hora || "")}${c.fields?.fin ? "–" + esc(c.fields.fin) : ""}</span><b>${esc(c.title)}</b>${c.fields?.aula ? `<span>${esc(c.fields.aula)}</span>` : ""}</button>`).join("") || `<span class="muted small">Sin clases</span>`}</div>
-          ${kplus(s, "clase", {dias:[d]}, "Añadir clase el " + DOWL[d - 1].toLowerCase())}</div>`; }).join("")}</div>
+    const toM = t => { const m = /^(\d{1,2}):(\d{2})$/.exec(t || ""); return m ? +m[1] * 60 + +m[2] : null; };
+    const blocks = clases.flatMap(c => (c.fields?.dias || []).map(d => { const a = toM(c.fields?.hora); if (a === null) return null; let b = toM(c.fields?.fin); if (b === null || b <= a) b = a + 60; return {c, d, a, b}; })).filter(Boolean);
+    const h0 = Math.min(8, ...blocks.map(x => Math.floor(x.a / 60))), h1 = Math.max(15, ...blocks.map(x => Math.ceil(x.b / 60)));
+    const hours = [...Array(h1 - h0)].map((_, i) => h0 + i), HH = 52, wk = [...Array(7)].map((_, i) => ymd(addDays(weekStart(), i)));
+    const loose = clases.filter(c => toM(c.fields?.hora) === null || !(c.fields?.dias || []).length);
+    body = `${mats.length ? "" : `<div class="note-box">Empieza creando tus materias en la pestaña «Materias»; luego toca un hueco del horario para poner una clase.</div>`}
+      <div class="tt-wrap"><div class="tt" style="--hh:${HH}px;--rows:${hours.length}">
+        <div class="tt-corner"></div>${DOW.map((x, i) => `<div class="tt-day${wk[i] === tk ? " today" : ""}${i > 4 ? " we" : ""}"><b>${x}</b><span>${parseYmd(wk[i]).getDate()}</span></div>`).join("")}
+        <div class="tt-hours">${hours.map(h => `<span>${h}:00<i>${h + 1}:00</i></span>`).join("")}</div>
+        ${DOW.map((x, i) => { const d = i + 1;
+          return `<div class="tt-col${wk[i] === tk ? " today" : ""}${i > 4 ? " we" : ""}">${hours.map(h => `<button class="tt-slot" data-act="kadd" data-sec="${s.id}" data-sub="clase" data-f="${esc(JSON.stringify({dias:[d], hora:pad(h) + ":00", fin:pad(h + 1) + ":00"}))}" aria-label="Añadir clase el ${DOWL[i].toLowerCase()} a las ${h}:00"></button>`).join("")}
+            ${blocks.filter(x => x.d === d).map(x => `<button class="tt-cls" style="--c:${matCol(x.c.fields?.materia)};top:${((x.a - h0 * 60) / 60 * HH).toFixed(1)}px;height:${((x.b - x.a) / 60 * HH - 3).toFixed(1)}px" data-act="open" data-id="${x.c.id}"><b>${esc(x.c.title)}</b><span>${esc(x.c.fields?.hora || "")}${x.c.fields?.aula ? " · " + esc(x.c.fields.aula) : ""}</span></button>`).join("")}</div>`; }).join("")}
+      </div></div>
+      <p class="muted small" style="margin:0">Toca un hueco para poner una clase a esa hora.</p>
+      ${loose.length ? `<div class="klist">${loose.map(c => krow(c, ["Sin día u hora"])).join("")}</div>` : ""}
       <div class="row">${kbtn(s, "clase", "Añadir clase")}</div>`;
   } else if (tab === "calendario"){
     const marks = {}; evs.forEach(e => { const d = e.fields?.fecha; if (isDate(d)) marks[d] = marks[d] === "r" || (e.fields?.tipo === "Examen" || e.fields?.importante) ? "r" : "k"; });
@@ -3776,12 +3856,14 @@ Object.assign(ACT, {
     toast("Entreno apuntado", `${r.title}, hoy. ¡Bien hecho!`);
   },
   "m-type"(el){ S.mtype[el.dataset.sec] = el.dataset.t; render(); },
+  "m-genre"(el){ S.mgenre[el.dataset.sec] = el.dataset.g; S.mtype[el.dataset.sec] = ""; window.scrollTo(0, 0); render(); },
+  "m-st"(el){ S.mst[el.dataset.sec] = el.dataset.t; render(); },
   "m-move"(el){ const e = S.items.get(el.dataset.id); if (!e) return; const c = MEDIA_CFG[secById(e.sectionId)?.tpl]; const to = +el.dataset.to; kitPut(e, {estado:c.st[to]}); buzz(); if (to === 2) openRate(e.id); },
   "m-rate"(el){ const e = S.items.get(el.dataset.id); if (!e) return; kitPut(e, {valoracion:+el.dataset.v}); buzz(); if (el.dataset.close){ closeLayer(); toast("Nota guardada", `${e.title}: ${el.dataset.v} de 5`); } },
-  "top-pick"(el){ swapLayer(() => openTopPick(el.dataset.sec, el.dataset.type)); },
-  "top-set"(el){ const s = secById(el.dataset.sec); if (!s) return; const top = {...(s.top || {})}, t = el.dataset.type; top[t] = [...(top[t] || []).filter(id => S.items.has(id)), el.dataset.id].slice(0, 5); closeLayer(); secPatch(s.id, {top}); },
-  "top-del"(el){ const s = secById(el.dataset.sec); if (!s) return; const top = {...(s.top || {})}, t = el.dataset.type; top[t] = (top[t] || []).filter(id => S.items.has(id)); top[t].splice(+el.dataset.i, 1); secPatch(s.id, {top}); },
-  "top-up"(el){ const s = secById(el.dataset.sec); if (!s) return; const top = {...(s.top || {})}, t = el.dataset.type, a = (top[t] || []).filter(id => S.items.has(id)), i = +el.dataset.i; [a[i - 1], a[i]] = [a[i], a[i - 1]]; top[t] = a; secPatch(s.id, {top}); },
+  "top-pick"(el){ swapLayer(() => openTopPick(el.dataset.sec, el.dataset.key)); },
+  "top-set"(el){ const s = secById(el.dataset.sec); if (!s) return; const k = el.dataset.key, top = {...(s.top || {})}; top[k] = [...topIds(s, k), el.dataset.id].slice(0, k === "__all" ? 10 : 5); closeLayer(); secPatch(s.id, {top}); },
+  "top-del"(el){ const s = secById(el.dataset.sec); if (!s) return; const k = el.dataset.key, top = {...(s.top || {})}, a = topIds(s, k); a.splice(+el.dataset.i, 1); top[k] = a; secPatch(s.id, {top}); },
+  "top-up"(el){ const s = secById(el.dataset.sec); if (!s) return; const k = el.dataset.key, top = {...(s.top || {})}, a = topIds(s, k), i = +el.dataset.i; [a[i - 1], a[i]] = [a[i], a[i - 1]]; top[k] = a; secPatch(s.id, {top}); },
   mday(el){ const k = S.mday[el.dataset.sec] || todayKey(); S.mday[el.dataset.sec] = ymd(addDays(parseYmd(k), +el.dataset.d)); render(); },
   mweek(el){ S.mweek[el.dataset.sec] = (S.mweek[el.dataset.sec] || 0) + +el.dataset.d; render(); },
   "idea-plan"(el){ const e = S.items.get(el.dataset.id); if (!e) return; swapLayer(() => openLayer(`${sheetHead("Planificar «" + esc(e.title) + "»")}<form class="stack" data-form="idea-plan" data-id="${e.id}"><div class="field"><label for="ip-d">Día</label><input type="date" id="ip-d" name="fecha" value="${todayKey()}"></div><div class="seg">${MEALS.map((m, i) => `<input type="radio" name="momento" id="ip-m${i}" value="${m}"${(e.fields?.momento || "Comida") === m ? " checked" : ""}><label for="ip-m${i}">${m}</label>`).join("")}</div><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">${ic("cal")}Planificar</button></div></div></form>`)); },
