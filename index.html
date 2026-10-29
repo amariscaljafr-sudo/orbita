@@ -724,13 +724,11 @@ const PURPOSES = [
   ["dia","Organizar mi día","cal",[]],
   ["estudios","Estudios","cap",["estudios","conocimientos"]],
   ["deporte","Deporte y salud","dumbbell",["entrenos"]],
-  ["trabajo","Trabajo y proyectos","folder",["proyectos"]],
   ["ocio","Pelis, series y música","film",["peliculas","musica"]],
   ["lectura","Lectura","book",["libros"]],
   ["estilo","Ropa y estilo","shirt",["armario","outfits"]],
   ["comida","Comida","utensils",["comidas"]],
   ["aprender","Aprender cosas nuevas","bulb",["aprender","conocimientos"]],
-  ["ideas","Guardar ideas y enlaces","bookmark",["guardados"]],
   ["videos","Vídeos pendientes","play",["videos"]]
 ];
 
@@ -741,7 +739,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "15";
+const APP_VERSION = "16";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1326,7 +1324,7 @@ function openDrawer(){
   const tree = s => link("s-" + s.id, s.name, s.icon, deepCount(s.id)) + descendants(s.id).map(c => link("s-" + c.id, (c.parentId !== s.id ? "· " : "") + c.name, c.icon, entriesOf(c.id).length, "child")).join("");
   openLayer(`<div class="brand"><b>Órbita<i>.</i></b><button class="ibtn" data-act="close" aria-label="Cerrar menú">${ic("x")}</button></div>
     <a class="dnav ai${r === "nuevo" ? " on" : ""}" href="#nuevo">${ic("plus")}<span>Añadir</span></a>
-    ${link("inicio","Inicio","home")}${link("calendario","Calendario","cal")}${link("tareas","Tareas","task", ofKind("task").filter(t => !t.done).length)}${link("avisos","Avisos y fechas","bell", ofKind("reminder").filter(t => !t.done).length)}${link("notas","Notas","note", ofKind("note").length)}
+    ${link("inicio","Inicio","home")}${link("tareas","Tareas","task", ofKind("task").filter(t => !t.done).length)}${link("avisos","Avisos","bell", ofKind("reminder").filter(t => !t.done).length)}
     <div class="dlabel">Tus secciones</div>
     ${topSections().map(tree).join("")}
     <button class="dnav" data-act="sec-new">${ic("plus")}<span>Nueva sección</span></button>
@@ -3096,6 +3094,11 @@ Object.assign(ACT, {
   }
   if (S.settings && S.settings.sections.some(x => x.tpl === "entrenos" && /^(Entrenamiento|Entrenos)$/.test(x.name))){
     S.settings.sections = S.settings.sections.map(x => x.tpl === "entrenos" && /^(Entrenamiento|Entrenos)$/.test(x.name) ? {...x, name:"Entrenamientos"} : x); putSettings(true);
+  }
+  if (S.settings && !S.settings.cleanup1){
+    const gone = sections().filter(x => ["proyectos","guardados"].includes(x.tpl) || /^(Proyectos|Guardados)$/.test(x.name)).flatMap(x => [x.id, ...descendants(x.id).map(c => c.id)]);
+    for (const e of ofKind("entry").filter(e => gone.includes(e.sectionId))) delItem(e.id, true);
+    S.settings.sections = sections().filter(x => !gone.includes(x.id)); S.settings.cleanup1 = true; putSettings(true); flushBulk();
   }
   S.ready = true;
   if (!S.settings) showOnboarding();
