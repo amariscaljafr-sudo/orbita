@@ -18,15 +18,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap">
 <style>
-/* Layout: one white page, ink type, a single red for "today" and alerts. Greeting on top, a large month in the middle, today's list below, a three-button dock at the bottom. */
+/* Layout: one white page, ink type, a single red for "today" and alerts. One-line greeting on top, a large month in the middle, today's list below, a three-button dock at the bottom. */
 :root{
   --paper:#ffffff; --paper-2:#f4f4f3; --paper-3:#ebebe9;
   --line:#e7e6e3; --line-2:#d3d2ce;
   --ink:#0d0d0d; --ink-2:#3b3b39; --mute:#8a8985;
   --red:#e0141c; --red-soft:#fdeceb; --on-red:#ffffff;
   --f:"Archivo","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
-  --r-lg:22px; --r-md:16px; --r-sm:12px;
+  --r-lg:22px; --r-md:16px;
   --ease:cubic-bezier(.22,1,.36,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);
   color-scheme:light;
 }
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -44,114 +45,156 @@ a{color:inherit;text-decoration:none}
 svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
 
 main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:6px 128px;min-width:0}
-.view{display:flex;flex-direction:column;gap:26px}
+.view{display:flex;flex-direction:column;gap:24px}
 .view.enter{animation:viewIn .5s var(--ease)}
 @keyframes viewIn{from{opacity:.001;transform:translateY(10px)}to{opacity:1;transform:none}}
 
+/* splash */
+#splash{position:fixed;inset:0;z-index:90;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .45s var(--ease),transform .45s var(--ease)}
+#splash.out{opacity:0;transform:scale(1.04);pointer-events:none}
+#splash .logo{position:relative;width:96px;height:96px}
+#splash .logo svg{width:96px;height:96px;transform:rotate(-90deg)}
+#splash .logo circle{fill:none;stroke:var(--ink);stroke-width:13;stroke-dasharray:226;stroke-dashoffset:226;animation:ringDraw .9s .05s var(--ease) forwards;stroke-linecap:round}
+#splash .logo i{position:absolute;right:2px;top:2px;width:24px;height:24px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px var(--paper);transform:scale(0);animation:dotPop .5s .75s var(--spring) forwards}
+#splash b{font-weight:900;font-stretch:122%;font-size:30px;letter-spacing:-.035em;opacity:0;animation:fadeUp .6s .55s var(--ease) forwards}
+#splash b em{font-style:normal;color:var(--red)}
+@keyframes ringDraw{to{stroke-dashoffset:0}}
+@keyframes dotPop{to{transform:scale(1)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:grid;grid-template-columns:46px 1fr 46px;align-items:center;gap:10px;padding-block:10px;background:var(--paper)}
 .top .ttl{text-align:center;font-weight:800;font-stretch:112%;font-size:18px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:13.5px;color:var(--mute);margin-top:-14px}
+.crumb svg{width:16px;height:16px}
 .ibtn{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;color:var(--ink);transition:background .2s,transform .15s var(--ease)}
 .ibtn:hover{background:var(--paper-2)}
-.ibtn:active{transform:scale(.92)}
-.avatar{width:38px;height:38px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-weight:800;font-size:15px}
+.ibtn:active{transform:scale(.9)}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--ink) center/cover no-repeat;color:var(--paper);display:grid;place-items:center;font-weight:800;font-size:15px;flex:none;overflow:hidden}
 
-.hello{display:grid;grid-template-columns:46px 1fr 46px;align-items:start;gap:10px;padding-top:12px}
-.hello .mid{text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0;padding-top:4px}
-.eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);font-weight:600}
-.greet{margin:0;font-weight:900;font-stretch:118%;font-size:clamp(2.35rem,10.5vw,5.4rem);line-height:.9;letter-spacing:-.035em;text-wrap:balance;perspective:600px;cursor:pointer;user-select:none;-webkit-user-select:none;transform-style:preserve-3d;transition:transform .6s var(--ease)}
-.greet .w{display:inline-block;white-space:nowrap}
-.greet .ch{display:inline-block;transform-origin:50% 100%;animation:chIn .8s var(--ease) both;animation-delay:calc(var(--i) * 26ms)}
+/* greeting */
+.hello{display:grid;grid-template-columns:46px minmax(0,1fr) 46px;grid-template-areas:"l e r" "g g g";align-items:center;row-gap:2px;column-gap:8px;padding-top:4px}
+.hello > .ibtn:first-child{grid-area:l}.hello > .ibtn:last-child{grid-area:r}
+.hello .mid{display:contents}
+.hello .eyebrow{grid-area:e;text-align:center}
+.hello .greet{grid-area:g;text-align:center}
+.eyebrow{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.greet{margin:0;width:100%;white-space:nowrap;overflow:hidden;font-weight:900;font-stretch:84%;font-size:42px;line-height:1.08;letter-spacing:-.035em;perspective:600px;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .6s var(--ease);padding-block:2px}
+.greet .ch{display:inline-block;transform-origin:50% 100%;animation:chIn .7s var(--ease) both;animation-delay:calc(var(--i) * 22ms)}
+.greet .sp{display:inline-block;width:.28em}
 .greet .red{color:var(--red)}
-@keyframes chIn{from{opacity:0;transform:translateY(.45em) rotateX(-75deg)}to{opacity:1;transform:none}}
+@keyframes chIn{from{opacity:0;transform:translateY(.4em) rotateX(-80deg)}to{opacity:1;transform:none}}
 
-.home{display:grid;gap:26px}
-@media (min-width:900px){.home{grid-template-columns:minmax(0,1.25fr) minmax(320px,1fr);align-items:start;gap:34px}}
+.home{display:grid;gap:24px}
+@media (min-width:900px){.home{grid-template-columns:minmax(0,1.6fr) minmax(320px,1fr);align-items:start;gap:40px}}
 
-.cal{width:100%;max-width:620px;margin:0 auto;touch-action:pan-y}
-.cal-h{display:flex;align-items:center;gap:6px;margin-bottom:14px}
-.cal-h .m{flex:1;font-weight:900;font-stretch:115%;font-size:clamp(1.5rem,5.6vw,2.1rem);letter-spacing:-.03em;text-transform:capitalize;line-height:1}
+/* calendar */
+.cal{width:calc(100% + 12px);margin-inline:-6px;touch-action:pan-y}
+@media (min-width:900px){.cal{width:100%;margin-inline:0}}
+.cal-h{display:flex;align-items:center;gap:6px;margin-bottom:12px;padding-inline:6px}
+.cal-h .m{flex:1;font-weight:900;font-stretch:115%;font-size:clamp(1.6rem,6.4vw,2.4rem);letter-spacing:-.03em;text-transform:capitalize;line-height:1}
 .cal-h .m span{color:var(--mute);font-weight:700}
-.pillbtn{height:34px;padding:0 13px;border-radius:999px;border:1.5px solid var(--ink);font-weight:700;font-size:13px}
-.grid7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
-.wk{text-align:center;font-size:11.5px;letter-spacing:.14em;color:var(--mute);font-weight:700;padding-bottom:6px}
-.d{aspect-ratio:1/1;max-width:100%;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;font-weight:700;font-size:clamp(15px,4.4vw,22px);letter-spacing:-.01em;transition:background .2s,transform .15s var(--ease),color .2s}
+.pillbtn{height:34px;padding:0 13px;border-radius:999px;border:1.5px solid var(--ink);font-weight:700;font-size:13px;transition:transform .15s var(--ease)}
+.pillbtn:active{transform:scale(.94)}
+.grid7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.grid7.next{animation:slideL .35s var(--ease)}
+.grid7.prev{animation:slideR .35s var(--ease)}
+@keyframes slideL{from{opacity:.2;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes slideR{from{opacity:.2;transform:translateX(-28px)}to{opacity:1;transform:none}}
+.wk{text-align:center;font-size:12px;letter-spacing:.14em;color:var(--mute);font-weight:700;padding-bottom:8px}
+.d{aspect-ratio:1/1;max-width:100%;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;font-weight:750;font-size:clamp(18px,5.6vw,30px);letter-spacing:-.02em;transition:background .2s,transform .2s var(--spring),color .2s}
 .d:hover{background:var(--paper-2)}
-.d:active{transform:scale(.9)}
+.d:active{transform:scale(.86)}
 .d.out{color:#c8c7c3}
 .d.wkend:not(.out):not(.today){color:var(--ink-2)}
-.d.sel{box-shadow:inset 0 0 0 2px var(--ink)}
-.d.today{background:var(--red);color:var(--on-red);font-weight:900;box-shadow:0 10px 24px -10px rgba(224,20,28,.75);animation:todayIn .7s .25s var(--ease) both}
-.d.today.sel{box-shadow:0 10px 24px -10px rgba(224,20,28,.75),inset 0 0 0 2px rgba(255,255,255,.6)}
+.d.sel{box-shadow:inset 0 0 0 2.5px var(--ink)}
+.d.sel.pop{animation:selPop .35s var(--spring)}
+@keyframes selPop{from{transform:scale(.85)}to{transform:none}}
+.d.today{background:var(--red);color:var(--on-red);font-weight:900;box-shadow:0 12px 26px -10px rgba(224,20,28,.8);animation:todayIn .7s .2s var(--spring) both}
+.d.today.sel{box-shadow:0 12px 26px -10px rgba(224,20,28,.8),inset 0 0 0 2.5px rgba(255,255,255,.65)}
 @keyframes todayIn{from{transform:scale(.6);opacity:.2}to{transform:none;opacity:1}}
-.d .pip{display:flex;gap:3px;height:5px;position:absolute;bottom:14%}
+.d .pip{display:flex;gap:3px;height:5px;position:absolute;bottom:13%}
 .d .pip i{width:5px;height:5px;border-radius:50%;background:var(--ink)}
 .d .pip i.r{background:var(--red)}
 .d.today .pip i{background:var(--on-red)}
 
-.agenda{display:flex;flex-direction:column;gap:6px;min-width:0}
+/* agenda */
+.agenda{display:flex;flex-direction:column;gap:4px;min-width:0}
 .sec-t{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
 .sec-t h2{margin:0;font-weight:900;font-stretch:115%;font-size:clamp(1.45rem,5vw,1.9rem);letter-spacing:-.03em;line-height:1}
 .sec-t .n{font-weight:700;color:var(--mute);font-size:15px}
 .sec-t .sp{flex:1}
 .lnk{font-weight:700;font-size:13.5px;display:inline-flex;align-items:center;gap:4px;color:var(--ink)}
 .lnk svg{width:16px;height:16px}
-.row-it{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;padding:13px 4px;border-bottom:1px solid var(--line);cursor:pointer;min-width:0}
+.row-it{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 4px;border-bottom:1px solid var(--line);cursor:pointer;min-width:0;transition:background .2s;border-radius:6px}
+.row-it:hover{background:var(--paper-2)}
 .row-it:last-child{border-bottom:0}
-.row-it .tm{font-weight:700;font-size:14px;color:var(--ink)}
+.anim .row-it,.anim .it,.anim .entry,.anim .tile,.anim .note{animation:rowIn .45s var(--ease) both;animation-delay:calc(var(--i,0) * 35ms)}
+@keyframes rowIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.row-it .tm{font-weight:700;font-size:14px}
 .row-it .tm.all{color:var(--mute);font-weight:600;font-size:12.5px}
-.row-it .tt{font-weight:650;font-size:16px;line-height:1.25;overflow-wrap:anywhere}
+.row-it .tt{font-weight:650;font-size:16px;line-height:1.25;overflow-wrap:anywhere;transition:color .3s}
 .row-it .lb{font-size:12.5px;color:var(--mute);font-weight:500;margin-top:2px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.row-it.done .tt{text-decoration:line-through;color:var(--mute)}
+.row-it.done .tt,.it.done .tt{text-decoration:line-through;color:var(--mute)}
 .row-it.alert .tm{color:var(--red)}
 .tag{display:inline-flex;align-items:center;height:21px;padding:0 8px;border-radius:999px;background:var(--paper-2);font-size:11.5px;font-weight:700;color:var(--ink-2);white-space:nowrap}
 .tag.red{background:var(--red-soft);color:var(--red)}
 .tag.ex{background:transparent;border:1px dashed var(--line-2);color:var(--mute)}
-.ck{width:28px;height:28px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;flex:none;transition:background .25s var(--ease),transform .2s var(--ease)}
-.ck svg{width:15px;height:15px;stroke-width:3.2;stroke:var(--paper);opacity:0;transform:scale(.4);transition:all .25s var(--ease)}
-.ck.on{background:var(--ink)}
+.ck{width:28px;height:28px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;flex:none;transition:background .25s var(--ease),transform .25s var(--spring)}
+.ck svg{width:15px;height:15px;stroke-width:3.2;stroke:var(--paper);opacity:0;transform:scale(.3);transition:all .3s var(--spring)}
+.ck.on{background:var(--ink);transform:scale(1.08)}
 .ck.on svg{opacity:1;transform:none}
-.ck:active{transform:scale(.85)}
+.ck:active{transform:scale(.8)}
 .empty{padding:18px;border-radius:var(--r-md);background:var(--paper-2);color:var(--ink-2);font-size:14.5px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
 .empty b{color:var(--ink);font-weight:800;font-size:15.5px}
 .group-t{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--mute);padding:16px 4px 4px}
 .group-t.red{color:var(--red)}
 
-.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;align-items:center;gap:6px;padding:7px;border-radius:999px;background:rgba(255,255,255,.88);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid var(--line);box-shadow:0 18px 40px -14px rgba(13,13,13,.35)}
+/* dock */
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;align-items:center;gap:6px;padding:7px;border-radius:999px;background:rgba(255,255,255,.9);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid var(--line);box-shadow:0 18px 40px -14px rgba(13,13,13,.35);animation:dockIn .6s .3s var(--spring) both}
+@keyframes dockIn{from{transform:translate(-50%,40px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
 .dock:empty{display:none}
-.dock button{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;transition:transform .18s var(--ease),background .2s}
+.dock button{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;transition:transform .2s var(--spring),background .2s}
 .dock button:hover{background:var(--paper-2)}
-.dock button:active{transform:scale(.88)}
+.dock button:active{transform:scale(.85)}
 .dock .add{width:62px;height:62px;background:var(--ink);color:var(--paper)}
 .dock .add:hover{background:#262626}
 .dock .add svg{width:26px;height:26px;stroke-width:2.4}
 .dock .today-n{position:relative}
 .dock .today-n b{position:absolute;top:54%;left:50%;transform:translate(-50%,-30%);font-size:9.5px;font-weight:900}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:14px;font-weight:800;font-size:14.5px;background:var(--paper-2);transition:transform .15s var(--ease),background .2s}
+/* controls */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:14px;font-weight:800;font-size:14.5px;background:var(--paper-2);transition:transform .15s var(--ease),background .2s;text-align:center}
 .btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.4;pointer-events:none}
 .btn.pri{background:var(--ink);color:var(--paper)}
 .btn.ghost{background:transparent}
 .btn.danger{color:var(--red);background:var(--red-soft)}
 .btn.danger.armed{background:var(--red);color:var(--on-red)}
-.btn.sm{height:38px;padding:0 14px;font-size:13.5px;border-radius:12px}
+.btn.sm{min-height:38px;padding:0 14px;font-size:13.5px;border-radius:12px}
+.btn.lg{min-height:56px;padding:0 28px;font-size:16px}
 .btn svg{width:18px;height:18px}
 .field{display:flex;flex-direction:column;gap:7px;min-width:0}
 .field > label,.lbl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:800}
-.inp,.field input[type=text],.field input[type=url],.field input[type=number],.field input[type=date],.field input[type=time],.field select,.field textarea,.search-in{
+.inp,.field input[type=text],.field input[type=url],.field input[type=number],.field input[type=date],.field input[type=time],.field input[type=password],.field select,.field textarea,.search-in{
   width:100%;min-height:50px;padding:12px 15px;border-radius:14px;background:var(--paper-2);border:1.5px solid transparent;outline:none;font-size:16px;transition:border-color .2s,background .2s}
 .field textarea{min-height:110px;resize:vertical}
 .inp:focus,.field input:focus,.field select:focus,.field textarea:focus,.search-in:focus{border-color:var(--ink);background:var(--paper)}
 .title-in{font-weight:900!important;font-stretch:112%;font-size:26px!important;letter-spacing:-.02em;background:transparent!important;border:0!important;border-bottom:2px solid var(--line)!important;border-radius:0!important;padding-left:0!important}
 .title-in:focus{border-bottom-color:var(--ink)!important}
+.at{position:relative}
+.at::before{content:"@";position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--mute);font-weight:700;pointer-events:none}
+.at input{padding-left:34px!important}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media (max-width:440px){.grid2{grid-template-columns:1fr}}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
 .seg input,.stars input,.swatches input,.iconpick input{position:absolute;opacity:0;pointer-events:none}
-.seg label{height:40px;padding:0 14px;border-radius:12px;background:var(--paper-2);display:inline-flex;align-items:center;font-size:14px;font-weight:700;color:var(--ink-2);cursor:pointer;transition:all .2s}
+.seg label{min-height:40px;padding:0 14px;border-radius:12px;background:var(--paper-2);display:inline-flex;align-items:center;font-size:14px;font-weight:700;color:var(--ink-2);cursor:pointer;transition:all .2s var(--ease)}
+.seg label:active{transform:scale(.95)}
 .seg input:checked + label{background:var(--ink);color:var(--paper)}
 .seg input:focus-visible + label{outline:2px solid var(--red);outline-offset:2px}
 .stars{display:flex;gap:2px;align-items:center}
-.stars label{cursor:pointer;color:var(--line-2);padding:3px}
+.stars label{cursor:pointer;color:var(--line-2);padding:3px;transition:transform .2s var(--spring)}
+.stars label:active{transform:scale(1.25)}
 .stars label svg{width:30px;height:30px;fill:currentColor;stroke:none}
 .stars label.on{color:var(--ink)}
 .swatches{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
@@ -160,7 +203,7 @@ main{width:100%;max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-ar
 .toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:8px 16px;border-radius:14px;background:var(--paper-2);cursor:pointer}
 .toggle .sub{display:block;color:var(--mute);font-size:13px;font-weight:500}
 .toggle input{appearance:none;-webkit-appearance:none;width:48px;height:30px;border-radius:999px;background:var(--line-2);position:relative;transition:background .25s;flex:none;cursor:pointer;margin:0}
-.toggle input::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .25s var(--ease)}
+.toggle input::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .3s var(--spring)}
 .toggle input:checked{background:var(--ink)}
 .toggle input:checked::after{transform:translateX(18px)}
 input[type=range]{width:100%;accent-color:var(--ink)}
@@ -170,31 +213,35 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 .small{font-size:13px}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px;margin:-2px}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:none;height:38px;padding:0 15px;border-radius:999px;background:var(--paper-2);font-size:13.5px;font-weight:700;color:var(--ink-2);display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:all .2s}
+.chip{flex:none;min-height:38px;padding:0 15px;border-radius:999px;background:var(--paper-2);font-size:13.5px;font-weight:700;color:var(--ink-2);display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:all .2s var(--ease)}
+.chip:active{transform:scale(.95)}
 .chip.on{background:var(--ink);color:var(--paper)}
 .chip .n{opacity:.6;font-size:12px}
 
-.box{border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;background:var(--paper);min-width:0}
+.box{border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;background:var(--paper);min-width:0}
 .list{display:flex;flex-direction:column}
-.it{display:flex;align-items:center;gap:13px;padding:13px 6px;border-bottom:1px solid var(--line);cursor:pointer;min-width:0}
+.it{display:flex;align-items:center;gap:13px;padding:13px 6px;border-bottom:1px solid var(--line);cursor:pointer;min-width:0;border-radius:6px;transition:background .2s}
+.it:hover{background:var(--paper-2)}
 .it:last-child{border-bottom:0}
 .it .tx{flex:1;min-width:0}
 .it .tt{font-weight:650;font-size:16px;overflow-wrap:anywhere}
 .it .mt{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--mute);margin-top:2px}
-.it.done .tt{text-decoration:line-through;color:var(--mute)}
+.it > svg{color:var(--mute)}
 .addline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .addline input[type=text]{flex:1;min-width:180px;min-height:50px;padding:12px 15px;border-radius:14px;background:var(--paper-2);border:1.5px solid transparent;outline:none;font-size:16px}
 .addline input[type=text]:focus{border-color:var(--ink);background:var(--paper)}
 
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.tile{aspect-ratio:1/1;max-width:100%;border-radius:var(--r-lg);padding:16px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;background:var(--paper-2);transition:transform .2s var(--ease),background .2s}
+.tile{aspect-ratio:1/1;max-width:100%;border-radius:var(--r-lg);padding:16px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;background:var(--paper-2);transition:transform .25s var(--spring),background .2s}
 .tile:hover{background:var(--paper-3)}
-.tile:active{transform:scale(.96)}
+.tile:active{transform:scale(.95)}
 .tile .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--ink);color:var(--paper)}
 .tile .nm{font-weight:900;font-stretch:108%;font-size:17px;line-height:1.1;letter-spacing:-.015em}
 .tile .ct{font-size:12.5px;color:var(--mute);margin-top:4px;font-weight:600}
 .tile.add{background:transparent;border:2px dashed var(--line-2)}
 .tile.add .ic{background:var(--paper-2);color:var(--ink)}
+.tiles.sm{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+.tiles.sm .tile{aspect-ratio:auto;min-height:118px;gap:14px}
 
 .entries{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
 .entries.lst{grid-template-columns:1fr;gap:0}
@@ -210,7 +257,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 .mini-stars svg{width:13px;height:13px;fill:currentColor;stroke:none}
 .mini-stars .off{color:var(--line-2)}
 .bar{height:6px;border-radius:6px;background:var(--paper-3);overflow:hidden;width:100%}
-.bar i{display:block;height:100%;border-radius:6px;background:var(--ink)}
+.bar i{display:block;height:100%;border-radius:6px;background:var(--ink);transition:width .6s var(--ease)}
 .colorchip{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
 .notes{columns:2 170px;column-gap:12px}
 .note{break-inside:avoid;margin-bottom:12px;padding:16px;border-radius:var(--r-md);background:var(--paper-2);cursor:pointer;display:block;width:100%;text-align:left;transition:transform .2s var(--ease)}
@@ -221,46 +268,55 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 .note.pin{background:var(--ink);color:var(--paper)}
 .note.pin p{color:#cfcfcc}
 .count{font-weight:900;font-stretch:115%;font-size:46px;line-height:1;letter-spacing:-.03em}
+.sub-h{font-weight:900;font-stretch:112%;font-size:19px;letter-spacing:-.02em;margin:0}
 
+/* layer */
 #layer{position:fixed;inset:0;z-index:50;pointer-events:none}
 .scrim{position:absolute;inset:0;background:rgba(13,13,13,.38);opacity:0;transition:opacity .3s;pointer-events:auto}
 #layer.open .scrim{opacity:1}
 .sheet{position:absolute;left:0;right:0;bottom:0;max-height:92vh;max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;pointer-events:auto;background:var(--paper);border-radius:28px 28px 0 0;
   padding:6px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
-  transform:translateY(100%);transition:transform .45s var(--ease);box-shadow:0 -20px 60px rgba(13,13,13,.25)}
+  transform:translateY(100%);transition:transform .5s var(--ease);box-shadow:0 -20px 60px rgba(13,13,13,.25)}
 #layer.open .sheet{transform:translateY(var(--drag,0px))}
 .grab-zone{padding:6px 0 4px;touch-action:none}
-.grab{width:42px;height:5px;border-radius:5px;background:var(--line-2);margin:4px auto 12px}
-.sheet-h{display:flex;align-items:center;gap:6px;margin-bottom:16px;position:sticky;top:-6px;z-index:3;background:var(--paper);padding-block:8px}
+.grab{width:42px;height:5px;border-radius:5px;background:var(--line-2);margin:4px auto 8px}
+.sheet-h{display:flex;align-items:center;gap:6px;margin-bottom:14px;position:sticky;top:-6px;z-index:3;background:var(--paper);padding-block:8px}
 .sheet-h .t{flex:1;font-weight:900;font-stretch:112%;font-size:23px;letter-spacing:-.02em;line-height:1.1;min-width:0}
 .sheet-f{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:22px}
 .sheet-f .r{display:flex;gap:10px;margin-left:auto}
 @media (min-width:700px){
-  .sheet{left:50%;right:auto;bottom:auto;top:50%;width:min(620px,calc(100vw - 48px));border-radius:28px;transform:translate(-50%,-46%) scale(.97);opacity:0;transition:transform .4s var(--ease),opacity .25s;padding:24px 28px 28px}
+  .sheet{left:50%;right:auto;bottom:auto;top:50%;width:min(620px,calc(100vw - 48px));border-radius:28px;transform:translate(-50%,-46%) scale(.97);opacity:0;transition:transform .45s var(--ease),opacity .25s;padding:24px 28px 28px}
   #layer.open .sheet{transform:translate(-50%,-50%);opacity:1}
   .grab-zone{display:none}
 }
 .drawer{position:absolute;top:0;bottom:0;left:0;width:min(86vw,360px);background:var(--paper);pointer-events:auto;overflow-y:auto;
   padding:calc(18px + env(safe-area-inset-top,0px)) 18px calc(24px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
-  transform:translateX(-102%);transition:transform .42s var(--ease);box-shadow:20px 0 60px rgba(13,13,13,.2);display:flex;flex-direction:column;gap:4px}
+  transform:translateX(-102%);transition:transform .45s var(--ease);box-shadow:20px 0 60px rgba(13,13,13,.2);display:flex;flex-direction:column;gap:2px}
 #layer.open .drawer{transform:translateX(var(--dragx,0px))}
-.drawer .brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.drawer .brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .drawer .brand b{font-weight:900;font-stretch:120%;font-size:24px;letter-spacing:-.03em}
 .drawer .brand b i{font-style:normal;color:var(--red)}
-.dnav{display:flex;align-items:center;gap:14px;min-height:52px;padding:0 12px;border-radius:14px;font-weight:750;font-size:16px;transition:background .2s;text-align:left}
+.dnav{display:flex;align-items:center;gap:14px;min-height:50px;padding:0 12px;border-radius:14px;font-weight:750;font-size:16px;transition:background .2s,transform .15s var(--ease);text-align:left}
 .dnav:hover{background:var(--paper-2)}
+.dnav:active{transform:scale(.98)}
 .dnav.on{background:var(--ink);color:var(--paper)}
+.dnav.child{min-height:42px;font-size:14.5px;font-weight:650;padding-left:48px;color:var(--ink-2)}
+.dnav.child.on{color:var(--paper)}
 .dnav .n{margin-left:auto;font-size:13px;color:var(--mute);font-weight:700}
 .dnav.on .n{color:#bdbdb9}
+.dnav.ai{background:var(--paper-2);margin-bottom:6px}
+.dnav.ai svg{color:var(--red)}
 .dlabel{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:800;padding:18px 12px 6px}
 
+/* schedule */
 .sched{display:flex;flex-direction:column;position:relative}
 .hr{display:grid;grid-template-columns:52px 1fr;gap:10px;min-height:58px;border-top:1px solid var(--line);position:relative}
 .hr .h{font-weight:700;font-size:13px;color:var(--mute);padding-top:6px}
 .hr.now .h{color:var(--red)}
 .hr .slot{padding:5px 0;display:flex;flex-direction:column;gap:5px;cursor:pointer;min-width:0;min-height:56px;border-radius:10px;transition:background .2s}
 .hr .slot:empty:hover{background:var(--paper-2)}
-.blk{padding:9px 12px;border-radius:12px;background:var(--ink);color:var(--paper);font-weight:700;font-size:14.5px;line-height:1.25;text-align:left;width:100%;overflow-wrap:anywhere}
+.blk{padding:9px 12px;border-radius:12px;background:var(--ink);color:var(--paper);font-weight:700;font-size:14.5px;line-height:1.25;text-align:left;width:100%;overflow-wrap:anywhere;transition:transform .15s var(--ease)}
+.blk:active{transform:scale(.98)}
 .blk small{display:block;font-weight:500;font-size:12px;opacity:.7;margin-top:1px}
 .blk.lite{background:var(--paper-2);color:var(--ink)}
 .blk.red{background:var(--red);color:var(--on-red)}
@@ -270,12 +326,17 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 .allday{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
 
 .qa{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
-.qa button{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:15px;border-radius:18px;background:var(--paper-2);text-align:left;font-weight:800;font-size:15px;transition:transform .15s var(--ease),background .2s}
+.qa button{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:15px;border-radius:18px;background:var(--paper-2);text-align:left;font-weight:800;font-size:15px;transition:transform .2s var(--spring),background .2s}
 .qa button:hover{background:var(--paper-3)}
-.qa button:active{transform:scale(.95)}
+.qa button:active{transform:scale(.94)}
 .qa .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--ink);color:var(--paper)}
 .qa .ic.red{background:var(--red)}
 .qa .d{font-size:12.5px;color:var(--mute);font-weight:500;margin-top:-6px}
+.ai-card{display:flex;align-items:center;gap:14px;width:100%;padding:16px;border-radius:18px;background:var(--ink);color:var(--paper);text-align:left;margin-bottom:12px;transition:transform .2s var(--spring)}
+.ai-card:active{transform:scale(.97)}
+.ai-card .ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:var(--red);flex:none}
+.ai-card b{display:block;font-size:16px}
+.ai-card span{font-size:13px;color:#bdbdb9}
 .fieldrow{display:grid;grid-template-columns:1fr 150px 46px;gap:8px;align-items:start;padding:10px;border-radius:14px;background:var(--paper-2)}
 .fieldrow .inp{background:var(--paper)}
 .fieldrow .opts{grid-column:1/-1}
@@ -283,39 +344,94 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 .iconpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:6px}
 .iconpick label{height:46px;border-radius:12px;display:grid;place-items:center;background:var(--paper-2);cursor:pointer}
 .iconpick input:checked + label{background:var(--ink);color:var(--paper)}
-.tags{display:flex;gap:6px;flex-wrap:wrap}
-.tags .chip{height:34px}
-.tags .chip button{display:grid;place-items:center;margin-right:-6px}
-.tags .chip svg{width:15px;height:15px}
 
+/* profile */
 .prof{display:flex;align-items:center;gap:18px}
-.prof .avatar{width:76px;height:76px;font-size:32px;font-stretch:115%;flex:none}
-.prof h1{margin:0;font-weight:900;font-stretch:118%;font-size:clamp(2rem,7vw,3rem);letter-spacing:-.035em;line-height:.95;overflow-wrap:anywhere}
+.prof .avatar{width:84px;height:84px;font-size:34px;font-stretch:115%;cursor:pointer;position:relative}
+.prof .avatar::after{content:"Cambiar";position:absolute;inset:auto 0 0;height:26px;display:grid;place-items:center;font-size:10.5px;font-weight:800;letter-spacing:.04em;background:rgba(0,0,0,.55);color:#fff}
+.prof h1{margin:0;font-weight:900;font-stretch:118%;font-size:clamp(1.9rem,7vw,2.8rem);letter-spacing:-.035em;line-height:.95;overflow-wrap:anywhere}
 .cols{display:grid;gap:16px}
 @media (min-width:900px){.cols{grid-template-columns:1fr 1fr;align-items:start}}
+.set-list{display:flex;flex-direction:column}
+.set-row{display:flex;align-items:center;gap:14px;min-height:56px;padding:8px 4px;border-bottom:1px solid var(--line);text-align:left;width:100%;cursor:pointer}
+.set-row:last-child{border-bottom:0}
+.set-row .tx{flex:1;min-width:0}
+.set-row b{display:block;font-weight:750;font-size:15.5px}
+.set-row span{font-size:13px;color:var(--mute)}
+.set-row > svg:last-child{color:var(--mute)}
+.prose{font-size:15px;color:var(--ink-2);display:flex;flex-direction:column;gap:12px}
+.prose h3{margin:8px 0 0;font-size:16px;color:var(--ink);font-weight:850}
+.prose p{margin:0}
+details.faq{border-bottom:1px solid var(--line);padding:6px 0}
+details.faq summary{cursor:pointer;font-weight:750;font-size:15.5px;padding:10px 0;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.faq summary::after{content:"+";font-weight:800;color:var(--mute)}
+details.faq[open] summary::after{content:"–"}
+details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 
-#toasts{position:fixed;z-index:70;left:50%;transform:translateX(-50%);top:calc(12px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:8px;width:min(440px,calc(100vw - 32px));pointer-events:none}
-.toast{pointer-events:auto;display:flex;gap:12px;align-items:center;padding:13px 14px;border-radius:18px;background:var(--ink);color:var(--paper);box-shadow:0 20px 50px -10px rgba(13,13,13,.45);animation:toastIn .45s var(--ease)}
+/* toasts */
+#toasts{position:fixed;z-index:95;left:50%;transform:translateX(-50%);top:calc(12px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:8px;width:min(440px,calc(100vw - 32px));pointer-events:none}
+.toast{pointer-events:auto;display:flex;gap:12px;align-items:center;padding:13px 14px;border-radius:18px;background:var(--ink);color:var(--paper);box-shadow:0 20px 50px -10px rgba(13,13,13,.45);animation:toastIn .5s var(--spring)}
 .toast .tx{flex:1;min-width:0;font-size:14px;color:#d7d7d3}
 .toast .tx b{display:block;font-size:15.5px;color:var(--paper);font-weight:800}
 .toast.alert{background:var(--red)}
 .toast.alert .tx{color:#ffe1df}
 .toast .btn.sm{background:rgba(255,255,255,.16);color:#fff}
 .toast .x{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff}
-@keyframes toastIn{from{opacity:0;transform:translateY(-14px) scale(.96)}}
+@keyframes toastIn{from{opacity:0;transform:translateY(-16px) scale(.94)}}
 
+/* onboarding */
 .onb{position:fixed;inset:0;z-index:55;overflow-y:auto;background:var(--paper)}
-.onb-in{max-width:720px;margin:0 auto;padding:calc(40px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) calc(48px + env(safe-area-inset-bottom,0px)) max(22px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:26px}
-.onb .big{margin:0;font-weight:900;font-stretch:120%;font-size:clamp(3rem,13vw,6rem);line-height:.86;letter-spacing:-.04em}
+.onb-in{max-width:640px;min-height:100%;margin:0 auto;padding:calc(28px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) calc(32px + env(safe-area-inset-bottom,0px)) max(22px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:24px}
+.onb-in > .grow{flex:1;display:flex;flex-direction:column;gap:22px;animation:fadeUp .5s var(--ease)}
+.onb .big{margin:0;font-weight:900;font-stretch:120%;font-size:clamp(2.6rem,11vw,5rem);line-height:.88;letter-spacing:-.04em;text-wrap:balance}
 .onb .big i{font-style:normal;color:var(--red)}
-.onb .lead{font-size:17px;color:var(--ink-2);max-width:52ch;margin:0}
-.tplpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-.tplpick button{display:flex;align-items:center;gap:10px;padding:12px;border-radius:16px;background:var(--paper-2);text-align:left;font-weight:750;font-size:14.5px;transition:all .2s}
-.tplpick button .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--paper);flex:none}
-.tplpick button .ic svg{width:18px;height:18px}
-.tplpick button.on{background:var(--ink);color:var(--paper)}
-.tplpick button.on .ic{background:var(--red);color:#fff}
+.onb .lead{font-size:17px;color:var(--ink-2);max-width:48ch;margin:0}
+.prog{display:flex;gap:6px}
+.prog i{flex:1;height:4px;border-radius:4px;background:var(--line)}
+.prog i.on{background:var(--ink)}
+.prog i.cur{background:var(--red)}
+.onb-nav{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.pick button{display:flex;align-items:center;gap:10px;padding:13px;border-radius:16px;background:var(--paper-2);text-align:left;font-weight:750;font-size:14.5px;transition:all .25s var(--spring);min-height:60px}
+.pick button:active{transform:scale(.95)}
+.pick button .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--paper);flex:none}
+.pick button .ic svg{width:18px;height:18px}
+.pick button.on{background:var(--ink);color:var(--paper)}
+.pick button.on .ic{background:var(--red);color:#fff}
 .note-box{font-size:13.5px;color:var(--ink-2);padding:13px 15px;border-radius:14px;background:var(--paper-2)}
+.photo-pick{display:flex;align-items:center;gap:14px}
+.photo-pick .avatar{width:64px;height:64px;font-size:26px;cursor:pointer}
+
+/* lock */
+.lock{position:fixed;inset:0;z-index:85;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:calc(20px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px))}
+.lock .avatar{width:72px;height:72px;font-size:30px}
+.lock h2{margin:0;font-weight:900;font-stretch:115%;font-size:24px;letter-spacing:-.02em}
+.pin-dots{display:flex;gap:14px}
+.pin-dots i{width:15px;height:15px;border-radius:50%;border:2px solid var(--ink);transition:background .15s,transform .2s var(--spring)}
+.pin-dots i.on{background:var(--ink);transform:scale(1.1)}
+.pin-dots.bad{animation:shake .4s}
+.pin-dots.bad i{border-color:var(--red)}
+@keyframes shake{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+.pad{display:grid;grid-template-columns:repeat(3,76px);gap:14px}
+.pad button{width:76px;height:76px;border-radius:50%;background:var(--paper-2);font-weight:800;font-size:26px;transition:transform .15s var(--spring),background .15s}
+.pad button:active{transform:scale(.88);background:var(--paper-3)}
+.pad button.ghost{background:transparent}
+
+/* assistant */
+.chat{display:flex;flex-direction:column;gap:10px;min-height:200px}
+.msg{max-width:88%;padding:11px 15px;border-radius:18px;font-size:15px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;animation:rowIn .35s var(--ease)}
+.msg.u{align-self:flex-end;background:var(--ink);color:var(--paper);border-bottom-right-radius:6px}
+.msg.a{align-self:flex-start;background:var(--paper-2);border-bottom-left-radius:6px}
+.msg.act{align-self:flex-start;background:transparent;border:1.5px solid var(--line);font-size:13px;font-weight:700;padding:7px 12px;color:var(--ink-2)}
+.msg.err{align-self:flex-start;background:var(--red-soft);color:var(--red);font-weight:600}
+.typing{align-self:flex-start;display:flex;gap:5px;padding:14px 16px;background:var(--paper-2);border-radius:18px}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--mute);animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.chat-in{position:sticky;bottom:-24px;background:var(--paper);padding-block:12px 4px;display:flex;gap:8px;align-items:flex-end}
+.chat-in textarea{flex:1;min-height:50px;max-height:140px;padding:13px 15px;border-radius:16px;background:var(--paper-2);border:1.5px solid transparent;outline:none;font-size:16px;resize:none}
+.chat-in textarea:focus{border-color:var(--ink);background:var(--paper)}
+.chat-in .btn{width:50px;padding:0;min-height:50px}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;transition-duration:.001s!important}
@@ -325,13 +441,15 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 <body>
 
 
+<div id="splash" aria-hidden="true"><div class="logo"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="36"/></svg><i></i></div><b>Órbita<em>.</em></b></div>
 <main>
-  <div id="view"><div class="view"><section class="hello"><span></span><div class="mid"><span class="eyebrow">Órbita</span><h1 class="greet">Hola</h1></div><span></span></section></div></div>
+  <div id="view"></div>
 </main>
 <nav class="dock" id="dock" aria-label="Accesos rápidos"></nav>
 <div id="layer"></div>
 <div id="toasts" aria-live="polite"></div>
 <input type="file" id="importFile" accept="application/json,.json" hidden>
+<input type="file" id="photoFile" accept="image/*" hidden>
 
 <script>
 (() => {
@@ -353,6 +471,7 @@ const P = {
   shirt:"M8 3 3 6l2 4 3-1v12h8V9l3 1 2-4-5-3a4 4 0 0 1-8 0z",
   layers:"M12 3l9 5-9 5-9-5zM3 13l9 5 9-5",
   dumbbell:"M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12",
+  fist:"M7 11V7a2 2 0 0 1 4 0v4M11 10V6a2 2 0 0 1 4 0v5M15 10V8a2 2 0 0 1 4 0v6a7 7 0 0 1-7 7H11a6 6 0 0 1-6-6v-2a2 2 0 0 1 4 0",
   utensils:"M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 2-3 5-3 8h3v10",
   music:"M9 18V5l11-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM20 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z",
   play:"M3 5h18v14H3zM10 9l5 3-5 3z",
@@ -375,10 +494,19 @@ const P = {
   leaf:"M5 19c0-8 5-14 15-15-1 10-7 15-15 15zM5 19l7-7",
   cam:"M4 7h4l2-3h4l2 3h4v13H4zM12 10a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z",
   wallet:"M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3zM3 7l13-3v3M16 13h2",
-  plane:"M2 13l20-8-6 16-4-7z"
+  plane:"M2 13l20-8-6 16-4-7z",
+  trend:"M3 17l6-6 4 4 8-8M15 7h6v6",
+  clock:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2",
+  lock:"M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4",
+  shield:"M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z",
+  help:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5h.01",
+  doc:"M6 3h9l4 4v14H6zM9 12h6M9 16h6",
+  data:"M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3",
+  send:"M4 12l16-8-6 16-2-6z",
+  back:"M10 6l-6 6 6 6M4 12h16"
 };
 const ic = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="${P[n]||P.star}"/></svg>`;
-const SEC_ICONS = ["film","shirt","layers","dumbbell","utensils","music","play","bulb","spark","folder","cap","bookmark","book","heart","star","pin","gift","globe","leaf","cam","wallet","plane","note","list"];
+const SEC_ICONS = ["film","shirt","layers","dumbbell","fist","trend","clock","utensils","music","play","bulb","spark","folder","cap","bookmark","book","heart","star","pin","gift","globe","leaf","cam","wallet","plane","note","list","task"];
 
 /* ================= helpers ================= */
 const $ = (s, r=document) => r.querySelector(s);
@@ -394,6 +522,8 @@ const fmt = (d, o) => new Intl.DateTimeFormat("es-ES", o).format(d);
 const cap1 = s => s.charAt(0).toUpperCase() + s.slice(1);
 const daysBetween = (a, b) => Math.round((parseYmd(b) - parseYmd(a)) / 864e5);
 const nowHM = () => { const n = new Date(); return `${pad(n.getHours())}:${pad(n.getMinutes())}`; };
+const isDate = v => typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v);
+const isTime = v => typeof v === "string" && /^\d{2}:\d{2}$/.test(v);
 function relDay(k){
   if (!k) return "";
   const n = daysBetween(todayKey(), k);
@@ -404,6 +534,8 @@ function relDay(k){
 const safeUrl = u => /^https?:\/\//i.test(u||"") ? u : (u ? "https://" + u : "");
 function lsGet(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
 function lsSet(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+const buzz = () => { try { navigator.vibrate && navigator.vibrate(8); } catch {} };
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 /* ================= config ================= */
 const PRIO = { alta:"Alta", media:"Media", baja:"Baja" };
@@ -412,7 +544,11 @@ const TEMPLATES = {
   peliculas:{name:"Películas y series", icon:"film", d:"Lo que has visto y lo que te falta", fields:[F("tipo","Tipo","select",{options:["Película","Serie","Documental","Anime"]}),F("estado","Estado","select",{options:["Por ver","Viendo","Vista"]}),F("valoracion","Valoración","rating"),F("fecha","Para ver el","date"),F("plataforma","Dónde verla","text"),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
   armario:{name:"Armario", icon:"shirt", d:"Cada prenda que tienes", fields:[F("categoria","Categoría","select",{options:["Arriba","Abajo","Vestido","Abrigo","Calzado","Accesorio"]}),F("color","Color","color"),F("temporada","Temporada","select",{options:["Todo el año","Primavera/Verano","Otoño/Invierno"]}),F("estado","Estado","select",{options:["En uso","Guardado","Para donar","Quiero comprar"]}),F("marca","Marca","text"),F("notas","Notas","longtext")], statusKey:"categoria"},
   outfits:{name:"Outfits", icon:"layers", d:"Qué llevas cada día", fields:[F("fecha","Día","date"),F("ocasion","Ocasión","select",{options:["Diario","Trabajo","Deporte","Evento","Viaje"]}),F("prendas","Prendas","longtext"),F("valoracion","Cómo me sentí","rating"),F("notas","Notas","longtext")], statusKey:"ocasion", dateKey:"fecha", calendar:true},
-  entrenos:{name:"Entrenos", icon:"dumbbell", d:"Qué días entrenas y cómo", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("hecho","Completado","check"),F("notas","Ejercicios y series","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true},
+  entrenos:{name:"Entrenamiento", icon:"dumbbell", d:"Qué días entrenas y cómo", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("hecho","Completado","check"),F("notas","Ejercicios y series","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true},
+  rutina:{name:"Rutina", icon:"dumbbell", d:"Ejercicios, series y pesos", fields:[F("dia","Día de rutina","select",{options:["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]}),F("grupo","Grupo muscular","text"),F("series","Series x reps","text"),F("peso","Peso (kg)","number"),F("notas","Notas","longtext")], statusKey:"dia"},
+  horario:{name:"Horario de clases", icon:"clock", d:"Clases y horarios que se repiten", fields:[F("fecha","Primer día","date"),F("hora","Hora","time"),F("semanal","Se repite cada semana","check"),F("lugar","Lugar","text"),F("notas","Notas","longtext")], dateKey:"fecha", timeKey:"hora", repeatKey:"semanal", calendar:true},
+  progreso:{name:"Progreso", icon:"trend", d:"Logros, niveles y mejoras", fields:[F("fecha","Fecha","date"),F("nivel","Nivel o grado","text"),F("logro","Qué he conseguido","longtext"),F("valoracion","Cómo me siento","rating")], dateKey:"fecha"},
+  pendientes:{name:"Pendientes", icon:"task", d:"Lo que te queda por hacer", fields:[F("estado","Estado","select",{options:["Pendiente","En curso","Hecho"]}),F("fecha","Para cuándo","date"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
   comidas:{name:"Comidas", icon:"utensils", d:"Qué comes, recetas y menús", fields:[F("fecha","Día","date"),F("momento","Momento","select",{options:["Desayuno","Comida","Merienda","Cena","Snack"]}),F("notas","Qué comí","longtext"),F("receta","Receta","link")], statusKey:"momento", dateKey:"fecha", calendar:true},
   musica:{name:"Música", icon:"music", d:"Canciones que descubres", fields:[F("artista","Artista","text"),F("genero","Género","text"),F("estado","Estado","select",{options:["Descubierta","Favorita","En bucle"]}),F("valoracion","Valoración","rating"),F("fecha","Descubierta el","date"),F("enlace","Escuchar","link")], statusKey:"estado", dateKey:"fecha"},
   videos:{name:"Vídeos", icon:"play", d:"Vídeos que quieres ver", fields:[F("estado","Estado","select",{options:["Por ver","Visto"]}),F("canal","Canal o autor","text"),F("duracion","Minutos","number"),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"estado"},
@@ -425,15 +561,28 @@ const TEMPLATES = {
   blanco:{name:"Sección en blanco", icon:"star", d:"Créala a tu manera", fields:[F("notas","Notas","longtext")]}
 };
 const FIELD_TYPES = {text:"Texto", longtext:"Texto largo", select:"Opciones", rating:"Estrellas", date:"Fecha", time:"Hora", number:"Número", progress:"Progreso %", link:"Enlace", check:"Sí / No", color:"Color"};
+const PURPOSES = [
+  ["dia","Organizar mi día","cal",[]],
+  ["estudios","Estudios","cap",["estudios","conocimientos"]],
+  ["deporte","Deporte y salud","dumbbell",["entrenos"]],
+  ["trabajo","Trabajo y proyectos","folder",["proyectos"]],
+  ["ocio","Pelis, series y música","film",["peliculas","musica"]],
+  ["lectura","Lectura","book",["libros"]],
+  ["estilo","Ropa y estilo","shirt",["armario","outfits"]],
+  ["comida","Comida","utensils",["comidas"]],
+  ["aprender","Aprender cosas nuevas","bulb",["aprender","conocimientos"]],
+  ["ideas","Guardar ideas y enlaces","bookmark",["guardados"]],
+  ["videos","Vídeos pendientes","play",["videos"]]
+];
 
 /* ================= state & storage ================= */
 const S = {
-  mode:"local", settings:null, items:new Map(), ready:false,
-  cal:{y:new Date().getFullYear(), m:new Date().getMonth(), sel:todayKey()},
+  mode:"local", settings:null, items:new Map(), ready:false, locked:false,
+  cal:{y:new Date().getFullYear(), m:new Date().getMonth(), sel:todayKey()}, calAnim:"", listAnim:true,
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
-  sheetRefresh:null, greetIdx:0
+  sheetRefresh:null, greet:null
 };
-const LS_KEY = "orbita.v1";
+const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
 function chain(key, fn){ const p = (chains.get(key) || Promise.resolve()).then(fn).catch(handleDbErr); chains.set(key, p); return p; }
@@ -441,11 +590,13 @@ function handleDbErr(e){
   const c = e && e.code;
   if (c === "quota_exceeded") toast("Espacio lleno", "Has llegado al límite de elementos. Borra algunos para seguir.");
   else if (c === "invalid_argument") toast("No se pudo guardar", "Tu acceso a esta página es de solo lectura.");
-  else if (c === "resource_exhausted") toast("Vamos muy rápido", "Espera un momento y vuelve a intentarlo.");
   else toast("No se pudo guardar", "Revisa tu conexión y vuelve a intentarlo.");
 }
 function loadLocal(){ const o = lsGet(LS_KEY, null); if (o){ S.settings = o.settings || null; S.items = new Map((o.items || []).map(i => [i.id, i])); } }
-function saveLocal(){ lsSet(LS_KEY, {settings:S.settings, items:[...S.items.values()]}); }
+function saveLocal(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify({settings:S.settings, items:[...S.items.values()]})); }
+  catch { toast("No queda espacio en el dispositivo", "Borra elementos o una foto de perfil grande para seguir guardando."); }
+}
 const clean = o => JSON.parse(JSON.stringify(o));
 
 async function initStore(){
@@ -508,8 +659,12 @@ function putSettings(now=false){
 const all = () => [...S.items.values()];
 const ofKind = k => all().filter(i => i.kind === k);
 const sections = () => (S.settings?.sections || []);
+const topSections = () => sections().filter(s => !s.parentId || !secById(s.parentId));
+const childrenOf = id => sections().filter(s => s.parentId === id);
 const secById = id => sections().find(s => s.id === id);
+const descendants = id => childrenOf(id).flatMap(c => [c, ...descendants(c.id)]);
 const entriesOf = sid => ofKind("entry").filter(e => e.sectionId === sid);
+const deepCount = sid => entriesOf(sid).length + descendants(sid).reduce((n, c) => n + entriesOf(c.id).length, 0);
 const profile = () => S.settings?.profile || {};
 const myName = () => (profile().name || "").trim();
 function occursOn(ev, key){
@@ -529,6 +684,11 @@ function nextOcc(ev, fromKey = todayKey()){
   for (let i = 0; i < 370; i++){ const k = ymd(d); if (occursOn(ev, k)) return k; d = addDays(d, 1); }
   return null;
 }
+function entryOn(e, s, key){
+  const d = e.fields?.[s.dateKey]; if (!isDate(d)) return false;
+  if (s.repeatKey && e.fields?.[s.repeatKey]) return occursOn({date:d, repeat:"weekly"}, key);
+  return d === key;
+}
 function dayItems(key){
   const out = [];
   for (const it of all()){
@@ -537,13 +697,14 @@ function dayItems(key){
     else if (it.kind === "reminder" && it.date === key) out.push({t:"reminder", it, time:it.time || "", label:"Aviso", red:!it.done, title:it.title});
     else if (it.kind === "entry"){
       const s = secById(it.sectionId);
-      if (s && s.calendar && s.dateKey && it.fields?.[s.dateKey] === key) out.push({t:"entry", it, sec:s, time:(s.timeKey && it.fields?.[s.timeKey]) || "", label:s.name, red:false, title:it.title});
+      if (s && s.calendar && s.dateKey && entryOn(it, s, key)) out.push({t:"entry", it, sec:s, time:(s.timeKey && it.fields?.[s.timeKey]) || "", label:secPath(s), red:false, title:it.title});
     }
   }
   const bd = profile().birthday;
   if (bd && bd.slice(5) === key.slice(5)) out.push({t:"bday", it:{id:"__bday"}, time:"", label:"Tu cumpleaños", red:true, title:"¡Tu cumpleaños!"});
   return out.sort((a, b) => (a.time || "") < (b.time || "") ? -1 : (a.time || "") > (b.time || "") ? 1 : 0);
 }
+const secPath = s => { const p = s.parentId ? secById(s.parentId) : null; return p ? `${p.name} · ${s.name}` : s.name; };
 const tasksDoneCount = eid => { const ts = ofKind("task").filter(t => t.link === eid); return {n:ts.length, d:ts.filter(t => t.done).length}; };
 
 /* ================= toasts & sound ================= */
@@ -573,7 +734,7 @@ function toast(title, text, opts={}){
 
 /* ================= routing ================= */
 const ROUTES = ["inicio","calendario","tareas","avisos","notas","secciones","perfil"];
-const ROUTE_TITLE = {calendario:"Calendario", tareas:"Tareas", avisos:"Avisos y fechas", notas:"Notas", secciones:"Secciones", perfil:"Tu perfil"};
+const ROUTE_TITLE = {calendario:"Calendario", tareas:"Tareas", avisos:"Avisos y fechas", notas:"Notas", secciones:"Secciones", perfil:"Perfil y ajustes"};
 function currentRoute(){
   const h = decodeURIComponent(location.hash.slice(1));
   if (h.startsWith("s-") && secById(h.slice(2))) return h;
@@ -582,27 +743,30 @@ function currentRoute(){
 }
 let lastRoute = null;
 function render(){
-  if (!S.ready || !S.settings) return;
+  if (!S.ready || !S.settings || S.locked) return;
   const r = currentRoute();
   const v = $("#view");
   const y = window.scrollY;
   const focusId = document.activeElement && v.contains(document.activeElement) ? document.activeElement.id : null;
   const changed = r !== lastRoute;
+  if (changed) S.listAnim = true;
   let html;
   if (r === "inicio") html = vHome(changed);
   else {
-    const title = r.startsWith("s-") ? secById(r.slice(2)).name : ROUTE_TITLE[r];
+    const sec = r.startsWith("s-") ? secById(r.slice(2)) : null;
     const fn = {calendario:vCalendar, tareas:vTasks, avisos:vReminders, notas:vNotes, secciones:vSections, perfil:vProfile}[r];
-    html = topBar(title) + (fn ? fn() : vSection(secById(r.slice(2))));
+    html = topBar(sec ? sec.name : ROUTE_TITLE[r]) + (fn ? fn() : vSection(sec));
   }
-  v.innerHTML = `<div class="view${changed ? " enter" : ""}">${html}</div>`;
+  v.innerHTML = `<div class="view${changed ? " enter" : ""}${S.listAnim ? " anim" : ""}">${html}</div>`;
+  S.listAnim = false; S.calAnim = "";
+  $$(".anim .row-it, .anim .it, .anim .entry, .anim .tile, .anim .note", v).forEach((el, i) => el.style.setProperty("--i", Math.min(i, 14)));
   renderDock();
   if (changed){ window.scrollTo(0, 0); lastRoute = r; }
   else {
     window.scrollTo(0, y);
     if (focusId){ const f = document.getElementById(focusId); if (f){ f.focus(); try { if (typeof f.value === "string" && f.setSelectionRange) f.setSelectionRange(f.value.length, f.value.length); } catch {} } }
   }
-  bindSwipe();
+  bindSwipe(); fitGreet();
 }
 function onData(){
   if (!S.ready) return;
@@ -613,40 +777,60 @@ function onData(){
   if (S.sheetRefresh) S.sheetRefresh();
 }
 window.addEventListener("hashchange", () => { closeLayer(); render(); });
-const avatarHtml = () => { const n = myName(); return n ? `<span class="avatar">${esc(n[0].toUpperCase())}</span>` : ic("user"); };
-const topBar = title => `<div class="top"><button class="ibtn" data-act="drawer" aria-label="Abrir menú">${ic("menu")}</button><div class="ttl">${esc(title)}</div><a class="ibtn" href="#perfil" aria-label="Tu perfil">${avatarHtml()}</a></div>`;
+function avatarHtml(cls=""){
+  const p = profile(), n = myName();
+  if (p.photo) return `<span class="avatar ${cls}" style="background-image:url('${p.photo}')"></span>`;
+  return n ? `<span class="avatar ${cls}">${esc(n[0].toUpperCase())}</span>` : `<span class="avatar ${cls}">${ic("user")}</span>`;
+}
+const topBar = title => `<div class="top"><button class="ibtn" data-act="drawer" aria-label="Abrir menú">${ic("menu")}</button><div class="ttl">${esc(title)}</div><a class="ibtn" href="#perfil" aria-label="Perfil y ajustes">${avatarHtml()}</a></div>`;
 function renderDock(){
-  if (!S.settings){ $("#dock").innerHTML = ""; return; }
+  if (!S.settings || S.locked){ $("#dock").innerHTML = ""; return; }
+  if ($("#dock").childElementCount) { const b = $("#dock .today-n b"); if (b) b.textContent = new Date().getDate(); $("#dock .today-n").dataset.date = todayKey(); return; }
   $("#dock").innerHTML = `
     <button data-act="search" aria-label="Buscar">${ic("search")}</button>
     <button class="add" data-act="quick" aria-label="Añadir">${ic("plus")}</button>
     <button class="today-n" data-act="day" data-date="${todayKey()}" aria-label="Horario de hoy">${ic("cal")}<b>${new Date().getDate()}</b></button>`;
 }
 
-/* ================= home ================= */
-function greetings(){
+/* ================= greeting ================= */
+const PHRASES = {
+  any:["¿Qué liamos hoy, {n}?","Hola, {n}. ¿Café primero?","Hoy sí que sí, {n}","{n}, a por el día","Modo productivo: ON","El caos, bajo control","Respira. Vamos por partes","¿Y si hoy lo petas, {n}?","Tú puedes. Casi seguro","{n}, el sofá puede esperar","Hidrátate y conquista","Otro día, otra misión","Qué bien verte, {n}","Plan del día: brillar","Ni un post-it más, {n}","Aquí mandas tú, {n}","Hoy toca ser leyenda","Agenda lista, {n}","Paso a paso, {n}"],
+  morning:["Buenos días, {n}","¿Ya en pie, {n}?","Arriba, {n}. El día espera","Café, plan y a volar"],
+  afternoon:["Buenas tardes, {n}","Tarde de las buenas, {n}","Media jornada. Vamos bien","Un último empujón, {n}"],
+  night:["Buenas noches, {n}","{n}, ¿tú no duermes?","Planear de noche mola","Mañana lo bordas, {n}"],
+  1:["Lunes. Paciencia, {n}","Lunes con energía, {n}"], 5:["Viernes, por fin, {n}","Huele a finde, {n}"],
+  6:["Sábado sin prisa, {n}"], 0:["Domingo de manta, {n}","Domingo de recargar"]
+};
+function pickPhrase(next){
   const n = myName(), h = new Date().getHours(), wd = new Date().getDay();
-  const part = h < 6 ? "Buenas noches" : h < 13 ? "Buenos días" : h < 21 ? "Buenas tardes" : "Buenas noches";
-  const list = [];
   const bd = profile().birthday;
-  if (bd && bd.slice(5) === todayKey().slice(5)) list.push(["¡Feliz cumpleaños" + (n ? "," : "!"), n ? n + "!" : ""]);
-  list.push([part + (n ? "," : ""), n]);
-  list.push(["¿Qué hay", "para hoy?"]);
-  list.push(["Bienvenido" + (n ? "," : ""), n]);
-  if (wd === 5) list.push(["Feliz", "viernes"]); else if (wd === 1) list.push(["Buen comienzo", "de semana"]); else if (wd === 0 || wd === 6) list.push(["Disfruta", "el finde"]);
-  return list;
-}
-function splitChars(text, startI, cls){
-  let i = startI;
-  const html = text.split(" ").filter(Boolean).map(w => `<span class="w${cls ? " " + cls : ""}">${[...w].map(c => `<span class="ch" style="--i:${i++}">${esc(c)}</span>`).join("")}</span>`).join(" ");
-  return {html, next:i};
+  if (!next && bd && bd.slice(5) === todayKey().slice(5)) return n ? "¡Feliz cumple, {n}!" : "¡Feliz cumpleaños!";
+  let pool = [...PHRASES.any, ...(h >= 6 && h < 13 ? PHRASES.morning : h >= 13 && h < 21 ? PHRASES.afternoon : PHRASES.night), ...(PHRASES[wd] || [])];
+  if (!n) pool = pool.filter(p => !p.includes("{n}"));
+  const last = lsGet("orbita.lastGreet", "");
+  const opts = pool.filter(p => p !== last && p !== S.greet);
+  const p = opts[Math.floor(Math.random() * opts.length)] || pool[0];
+  lsSet("orbita.lastGreet", p);
+  return p;
 }
 function greetHtml(animate){
-  const gs = greetings(); const [a, b] = gs[S.greetIdx % gs.length];
-  if (!animate) return `${esc(a)}${b ? `<br><span class="red">${esc(b)}</span>` : ""}`;
-  const p1 = splitChars(a, 0, "");
-  return p1.html + (b ? "<br>" + splitChars(b, p1.next + 2, "red").html : "");
+  const tpl = S.greet || (S.greet = pickPhrase(false)), n = myName();
+  const parts = tpl.split("{n}");
+  let i = 0;
+  const chars = (txt, red) => [...txt].map(c => c === " " ? `<span class="sp"> </span>` : `<span class="ch${red ? " red" : ""}" style="--i:${i++}">${esc(c)}</span>`).join("");
+  if (!animate) return parts.map(esc).join(`<span class="red">${esc(n)}</span>`);
+  return parts.map(p => chars(p, false)).join(chars(n, true));
 }
+function fitGreet(){
+  const g = $("#greet"); if (!g) return;
+  let size = Math.min(78, Math.max(34, window.innerWidth * .13));
+  g.style.fontSize = size + "px";
+  let guard = 0;
+  while (g.scrollWidth > g.clientWidth + 1 && size > 16 && guard++ < 60){ size -= 1.5; g.style.fontSize = size + "px"; }
+}
+addEventListener("resize", () => requestAnimationFrame(fitGreet));
+
+/* ================= home ================= */
 function calHtml(){
   const {y, m, sel} = S.cal;
   const first = new Date(y, m, 1), start = addDays(first, -((first.getDay() + 6) % 7));
@@ -664,7 +848,7 @@ function calHtml(){
       ${isCur && sel === tk ? "" : `<button class="pillbtn" data-act="cal-today">Hoy</button>`}
       <button class="ibtn" data-act="cal-move" data-d="-1" aria-label="Mes anterior">${ic("left")}</button>
       <button class="ibtn" data-act="cal-move" data-d="1" aria-label="Mes siguiente">${ic("right")}</button></div>
-    <div class="grid7">${["L","M","X","J","V","S","D"].map(w => `<div class="wk">${w}</div>`).join("")}${cells}</div>
+    <div class="grid7 ${S.calAnim}">${["L","M","X","J","V","S","D"].map(w => `<div class="wk">${w}</div>`).join("")}${cells}</div>
   </div>`;
 }
 function agendaRow(x){
@@ -693,9 +877,9 @@ function vHome(animate){
     <button class="ibtn" data-act="drawer" aria-label="Abrir menú">${ic("menu")}</button>
     <div class="mid">
       <span class="eyebrow">${esc(fmt(now, {weekday:"long"}))} · ${esc(fmt(now, {day:"numeric", month:"long"}))}</span>
-      <h1 class="greet" id="greet" data-act="greet" title="Toca para cambiar el mensaje">${greetHtml(animate)}</h1>
+      <h1 class="greet" id="greet" data-act="greet" title="Toca para cambiar la frase">${greetHtml(animate)}</h1>
     </div>
-    <a class="ibtn" href="#perfil" aria-label="Tu perfil">${avatarHtml()}</a>
+    <a class="ibtn" href="#perfil" aria-label="Perfil y ajustes">${avatarHtml()}</a>
   </section>
   <div class="home">${calHtml()}${agendaHtml()}</div>`;
 }
@@ -760,11 +944,11 @@ function vNotes(){
   : `<div class="empty"><b>${q ? "Ninguna nota coincide." : "Aún no hay notas."}</b>${q ? "Prueba con otra palabra." : "Pulsa + para apuntar una idea."}</div>`}`;
 }
 function tileHtml(s){
-  const es = entriesOf(s.id);
-  return `<a class="tile" href="#s-${s.id}"><div class="ic">${ic(s.icon)}</div><div><div class="nm">${esc(s.name)}</div><div class="ct">${es.length} ${es.length === 1 ? "entrada" : "entradas"}</div></div></a>`;
+  const n = deepCount(s.id), subs = childrenOf(s.id).length;
+  return `<a class="tile" href="#s-${s.id}"><div class="ic">${ic(s.icon)}</div><div><div class="nm">${esc(s.name)}</div><div class="ct">${n} ${n === 1 ? "entrada" : "entradas"}${subs ? ` · ${subs} ${subs === 1 ? "subsección" : "subsecciones"}` : ""}</div></div></a>`;
 }
-const vSections = () => `<p class="muted" style="margin:0;max-width:56ch">Cada sección es una colección con sus propios campos. Usa una plantilla o crea la tuya desde cero.</p>
-  <div class="tiles">${sections().map(tileHtml).join("")}<button class="tile add" data-act="sec-new"><div class="ic">${ic("plus")}</div><div><div class="nm">Nueva sección</div><div class="ct">Plantilla o en blanco</div></div></button></div>`;
+const vSections = () => `<p class="muted" style="margin:0;max-width:56ch">Cada sección tiene sus propios campos y puede tener subsecciones dentro. Por ejemplo, Entrenamiento con Gimnasio y Artes marciales.</p>
+  <div class="tiles">${topSections().map(tileHtml).join("")}<button class="tile add" data-act="sec-new"><div class="ic">${ic("plus")}</div><div><div class="nm">Nueva sección</div><div class="ct">Dime qué quieres organizar</div></div></button></div>`;
 function fieldDisplay(f, v){
   if (v === undefined || v === null || v === "") return "";
   switch (f.type){
@@ -781,6 +965,8 @@ function fieldDisplay(f, v){
   }
 }
 function vSection(s){
+  const parent = s.parentId ? secById(s.parentId) : null;
+  const subs = childrenOf(s.id);
   const all_ = entriesOf(s.id);
   const sf = s.fields.find(f => f.key === s.statusKey && f.type === "select");
   const filt = S.secFilter[s.id] || "", q = (S.secQuery[s.id] || "").toLowerCase();
@@ -789,6 +975,11 @@ function vSection(s){
   const textF = s.fields.find(f => f.type === "text"), longF = s.fields.find(f => f.type === "longtext");
   const shown = s.fields.filter(f => f.type !== "text" && f.type !== "longtext");
   return `
+  ${parent ? `<a class="crumb" href="#s-${parent.id}">${ic("left")}${esc(parent.name)}</a>` : ""}
+  <section class="stack" style="gap:12px">
+    <div class="row" style="justify-content:space-between"><h2 class="sub-h">${subs.length ? "Subsecciones" : "Organiza más a fondo"}</h2></div>
+    <div class="tiles sm">${subs.map(tileHtml).join("")}<button class="tile add" data-act="sec-new" data-parent="${s.id}"><div class="ic">${ic("plus")}</div><div><div class="nm">Nueva subsección</div><div class="ct">Dentro de ${esc(s.name)}</div></div></button></div>
+  </section>
   <div class="row" style="flex-wrap:nowrap">
     <input class="search-in" id="sq-${s.id}" data-input="secq" data-sec="${s.id}" placeholder="Buscar en ${esc(s.name.toLowerCase())}" value="${esc(S.secQuery[s.id] || "")}" aria-label="Buscar">
     <button class="ibtn" style="flex:none;background:var(--paper-2)" data-act="sec-view" data-sec="${s.id}" aria-label="${lst ? "Ver como tarjetas" : "Ver como lista"}">${ic(lst ? "grid" : "list")}</button>
@@ -805,43 +996,87 @@ function vSection(s){
       ${!lst && longF && e.fields?.[longF.key] ? `<div class="es muted" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(e.fields[longF.key])}</div>` : ""}
       ${metas.length || tc.n || e.example ? `<div class="em">${metas.join("")}${tc.n ? `<span class="tag">${tc.d}/${tc.n} tareas</span>` : ""}${e.example ? '<span class="tag ex">Ejemplo</span>' : ""}</div>` : ""}
     </button>`; }).join("")}</div>`
-  : `<div class="empty"><b>${q || filt ? "Nada coincide con el filtro." : "Esta sección está vacía."}</b>${q || filt ? "Prueba con otro filtro." : "Pulsa «Añadir» para crear la primera entrada."}</div>`}`;
+  : `<div class="empty"><b>${q || filt ? "Nada coincide con el filtro." : "Aquí aún no hay entradas."}</b>${q || filt ? "Prueba con otro filtro." : "Pulsa «Añadir» para crear la primera."}</div>`}`;
 }
-const LIKES = {comida:"Comida que me gusta", musica:"Música que me gusta", peliculas:"Películas y series favoritas", otros:"Otros gustos"};
+
+/* ---------- profile & settings ---------- */
 function vProfile(){
   const p = profile(), n = myName();
-  let sub = "";
+  let sub = p.username ? "@" + p.username : "";
   if (p.birthday){
-    const b = parseYmd(p.birthday), t = new Date(); let age = t.getFullYear() - b.getFullYear(); if (todayKey().slice(5) < p.birthday.slice(5)) age--;
+    const b = parseYmd(p.birthday); let age = new Date().getFullYear() - b.getFullYear(); if (todayKey().slice(5) < p.birthday.slice(5)) age--;
     const left = daysBetween(todayKey(), nextOcc({date:p.birthday, repeat:"yearly"}));
-    sub = `${age >= 0 ? age + " años · " : ""}${left === 0 ? "¡Hoy es tu cumpleaños!" : `Tu cumpleaños es en ${left} ${left === 1 ? "día" : "días"}`}`;
+    sub += (sub ? " · " : "") + `${age >= 0 ? age + " años · " : ""}${left === 0 ? "¡Hoy es tu cumpleaños!" : `Cumples en ${left} ${left === 1 ? "día" : "días"}`}`;
   }
+  const hasPin = !!S.settings.pin, hasKey = !!aiKey();
+  const row = (act, icon, title, desc, extra="") => `<button class="set-row" data-act="${act}"${extra}>${ic(icon)}<span class="tx"><b>${title}</b><span>${desc}</span></span>${ic("right")}</button>`;
   return `
-  <div class="prof"><span class="avatar">${esc((n || "?")[0].toUpperCase())}</span><div style="min-width:0"><h1>${esc(n || "Tu perfil")}</h1>${sub ? `<p class="muted" style="margin:6px 0 0">${sub}</p>` : ""}</div></div>
+  <div class="prof"><span data-act="photo" title="Cambiar foto">${avatarHtml()}</span><div style="min-width:0"><h1>${esc(n || "Tu perfil")}</h1>${sub ? `<p class="muted" style="margin:6px 0 0">${esc(sub)}</p>` : ""}</div></div>
   <div class="cols">
     <form class="box stack" data-form="profile" autocomplete="off">
-      <div class="field"><label for="pf-name">Nombre</label><input type="text" id="pf-name" name="name" value="${esc(n)}" placeholder="Cómo quieres que te salude"></div>
+      <span class="lbl">Cuenta</span>
+      <div class="photo-pick">${avatarHtml()}<div class="row"><button type="button" class="btn sm" data-act="photo">${p.photo ? "Cambiar foto" : "Añadir foto"}</button>${p.photo ? `<button type="button" class="btn sm ghost" data-act="photo-del">Quitar</button>` : ""}</div></div>
+      <div class="field"><label for="pf-name">Nombre</label><input type="text" id="pf-name" name="name" value="${esc(n)}" placeholder="Cómo quieres que te salude" maxlength="40"></div>
+      <div class="field"><label for="pf-user">Nombre de usuario</label><div class="at"><input type="text" id="pf-user" name="username" value="${esc(p.username || "")}" placeholder="tunombre" maxlength="24" autocapitalize="none" spellcheck="false"></div></div>
       <div class="field"><label for="pf-bday">Fecha de cumpleaños</label><input type="date" id="pf-bday" name="birthday" value="${esc(p.birthday || "")}"></div>
-      <div class="field"><label for="pf-about">Sobre mí</label><textarea id="pf-about" name="about" placeholder="Objetivos, una frase que te guste…">${esc(p.about || "")}</textarea></div>
-      ${Object.entries(LIKES).map(([k, lbl]) => { const tags = p.likes?.[k] || []; return `<div class="field"><label for="lk-${k}">${lbl}</label>${tags.length ? `<div class="tags">${tags.map((t, i) => `<span class="chip">${esc(t)}<button type="button" data-act="like-del" data-k="${k}" data-i="${i}" aria-label="Quitar ${esc(t)}">${ic("x")}</button></span>`).join("")}</div>` : ""}<div class="addline"><input type="text" id="lk-${k}" data-like="${k}" placeholder="Escribe y pulsa Intro" enterkeyhint="done"></div></div>`; }).join("")}
-      <div><button class="btn pri" type="submit">Guardar perfil</button></div>
+      <div><button class="btn pri" type="submit">Guardar cambios</button></div>
     </form>
     <div class="stack">
-      <form class="box stack" data-form="prefs">
-        <span class="lbl">Preferencias</span>
+      <div class="box"><span class="lbl">Seguridad</span><div class="set-list">
+        ${row("pin-setup", "lock", hasPin ? "Cambiar PIN" : "Proteger con PIN", hasPin ? "Órbita pide el PIN al abrirse" : "Pide un código de 4 cifras al abrir Órbita")}
+        ${hasPin ? row("pin-off", "shield", "Quitar el PIN", "Órbita se abrirá sin código") + row("lock-now", "lock", "Bloquear ahora", "Vuelve a pedir el PIN") : ""}
+      </div></div>
+      <div class="box"><span class="lbl">Asistente</span><div class="set-list">
+        ${row("ai-key", "spark", hasKey ? "Clave de Claude conectada" : "Conectar tu clave de Claude", hasKey ? "Toca para cambiarla o quitarla" : "Para usar el asistente con inteligencia artificial")}
+        ${row("ai", "spark", "Abrir el asistente", "Pídele que te organice algo")}
+      </div></div>
+      <form class="box stack" data-form="prefs"><span class="lbl">Preferencias</span>
         <label class="toggle"><span><b>Sonido en los avisos</b><span class="sub">Suena al llegar la hora si Órbita está abierta.</span></span><input type="checkbox" name="sound" id="pf-sound"${S.settings.sound !== false ? " checked" : ""}></label>
       </form>
-      <div class="box stack">
-        <span class="lbl">Tus datos</span>
-        <div class="note-box">${S.mode === "db" ? "Se guardan en tu cuenta, de forma privada." : "Se guardan solo en este dispositivo, sin cuentas ni servidores. Para pasarlos a otro dispositivo usa Exportar copia e Importar copia."}</div>
-        <div class="row"><button class="btn" data-act="export">Exportar copia</button><button class="btn" data-act="import">Importar copia</button>${all().some(i => i.example) ? `<button class="btn" data-act="clear-examples">Borrar ejemplos</button>` : ""}</div>
-        <div><button class="btn danger" data-act="reset-all">${ic("trash")}<span>Borrar todo y empezar de cero</span></button></div>
-      </div>
+      <div class="box"><span class="lbl">Tus datos</span><div class="set-list">
+        ${row("export", "data", "Exportar copia de seguridad", "Guarda todo en un archivo")}
+        ${row("import", "data", "Importar copia", "Recupera tus datos o pásalos a otro dispositivo")}
+        ${all().some(i => i.example) ? row("clear-examples", "trash", "Borrar los ejemplos", "Deja solo lo tuyo") : ""}
+      </div><div style="margin-top:12px"><button class="btn danger" data-act="reset-all">${ic("trash")}<span>Borrar todo y empezar de cero</span></button></div></div>
+      <div class="box"><span class="lbl">Ayuda e información</span><div class="set-list">
+        ${row("page", "help", "Preguntas frecuentes", "Dudas sobre cómo funciona", ' data-page="faq"')}
+        ${row("page", "shield", "Política de privacidad", "Qué se guarda y dónde", ' data-page="privacy"')}
+        ${row("page", "doc", "Cookies y almacenamiento", "Qué usa Órbita en tu navegador", ' data-page="cookies"')}
+        ${row("page", "spark", "Acerca de Órbita", "Versión e instalación", ' data-page="about"')}
+      </div></div>
     </div>
   </div>`;
 }
+const PAGES = {
+  faq:["Preguntas frecuentes", `
+    <details class="faq"><summary>¿Dónde se guardan mis datos?</summary><p>En este dispositivo, dentro del navegador. No hay servidores ni cuentas: nadie más puede verlos.</p></details>
+    <details class="faq"><summary>¿Se sincroniza entre el móvil y el iPad?</summary><p>Todavía no. Para pasar tus datos usa Exportar copia en un dispositivo e Importar copia en el otro.</p></details>
+    <details class="faq"><summary>¿Puedo entrar con Google o recuperar una contraseña?</summary><p>Órbita no tiene cuentas, así que no hay inicio de sesión con Google ni recuperación por email. Puedes proteger la app con un PIN en este dispositivo.</p></details>
+    <details class="faq"><summary>He olvidado el PIN, ¿qué hago?</summary><p>El PIN no se puede recuperar. En la pantalla de bloqueo puedes borrar todo y empezar de nuevo, y después importar tu última copia de seguridad.</p></details>
+    <details class="faq"><summary>¿El PIN cifra mis datos?</summary><p>No. Es una pantalla de bloqueo que evita miradas indiscretas, pero los datos siguen guardados sin cifrar en el navegador.</p></details>
+    <details class="faq"><summary>¿Cómo funciona el asistente?</summary><p>Usa Claude, la inteligencia artificial de Anthropic, con tu propia clave. Puede crear tareas, eventos, avisos, notas, secciones y entradas por ti. Cada mensaje tiene un coste pequeño que se cobra en tu cuenta de Anthropic.</p></details>
+    <details class="faq"><summary>¿Recibiré avisos con la app cerrada?</summary><p>Por ahora no. Los avisos saltan con sonido si Órbita está abierta; si no, los verás pendientes al volver.</p></details>
+    <details class="faq"><summary>¿Cómo la pongo en la pantalla de inicio?</summary><p>En Safari toca Compartir y luego «Añadir a pantalla de inicio». En Android, en Chrome, menú ⋮ y «Añadir a pantalla de inicio».</p></details>
+    <details class="faq"><summary>¿Qué son las subsecciones?</summary><p>Secciones dentro de otra sección, cada una con sus campos. Por ejemplo, dentro de Entrenamiento puedes tener Gimnasio, Artes marciales, Horarios o Progreso.</p></details>`],
+  privacy:["Política de privacidad", `<div class="prose">
+    <p>Órbita es una herramienta personal. Esta página explica qué datos maneja y dónde quedan.</p>
+    <h3>Qué guarda</h3><p>Lo que tú escribes: tu perfil (nombre, usuario, cumpleaños y foto), tareas, eventos, avisos, notas, secciones y sus entradas, y tus preferencias.</p>
+    <h3>Dónde lo guarda</h3><p>Solo en el almacenamiento local de tu navegador, en este dispositivo. Órbita no tiene servidor propio y no envía tus datos a ningún sitio.</p>
+    <h3>Servicios externos</h3><p>Las fuentes tipográficas se cargan desde Google Fonts, que puede ver tu dirección IP. La web se aloja en GitHub Pages. Si usas el asistente, el texto que escribes y un resumen de tu agenda y secciones se envían a Anthropic con tu clave para generar la respuesta, según la política de privacidad de Anthropic.</p>
+    <h3>Tu clave de Claude</h3><p>Se guarda solo en este dispositivo y no se incluye en las copias de seguridad.</p>
+    <h3>Tus derechos</h3><p>Puedes exportar tus datos cuando quieras y borrarlos todos desde Perfil y ajustes. Borrar los datos del navegador también los elimina.</p></div>`],
+  cookies:["Cookies y almacenamiento", `<div class="prose">
+    <p>Órbita no usa cookies ni herramientas de seguimiento o publicidad.</p>
+    <h3>Almacenamiento local</h3><p>Usa el almacenamiento local del navegador (localStorage) para guardar tu espacio, tu PIN cifrado con un hash, tu clave del asistente y pequeñas preferencias como la última frase de bienvenida.</p>
+    <h3>Funcionamiento sin conexión</h3><p>Guarda una copia de la propia web en la caché del navegador para abrirse sin internet.</p>
+    <h3>Terceros</h3><p>Google Fonts (tipografía) y jsDelivr (solo para cargar la librería del asistente cuando lo usas) pueden registrar tu dirección IP al servir sus archivos.</p></div>`],
+  about:["Acerca de Órbita", `<div class="prose">
+    <p><b>Órbita</b> es tu espacio personal para organizar el día: calendario, tareas, avisos, notas y secciones a tu medida.</p>
+    <p>Versión 3 · funciona sin conexión · tus datos se quedan en tu dispositivo.</p>
+    <h3>Instálala</h3><p>En Safari: Compartir y luego «Añadir a pantalla de inicio». Las actualizaciones llegan solas.</p></div>`]
+};
 
-/* ================= layer: drawer & sheets ================= */
+/* ================= layer ================= */
 function openLayer(html, {kind="sheet", onMount, refresh} = {}){
   const L = $("#layer");
   L.innerHTML = kind === "drawer"
@@ -879,11 +1114,13 @@ const sheetHead = (title, extra="") => `<div class="sheet-h"><div class="t">${ti
 
 function openDrawer(){
   const r = currentRoute();
-  const link = (to, label, icon, n) => `<a class="dnav${r === to ? " on" : ""}" href="#${to}">${ic(icon)}<span>${esc(label)}</span>${n ? `<span class="n">${n}</span>` : ""}</a>`;
+  const link = (to, label, icon, n, cls="") => `<a class="dnav${r === to ? " on" : ""} ${cls}" href="#${to}">${cls.includes("child") ? "" : ic(icon)}<span>${esc(label)}</span>${n ? `<span class="n">${n}</span>` : ""}</a>`;
+  const tree = s => link("s-" + s.id, s.name, s.icon, deepCount(s.id)) + descendants(s.id).map(c => link("s-" + c.id, (c.parentId !== s.id ? "· " : "") + c.name, c.icon, entriesOf(c.id).length, "child")).join("");
   openLayer(`<div class="brand"><b>Órbita<i>.</i></b><button class="ibtn" data-act="close" aria-label="Cerrar menú">${ic("x")}</button></div>
+    <button class="dnav ai" data-act="ai">${ic("spark")}<span>Asistente</span></button>
     ${link("inicio","Inicio","home")}${link("calendario","Calendario","cal")}${link("tareas","Tareas","task", ofKind("task").filter(t => !t.done).length)}${link("avisos","Avisos y fechas","bell", ofKind("reminder").filter(t => !t.done).length)}${link("notas","Notas","note", ofKind("note").length)}
     <div class="dlabel">Tus secciones</div>
-    ${sections().map(s => link("s-" + s.id, s.name, s.icon, entriesOf(s.id).length)).join("")}
+    ${topSections().map(tree).join("")}
     <button class="dnav" data-act="sec-new">${ic("plus")}<span>Nueva sección</span></button>
     ${link("secciones","Gestionar secciones","grid")}
     <div class="dlabel">Tú</div>${link("perfil","Perfil y ajustes","user")}`, {kind:"drawer"});
@@ -892,8 +1129,9 @@ function openQuick(){
   const r = currentRoute(), d = r === "inicio" || r === "calendario" ? S.cal.sel : todayKey();
   const opts = [["task","Tarea","task","Algo que hacer"],["event","Evento","cal","Con fecha y hora"],["reminder","Aviso","bell","Te avisa a su hora", true],["note","Nota","note","Idea rápida"],["important","Fecha importante","gift","Cumpleaños, plazos…"]];
   openLayer(`${sheetHead("Añadir" + (d !== todayKey() ? ` · ${esc(relDay(d))}` : ""))}
+    <button class="ai-card" data-act="ai"><span class="ic">${ic("spark")}</span><span><b>Pídeselo al asistente</b><span>«Apúntame BJJ martes y jueves a las 20:00»</span></span></button>
     <div class="qa">${opts.map(([k,l,i,dsc,red]) => `<button data-act="add" data-kind="${k}" data-date="${k === "note" ? "" : d}"><span class="ic${red ? " red" : ""}">${ic(i)}</span>${l}<span class="d">${dsc}</span></button>`).join("")}</div>
-    ${sections().length ? `<div class="group-t" style="padding-top:22px">En tus secciones</div><div class="qa">${sections().map(s => `<button data-act="add" data-kind="entry" data-sec="${s.id}" data-date="${d}"><span class="ic">${ic(s.icon)}</span>${esc(s.name)}</button>`).join("")}</div>` : ""}`);
+    ${sections().length ? `<div class="group-t" style="padding-top:22px">En tus secciones</div><div class="qa">${sections().map(s => `<button data-act="add" data-kind="entry" data-sec="${s.id}" data-date="${d}"><span class="ic">${ic(s.icon)}</span>${esc(s.name)}${s.parentId ? `<span class="d">${esc(secById(s.parentId)?.name || "")}</span>` : ""}</button>`).join("")}</div>` : ""}`);
 }
 function openSearch(){
   let scope = "";
@@ -904,11 +1142,11 @@ function openSearch(){
     const run = () => {
       const q = inp.value.trim().toLowerCase();
       let pool = all();
-      if (scope.startsWith("s:")) pool = pool.filter(i => i.kind === "entry" && i.sectionId === scope.slice(2));
+      if (scope.startsWith("s:")){ const ids = [scope.slice(2), ...descendants(scope.slice(2)).map(c => c.id)]; pool = pool.filter(i => i.kind === "entry" && ids.includes(i.sectionId)); }
       else if (scope) pool = pool.filter(i => i.kind === scope);
       if (!q && !scope){ res.innerHTML = `<p class="muted small" style="margin:6px 4px">Escribe una palabra o elige una sección para ver lo que tienes guardado.</p>`; return; }
       const hits = pool.filter(i => !q || JSON.stringify([i.title, i.body, i.notes, i.fields]).toLowerCase().includes(q)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(0, 60);
-      res.innerHTML = hits.length ? hits.map(i => { const s = i.kind === "entry" ? secById(i.sectionId) : null; const lab = s ? s.name : (i.important ? "Fecha importante" : {task:"Tarea", event:"Evento", reminder:"Aviso", note:"Nota"}[i.kind]); return `<div class="it" data-act="open" data-id="${i.id}"><div class="tx"><div class="tt">${esc(i.title || (i.body || "").slice(0, 60) || "Sin título")}</div><div class="mt">${esc(lab || "")}${i.date ? " · " + esc(relDay(i.date)) : ""}</div></div>${ic("right")}</div>`; }).join("") : `<p class="muted small" style="margin:6px 4px">Sin resultados${q ? ` para «${esc(q)}»` : ""}.</p>`;
+      res.innerHTML = hits.length ? hits.map(i => { const s = i.kind === "entry" ? secById(i.sectionId) : null; const lab = s ? secPath(s) : (i.important ? "Fecha importante" : {task:"Tarea", event:"Evento", reminder:"Aviso", note:"Nota"}[i.kind]); return `<div class="it" data-act="open" data-id="${i.id}"><div class="tx"><div class="tt">${esc(i.title || (i.body || "").slice(0, 60) || "Sin título")}</div><div class="mt">${esc(lab || "")}${i.date ? " · " + esc(relDay(i.date)) : ""}</div></div>${ic("right")}</div>`; }).join("") : `<p class="muted small" style="margin:6px 4px">Sin resultados${q ? ` para «${esc(q)}»` : ""}.</p>`;
     };
     sc.addEventListener("click", e => { const b = e.target.closest("[data-scope]"); if (!b) return; scope = b.dataset.scope; drawScopes(); run(); });
     drawScopes(); inp.addEventListener("input", run); run(); setTimeout(() => inp.focus(), 80);
@@ -930,9 +1168,9 @@ function openDay(key){
       <div class="sched" id="sched">${rows}</div>
       <p class="muted small" style="margin:14px 0 0">Toca una hora libre para añadir un evento.</p>`;
   };
-  const place = (sh, keepScroll) => {
+  const place = (sh, keep) => {
     const isToday = cur === todayKey(), n = new Date();
-    if (!keepScroll){ const target = $("#hr-" + Math.max(0, (isToday ? n.getHours() : 8) - 1), sh); if (target) sh.scrollTop = target.offsetTop - 90; }
+    if (!keep){ const target = $("#hr-" + Math.max(0, (isToday ? n.getHours() : 8) - 1), sh); if (target) sh.scrollTop = target.offsetTop - 90; }
     if (isToday){ const hr = $("#hr-" + n.getHours(), sh); if (hr){ const ln = document.createElement("div"); ln.className = "nowline"; ln.style.top = (hr.offsetTop + hr.offsetHeight * n.getMinutes() / 60) + "px"; $("#sched", sh).appendChild(ln); } }
   };
   openLayer(`<div id="dayw">${draw()}</div>`, {
@@ -985,7 +1223,7 @@ function fieldInput(f, v, id){
   switch (f.type){
     case "longtext": return `<textarea id="${id}" name="${n}">${esc(v || "")}</textarea>`;
     case "select":
-      if (f.options.length <= 6) return `<div class="seg">${["", ...f.options].map((o, i) => `<input type="radio" name="${n}" id="${id}-${i}" value="${esc(o)}"${(v || "") === o ? " checked" : ""}><label for="${id}-${i}">${o ? esc(o) : "—"}</label>`).join("")}</div>`;
+      if ((f.options || []).length <= 6) return `<div class="seg">${["", ...(f.options || [])].map((o, i) => `<input type="radio" name="${n}" id="${id}-${i}" value="${esc(o)}"${(v || "") === o ? " checked" : ""}><label for="${id}-${i}">${o ? esc(o) : "—"}</label>`).join("")}</div>`;
       return `<select id="${id}" name="${n}"><option value="">—</option>${f.options.map(o => `<option${v === o ? " selected" : ""}>${esc(o)}</option>`).join("")}</select>`;
     case "rating": return `<div class="stars" data-stars>${[0,1,2,3,4,5].map(i => `<input type="radio" name="${n}" id="${id}-${i}" value="${i}"${(+v || 0) === i ? " checked" : ""}>${i ? `<label for="${id}-${i}" class="${i <= (+v || 0) ? "on" : ""}" aria-label="${i} estrellas"><svg viewBox="0 0 24 24"><path d="${P.star}"/></svg></label>` : ""}`).join("")}<button type="button" class="lnk" data-act="stars-clear" style="margin-left:8px">Quitar</button></div>`;
     case "date": return `<input type="date" id="${id}" name="${n}" value="${esc(v || "")}">`;
@@ -1013,7 +1251,7 @@ function openEntry(sid, item, preset={}){
       <div class="list">${ts.map(t => `<div class="it${t.done ? " done" : ""}"><button type="button" class="ck${t.done ? " on" : ""}" data-act="toggle" data-id="${t.id}" aria-label="Completar">${ic("check")}</button><div class="tx"><div class="tt">${esc(t.title)}</div>${t.date ? `<div class="mt">${esc(relDay(t.date))}</div>` : ""}</div></div>`).join("")}</div>
       <div class="addline"><input type="text" id="lt-in" placeholder="Nueva tarea para esto" aria-label="Nueva tarea vinculada" enterkeyhint="done"><button type="button" class="btn sm" data-act="link-task" data-id="${e.id}">${ic("plus")}Añadir</button></div></div>`;
   };
-  openLayer(`${sheetHead(esc(s.name), e.example ? '<span class="tag ex">Ejemplo</span>' : "")}
+  openLayer(`${sheetHead(esc(secPath(s)), e.example ? '<span class="tag ex">Ejemplo</span>' : "")}
     <form class="stack" data-form="entry" data-id="${e.id}" data-sec="${s.id}" autocomplete="off">
       <div class="field"><input type="text" class="title-in" id="en-title" name="title" value="${esc(e.title)}" placeholder="Nombre" aria-label="Nombre" required></div>
       ${s.fields.map((f, i) => `<div class="field">${f.type === "check" ? "" : `<label for="en-f${i}">${esc(f.label)}</label>`}${fieldInput(f, e.fields[f.key], "en-f" + i)}</div>`).join("")}
@@ -1023,21 +1261,29 @@ function openEntry(sid, item, preset={}){
 }
 
 /* ---------- sections ---------- */
-function openTemplates(){
-  openLayer(`${sheetHead("Nueva sección")}
-    <p class="muted" style="margin:-6px 0 16px">Empieza con una plantilla. Podrás cambiar el nombre, el icono y los campos cuando quieras.</p>
-    <div class="qa">${Object.entries(TEMPLATES).map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="d">${esc(t.d)}</span></button>`).join("")}</div>`);
+function openTemplates(parentId){
+  const parent = parentId ? secById(parentId) : null;
+  const ex = parent ? `Ej.: «horarios de artes marciales con mi progreso de cinturones»` : `Ej.: «entrenamiento: gimnasio y artes marciales con horarios y progreso»`;
+  openLayer(`${sheetHead(parent ? `Nueva subsección en ${esc(parent.name)}` : "Nueva sección")}
+    <form class="stack" data-form="sec-ai" data-parent="${parentId || ""}" style="gap:10px">
+      <div class="field"><label for="sa-text">¿Qué quieres organizar${parent ? " aquí" : ""}?</label><textarea id="sa-text" name="text" placeholder="${esc(ex)}" style="min-height:84px"></textarea></div>
+      <div class="row"><button type="submit" class="btn pri">${ic("spark")}Crear con el asistente</button><span class="muted small">${aiKey() ? "Diseña los campos y subsecciones por ti." : "Necesita tu clave de Claude (Perfil y ajustes)."}</span></div>
+    </form>
+    <div class="group-t" style="padding-top:22px">O empieza con una plantilla</div>
+    <div class="qa">${Object.entries(TEMPLATES).map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${parentId || ""}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="d">${esc(t.d)}</span></button>`).join("")}</div>`);
 }
-function makeSection(tplKey){
+function makeSection(tplKey, parentId){
   const t = TEMPLATES[tplKey];
-  return clean({id:uid(), tpl:tplKey, name:t.name, icon:t.icon, fields:t.fields, statusKey:t.statusKey || "", dateKey:t.dateKey || "", timeKey:t.timeKey || "", calendar:!!t.calendar, tasks:!!t.tasks, view:"grid"});
+  return clean({id:uid(), tpl:tplKey, parentId:parentId || "", name:t.name, icon:t.icon, fields:t.fields, statusKey:t.statusKey || "", dateKey:t.dateKey || "", timeKey:t.timeKey || "", repeatKey:t.repeatKey || "", calendar:!!t.calendar, tasks:!!t.tasks, view:"grid"});
 }
 let draftSec = null;
 function secEditorBody(){
   const d = draftSec;
   const dateFields = d.fields.filter(f => f.type === "date"), timeFields = d.fields.filter(f => f.type === "time"), selFields = d.fields.filter(f => f.type === "select");
+  const parents = sections().filter(s => s.id !== d.id && !descendants(d.id).some(x => x.id === s.id));
   return `<div class="stack">
     <div class="field"><label for="se-name">Nombre</label><input type="text" id="se-name" data-sk="name" value="${esc(d.name)}"></div>
+    <div class="field"><label for="se-parent">Dentro de</label><select id="se-parent" data-sk="parentId"><option value="">Ninguna (sección principal)</option>${parents.map(s => `<option value="${s.id}"${d.parentId === s.id ? " selected" : ""}>${esc(secPath(s))}</option>`).join("")}</select></div>
     <div class="field"><span class="lbl">Icono</span><div class="iconpick">${SEC_ICONS.map(n => `<input type="radio" name="se-icon" id="se-ic-${n}" value="${n}"${d.icon === n ? " checked" : ""} data-sk="icon"><label for="se-ic-${n}">${ic(n)}</label>`).join("")}</div></div>
     <div class="field"><span class="lbl">Campos</span>
       ${d.fields.map((f, i) => `<div class="fieldrow"><input type="text" class="inp" value="${esc(f.label)}" data-fk="${i}" data-fp="label" aria-label="Nombre del campo"><select class="inp" data-fk="${i}" data-fp="type" aria-label="Tipo">${Object.entries(FIELD_TYPES).map(([k, l]) => `<option value="${k}"${f.type === k ? " selected" : ""}>${l}</option>`).join("")}</select><button type="button" class="ibtn" data-act="field-del" data-i="${i}" aria-label="Quitar campo">${ic("trash")}</button>${f.type === "select" ? `<input type="text" class="inp opts" value="${esc((f.options || []).join(", "))}" data-fk="${i}" data-fp="options" placeholder="Opciones separadas por comas" aria-label="Opciones">` : ""}</div>`).join("")}
@@ -1064,34 +1310,326 @@ function syncDraftSec(){
 }
 function redrawSecEditor(){ const sh = $(".sheet"); if (sh && sh._sec){ const y = sh.scrollTop; $("#se-body", sh).innerHTML = secEditorBody(); sh.scrollTop = y; } }
 
+/* ================= photo ================= */
+$("#photoFile").addEventListener("change", e => {
+  const file = e.target.files[0]; e.target.value = ""; if (!file) return;
+  const img = new Image(), url = URL.createObjectURL(file);
+  img.onload = () => {
+    const S2 = 256, c = document.createElement("canvas"); c.width = c.height = S2;
+    const x = c.getContext("2d"), m = Math.min(img.width, img.height);
+    x.drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, S2, S2);
+    URL.revokeObjectURL(url);
+    const data = c.toDataURL("image/jpeg", .85);
+    if (onbDraft){ onbDraft.photo = data; drawOnb(); return; }
+    S.settings.profile = {...profile(), photo:data}; putSettings(true); render(); toast("Foto actualizada");
+  };
+  img.onerror = () => toast("No se pudo leer la imagen", "Prueba con otra foto (JPG o PNG).");
+  img.src = url;
+});
+
+/* ================= PIN ================= */
+async function hashPin(pin, salt){
+  const data = new TextEncoder().encode(salt + ":" + pin);
+  try { const h = await crypto.subtle.digest("SHA-256", data); return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, "0")).join(""); }
+  catch { let h = 0; for (const c of salt + pin) h = (h * 31 + c.charCodeAt(0)) | 0; return "f" + h; }
+}
+function padHtml(){ return `<div class="pad">${[1,2,3,4,5,6,7,8,9].map(n => `<button data-k="${n}">${n}</button>`).join("")}<button class="ghost" data-k="" aria-hidden="true" tabindex="-1"></button><button data-k="0">0</button><button class="ghost" data-k="del" aria-label="Borrar">${ic("left")}</button></div>`; }
+function pinInput(root, onDone){
+  let v = "";
+  const dots = $(".pin-dots", root);
+  const draw = () => $$("i", dots).forEach((d, i) => d.classList.toggle("on", i < v.length));
+  const press = k => {
+    if (k === "del") v = v.slice(0, -1); else if (k !== "" && v.length < 4) v += k;
+    draw(); buzz();
+    if (v.length === 4){ const val = v; setTimeout(() => { v = ""; draw(); onDone(val, () => { dots.classList.remove("bad"); void dots.offsetWidth; dots.classList.add("bad"); }); }, 120); }
+  };
+  root.addEventListener("click", e => { const b = e.target.closest("[data-k]"); if (b){ e.stopPropagation(); press(b.dataset.k); } });
+  root._key = e => { if (/^\d$/.test(e.key)) press(e.key); else if (e.key === "Backspace") press("del"); };
+  document.addEventListener("keydown", root._key);
+}
+function showLock(){
+  if (!S.settings?.pin || $(".lock")) return;
+  S.locked = true; closeLayer(); renderDock();
+  const el = document.createElement("div"); el.className = "lock";
+  el.innerHTML = `${avatarHtml()}<h2>${esc(myName() ? "Hola, " + myName() : "Órbita")}</h2><p class="muted" style="margin:-12px 0 0">Introduce tu PIN</p><div class="pin-dots"><i></i><i></i><i></i><i></i></div>${padHtml()}<button class="lnk" data-forgot style="color:var(--mute)">¿Has olvidado el PIN?</button>`;
+  document.body.appendChild(el);
+  pinInput(el, async (pin, bad) => {
+    if (await hashPin(pin, S.settings.pin.salt) === S.settings.pin.hash){
+      document.removeEventListener("keydown", el._key); el.style.transition = "opacity .3s"; el.style.opacity = "0"; setTimeout(() => el.remove(), 300);
+      S.locked = false; lastRoute = null; render(); checkAlerts();
+    } else { bad(); buzz(); }
+  });
+  $("[data-forgot]", el).addEventListener("click", e => {
+    e.stopPropagation();
+    const box = document.createElement("div"); box.className = "note-box"; box.style.maxWidth = "360px";
+    box.innerHTML = `El PIN no se puede recuperar. Puedes borrar todo y empezar de nuevo; luego, si tienes una copia, impórtala desde la pantalla de bienvenida.<div style="margin-top:12px"><button class="btn danger sm" data-wipe><span>Borrar todo y empezar</span></button></div>`;
+    e.target.replaceWith(box);
+    $("[data-wipe]", box).addEventListener("click", ev => { ev.stopPropagation(); const b = ev.currentTarget; if (!armed(b, "Se borrará todo. Toca otra vez")) return; document.removeEventListener("keydown", el._key); wipeAll(); el.remove(); S.locked = false; });
+  });
+}
+function openPinSetup(){
+  let first = null;
+  openLayer(`${sheetHead(S.settings.pin ? "Cambiar PIN" : "Crear PIN")}<div class="stack" style="align-items:center;gap:20px;padding-bottom:8px"><p class="muted" id="pin-msg" style="margin:0;text-align:center">Elige 4 cifras que recuerdes</p><div class="pin-dots"><i></i><i></i><i></i><i></i></div>${padHtml()}<p class="muted small" style="margin:0;text-align:center;max-width:36ch">Si lo olvidas no se puede recuperar. Haz una copia de seguridad de vez en cuando.</p></div>`, {onMount(sh){
+    pinInput(sh, async (pin, bad) => {
+      if (!first){ first = pin; $("#pin-msg", sh).textContent = "Repítelo para confirmar"; return; }
+      if (pin !== first){ first = null; bad(); $("#pin-msg", sh).textContent = "No coincide. Empieza otra vez"; return; }
+      const salt = uid();
+      S.settings.pin = {salt, hash:await hashPin(pin, salt)}; putSettings(true);
+      document.removeEventListener("keydown", sh._key); closeLayer(); render(); toast("PIN guardado", "Órbita lo pedirá al abrirse.");
+    });
+    const obs = new MutationObserver(() => { if (!sh.isConnected){ document.removeEventListener("keydown", sh._key); obs.disconnect(); } });
+    obs.observe($("#layer"), {childList:true});
+  }});
+}
+let hiddenAt = 0;
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) hiddenAt = Date.now();
+  else if (S.settings?.pin && hiddenAt && Date.now() - hiddenAt > 5 * 60e3) showLock();
+});
+
+/* ================= AI assistant ================= */
+const SDK_URL = "https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.133.0/+esm";
+const AI_MODEL = "claude-opus-5-5";
+const aiKey = () => { try { return localStorage.getItem(AI_KEY) || ""; } catch { return ""; } };
+let sdk = null, aiClient = null, aiClientKey = "";
+const AI = {history:[], view:[], busy:false};
+async function getClient(){
+  if (!sdk) sdk = await import(SDK_URL);
+  const key = aiKey();
+  if (!aiClient || aiClientKey !== key){ const Anthropic = sdk.default || sdk.Anthropic; aiClient = new Anthropic({apiKey:key, dangerouslyAllowBrowser:true}); aiClientKey = key; }
+  return aiClient;
+}
+const sectionTree = () => sections().map(s => ({id:s.id, nombre:s.name, dentro_de:s.parentId || null, campos:s.fields.map(f => f.type === "select" ? `${f.label} (${f.type}: ${f.options.join("/")})` : `${f.label} (${f.type})`), en_calendario:!!s.calendar, entradas:entriesOf(s.id).length}));
+function aiSystem(){
+  const n = new Date(), p = profile();
+  return `Eres el asistente de Órbita, la app personal de organización de ${myName() || "la persona usuaria"}.
+Hoy es ${fmt(n, {weekday:"long", day:"numeric", month:"long", year:"numeric"})} (${todayKey()}), son las ${nowHM()}.
+Responde siempre en español, en pocas frases, con un tono cercano y algo de humor ligero, sin emojis.
+Puedes consultar y modificar su espacio con las herramientas. Cuando te pidan apuntar, crear o planificar algo, hazlo directamente con las herramientas y confirma en una frase lo que has creado. Si falta un dato imprescindible, como el día, pregunta antes.
+Al diseñar secciones, crea campos útiles y concretos (tipos: text, longtext, select con options, rating, date, time, number, progress, link, check) y, cuando tenga sentido, subsecciones. Para horarios que se repiten cada semana usa un campo date, un campo time y un campo check llamado "Se repite cada semana", y activa el calendario.
+Las fechas van en formato AAAA-MM-DD y las horas en HH:MM. No inventes datos de la persona.
+${p.purposes?.length ? `Para qué usa Órbita: ${p.purposes.map(k => PURPOSES.find(x => x[0] === k)?.[1]).filter(Boolean).join(", ")}.` : ""}${p.about ? ` Lo que contó de sí: ${p.about}` : ""}`;
+}
+const sch = (props, req=[]) => ({type:"object", properties:props, required:req});
+const AI_TOOLS = [
+  {name:"ver_dia", description:"Devuelve todo lo que hay en un día: eventos, tareas, avisos y entradas de secciones con fecha.", input_schema:sch({fecha:{type:"string", description:"AAAA-MM-DD"}}, ["fecha"])},
+  {name:"ver_secciones", description:"Lista las secciones y subsecciones con sus id, campos y número de entradas.", input_schema:sch({})},
+  {name:"buscar", description:"Busca por palabra en tareas, eventos, avisos, notas y entradas.", input_schema:sch({texto:{type:"string"}}, ["texto"])},
+  {name:"crear_tarea", description:"Crea una tarea.", input_schema:sch({titulo:{type:"string"}, fecha:{type:"string", description:"AAAA-MM-DD, opcional"}, prioridad:{type:"string", enum:["baja","media","alta"]}, notas:{type:"string"}}, ["titulo"])},
+  {name:"crear_evento", description:"Crea un evento en el calendario. Puede repetirse.", input_schema:sch({titulo:{type:"string"}, fecha:{type:"string"}, hora:{type:"string", description:"HH:MM"}, hora_fin:{type:"string"}, repetir:{type:"string", enum:["none","daily","weekly","monthly","yearly"]}, importante:{type:"boolean", description:"Fecha importante con cuenta atrás (cumpleaños, plazos)"}, notas:{type:"string"}}, ["titulo","fecha"])},
+  {name:"crear_aviso", description:"Crea un aviso que salta a una hora concreta.", input_schema:sch({titulo:{type:"string"}, fecha:{type:"string"}, hora:{type:"string"}}, ["titulo","fecha","hora"])},
+  {name:"crear_nota", description:"Guarda una nota.", input_schema:sch({titulo:{type:"string"}, texto:{type:"string"}}, ["texto"])},
+  {name:"crear_seccion", description:"Crea una sección o una subsección (con dentro_de) con sus campos. Puede incluir subsecciones.", input_schema:sch({
+    nombre:{type:"string"}, icono:{type:"string", enum:SEC_ICONS}, dentro_de:{type:"string", description:"id de la sección padre, opcional"},
+    campos:{type:"array", items:{type:"object", properties:{nombre:{type:"string"}, tipo:{type:"string", enum:Object.keys(FIELD_TYPES)}, opciones:{type:"array", items:{type:"string"}}}, required:["nombre","tipo"]}},
+    en_calendario:{type:"boolean"}, tareas_vinculadas:{type:"boolean"},
+    subsecciones:{type:"array", items:{type:"object", properties:{nombre:{type:"string"}, icono:{type:"string", enum:SEC_ICONS}, campos:{type:"array", items:{type:"object", properties:{nombre:{type:"string"}, tipo:{type:"string", enum:Object.keys(FIELD_TYPES)}, opciones:{type:"array", items:{type:"string"}}}, required:["nombre","tipo"]}}, en_calendario:{type:"boolean"}}, required:["nombre","campos"]}}
+  }, ["nombre","campos"])},
+  {name:"anadir_entrada", description:"Añade una entrada a una sección. valores usa los nombres de los campos.", input_schema:sch({seccion_id:{type:"string"}, titulo:{type:"string"}, valores:{type:"object", description:"{nombre del campo: valor}"}}, ["seccion_id","titulo"])},
+  {name:"completar_tarea", description:"Marca una tarea o un aviso como hecho o pendiente.", input_schema:sch({id:{type:"string"}, hecho:{type:"boolean"}}, ["id"])}
+];
+function buildSection(spec, parentId){
+  const fields = (Array.isArray(spec.campos) ? spec.campos : []).filter(c => c && c.nombre && FIELD_TYPES[c.tipo]).map(c => ({key:"f" + uid(), label:String(c.nombre).slice(0, 40), type:c.tipo, ...(c.tipo === "select" ? {options:(Array.isArray(c.opciones) && c.opciones.length ? c.opciones : ["Opción 1","Opción 2"]).map(String).slice(0, 12)} : {})}));
+  if (!fields.length) fields.push({key:"f" + uid(), label:"Notas", type:"longtext"});
+  const sel = fields.find(f => f.type === "select"), date = fields.find(f => f.type === "date"), time = fields.find(f => f.type === "time");
+  const rep = fields.find(f => f.type === "check" && /repite|semana/i.test(f.label));
+  return {id:uid(), tpl:"ia", parentId:parentId || "", name:String(spec.nombre || "Nueva sección").slice(0, 40), icon:SEC_ICONS.includes(spec.icono) ? spec.icono : "star", fields, statusKey:sel?.key || "", dateKey:date?.key || "", timeKey:time?.key || "", repeatKey:rep?.key || "", calendar:!!(spec.en_calendario && date), tasks:!!spec.tareas_vinculadas, view:"grid"};
+}
+function summarize(x){ return {id:x.it.id, tipo:x.t, titulo:x.title, hora:x.time || null, hecho:!!x.it.done, seccion:x.sec?.name}; }
+function runTool(name, a){
+  const okDate = v => isDate(v) ? v : "";
+  switch (name){
+    case "ver_dia": return {fecha:a.fecha, elementos:isDate(a.fecha) ? dayItems(a.fecha).map(summarize) : [], error:isDate(a.fecha) ? undefined : "fecha no válida"};
+    case "ver_secciones": return {secciones:sectionTree()};
+    case "buscar": { const q = String(a.texto || "").toLowerCase(); return {resultados:all().filter(i => JSON.stringify([i.title, i.body, i.notes, i.fields]).toLowerCase().includes(q)).slice(0, 25).map(i => ({id:i.id, tipo:i.kind, titulo:i.title || (i.body || "").slice(0, 60), fecha:i.date || null, seccion:i.sectionId ? secById(i.sectionId)?.name : undefined}))}; }
+    case "crear_tarea": { const t = putItem({id:uid(), kind:"task", title:String(a.titulo).slice(0, 200), date:okDate(a.fecha), priority:PRIO[a.prioridad] ? a.prioridad : "", notes:a.notas || ""}); return {ok:true, id:t.id, _act:`Tarea creada: ${t.title}${t.date ? " · " + relDay(t.date) : ""}`}; }
+    case "crear_evento": { if (!isDate(a.fecha)) return {error:"fecha no válida"}; const imp = !!a.importante; const e = putItem({id:uid(), kind:"event", title:String(a.titulo).slice(0, 200), date:a.fecha, time:isTime(a.hora) ? a.hora : "", end:isTime(a.hora_fin) ? a.hora_fin : "", repeat:["none","daily","weekly","monthly","yearly"].includes(a.repetir) ? a.repetir : (imp ? "yearly" : "none"), important:imp, color:imp ? "red" : "ink", notes:a.notas || ""}); return {ok:true, id:e.id, _act:`${imp ? "Fecha importante" : "Evento"} creado: ${e.title} · ${relDay(e.date)}${e.time ? " " + e.time : ""}${e.repeat !== "none" && !imp ? " (se repite)" : ""}`}; }
+    case "crear_aviso": { if (!isDate(a.fecha) || !isTime(a.hora)) return {error:"fecha u hora no válidas"}; const r = putItem({id:uid(), kind:"reminder", title:String(a.titulo).slice(0, 200), date:a.fecha, time:a.hora}); return {ok:true, id:r.id, _act:`Aviso creado: ${r.title} · ${relDay(r.date)} ${r.time}`}; }
+    case "crear_nota": { const n = putItem({id:uid(), kind:"note", title:a.titulo || "", body:String(a.texto || "")}); return {ok:true, id:n.id, _act:`Nota guardada${n.title ? ": " + n.title : ""}`}; }
+    case "crear_seccion": {
+      const parentId = a.dentro_de && secById(a.dentro_de) ? a.dentro_de : "";
+      const main = buildSection(a, parentId);
+      const subs = (Array.isArray(a.subsecciones) ? a.subsecciones : []).slice(0, 8).map(sp => buildSection(sp, main.id));
+      S.settings.sections = [...sections(), main, ...subs]; putSettings(true); onData();
+      return {ok:true, id:main.id, subsecciones:subs.map(s => ({id:s.id, nombre:s.name})), _act:`${parentId ? "Subsección" : "Sección"} creada: ${main.name}${subs.length ? ` con ${subs.length} subsecciones` : ""}`, _goto:main.id};
+    }
+    case "anadir_entrada": {
+      const s = secById(a.seccion_id); if (!s) return {error:"sección no encontrada; usa ver_secciones"};
+      const vals = a.valores && typeof a.valores === "object" ? a.valores : {}, fields = {};
+      for (const [k, v] of Object.entries(vals)){
+        const f = s.fields.find(f => f.label.toLowerCase() === String(k).toLowerCase() || f.key === k); if (!f) continue;
+        if (f.type === "check") fields[f.key] = !!v; else if (["rating","progress","number"].includes(f.type)) fields[f.key] = +v || 0; else fields[f.key] = String(v);
+      }
+      const e = putItem({id:uid(), kind:"entry", sectionId:s.id, title:String(a.titulo).slice(0, 200), fields});
+      return {ok:true, id:e.id, _act:`Añadido a ${s.name}: ${e.title}`};
+    }
+    case "completar_tarea": { const it = S.items.get(a.id); if (!it || !["task","reminder"].includes(it.kind)) return {error:"no encontrada"}; const done = a.hecho !== false; putItem({...it, done, doneAt:done ? Date.now() : null}); return {ok:true, _act:`${done ? "Hecho" : "Pendiente"}: ${it.title}`}; }
+  }
+  return {error:"herramienta desconocida"};
+}
+async function callModel(client){
+  const base = {model:AI_MODEL, max_tokens:8000, output_config:{effort:"low"}, system:aiSystem(), tools:AI_TOOLS, messages:AI.history};
+  try { return await client.beta.messages.create({...base, betas:["server-side-fallback-2026-07-01"], fallbacks:"default"}); }
+  catch (e){ if (e && e.status === 400 && /fallback/i.test(String(e.message))) return await client.messages.create(base); throw e; }
+}
+function aiErrorText(e){
+  if (e && e.code === "nosdk") return "No se pudo cargar el asistente. Comprueba tu conexión.";
+  const st = e && e.status;
+  if (st === 401) return "La clave de Claude no es válida. Revísala en Perfil y ajustes.";
+  if (st === 403) return "Tu clave no tiene permiso para usar este modelo.";
+  if (st === 429) return "Demasiadas peticiones seguidas. Espera un momento y vuelve a probar.";
+  if (st === 400 && /credit|billing|balance/i.test(String(e.message))) return "Tu cuenta de Anthropic no tiene saldo. Añade crédito en console.anthropic.com.";
+  if (st >= 500) return "El servicio de Claude no responde ahora mismo. Inténtalo en unos minutos.";
+  return "No he podido conectar con el asistente. Comprueba tu conexión.";
+}
+async function aiSend(text){
+  if (AI.busy || !text.trim()) return;
+  AI.busy = true;
+  AI.view.push({r:"u", t:text}); AI.history.push({role:"user", content:text}); drawChat();
+  let goto = null;
+  try {
+    let client;
+    try { client = await getClient(); } catch { throw {code:"nosdk"}; }
+    for (let step = 0; step < 8; step++){
+      const res = await callModel(client);
+      AI.history.push({role:"assistant", content:res.content});
+      const txt = res.content.filter(b => b.type === "text").map(b => b.text).join("\n").trim();
+      if (txt) AI.view.push({r:"a", t:txt});
+      if (res.stop_reason === "refusal"){ AI.view.push({r:"err", t:"El asistente no puede ayudar con esto."}); break; }
+      if (res.stop_reason === "pause_turn"){ drawChat(); continue; }
+      if (res.stop_reason !== "tool_use"){ if (res.stop_reason === "max_tokens") AI.view.push({r:"err", t:"La respuesta se ha cortado por larga."}); break; }
+      const results = [];
+      for (const b of res.content.filter(b => b.type === "tool_use")){
+        let out;
+        try { out = runTool(b.name, b.input || {}); } catch (err){ out = {error:String(err && err.message || err)}; }
+        if (out._act) AI.view.push({r:"act", t:"✓ " + out._act});
+        if (out._goto) goto = out._goto;
+        const {_act, _goto, ...pub} = out;
+        results.push({type:"tool_result", tool_use_id:b.id, content:JSON.stringify(pub), ...(pub.error ? {is_error:true} : {})});
+      }
+      AI.history.push({role:"user", content:results});
+      drawChat();
+    }
+  } catch (e){
+    AI.view.push({r:"err", t:aiErrorText(e)});
+    const last = AI.history[AI.history.length - 1];
+    if (last && last.role === "user" && typeof last.content === "string") AI.history.pop();
+  }
+  AI.busy = false; drawChat();
+  if (goto){ AI.view.push({r:"act", t:"Abre el menú ☰ para verla, o toca aquí", goto}); drawChat(); }
+}
+function drawChat(){
+  const box = $("#chat"); if (!box) return;
+  const sugg = ["¿Qué tengo esta semana?", "Planifícame el día de hoy", "Crea una sección de artes marciales con horarios y progreso", "Apúntame ir al gimnasio lunes, miércoles y viernes a las 19:00"];
+  box.innerHTML = AI.view.length ? AI.view.map(m => m.goto ? `<button class="msg act" data-act="nav" data-to="s-${m.goto}">Ver la sección creada →</button>` : `<div class="msg ${m.r}">${esc(m.t)}</div>`).join("") + (AI.busy ? `<div class="typing"><i></i><i></i><i></i></div>` : "")
+    : `<div class="msg a">Hola${myName() ? ", " + esc(myName()) : ""}. Dime qué quieres organizar y lo apunto, lo planifico o te creo una sección a medida.</div><div class="chips" style="flex-wrap:wrap">${sugg.map(s => `<button class="chip" data-act="ai-sugg" data-t="${esc(s)}">${esc(s)}</button>`).join("")}</div>`;
+  const sh = box.closest(".sheet"); if (sh) sh.scrollTop = sh.scrollHeight;
+  const b = $("#chat-send"); if (b) b.disabled = AI.busy;
+}
+function openAI(prefill){
+  if (!aiKey()) return openAIKey(prefill);
+  openLayer(`${sheetHead(`<span class="row" style="gap:8px">Asistente <span class="tag">Claude</span></span>`, AI.view.length ? `<button class="lnk" data-act="ai-clear" style="margin-right:6px">Nueva charla</button>` : "")}
+    <div class="chat" id="chat"></div>
+    <form class="chat-in" data-form="ai"><textarea id="ai-in" name="t" rows="1" placeholder="Escribe lo que necesites…" aria-label="Mensaje para el asistente" enterkeyhint="send"></textarea><button class="btn pri" id="chat-send" type="submit" aria-label="Enviar">${ic("send")}</button></form>`, {onMount(sh){
+      drawChat();
+      const ta = $("#ai-in", sh);
+      ta.addEventListener("input", () => { ta.style.height = "auto"; ta.style.height = Math.min(140, ta.scrollHeight) + "px"; });
+      ta.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && window.matchMedia("(pointer:fine)").matches){ e.preventDefault(); sh.querySelector("form[data-form=ai]").requestSubmit(); } });
+      if (prefill) setTimeout(() => aiSend(prefill), 200);
+    }});
+}
+function openAIKey(after){
+  const has = !!aiKey();
+  if (window.claude){
+    openLayer(`${sheetHead("Asistente")}<div class="note-box">El asistente funciona en tu web de Órbita (la versión instalada en la pantalla de inicio). Aquí, dentro de Claude, no está disponible.</div>`);
+    return;
+  }
+  openLayer(`${sheetHead(has ? "Tu clave de Claude" : "Conecta el asistente")}
+    <form class="stack" data-form="ai-key" data-after="${esc(after || "")}" autocomplete="off">
+      <p class="muted" style="margin:0">El asistente usa Claude con tu propia clave de Anthropic. Se guarda solo en este dispositivo y no va en las copias de seguridad.</p>
+      <div class="note-box"><b>Cómo conseguirla</b><br>1. Entra en <span style="font-weight:800">console.anthropic.com</span> y crea una cuenta.<br>2. En Billing añade un poco de saldo (con 5 € hay para mucho uso personal).<br>3. En API Keys pulsa «Create Key», copia la clave y pégala aquí.</div>
+      <a class="lnk" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Abrir console.anthropic.com ${ic("right")}</a>
+      <div class="field"><label for="ak-in">Clave</label><input type="password" id="ak-in" name="key" placeholder="sk-ant-…" value="${esc(aiKey())}" autocapitalize="none" spellcheck="false"></div>
+      <div class="sheet-f">${has ? `<button type="button" class="btn danger" data-act="ai-key-del"><span>Quitar clave</span></button>` : "<span></span>"}<div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="submit" class="btn pri">Guardar</button></div></div>
+    </form>`);
+}
+
 /* ================= onboarding ================= */
-const onbPick = new Set(["entrenos","peliculas","proyectos","guardados"]);
+let onbDraft = null;
 function showOnboarding(){
   renderDock();
   if ($(".onb")) return;
-  const el = document.createElement("div");
-  el.className = "onb";
-  el.innerHTML = `<div class="onb-in">
-    <h1 class="big">Todo tu día<br>en un solo<br>lugar<i>.</i></h1>
-    <p class="lead">Calendario, tareas, avisos y notas como base. Después añades las secciones que quieras y lo adaptas a tu manera.</p>
-    <form class="stack" data-form="onb" autocomplete="off">
-      <div class="field"><label for="onb-name">¿Cómo te llamas?</label><input type="text" id="onb-name" name="name" placeholder="Tu nombre o apodo" maxlength="40"></div>
-      <div class="field"><span class="lbl">Elige tus primeras secciones</span>
-        <div class="tplpick">${Object.entries(TEMPLATES).filter(([k]) => k !== "blanco").map(([k, t]) => `<button type="button" class="${onbPick.has(k) ? "on" : ""}" data-act="onb-tpl" data-tpl="${k}" aria-pressed="${onbPick.has(k)}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}</button>`).join("")}</div>
-        <span class="muted small">Puedes añadir, quitar o crear secciones en cualquier momento.</span></div>
-      <label class="toggle"><span><b>Rellenar con ejemplos</b><span class="sub">Para ver cómo funciona. Se borran con un toque desde tu perfil.</span></span><input type="checkbox" name="examples" id="onb-ex" checked></label>
-      <div class="note-box">${S.mode === "db" ? "Tu espacio es privado: solo tú ves lo que guardas." : "Tu espacio es privado: todo se guarda en este dispositivo y nadie más lo ve."}</div>
-      <div><button class="btn pri" type="submit" style="height:56px;padding:0 28px;font-size:16px">Entrar en mi espacio ${ic("right")}</button></div>
-    </form></div>`;
+  onbDraft = {step:0, name:"", username:"", birthday:"", photo:"", purposes:new Set(), about:"", picks:new Set(), examples:true, pin:false};
+  const el = document.createElement("div"); el.className = "onb"; el.id = "onb";
   document.body.appendChild(el);
+  drawOnb();
 }
-function finishOnboarding(name, withExamples){
-  const secs = [...onbPick].map(makeSection);
-  S.settings = {profile:{name:name.trim()}, sound:true, sections:secs, createdAt:Date.now()};
+function suggestedTpls(){ const s = new Set(); for (const k of onbDraft.purposes){ const p = PURPOSES.find(x => x[0] === k); (p?.[3] || []).forEach(t => s.add(t)); } return s; }
+function drawOnb(){
+  const el = $("#onb"); if (!el) return;
+  const d = onbDraft, st = d.step;
+  const prog = st === 0 ? "" : `<div class="prog" aria-label="Progreso">${[1,2,3].map(i => `<i class="${i < st ? "on" : i === st ? "cur" : ""}"></i>`).join("")}</div>`;
+  let body = "";
+  if (st === 0){
+    body = `<div class="grow" style="justify-content:center">
+      <div style="position:relative;width:72px;height:72px"><svg viewBox="0 0 96 96" style="width:72px;height:72px"><circle cx="48" cy="48" r="36" fill="none" stroke="#0d0d0d" stroke-width="13"/></svg><i style="position:absolute;right:0;top:0;width:19px;height:19px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px #fff"></i></div>
+      <h1 class="big">Todo tu día<br>en un solo<br>lugar<i>.</i></h1>
+      <p class="lead">Calendario, tareas, avisos, notas y secciones hechas a tu medida. Sin cuentas: todo se queda en este dispositivo.</p>
+    </div>
+    <div class="stack" style="gap:10px"><button class="btn pri lg" data-onb="next">Crear mi espacio ${ic("right")}</button><button class="btn lg" data-onb="import">Ya tengo una copia de seguridad</button></div>`;
+  } else if (st === 1){
+    body = `<div class="grow"><h1 class="big" style="font-size:clamp(2.2rem,9vw,3.6rem)">Encantados<i>.</i><br>¿Quién eres?</h1>
+      <div class="photo-pick"><span data-onb="photo">${d.photo ? `<span class="avatar" style="background-image:url('${d.photo}')"></span>` : `<span class="avatar">${ic("cam")}</span>`}</span><div><b style="display:block">Foto de perfil</b><button type="button" class="lnk" data-onb="photo">${d.photo ? "Cambiar" : "Añadir (opcional)"}</button></div></div>
+      <div class="field"><label for="ob-name">Nombre</label><input type="text" id="ob-name" data-ob="name" value="${esc(d.name)}" placeholder="Cómo quieres que te salude" maxlength="40"></div>
+      <div class="field"><label for="ob-user">Nombre de usuario</label><div class="at"><input type="text" id="ob-user" data-ob="username" value="${esc(d.username)}" placeholder="tunombre (opcional)" maxlength="24" autocapitalize="none" spellcheck="false"></div></div>
+      <div class="field"><label for="ob-bday">Cumpleaños</label><input type="date" id="ob-bday" data-ob="birthday" value="${esc(d.birthday)}"><span class="muted small">Te felicitaremos ese día. Opcional.</span></div></div>`;
+  } else if (st === 2){
+    body = `<div class="grow"><h1 class="big" style="font-size:clamp(2.2rem,9vw,3.6rem)">¿Para qué vas a usar Órbita<i>?</i></h1>
+      <p class="lead" style="margin-top:-8px">Elige todo lo que encaje. Con esto te propongo las secciones.</p>
+      <div class="pick">${PURPOSES.map(([k, l, i]) => `<button type="button" class="${d.purposes.has(k) ? "on" : ""}" data-onb="purpose" data-k="${k}" aria-pressed="${d.purposes.has(k)}"><span class="ic">${ic(i)}</span>${l}</button>`).join("")}</div>
+      <div class="field"><label for="ob-about">¿Algo más que quieras contar?</label><textarea id="ob-about" data-ob="about" placeholder="Ej.: hago artes marciales tres días a la semana y estoy preparando oposiciones" style="min-height:84px">${esc(d.about)}</textarea><span class="muted small">Opcional. El asistente lo tendrá en cuenta.</span></div></div>`;
+  } else {
+    if (!d.picks.size) d.picks = suggestedTpls();
+    const sug = suggestedTpls();
+    const tpls = Object.entries(TEMPLATES).filter(([k]) => k !== "blanco");
+    const ordered = [...tpls.filter(([k]) => sug.has(k)), ...tpls.filter(([k]) => !sug.has(k))];
+    body = `<div class="grow"><h1 class="big" style="font-size:clamp(2.2rem,9vw,3.6rem)">Tus primeras secciones<i>.</i></h1>
+      <p class="lead" style="margin-top:-8px">${sug.size ? "Te he marcado las que encajan con lo que me has contado. Cambia lo que quieras." : "Elige con cuáles empezar. Podrás crear más, con subsecciones dentro, cuando quieras."}</p>
+      <div class="pick">${ordered.map(([k, t]) => `<button type="button" class="${d.picks.has(k) ? "on" : ""}" data-onb="pick" data-k="${k}" aria-pressed="${d.picks.has(k)}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}</button>`).join("")}</div>
+      <label class="toggle"><span><b>Rellenar con ejemplos</b><span class="sub">Para ver cómo funciona. Se borran con un toque.</span></span><input type="checkbox" data-ob="examples"${d.examples ? " checked" : ""}></label>
+      <label class="toggle"><span><b>Proteger con PIN</b><span class="sub">Te pedirá 4 cifras al abrir Órbita.</span></span><input type="checkbox" data-ob="pin"${d.pin ? " checked" : ""}></label></div>`;
+  }
+  const nav = st === 0 ? "" : `<div class="onb-nav"><button class="btn ghost" data-onb="back">${ic("left")}Atrás</button><button class="btn pri lg" data-onb="${st === 3 ? "finish" : "next"}">${st === 3 ? "Empezar" : "Continuar"} ${ic("right")}</button></div>`;
+  el.innerHTML = `<div class="onb-in">${prog}${body}${nav}</div>`;
+  el.scrollTop = 0;
+}
+document.addEventListener("input", e => { const k = e.target.dataset?.ob; if (k && onbDraft) onbDraft[k] = e.target.type === "checkbox" ? e.target.checked : e.target.value; });
+document.addEventListener("change", e => { const k = e.target.dataset?.ob; if (k && onbDraft && e.target.type === "checkbox") onbDraft[k] = e.target.checked; });
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-onb]"); if (!b || !onbDraft) return;
+  e.preventDefault();
+  const a = b.dataset.onb, d = onbDraft;
+  if (a === "next"){
+    if (d.step === 1 && !d.name.trim()){ const i = $("#ob-name"); i.focus(); i.style.borderColor = "var(--red)"; toast("Falta tu nombre", "Así sabremos cómo saludarte."); return; }
+    d.step++; drawOnb();
+  } else if (a === "back"){ d.step--; drawOnb(); }
+  else if (a === "import") $("#importFile").click();
+  else if (a === "photo") $("#photoFile").click();
+  else if (a === "purpose"){ const k = b.dataset.k; d.purposes.has(k) ? d.purposes.delete(k) : d.purposes.add(k); d.picks = new Set(); b.classList.toggle("on"); b.setAttribute("aria-pressed", d.purposes.has(k)); buzz(); }
+  else if (a === "pick"){ const k = b.dataset.k; d.picks.has(k) ? d.picks.delete(k) : d.picks.add(k); b.classList.toggle("on"); b.setAttribute("aria-pressed", d.picks.has(k)); buzz(); }
+  else if (a === "finish") finishOnboarding();
+}, true);
+function finishOnboarding(){
+  const d = onbDraft;
+  const secs = [...d.picks].map(k => makeSection(k));
+  S.settings = {profile:{name:d.name.trim(), username:d.username.trim().replace(/^@/, "").toLowerCase(), birthday:d.birthday, photo:d.photo, purposes:[...d.purposes], about:d.about.trim()}, sound:true, sections:secs, createdAt:Date.now()};
   putSettings(true);
-  if (withExamples) seedExamples(secs);
-  $(".onb")?.remove();
-  lastRoute = null; location.hash = "inicio"; render();
+  if (d.examples) seedExamples(secs);
+  const wantPin = d.pin;
+  onbDraft = null;
+  const el = $("#onb"); el.style.transition = "opacity .35s"; el.style.opacity = "0"; setTimeout(() => el.remove(), 350);
+  S.greet = null; lastRoute = null; location.hash = "inicio"; render();
+  if (wantPin) setTimeout(openPinSetup, 500);
 }
 function seedExamples(secs){
   const t = new Date(), k = n => ymd(addDays(t, n));
@@ -1103,17 +1641,14 @@ function seedExamples(secs){
   add({kind:"task", title:"Ordenar el escritorio", date:""});
   add({kind:"event", title:"Reunión de equipo", date:k(0), time:"10:00", end:"11:00", alert:"10"});
   add({kind:"event", title:"Cena con amigos", date:k(2), time:"21:00", color:"red"});
-  add({kind:"event", title:"Clase de idiomas", date:k(-5), time:"18:30", end:"19:30", repeat:"weekly"});
   add({kind:"event", title:"Cumpleaños de Laura", date:`1996-${k(12).slice(5)}`, repeat:"yearly", important:true, color:"red"});
-  add({kind:"event", title:"Renovar el seguro del coche", date:k(34), repeat:"yearly", important:true, color:"red"});
   add({kind:"reminder", title:"Beber agua y estirar", date:k(0), time:hh(2)});
   add({kind:"note", title:"Ideas para el finde", body:"Ruta por la sierra el sábado\nProbar el restaurante nuevo\nTerminar la serie", pinned:true});
-  add({kind:"note", title:"Frase del día", body:"La disciplina es elegir entre lo que quieres ahora y lo que más quieres."});
   const SAMPLES = {
-    peliculas:[["Dune: Parte dos", {tipo:"Película", estado:"Vista", valoracion:5, plataforma:"Cine"}],["Severance", {tipo:"Serie", estado:"Viendo", plataforma:"Streaming", fecha:k(0)}],["Perfect Days", {tipo:"Película", estado:"Por ver", fecha:k(3)}]],
-    armario:[["Vaqueros rectos", {categoria:"Abajo", color:"#2f4f8f", temporada:"Todo el año", estado:"En uso"}],["Jersey de punto", {categoria:"Arriba", color:"#c9a66b", temporada:"Otoño/Invierno", estado:"En uso"}],["Zapatillas blancas", {categoria:"Calzado", color:"#f4f4f2", estado:"En uso"}]],
+    peliculas:[["Dune: Parte dos", {tipo:"Película", estado:"Vista", valoracion:5, plataforma:"Cine"}],["Severance", {tipo:"Serie", estado:"Viendo", plataforma:"Streaming", fecha:k(0)}]],
+    armario:[["Vaqueros rectos", {categoria:"Abajo", color:"#2f4f8f", temporada:"Todo el año", estado:"En uso"}],["Jersey de punto", {categoria:"Arriba", color:"#c9a66b", estado:"En uso"}]],
     outfits:[["Casual de oficina", {fecha:k(0), ocasion:"Trabajo", prendas:"Jersey de punto, vaqueros rectos, zapatillas blancas", valoracion:4}]],
-    entrenos:[["Pierna y glúteo", {fecha:k(0), hora:"19:00", tipo:"Fuerza", duracion:60, intensidad:"Alta", notas:"Sentadilla 4x8\nPeso muerto rumano 3x10"}],["Carrera suave", {fecha:k(2), hora:"08:00", tipo:"Cardio", duracion:35, intensidad:"Suave"}],["Espalda y hombro", {fecha:k(-2), hora:"19:00", tipo:"Fuerza", duracion:55, hecho:true}]],
+    entrenos:[["Pierna y glúteo", {fecha:k(0), hora:"19:00", tipo:"Fuerza", duracion:60, intensidad:"Alta", notas:"Sentadilla 4x8\nPeso muerto rumano 3x10"}],["Carrera suave", {fecha:k(2), hora:"08:00", tipo:"Cardio", duracion:35, intensidad:"Suave"}]],
     comidas:[["Bowl de salmón", {fecha:k(0), momento:"Comida", notas:"Arroz, salmón, aguacate, edamame"}]],
     musica:[["Midnight City", {artista:"M83", genero:"Electrónica", estado:"En bucle", valoracion:5, fecha:k(-3)}]],
     videos:[["Cómo organizar tu semana en 10 minutos", {estado:"Por ver", canal:"Productividad", duracion:12}]],
@@ -1128,6 +1663,14 @@ function seedExamples(secs){
     const e = add({kind:"entry", sectionId:s.id, title, fields});
     if (s.tpl === "proyectos"){ add({kind:"task", title:"Elegir color de pintura", link:e.id, done:true, date:k(-2)}); add({kind:"task", title:"Comprar estantería", link:e.id, date:k(3)}); }
   }
+  const ent = secs.find(s => s.tpl === "entrenos");
+  if (ent){
+    const hor = makeSection("horario", ent.id); hor.name = "Artes marciales"; hor.icon = "fist";
+    const prog = makeSection("progreso", ent.id);
+    S.settings.sections = [...sections(), hor, prog]; putSettings(true);
+    add({kind:"entry", sectionId:hor.id, title:"Clase de BJJ", fields:{fecha:k(1), hora:"20:00", semanal:true, lugar:"Gimnasio del barrio"}});
+    add({kind:"entry", sectionId:prog.id, title:"Primera raya en el cinturón", fields:{fecha:k(-10), nivel:"Blanco · 1 raya", logro:"Primera barrida limpia en sparring", valoracion:4}});
+  }
   flushBulk();
 }
 
@@ -1139,12 +1682,24 @@ function armed(el, msg){
   setTimeout(() => { if (el.isConnected){ el.classList.remove("armed"); sp.textContent = old; } }, 3800);
   return false;
 }
+function wipeAll(){
+  for (const i of all()) delItem(i.id, true);
+  if (S.mode === "db") chain("settings", () => settingsRef.delete());
+  S.settings = null; if (S.mode !== "db") saveLocal();
+  AI.history = []; AI.view = [];
+  closeLayer(); $("#view").innerHTML = ""; renderDock(); showOnboarding();
+}
 const ACT = {
   nav(el){ closeLayer(); location.hash = el.dataset.to; },
   close(){ closeLayer(); },
   drawer(){ openDrawer(); },
   quick(){ swapLayer(openQuick); },
   search(){ swapLayer(openSearch); },
+  ai(){ swapLayer(() => openAI()); },
+  "ai-key"(){ swapLayer(() => openAIKey()); },
+  "ai-key-del"(){ try { localStorage.removeItem(AI_KEY); } catch {} closeLayer(); render(); toast("Clave quitada"); },
+  "ai-sugg"(el){ aiSend(el.dataset.t); },
+  "ai-clear"(){ AI.history = []; AI.view = []; drawChat(); },
   day(el){ const k = el.dataset.date || todayKey(); swapLayer(() => openDay(k)); },
   "day-move"(el){ const sh = $(".sheet"); if (!sh?._day) return; const d = +el.dataset.d; sh._day.set(d === 0 ? todayKey() : ymd(addDays(parseYmd(sh._day.get()), d))); },
   slot(el){ ACT.add({dataset:{kind:"event", date:el.dataset.date, time:`${el.dataset.h}:00`}}); },
@@ -1152,8 +1707,9 @@ const ACT = {
   open(el){ const it = S.items.get(el.dataset.id); if (it) swapLayer(() => openItem(it.kind, it)); },
   toggle(el){
     const it = S.items.get(el.dataset.id); if (!it) return;
-    const done = !it.done; el.classList.toggle("on", done);
-    setTimeout(() => putItem({...it, done, doneAt:done ? Date.now() : null}), 200);
+    const done = !it.done; el.classList.toggle("on", done); buzz();
+    const row = el.closest(".row-it,.it"); if (row) row.classList.toggle("done", done);
+    setTimeout(() => putItem({...it, done, doneAt:done ? Date.now() : null}), 350);
   },
   del(el){
     if (!armed(el, "Toca otra vez para borrar")) return;
@@ -1161,43 +1717,50 @@ const ACT = {
     for (const t of ofKind("task").filter(t => t.link === id)) putItem({...t, link:""}, true);
     delItem(id); closeLayer(); toast("Eliminado");
   },
-  greet(){ S.greetIdx++; const g = $("#greet"); if (g) g.innerHTML = greetHtml(true); },
-  pick(el){ const k = el.dataset.date, d = parseYmd(k); S.cal.sel = k; if (d.getMonth() !== S.cal.m){ S.cal.m = d.getMonth(); S.cal.y = d.getFullYear(); } renderPartial(); },
+  greet(){ S.greet = pickPhrase(true); const g = $("#greet"); if (g){ g.innerHTML = greetHtml(true); fitGreet(); } buzz(); },
+  pick(el){ const k = el.dataset.date, d = parseYmd(k); S.cal.sel = k; if (d.getMonth() !== S.cal.m){ S.calAnim = d > new Date(S.cal.y, S.cal.m, 1) ? "next" : "prev"; S.cal.m = d.getMonth(); S.cal.y = d.getFullYear(); } S.listAnim = true; renderPartial(); const s = $(`.d[data-date="${k}"]`); if (s) s.classList.add("pop"); },
   "cal-move"(el){ moveMonth(+el.dataset.d); },
-  "cal-today"(){ const d = new Date(); S.cal = {y:d.getFullYear(), m:d.getMonth(), sel:todayKey()}; renderPartial(); },
-  "task-filter"(el){ S.taskFilter = el.dataset.f; render(); },
-  "rem-tab"(el){ S.remTab = el.dataset.t; render(); },
-  "sec-new"(){ swapLayer(openTemplates); },
-  "tpl-pick"(el){ const s = makeSection(el.dataset.tpl); S.settings.sections = [...sections(), s]; putSettings(true); closeLayer(); location.hash = "s-" + s.id; render(); if (el.dataset.tpl === "blanco") setTimeout(() => openSecEditor(s.id), 450); },
+  "cal-today"(){ const d = new Date(); S.calAnim = new Date(S.cal.y, S.cal.m, 1) > d ? "prev" : "next"; S.cal = {y:d.getFullYear(), m:d.getMonth(), sel:todayKey()}; S.listAnim = true; renderPartial(); },
+  "task-filter"(el){ S.taskFilter = el.dataset.f; S.listAnim = true; render(); },
+  "rem-tab"(el){ S.remTab = el.dataset.t; S.listAnim = true; render(); },
+  "sec-new"(el){ const p = el.dataset.parent || ""; swapLayer(() => openTemplates(p)); },
+  "tpl-pick"(el){ const s = makeSection(el.dataset.tpl, el.dataset.parent || ""); S.settings.sections = [...sections(), s]; putSettings(true); closeLayer(); location.hash = "s-" + s.id; render(); if (el.dataset.tpl === "blanco") setTimeout(() => openSecEditor(s.id), 450); },
   "sec-edit"(el){ openSecEditor(el.dataset.sec); },
-  "sec-filter"(el){ S.secFilter[el.dataset.sec] = el.dataset.v; render(); },
-  "sec-view"(el){ S.settings.sections = sections().map(x => x.id === el.dataset.sec ? {...x, view:x.view === "list" ? "grid" : "list"} : x); putSettings(); render(); },
+  "sec-filter"(el){ S.secFilter[el.dataset.sec] = el.dataset.v; S.listAnim = true; render(); },
+  "sec-view"(el){ S.settings.sections = sections().map(x => x.id === el.dataset.sec ? {...x, view:x.view === "list" ? "grid" : "list"} : x); putSettings(); S.listAnim = true; render(); },
   "field-add"(){ syncDraftSec(); draftSec.fields.push({key:"f" + uid(), label:"Nuevo campo", type:"text"}); redrawSecEditor(); },
-  "field-del"(el){ syncDraftSec(); const f = draftSec.fields.splice(+el.dataset.i, 1)[0]; if (f){ if (draftSec.statusKey === f.key) draftSec.statusKey = ""; if (draftSec.dateKey === f.key){ draftSec.dateKey = ""; draftSec.calendar = false; } if (draftSec.timeKey === f.key) draftSec.timeKey = ""; } redrawSecEditor(); },
+  "field-del"(el){ syncDraftSec(); const f = draftSec.fields.splice(+el.dataset.i, 1)[0]; if (f){ if (draftSec.statusKey === f.key) draftSec.statusKey = ""; if (draftSec.dateKey === f.key){ draftSec.dateKey = ""; draftSec.calendar = false; } if (draftSec.timeKey === f.key) draftSec.timeKey = ""; if (draftSec.repeatKey === f.key) draftSec.repeatKey = ""; } redrawSecEditor(); },
   "sec-save"(){
     syncDraftSec();
     const d = draftSec;
     if (!d.name.trim()) d.name = "Sin nombre";
     if (d.dateKey && !d.fields.some(f => f.key === d.dateKey && f.type === "date")) d.dateKey = "";
     if (d.timeKey && !d.fields.some(f => f.key === d.timeKey && f.type === "time")) d.timeKey = "";
+    if (d.repeatKey && !d.fields.some(f => f.key === d.repeatKey && f.type === "check")) d.repeatKey = "";
     if (!d.dateKey) d.calendar = false;
     if (d.statusKey && !d.fields.some(f => f.key === d.statusKey && f.type === "select")) d.statusKey = "";
     S.settings.sections = sections().map(x => x.id === d.id ? clean(d) : x);
     putSettings(true); closeLayer(); render(); toast("Sección guardada");
   },
   "sec-del"(el){
-    if (!armed(el, "Se borrarán sus entradas. ¿Seguro?")) return;
-    const id = el.dataset.sec;
-    for (const e of entriesOf(id)) delItem(e.id, true);
-    S.settings.sections = sections().filter(s => s.id !== id);
-    putSettings(true); closeLayer(); flushBulk(); location.hash = "secciones"; toast("Sección eliminada");
+    const id = el.dataset.sec, subs = descendants(id);
+    if (!armed(el, subs.length ? `Se borrarán sus entradas y ${subs.length} subsecciones` : "Se borrarán sus entradas. ¿Seguro?")) return;
+    const parent = secById(id)?.parentId;
+    const ids = [id, ...subs.map(s => s.id)];
+    for (const e of ofKind("entry").filter(e => ids.includes(e.sectionId))) delItem(e.id, true);
+    S.settings.sections = sections().filter(s => !ids.includes(s.id));
+    putSettings(true); closeLayer(); flushBulk(); location.hash = parent ? "s-" + parent : "secciones"; toast("Sección eliminada");
   },
   "link-task"(el){ const inp = $("#lt-in"); const v = inp?.value.trim(); if (!v) return; putItem({id:uid(), kind:"task", title:v, link:el.dataset.id, date:""}); setTimeout(() => $("#lt-in")?.focus(), 0); },
   "stars-clear"(el){ const w = el.closest("[data-stars]"); const z = $("input[value='0']", w); if (z){ z.checked = true; z.dispatchEvent(new Event("change", {bubbles:true})); } },
-  "onb-tpl"(el){ const k = el.dataset.tpl; onbPick.has(k) ? onbPick.delete(k) : onbPick.add(k); el.classList.toggle("on"); el.setAttribute("aria-pressed", onbPick.has(k)); },
-  "like-del"(el){ const p = {...profile()}; p.likes = {...(p.likes || {})}; p.likes[el.dataset.k] = (p.likes[el.dataset.k] || []).filter((_, i) => i !== +el.dataset.i); S.settings.profile = p; putSettings(); render(); },
+  photo(){ $("#photoFile").click(); },
+  "photo-del"(){ S.settings.profile = {...profile(), photo:""}; putSettings(true); render(); },
+  "pin-setup"(){ swapLayer(openPinSetup); },
+  "pin-off"(el){ if (!armed(el, "Toca otra vez para quitarlo")) return; delete S.settings.pin; putSettings(true); render(); toast("PIN quitado"); },
+  "lock-now"(){ showLock(); },
+  page(el){ const [t, h] = PAGES[el.dataset.page]; swapLayer(() => openLayer(`${sheetHead(t)}${h}`)); },
   async export(){
-    const data = JSON.stringify({app:"orbita", version:2, exportedAt:new Date().toISOString(), settings:S.settings, items:all()}, null, 2);
+    const data = JSON.stringify({app:"orbita", version:3, exportedAt:new Date().toISOString(), settings:S.settings, items:all()}, null, 2);
     const name = `orbita-copia-${todayKey()}.json`;
     if (window.claude?.use){
       let dl = null; try { dl = await window.claude.use("downloads"); } catch {}
@@ -1213,14 +1776,7 @@ const ACT = {
   },
   import(){ $("#importFile").click(); },
   "clear-examples"(){ for (const i of all().filter(i => i.example)) delItem(i.id, true); flushBulk(); toast("Ejemplos borrados", "Tu espacio está listo para tus cosas."); },
-  "reset-all"(el){
-    if (!armed(el, "Se borrará todo. Toca otra vez")) return;
-    for (const i of all()) delItem(i.id, true);
-    flushBulk();
-    if (S.mode === "db") chain("settings", () => settingsRef.delete());
-    S.settings = null; if (S.mode !== "db") saveLocal();
-    $("#view").innerHTML = ""; showOnboarding();
-  }
+  "reset-all"(el){ if (!armed(el, "Se borrará todo. Toca otra vez")) return; wipeAll(); }
 };
 async function copyFallback(data){
   try { await navigator.clipboard.writeText(data); toast("Copia en el portapapeles", "Pégala en una nota o archivo para guardarla."); }
@@ -1229,12 +1785,18 @@ async function copyFallback(data){
 function renderPartial(){
   const cal = $("#cal"), ag = $(".agenda");
   if (!cal || !ag) return render();
-  cal.outerHTML = calHtml(); $(".agenda").outerHTML = agendaHtml(); bindSwipe();
+  cal.outerHTML = calHtml();
+  const tmp = document.createElement("div"); tmp.className = S.listAnim ? "anim" : ""; tmp.innerHTML = agendaHtml();
+  $$(".row-it", tmp).forEach((el, i) => el.style.setProperty("--i", Math.min(i, 14)));
+  const nag = tmp.firstElementChild; if (S.listAnim) nag.classList.add("anim");
+  $(".agenda").replaceWith(nag);
+  S.listAnim = false; S.calAnim = ""; bindSwipe();
 }
 function moveMonth(d){
   let {y, m} = S.cal; m += d; if (m < 0){ m = 11; y--; } if (m > 11){ m = 0; y++; }
   const tk = todayKey(), first = ymd(new Date(y, m, 1));
   S.cal = {y, m, sel:tk.slice(0, 7) === first.slice(0, 7) ? tk : first};
+  S.calAnim = d > 0 ? "next" : "prev"; S.listAnim = true; buzz();
   renderPartial();
 }
 document.addEventListener("click", e => {
@@ -1280,22 +1842,24 @@ document.addEventListener("submit", e => {
     putItem({...old, id:f.dataset.id, kind:"entry", sectionId:s.id, title, fields});
     closeLayer(); toast("Guardado en " + s.name);
   } else if (kind === "profile"){
-    S.settings.profile = {...profile(), name:(fd.get("name") || "").trim(), birthday:fd.get("birthday") || "", about:fd.get("about") || ""};
-    putSettings(true); render(); toast("Perfil guardado");
-  } else if (kind === "onb"){
-    finishOnboarding(fd.get("name") || "", !!fd.get("examples"));
+    S.settings.profile = {...profile(), name:(fd.get("name") || "").trim(), username:(fd.get("username") || "").trim().replace(/^@/, "").toLowerCase().replace(/[^a-z0-9._-]/g, ""), birthday:fd.get("birthday") || ""};
+    putSettings(true); S.greet = null; render(); toast("Perfil guardado");
+  } else if (kind === "ai"){
+    const ta = $("#ai-in"); const t = ta.value; ta.value = ""; ta.style.height = "auto"; aiSend(t);
+  } else if (kind === "ai-key"){
+    const key = (fd.get("key") || "").trim();
+    if (!/^sk-ant-/.test(key)){ toast("Esa clave no parece de Anthropic", "Empieza por «sk-ant-». Cópiala entera desde console.anthropic.com."); return; }
+    try { localStorage.setItem(AI_KEY, key); } catch {}
+    const after = f.dataset.after; closeLayer(); render(); toast("Asistente conectado"); setTimeout(() => openAI(after || ""), 320);
+  } else if (kind === "sec-ai"){
+    const t = (fd.get("text") || "").trim();
+    if (!t){ $("#sa-text").focus(); return; }
+    const p = f.dataset.parent ? secById(f.dataset.parent) : null;
+    const msg = p ? `Crea una subsección dentro de «${p.name}» (id ${p.id}) para: ${t}` : `Crea una sección para organizar: ${t}. Si tiene partes distintas, añade subsecciones.`;
+    swapLayer(() => openAI(msg));
   }
 });
-document.addEventListener("keydown", e => {
-  const t = e.target;
-  if (e.key === "Enter" && t.dataset && t.dataset.like){
-    e.preventDefault();
-    const v = t.value.trim(); if (!v) return;
-    const p = {...profile()}; p.likes = {...(p.likes || {})}; p.likes[t.dataset.like] = [...(p.likes[t.dataset.like] || []), v];
-    S.settings.profile = p; putSettings(); t.value = ""; render(); setTimeout(() => document.getElementById(t.id)?.focus(), 0);
-  }
-  if (e.key === "Enter" && t.id === "lt-in"){ e.preventDefault(); $("[data-act=link-task]")?.click(); }
-});
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id === "lt-in"){ e.preventDefault(); $("[data-act=link-task]")?.click(); } });
 document.addEventListener("change", e => {
   const t = e.target;
   const st = t.closest("[data-stars]");
@@ -1313,9 +1877,14 @@ $("#importFile").addEventListener("change", async e => {
   try {
     const o = JSON.parse(await file.text());
     if (o.app !== "orbita" || !Array.isArray(o.items)) throw 0;
-    if (o.settings){ S.settings = {...o.settings}; if (!S.settings.profile) S.settings.profile = {name:o.settings.name || ""}; putSettings(true); }
+    const st = {...(o.settings || {})};
+    if (!st.profile) st.profile = {name:st.name || ""};
+    if (!st.sections) st.sections = [];
+    S.settings = st; putSettings(true);
     for (const it of o.items) if (it && it.id && it.kind) putItem(it, true);
-    flushBulk(); toast("Copia importada", `${o.items.length} elementos recuperados.`);
+    if ($("#onb")){ onbDraft = null; $("#onb").remove(); }
+    S.greet = null; lastRoute = null; flushBulk(); location.hash = "inicio"; render();
+    toast("Copia importada", `${o.items.length} elementos recuperados.`);
   } catch { toast("Archivo no válido", "Elige una copia exportada desde Órbita (.json)."); }
 });
 
@@ -1327,16 +1896,15 @@ function bindSwipe(){
   g.addEventListener("pointerup", e => { if (x0 === null) return; const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) moveMonth(dx < 0 ? 1 : -1); });
 }
 const fine = window.matchMedia("(hover:hover) and (pointer:fine)");
-const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 let tiltRaf = 0, tx = 0, ty = 0;
-function tilt(x, y){ tx = x; ty = y; if (tiltRaf) return; tiltRaf = requestAnimationFrame(() => { tiltRaf = 0; const g = $("#greet"); if (g && !reduce.matches) g.style.transform = `rotateX(${(-ty * 10).toFixed(2)}deg) rotateY(${(tx * 14).toFixed(2)}deg)`; }); }
+function tilt(x, y){ tx = x; ty = y; if (tiltRaf) return; tiltRaf = requestAnimationFrame(() => { tiltRaf = 0; const g = $("#greet"); if (g && !reduce.matches) g.style.transform = `rotateX(${(-ty * 12).toFixed(2)}deg) rotateY(${(tx * 16).toFixed(2)}deg)`; }); }
 addEventListener("pointermove", e => { if (fine.matches) tilt(e.clientX / innerWidth - .5, e.clientY / innerHeight - .5); }, {passive:true});
 addEventListener("deviceorientation", e => { if (e.gamma == null) return; tilt(Math.max(-.5, Math.min(.5, e.gamma / 70)), Math.max(-.5, Math.min(.5, (e.beta - 45) / 90))); }, {passive:true});
 
 /* ================= reminders ================= */
 const fired = new Set(lsGet("orbita.fired", []));
 function checkAlerts(){
-  if (!S.ready || !S.settings) return;
+  if (!S.ready || !S.settings || S.locked) return;
   const now = Date.now(), tk = todayKey(), due = [];
   for (const r of ofKind("reminder")){
     if (r.done || !r.date || !r.time) continue;
@@ -1365,15 +1933,21 @@ setInterval(() => {
   const n = new Date();
   if (n.getMinutes() === lastMin) return;
   lastMin = n.getMinutes(); checkAlerts();
-  if (todayKey() !== lastDay){ const prev = lastDay; lastDay = todayKey(); if (S.cal.sel === prev) S.cal = {y:n.getFullYear(), m:n.getMonth(), sel:lastDay}; render(); }
+  if (todayKey() !== lastDay){ const prev = lastDay; lastDay = todayKey(); if (S.cal.sel === prev) S.cal = {y:n.getFullYear(), m:n.getMonth(), sel:lastDay}; S.greet = null; render(); }
 }, 5000);
 
 /* ================= boot ================= */
 (async function boot(){
+  const t0 = Date.now();
   await initStore();
   if (S.settings && !S.settings.profile) S.settings.profile = {name:S.settings.name || ""};
+  if (S.settings && !S.settings.sections) S.settings.sections = [];
   S.ready = true;
-  if (!S.settings) showOnboarding(); else { render(); checkAlerts(); }
+  if (!S.settings) showOnboarding();
+  else if (S.settings.pin) showLock();
+  else { render(); checkAlerts(); }
+  const wait = Math.max(0, (reduce.matches ? 200 : 1300) - (Date.now() - t0));
+  setTimeout(() => { const sp = $("#splash"); sp.classList.add("out"); setTimeout(() => sp.remove(), 500); fitGreet(); }, wait);
   if (!window.claude && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 })();
 })();
