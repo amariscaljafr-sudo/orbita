@@ -741,6 +741,13 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.kstats.sel button{padding:12px 14px;border-radius:16px;background:var(--paper-2);color:var(--ink);display:flex;flex-direction:column;gap:2px;text-align:left;min-width:0;transition:transform .2s var(--spring),background .2s}
+.kstats.sel button:active{transform:scale(.96)}
+.kstats.sel button b{font-size:clamp(22px,6vw,28px);font-weight:900;letter-spacing:-.03em;line-height:1}
+.kstats.sel button span{font-size:12px;font-weight:700;opacity:.75;line-height:1.2}
+.kstats.sel button.on{background:var(--ink);color:var(--paper)}
+.kstats.sel button:first-child.on{background:var(--red)}
+
 .genres{grid-template-columns:repeat(auto-fill,minmax(min(46%,200px),1fr))!important;gap:12px!important}
 .gq{min-height:0!important;aspect-ratio:3/4;justify-content:flex-end;padding:16px!important;border-radius:22px!important}
 .gq b{font-size:20px!important}
@@ -1189,7 +1196,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "30";
+const APP_VERSION = "31";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -3798,11 +3805,12 @@ function vMedia(s){
   const g = S.mgenre[s.id];
   let body = "";
   if (tab === "general"){
-    const now = es.filter(e => e.fields?.estado === c.st[1]);
-    const done = es.filter(e => e.fields?.estado === c.st[2]).length;
-    body = `<div class="kstats"><div><b>${es.filter(e => (e.fields?.estado || c.st[0]) === c.st[0]).length}</b><span>${esc(c.stl[0].toLowerCase())}</span></div><div><b>${now.length}</b><span>${esc(c.stl[1].toLowerCase())}</span></div><div><b>${done}</b><span>${esc(c.stl[2].toLowerCase())}</span></div></div>
-      ${topBlock(s, "__all", "Top 10 general", 10)}
-      ${now.length ? `<section class="stack" style="gap:10px"><h2 class="sub-h">${esc(c.stl[1])} ahora</h2><div class="mgrid">${now.map(e => mediaCard(s, e, c)).join("")}</div></section>` : ""}`;
+    const gs = S.genSt?.[s.id] ?? "", cnt = k => es.filter(e => (e.fields?.estado || c.st[0]) === c.st[k]).length;
+    const order = [[1, s.tpl === "peliculas" ? "viendo ahora" : "leyendo ahora"], [2, c.stl[2].toLowerCase()], [0, c.stl[0].toLowerCase()]];
+    const pick = gs === "" ? [] : es.filter(e => (e.fields?.estado || c.st[0]) === c.st[+gs]).sort((a, b) => +gs === 2 ? (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0) : (b.updatedAt || 0) - (a.updatedAt || 0));
+    body = `<div class="kstats sel">${order.map(([k, l]) => `<button class="${String(k) === gs ? "on" : ""}" data-act="gen-st" data-sec="${s.id}" data-k="${k}" aria-pressed="${String(k) === gs}"><b>${cnt(k)}</b><span>${esc(l)}</span></button>`).join("")}</div>
+      ${gs !== "" ? (pick.length ? `<div class="mgrid">${pick.map(e => mediaCard(s, e, c)).join("")}</div>` : kempty("Aquí no hay nada todavía.", "Cuando añadas algo con este estado aparecerá aquí.")) : ""}
+      ${topBlock(s, "__all", "Top 10 general", 10)}`;
   } else if (g){
     const st = ["all","1","top"].includes(S.mst[s.id]) ? S.mst[s.id] : "all", tf = S.mtype[s.id] || "";
     const inG = es.filter(e => genOf(e) === g);
@@ -4188,6 +4196,7 @@ Object.assign(ACT, {
     } catch { toast("No he podido traer ideas", "Prueba otra vez en un rato."); }
     render();
   },
+  "gen-st"(el){ const k = el.dataset.k, sid = el.dataset.sec; S.genSt = {...(S.genSt || {}), [sid]:(S.genSt || {})[sid] === k ? "" : k}; buzz(); render(); },
   "mat-sel"(el){ S.matSel[el.dataset.sec] = el.dataset.id; window.scrollTo(0, 0); render(); },
   "ev-done"(el){ const e = S.items.get(el.dataset.id); if (e){ kitPut(e, {hecho:!e.fields?.hecho}); buzz(); } },
   "cl-sort"(){ S.clSort = !S.clSort; S.clSel = ""; buzz(); render(); },
