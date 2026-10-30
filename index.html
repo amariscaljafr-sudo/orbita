@@ -1200,7 +1200,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "33";
+const APP_VERSION = "34";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1389,7 +1389,7 @@ function render(){
     window.scrollTo(0, y);
     if (focusId){ const f = document.getElementById(focusId); if (f){ f.focus(); try { if (typeof f.value === "string" && f.setSelectionRange) f.setSelectionRange(f.value.length, f.value.length); } catch {} } }
   }
-  bindSwipe(); fitGreet(); fitAgenda(); afterView(r, changed);
+  bindSwipe(); fitGreet(); fitAgenda(); afterView(r, changed); dockAuto();
 }
 function onData(){
   if (!S.ready) return;
@@ -3847,8 +3847,7 @@ function vMedia(s){
   } else {
     const gens = [...c.genres, ...(es.some(e => genOf(e) === NOGEN) ? [NOGEN] : []), ...[...new Set(es.map(genOf))].filter(x => x !== NOGEN && !c.genres.includes(x))];
     body = `<div class="genres" data-tpl="${s.tpl}">${gens.map(x => { const xs = es.filter(e => genOf(e) === x), own = xs.map(e => e.fields?.cover).filter(Boolean).slice(0, 3);
-      return `<button class="gq${xs.length ? "" : " empty0"}" style="--h:${hue(x)}" data-act="m-genre" data-sec="${s.id}" data-g="${esc(x)}" data-own="${esc(JSON.stringify(own))}"><b>${esc(x)}</b><span>${xs.length ? `${xs.length} ${xs.length === 1 ? "título" : "títulos"}` : "Vacío"}</span></button>`; }).join("")}</div>
-      <div class="row">${kbtn(s, "obra", c.add, {estado:c.st[0]})}</div>`;
+      return `<button class="gq${xs.length ? "" : " empty0"}" style="--h:${hue(x)}" data-act="m-genre" data-sec="${s.id}" data-g="${esc(x)}" data-own="${esc(JSON.stringify(own))}"><b>${esc(x)}</b><span>${xs.length ? `${xs.length} ${xs.length === 1 ? "título" : "títulos"}` : "Vacío"}</span></button>`; }).join("")}</div>`;
   }
   const mqBar = `<div class="mq"><span>${ic("search")}</span><input type="search" id="mq-${s.id}" data-mq="${s.id}" placeholder="${s.tpl === "peliculas" ? "Busca una película o serie para añadirla" : "Busca un libro o podcast para añadirlo"}" autocomplete="off" enterkeyhint="search" aria-label="Buscar en internet para añadir"></div><div class="mq-res" id="mqr-${s.id}" hidden></div>`;
   if (tab === "generos" && g) return body;
