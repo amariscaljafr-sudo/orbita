@@ -741,6 +741,14 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.genres{grid-template-columns:repeat(auto-fill,minmax(min(46%,200px),1fr))!important;gap:12px!important}
+.gq{min-height:0!important;aspect-ratio:3/4;justify-content:flex-end;padding:16px!important;border-radius:22px!important}
+.gq b{font-size:20px!important}
+.gq-bg img{object-position:center 20%}
+.gq-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.35) 60%,rgba(0,0,0,.85) 100%)!important}
+.genre-h.pic{min-height:180px!important}
+.genre-h .gq-bg img{object-position:center 25%}
+
 .cl-rail .hg + .hg{margin-left:calc(-1 * var(--ov, 0px))}
 .cl-rail .hg{-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
 .cl-rail.dragging{scroll-snap-type:none}
@@ -1181,7 +1189,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "28";
+const APP_VERSION = "29";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1771,7 +1779,7 @@ const sheetHead = (title, extra="") => `<div class="sheet-h"><div class="t">${ti
 function openDrawer(){
   const r = currentRoute();
   const link = (to, label, icon, n, cls="") => `<a class="dnav${r === to ? " on" : ""} ${cls}" href="#${to}">${cls.includes("child") ? "" : ic(icon)}<span>${esc(label)}</span>${n ? `<span class="n">${n}</span>` : ""}</a>`;
-  const tree = s => link("s-" + s.id, s.name, s.icon) + descendants(s.id).map(c => link("s-" + c.id, (c.parentId !== s.id ? "· " : "") + c.name, c.icon, 0, "child")).join("");
+  const tree = s => link("s-" + s.id, s.name, s.icon);
   openLayer(`<div class="brand"><b>Órbita<i>.</i></b><button class="ibtn" data-act="close" aria-label="Cerrar menú">${ic("x")}</button></div>
     <a class="dnav ai${r === "nuevo" ? " on" : ""}" href="#nuevo">${ic("plus")}<span>Añadir</span></a>
     ${link("inicio","Inicio","home")}${link("tareas","Tareas","task", ofKind("task").filter(t => !t.done).length)}${link("avisos","Avisos","bell", ofKind("reminder").filter(t => !t.done).length)}
@@ -3796,7 +3804,7 @@ function vMedia(s){
       ${topBlock(s, "__all", "Top 10 general", 10)}
       ${now.length ? `<section class="stack" style="gap:10px"><h2 class="sub-h">${esc(c.stl[1])} ahora</h2><div class="mgrid">${now.map(e => mediaCard(s, e, c)).join("")}</div></section>` : ""}`;
   } else if (g){
-    const st = ["all","0","2","top"].includes(S.mst[s.id]) ? S.mst[s.id] : "all", tf = S.mtype[s.id] || "";
+    const st = ["all","1","top"].includes(S.mst[s.id]) ? S.mst[s.id] : "all", tf = S.mtype[s.id] || "";
     const inG = es.filter(e => genOf(e) === g);
     const cnt = i => inG.filter(e => (e.fields?.estado || c.st[0]) === c.st[i]).length;
     let inner;
@@ -3804,12 +3812,12 @@ function vMedia(s){
     else {
       const list = inG.filter(e => (st === "all" || (e.fields?.estado || c.st[0]) === c.st[+st]) && (!tf || e.fields?.tipo === tf)).sort((a, b) => st === "2" ? (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0) : (b.updatedAt || 0) - (a.updatedAt || 0));
       inner = `<div class="chips">${["", ...c.types].map(t => `<button class="chip${t === tf ? " on" : ""}" data-act="m-type" data-sec="${s.id}" data-t="${esc(t)}">${t ? esc(t) + "s" : "Todo"}</button>`).join("")}</div>
-        ${list.length ? `<div class="mgrid">${list.map(e => mediaCard(s, e, c)).join("")}</div>` : kempty(st === "all" ? "Aún no hay nada en este género." : st === "0" ? "Nada pendiente en este género." : "Aún no has terminado nada de este género.", "Añade algo y aparecerá aquí.")}
-        <div class="row">${kbtn(s, "obra", c.add, {estado:st === "all" ? c.st[0] : c.st[+st], ...(g !== NOGEN ? {genero:g} : {}), ...(tf ? {tipo:tf} : {})})}</div>`;
+        ${list.length ? `<div class="mgrid">${list.map(e => mediaCard(s, e, c)).join("")}</div>` : kempty(st === "all" ? "Aún no hay nada en este género." : s.tpl === "peliculas" ? "No estás viendo nada de este género." : "No estás leyendo nada de este género.", "Añade algo y aparecerá aquí.")}
+        <div class="row">${kbtn(s, "obra", c.add, {estado:st === "1" ? c.st[1] : c.st[0], ...(g !== NOGEN ? {genero:g} : {}), ...(tf ? {tipo:tf} : {})})}</div>`;
     }
     body = `<button class="crumb" data-act="m-genre" data-sec="${s.id}" data-g="">${ic("left")}Todos los géneros</button>
-      <div class="genre-h${(S.gimg[s.tpl + ":" + g] || []).length ? " pic" : ""}" style="--h:${hue(g)}">${(S.gimg[s.tpl + ":" + g] || []).length ? `<span class="gq-bg" aria-hidden="true">${S.gimg[s.tpl + ":" + g].map(u => `<img src="${esc(u)}" alt="" referrerpolicy="no-referrer">`).join("")}</span>` : ""}<b>${esc(g)}</b><span>${inG.length} ${inG.length === 1 ? "título" : "títulos"}</span></div>
-      <div class="ktabs sm">${[["all", "Todas", inG.length], ["0", c.stl[0], cnt(0)], ["2", c.stl[2], cnt(2)], ["top", "Top 5"]].map(([k, l, n]) => `<button class="ktab${k === st ? " on" : ""}" data-act="m-st" data-sec="${s.id}" data-t="${k}">${esc(l)}${n ? `<span class="n">${n}</span>` : ""}</button>`).join("")}</div>
+      <div class="genre-h${(S.gimg[s.tpl + ":" + g] || []).length ? " pic" : ""}" style="--h:${hue(g)}">${(S.gimg[s.tpl + ":" + g] || []).length ? `<span class="gq-bg" aria-hidden="true">${S.gimg[s.tpl + ":" + g].slice(0, 1).map(u => `<img src="${esc(u)}" alt="" referrerpolicy="no-referrer">`).join("")}</span>` : ""}<b>${esc(g)}</b><span>${inG.length} ${inG.length === 1 ? "título" : "títulos"}</span></div>
+      <div class="ktabs sm">${[["all", "Todas", inG.length], ["1", s.tpl === "peliculas" ? "Viendo" : "Leyendo", cnt(1)], ["top", "Top 5"]].map(([k, l, n]) => `<button class="ktab${k === st ? " on" : ""}" data-act="m-st" data-sec="${s.id}" data-t="${k}">${esc(l)}${n ? `<span class="n">${n}</span>` : ""}</button>`).join("")}</div>
       ${inner}`;
   } else {
     const gens = [...c.genres, ...(es.some(e => genOf(e) === NOGEN) ? [NOGEN] : []), ...[...new Set(es.map(genOf))].filter(x => x !== NOGEN && !c.genres.includes(x))];
@@ -4766,7 +4774,7 @@ async function loadGenreImages(tpl){
   }
   gimgBusy = false;
 }
-function paintGenre(b, urls){ if (b.querySelector(".gq-bg")) return; b.insertAdjacentHTML("afterbegin", `<span class="gq-bg" aria-hidden="true">${urls.map(u => `<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer">`).join("")}</span>`); b.classList.add("pic"); }
+function paintGenre(b, urls){ if (b.querySelector(".gq-bg")) return; b.insertAdjacentHTML("afterbegin", `<span class="gq-bg" aria-hidden="true">${urls.slice(0, 1).map(u => `<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer">`).join("")}</span>`); b.classList.add("pic"); }
 new MutationObserver(() => {
   const grid = $(".genres[data-tpl]"); if (!grid || grid.dataset.gi) return; grid.dataset.gi = "1";
   const tpl = grid.dataset.tpl;
