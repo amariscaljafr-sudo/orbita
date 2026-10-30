@@ -741,6 +741,9 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.dock{transition:transform .35s var(--ease)}
+body.dock-hide .dock{transform:translateY(calc(100% + 4px))}
+
 .kstats.sel button{padding:12px 14px;border-radius:16px;background:var(--paper-2);color:var(--ink);display:flex;flex-direction:column;gap:2px;text-align:left;min-width:0;transition:transform .2s var(--spring),background .2s}
 .kstats.sel button:active{transform:scale(.96)}
 .kstats.sel button b{font-size:clamp(22px,6vw,28px);font-weight:900;letter-spacing:-.03em;line-height:1}
@@ -1196,7 +1199,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "31";
+const APP_VERSION = "32";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1402,7 +1405,16 @@ function avatarHtml(cls=""){
   return n ? `<span class="avatar ${cls}">${esc(n[0].toUpperCase())}</span>` : `<span class="avatar ${cls}">${ic("user")}</span>`;
 }
 const topBar = title => `<div class="top"><button class="ibtn" data-act="drawer" aria-label="Abrir menú">${ic("menu")}</button><div class="ttl">${esc(title)}</div><a class="ibtn" href="#perfil" aria-label="Perfil y ajustes">${avatarHtml()}</a></div>`;
+// in Películas and Libros the bottom bar hides and only shows at the end of the page
+function dockAuto(){
+  const r = currentRoute(), s = r.startsWith("s-") ? secById(r.slice(2)) : null, on = !!(s && MEDIA_CFG[s.tpl]) && !layerOpen();
+  const end = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 24;
+  document.body.classList.toggle("dock-hide", on && !end);
+}
+addEventListener("scroll", () => { if (!dockAuto._r) dockAuto._r = requestAnimationFrame(() => { dockAuto._r = 0; dockAuto(); }); }, {passive:true});
+addEventListener("resize", () => dockAuto());
 function renderDock(){
+  setTimeout(dockAuto, 60);
   if (!S.settings || S.locked){ $("#dock").innerHTML = ""; return; }
   const r = currentRoute();
   const tabs = [["inicio","Inicio","home"],["buscar","Buscar","search"],["horario","Horario","cal"],["asistente","Asistente","spark"]];
