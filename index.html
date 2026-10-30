@@ -1144,7 +1144,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "23";
+const APP_VERSION = "24";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1295,7 +1295,7 @@ function toast(title, text, opts={}){
   el.querySelector(".x").onclick = () => el.remove();
   if (opts.onMount) opts.onMount(el);
   $("#toasts").appendChild(el);
-  setTimeout(() => el.remove(), opts.alert ? 60000 : 3600);
+  setTimeout(() => el.remove(), opts.alert ? 60000 : opts.ms || 3600);
 }
 
 /* ================= routing ================= */
@@ -2981,7 +2981,9 @@ function photosField(f, v, id){
   const ids = Array.isArray(v) ? v : [];
   return `<div class="ph-field" data-phf="f_${f.key}"><input type="hidden" name="f_${f.key}" value="${esc(JSON.stringify(ids))}">
     <div class="ph-list">${ids.map(pid => `<span class="ph"><img data-img="${pid}" alt="" data-act="ph-view" data-id="${pid}"><button type="button" class="x" data-act="ph-del" data-id="${pid}" aria-label="Quitar foto">${ic("x")}</button></span>`).join("")}
-      <label class="ph-add" for="${id}">${ic("cam")}<span>${ids.length ? "Más fotos" : "Añadir fotos"}</span></label><input type="file" id="${id}" accept="image/*" multiple hidden data-ph-in></div>
+      <label class="ph-add" for="${id}">${ic("grid")}<span>${ids.length ? "Más fotos" : "Galería o archivos"}</span></label><input type="file" id="${id}" accept="image/*" multiple hidden data-ph-in>
+      <label class="ph-add" for="${id}-cam">${ic("cam")}<span>Hacer foto</span></label><input type="file" id="${id}-cam" accept="image/*" capture="environment" hidden data-ph-in></div>
+    <div class="row" style="gap:6px"><button type="button" class="chip sm" data-act="ph-paste">${ic("doc")}Pegar imagen copiada</button><button type="button" class="chip sm" data-act="ph-url">${ic("link")}Desde la dirección de una imagen</button></div>
     ${ids.length ? `<button type="button" class="lnk" data-act="ph-3d">${ic("spark")}Ver en 3D</button>` : `<span class="muted small">Añade varias fotos (delante, detrás, lado) para girarla en 3D.</span>`}</div>`;
 }
 function garmentsField(f, v){
@@ -2992,15 +2994,34 @@ function garmentsField(f, v){
 }
 document.addEventListener("change", async e => {
   const inp = e.target; if (!inp.matches || !inp.matches("[data-ph-in]")) return;
-  const box = inp.closest(".ph-field"), hid = $("input[type=hidden]", box), files = [...inp.files]; inp.value = "";
-  if (!files.length) return;
-  const lab = $(".ph-add span", box); if (lab) lab.textContent = "Guardando…";
-  const ids = [...JSON.parse(hid.value || "[]"), ...await addImages(files)];
-  hid.value = JSON.stringify(ids);
-  const fkey = box.dataset.phf.slice(2), form = box.closest("form"), s = secById(form?.dataset.sec), f = s?.fields.find(x => x.key === fkey);
-  box.outerHTML = photosField(f || {key:fkey}, ids, inp.id);
+  const box = inp.closest(".ph-field"), files = [...inp.files]; inp.value = "";
+  if (files.length) addToPhotoField(box, files);
 });
+async function addToPhotoField(box, blobs){
+  const hid = $("input[type=hidden]", box), lab = $(".ph-add span", box); if (lab) lab.textContent = "Guardando…";
+  const ids = [...JSON.parse(hid.value || "[]"), ...await addImages(blobs)];
+  const fkey = box.dataset.phf.slice(2), form = box.closest("form"), s = secById(form?.dataset.sec), f = (s ? fieldsOf(s, {sub:form?.dataset.sub}) : []).find(x => x.key === fkey);
+  const id = ($("input[data-ph-in]", box)?.id || "ph" + uid()).replace(/-cam$/, "");
+  box.outerHTML = photosField(f || {key:fkey}, ids, id);
+}
 Object.assign(ACT, {
+  async "ph-paste"(el){
+    const box = el.closest(".ph-field");
+    try {
+      if (!navigator.clipboard || !navigator.clipboard.read) throw 0;
+      const items = await navigator.clipboard.read(), blobs = [];
+      for (const it of items){ const t = it.types.find(x => x.startsWith("image/")); if (t) blobs.push(await it.getType(t)); else if (it.types.includes("text/plain")){ const u = pickURL(await (await it.getType("text/plain")).text()); if (u){ const b = await fetchImageBlob(u); if (b) blobs.push(b); } } }
+      if (!blobs.length){ toast("No hay ninguna imagen copiada", "En Google Imágenes mantén pulsada la foto y toca «Copiar». Luego vuelve y pulsa aquí."); return; }
+      addToPhotoField(box, blobs);
+    } catch { toast("No puedo leer el portapapeles", "Mantén pulsada la imagen, elige «Guardar en Fotos» y súbela con «Galería o archivos»."); }
+  },
+  async "ph-url"(el){
+    const box = el.closest(".ph-field"), u = pickURL(prompt("Pega la dirección de la imagen (en Google: mantén pulsada la foto → «Copiar enlace»)") || "");
+    if (!u) return;
+    el.disabled = true; const old = el.innerHTML; el.innerHTML = `<span class="spin"></span>Descargando…`;
+    const b = await fetchImageBlob(u); el.disabled = false; el.innerHTML = old;
+    if (b) addToPhotoField(box, [b]); else toast("No he podido descargar esa imagen", "Prueba a guardarla en Fotos y súbela desde la galería.");
+  },
   "ph-del"(el){ const box = el.closest(".ph-field"), hid = $("input[type=hidden]", box); const ids = JSON.parse(hid.value || "[]").filter(x => x !== el.dataset.id); hid.value = JSON.stringify(ids); el.closest(".ph").remove(); },
   "ph-view"(el){ const box = el.closest(".ph-field"), ids = JSON.parse($("input[type=hidden]", box).value || "[]"); const i = ids.indexOf(el.dataset.id); openViewer([...ids.slice(i), ...ids.slice(0, i)], $("#en-title")?.value); },
   "ph-3d"(el){ const box = el.closest(".ph-field"); openViewer(JSON.parse($("input[type=hidden]", box).value || "[]"), $("#en-title")?.value); },
@@ -3431,8 +3452,40 @@ function nearestSwatch(hex){
   for (const c of ["#111111","#f4f4f2","#8a8f98","#2f4f8f","#7fb0e8","#2f6b4f","#c9a66b","#8b5a3c","#b23a48","#f2a7b8","#f2d16b","#6b4f9e"]){ const b = rgb(c.slice(1)), d = (a[0] - b[0]) ** 2 * 2 + (a[1] - b[1]) ** 2 * 4 + (a[2] - b[2]) ** 2 * 3; if (d < bd){ bd = d; best = c; } }
   return best;
 }
+const pickURL = t => { const m = String(t || "").match(/https?:\/\/[^\s"'<>]+/i); if (m) return m[0].replace(/[).,;]+$/, ""); const w = String(t || "").trim(); return /^[\w-]+(\.[\w-]+)+\/\S*/.test(w) ? "https://" + w : ""; };
+const CAT_WORDS = [[/vestido|mono\b|peto/i, "Vestido"],[/abrigo|chaqueta|cazadora|blazer|americana|gabardina|parka|plum[ií]fero|trench|chaleco|cardigan|c[aá]rdigan/i, "Abrigo"],[/zapat|bota|bot[ií]n|sandalia|mocas[ií]n|sneaker|deportiva|tac[oó]n|chancla|alpargata/i, "Calzado"],[/bolso|mochila|gorra|gorro|sombrero|cintur[oó]n|gafas|collar|pendiente|pulsera|anillo|bufanda|pa[ñn]uelo|cartera|reloj|calcet/i, "Accesorio"],[/pantal[oó]n|vaquero|jean|falda|short|bermuda|legging|jogger|chino/i, "Abajo"],[/camis|camiseta|jersey|su[eé]ter|sudadera|top\b|blusa|polo|body|punto|hoodie/i, "Arriba"]];
+const guessCat = t => { for (const [r, c] of CAT_WORDS) if (r.test(t || "")) return c; return "Arriba"; };
+function slugInfo(url){
+  try {
+    const u = new URL(url), host = u.hostname.replace(/^www\d?\./, ""), brand = cap1(host.split(".")[0].replace(/[-_]/g, " "));
+    const segs = u.pathname.split("/").filter(Boolean).map(decodeURIComponent);
+    let s = segs.reverse().find(x => /[a-záéíóúñ]{3,}-[a-záéíóúñ]/i.test(x)) || "";
+    s = s.replace(/\.(html?|aspx|php)$/i, "").replace(/[-_]?(p|c|r|ref|id)?\d{5,}.*$/i, "").replace(/[-_]+/g, " ").trim();
+    return {nombre:s ? cap1(s.toLowerCase()).slice(0, 80) : "", marca:brand};
+  } catch { return {nombre:"", marca:""}; }
+}
+async function readerInfo(url){
+  try {
+    const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 15000);
+    const r = await fetch("https://r.jina.ai/" + url, {signal:ctl.signal, headers:{"X-Return-Format":"html"}}); clearTimeout(t);
+    if (!r.ok) return null;
+    const html = await r.text(), meta = p => (html.match(new RegExp(`<meta[^>]+(?:property|name)=["']${p}["'][^>]*content=["']([^"']+)`, "i")) || html.match(new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]*(?:property|name)=["']${p}["']`, "i")) || [])[1] || "";
+    const img = meta("og:image") || meta("twitter:image") || (html.match(/"image"\s*:\s*\[?\s*"(https?:[^"]+)"/i) || [])[1] || "";
+    const title = (meta("og:title") || (html.match(/<title[^>]*>([^<]+)/i) || [])[1] || "").replace(/\s*[|–-]\s*[^|–-]+$/, "").trim();
+    const price = meta("product:price:amount") ? `${meta("product:price:amount")} ${meta("product:price:currency") || "€"}` : "";
+    if (/access denied|captcha|robot|forbidden/i.test(title)) return null;
+    return {title, img, price};
+  } catch { return null; }
+}
 async function importGarment(url, onStep){
-  const prompt = `Lee esta página de producto de una tienda de ropa: ${url}
+  const base = slugInfo(url);
+  let nombre = base.nombre, marca = base.marca, categoria = "", color = "", precio = "", imgs = [], how = [];
+  onStep("Leyendo la tienda…");
+  const rd = await readerInfo(url);
+  if (rd){ if (rd.title) nombre = rd.title.slice(0, 80); if (rd.img) imgs.push(rd.img); precio = rd.price; how.push("reader"); }
+  if (provKey("gemini") && (!imgs.length || !nombre)){
+    try {
+      const prompt = `Lee esta página de producto de una tienda de ropa: ${url}
 Devuelve SOLO un objeto JSON, sin texto alrededor, con estas claves:
 "nombre": nombre corto de la prenda en español (por ejemplo "Camisa de lino blanca"),
 "categoria": exactamente una de ${CATS.map(c => `"${c}"`).join(", ")},
@@ -3441,33 +3494,26 @@ Devuelve SOLO un objeto JSON, sin texto alrededor, con estas claves:
 "precio": precio con moneda, o "",
 "imagenes": lista de hasta 4 URLs absolutas de las fotos del producto (busca og:image, la galería del producto o el JSON-LD "image"); primero la de la prenda sola sobre fondo liso si existe.
 Si no puedes leer la página devuelve {"error":"motivo breve"}.`;
-  onStep("Leyendo la tienda…");
-  const data = await geminiOnce(prompt, [{url_context:{}}]);
-  const cand = data.candidates?.[0], text = (cand?.content?.parts || []).map(p => p.text || "").join("");
-  const meta = cand?.urlContextMetadata?.urlMetadata?.[0];
-  let j = null; try { j = JSON.parse((text.match(/\{[\s\S]*\}/) || ["{}"])[0]); } catch {}
-  if (!j || j.error || !j.nombre){
-    const blocked = meta && !/SUCCESS/.test(meta.urlRetrievalStatus || "");
-    throw {code:"read", message:blocked ? "La tienda no deja leer esa página." : (j && j.error) || "No he encontrado una prenda en esa página."};
+      const data = await geminiOnce(prompt, [{url_context:{}}]);
+      const text = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("");
+      let j = null; try { j = JSON.parse((text.match(/\{[\s\S]*\}/) || ["{}"])[0]); } catch {}
+      if (j && !j.error && j.nombre){
+        nombre = String(j.nombre).slice(0, 80); if (CATS.includes(j.categoria)) categoria = j.categoria; color = nearestSwatch(j.color); if (j.marca) marca = String(j.marca).slice(0, 40); if (j.precio) precio = String(j.precio).slice(0, 30);
+        imgs.push(...(Array.isArray(j.imagenes) ? j.imagenes : [j.imagen]).filter(Boolean)); how.push("gemini");
+      }
+    } catch {}
   }
-  const imgs = [...new Set((Array.isArray(j.imagenes) ? j.imagenes : [j.imagen]).filter(Boolean).map(u => absURL(u, url)).filter(u => /^https?:/.test(u)))].slice(0, 4);
-  onStep("Descargando la foto…");
+  imgs = [...new Set(imgs.map(u => absURL(u, url)).filter(u => /^https?:/.test(u)))].slice(0, 4);
   const ids = [];
-  for (const u of imgs){ const b = await fetchImageBlob(u); if (b){ const id = (await addImages([b]))[0]; if (id) ids.push(id); } if (ids.length >= 2) break; }
-  return {nombre:String(j.nombre).slice(0, 80), categoria:CATS.includes(j.categoria) ? j.categoria : "Arriba", color:nearestSwatch(j.color), marca:String(j.marca || "").slice(0, 40), precio:String(j.precio || "").slice(0, 30), fotos:ids};
+  if (imgs.length){ onStep("Descargando la foto…"); for (const u of imgs){ const b = await fetchImageBlob(u); if (b){ const id = (await addImages([b]))[0]; if (id) ids.push(id); } if (ids.length >= 2) break; } }
+  return {nombre:nombre || "Prenda nueva", categoria:categoria || guessCat(nombre + " " + url), color, marca, precio, fotos:ids, read:how.length > 0};
 }
 function openLinkImport(){
   const arm = armarioSec();
-  if (!provKey("gemini")){
-    openLayer(`${sheetHead("Prenda desde un enlace")}
-      <div class="stack"><p class="muted" style="margin:0">Para leer la tienda uso tu asistente Gemini, que es gratis. Conéctalo una vez con tu clave y vuelve aquí.</p>
-      <div class="sheet-f"><span></span><div class="r"><button class="btn ghost" data-act="close">Ahora no</button><button class="btn pri" data-act="g-link-key">Conectar Gemini gratis</button></div></div></div>`);
-    return;
-  }
   openLayer(`${sheetHead("Prenda desde un enlace")}
     <form class="stack" data-form="g-link" autocomplete="off">
-      <p class="muted" style="margin:0">Pega el enlace de la prenda (Zara, Mango, H&amp;M…). Leo el nombre, el color y la foto, y la guardo en tu Armario.</p>
-      <div class="field"><input type="url" class="inp" name="url" id="gl-url" placeholder="https://www.zara.com/es/es/…" inputmode="url" required aria-label="Enlace de la prenda"></div>
+      <p class="muted" style="margin:0">Pega el enlace de la prenda (Zara, Mango, H&amp;M…). Intento leer el nombre, el precio y la foto y la guardo en tu Armario. Si la tienda no deja, la creo igual y subes tú la foto.</p>
+      <div class="field"><textarea class="inp" name="url" id="gl-url" placeholder="Pega aquí el enlace o el texto que copias al compartir (https://www.zara.com/…)" rows="3" aria-label="Enlace de la prenda" style="min-height:84px"></textarea></div>
       <button type="button" class="lnk" data-act="g-paste" style="align-self:flex-start">${ic("doc")}Pegar del portapapeles</button>
       <div id="gl-status" aria-live="polite"></div>
       <div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="submit" class="btn pri" id="gl-go">${ic("link")}Importar</button></div></div>
@@ -3477,8 +3523,8 @@ function openLinkImport(){
 document.addEventListener("submit", async e => {
   const f = e.target; if (f.dataset.form !== "g-link") return;
   e.preventDefault();
-  const url = absURL($("#gl-url", f).value, location.href), st = $("#gl-status", f), go = $("#gl-go", f);
-  if (!/^https?:\/\//.test(url)){ st.innerHTML = `<div class="note-box">Ese enlace no parece válido. Cópialo entero desde la tienda.</div>`; return; }
+  const url = pickURL($("#gl-url", f).value), st = $("#gl-status", f), go = $("#gl-go", f);
+  if (!url){ st.innerHTML = `<div class="note-box">No encuentro ningún enlace en lo que has pegado. Copia la dirección de la prenda desde la tienda (botón Compartir → Copiar).</div>`; return; }
   go.disabled = true;
   const step = t => { st.innerHTML = `<div class="gl-step"><span class="spin"></span>${esc(t)}</div>`; };
   try {
@@ -3494,11 +3540,11 @@ document.addEventListener("submit", async e => {
     const it = putItem({id:uid(), kind:"entry", sectionId:s.id, title:g.nombre, fields});
     if (g.fotos[0]) garmentURL(g.fotos[0]);
     swapLayer(() => openEntry(s.id, it));
-    toast("Prenda añadida", g.fotos.length ? `${g.nombre} ya está en tu Armario.` : "No pude bajar la foto: añádela tú desde la ficha.");
+    toast(g.fotos.length ? "Prenda añadida" : "Prenda creada, falta la foto", g.fotos.length ? `${g.nombre} ya está en tu Armario.` : "La tienda no deja descargar la foto. Súbela desde la galería o pega una imagen en la ficha.", {ms:g.fotos.length ? 4000 : 7000});
   } catch (err){
     go.disabled = false;
     const m = err && err.status === 429 ? "Has usado el cupo gratis de Gemini por ahora. Prueba dentro de un rato." : err && (err.status === 400 || err.status === 403) ? "Tu clave de Gemini no funciona. Revísala en Perfil → Asistente." : err && err.message === "slow" ? "La tienda tarda demasiado en responder. Prueba otra vez." : (err && err.code === "read" && err.message) || "No he podido leer esa página.";
-    st.innerHTML = `<div class="note-box">${esc(m)} Si no, añade la prenda con una foto o una captura de pantalla.</div><div class="row" style="margin-top:10px"><button type="button" class="btn sm" data-act="g-photo">${ic("cam")}Añadir con foto</button></div>`;
+    st.innerHTML = `<div class="note-box">${esc(m)} Puedes añadirla con una foto de tu galería o una captura de pantalla.</div><div class="row" style="margin-top:10px"><button type="button" class="btn sm" data-act="g-photo">${ic("cam")}Añadir con foto</button></div>`;
   }
 });
 Object.assign(ACT, {
@@ -4506,6 +4552,19 @@ Object.assign(ACT, {
 });
 
 /* ---------- covers for genre tiles ---------- */
+const GENRE_WIKI = {Acción:["Mad Max: Fury Road","John Wick","Die Hard"], Aventura:["Raiders of the Lost Ark","Pirates of the Caribbean: The Curse of the Black Pearl","Jurassic Park (film)"], Comedia:["The Hangover","Superbad (film)","The Grand Budapest Hotel"], Drama:["The Shawshank Redemption","Forrest Gump","Whiplash (2014 film)"], Terror:["The Conjuring","The Shining (film)","It (2017 film)"], Suspense:["Seven (1995 film)","Gone Girl (film)","Shutter Island (film)"], "Ciencia ficción":["Interstellar (film)","Blade Runner 2049","The Matrix"], Fantasía:["The Lord of the Rings: The Fellowship of the Ring","Harry Potter and the Philosopher's Stone (film)","Pan's Labyrinth"], Romance:["Titanic (1997 film)","The Notebook","Pride & Prejudice (2005 film)"], Animación:["Toy Story","Spirited Away","Coco (2017 film)"], Crimen:["The Godfather","Pulp Fiction","Goodfellas"], Documental:["March of the Penguins","Free Solo","Super Size Me"], Histórica:["Gladiator (2000 film)","Braveheart","Schindler's List"], Musical:["La La Land","The Greatest Showman","Mamma Mia! (film)"], Bélica:["Saving Private Ryan","1917 (2019 film)","Dunkirk (2017 film)"], Familiar:["Home Alone","Paddington (film)","Finding Nemo"]};
+async function wikiPosters(){
+  const all = Object.values(GENRE_WIKI).flat(), out = {};
+  for (let i = 0; i < all.length; i += 45){
+    const d = await getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&piprop=thumbnail&pithumbsize=500&pilicense=any&pilimit=50&titles=${encodeURIComponent(all.slice(i, i + 45).join("|"))}`, 15000);
+    const q = d.query || {}, map = {};
+    for (const n of (q.normalized || [])) map[n.from] = n.to;
+    for (const r of (q.redirects || [])) map[r.from] = r.to;
+    const byT = {}; for (const pg of Object.values(q.pages || {})) if (pg.thumbnail) byT[pg.title] = pg.thumbnail.source;
+    for (const t of all.slice(i, i + 45)){ let k = t; for (let n = 0; n < 3 && map[k]; n++) k = map[k]; if (byT[k]) out[t] = byT[k]; }
+  }
+  return out;
+}
 const GENRE_SEEDS = {Acción:"Mad Max", Aventura:"Indiana Jones", Comedia:"Resacón en Las Vegas", Drama:"Cadena perpetua", Terror:"Expediente Warren", Suspense:"Seven", "Ciencia ficción":"Interstellar", Fantasía:"El señor de los anillos", Romance:"Titanic", Animación:"Toy Story", Crimen:"El padrino", Documental:"documental naturaleza", Histórica:"Gladiator", Musical:"La La Land", Bélica:"Salvar al soldado Ryan", Familiar:"Solo en casa"};
 const GENRE_SUBJ = {Novela:"fiction", Fantasía:"fantasy", "Ciencia ficción":"science_fiction", Thriller:"thriller", Romance:"romance", Terror:"horror", Historia:"history", Biografías:"biography", "Desarrollo personal":"self-help", Psicología:"psychology", "Negocios y dinero":"business", Ciencia:"science", Filosofía:"philosophy", Tecnología:"technology", "True crime":"true_crime", Humor:"humor", Cómic:"comics", Poesía:"poetry"};
 S.gimg = lsGet("orbita.gimg", {});
@@ -4513,7 +4572,14 @@ let gimgBusy = false;
 async function loadGenreImages(tpl){
   if (gimgBusy) return; gimgBusy = true;
   const c = MEDIA_CFG[tpl], todo = c.genres.filter(g => !S.gimg[tpl + ":" + g]);
-  for (const g of todo){
+  if (tpl === "peliculas" && todo.length){
+    try {
+      const posters = await wikiPosters();
+      for (const g of todo){ const urls = (GENRE_WIKI[g] || []).map(t => posters[t]).filter(Boolean); if (urls.length){ S.gimg[tpl + ":" + g] = urls; $$(`.gq[data-g="${CSS.escape(g)}"]`).forEach(b => paintGenre(b, urls)); } }
+      lsSet("orbita.gimg", S.gimg);
+    } catch {}
+  }
+  for (const g of c.genres.filter(g => !S.gimg[tpl + ":" + g])){
     try {
       let urls = [];
       if (tpl === "peliculas"){ const rs = await itunes(GENRE_SEEDS[g] || g, "movie", "movie", 6); urls = rs.map(r => bigArt(r.artworkUrl100)).filter(Boolean).slice(0, 3); }
@@ -4541,6 +4607,7 @@ async function enrichMedia(tpl){
   let changed = 0;
   for (const e of list){
     enrichTried.add(e.id);
+    await new Promise(r => setTimeout(r, 700));
     try {
       const rs = await searchOnline(tpl, e.title, e.fields?.tipo || "");
       if (!rs.length) continue;
