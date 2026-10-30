@@ -1028,7 +1028,9 @@ button.crumb{align-self:flex-start}
 @keyframes sway{0%{transform:rotate(0)}20%{transform:rotate(5deg)}45%{transform:rotate(-3.5deg)}70%{transform:rotate(1.5deg)}100%{transform:rotate(0)}}
 .cl-stage.shelf{justify-content:flex-end;padding-top:30px}
 .cl-rail.shelf,.cl-stage.shelf .cl-rail{align-items:flex-end;padding-bottom:0}
-.hg.shelf .ga{height:150px;margin-top:0;object-position:bottom center}
+.hg.shelf{width:184px}
+.cl-stage.shelf .cl-rail{padding-left:calc(50% - 92px);padding-right:calc(50% - 92px)}
+.hg.shelf .ga{width:180px;height:150px;margin-top:0;object-position:bottom center}
 .hg.shelf .hn{margin:8px 0 22px}
 .cl-shelf{position:relative;height:16px;margin:-34px 3% 18px;border-radius:3px;background:linear-gradient(180deg,#f7f5f0,#cfcac0);box-shadow:0 10px 16px rgba(0,0,0,.55);z-index:1}
 .cl-empty{width:100%;flex:none;padding:56px 20px 50px;text-align:center;color:rgba(255,255,255,.7);font-weight:700;font-size:14px;line-height:1.5;scroll-snap-align:center}
@@ -1102,6 +1104,15 @@ button.crumb{align-self:flex-start}
 .vw-card img.on{opacity:1}
 .vw-sheen{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
 .vw-shadow{width:60%;height:18px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.22),transparent);margin-top:18px;transition:transform .5s var(--ease)}
+.fixer{justify-content:flex-start;padding-top:calc(64px + env(safe-area-inset-top,0px))}
+.fx-stage{position:relative;max-width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.fx-c{max-width:100%;max-height:62vh;border-radius:14px;touch-action:manipulation;background:repeating-conic-gradient(#e6e5e1 0 25%,#fff 0 50%) 0 0/18px 18px;cursor:crosshair}
+.fx-pts{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.fx-stage{width:fit-content;margin:0 auto}
+.fx-pts i{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:var(--red,#e10600);border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);pointer-events:auto}
+.fx-busy{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#111;color:#fff;font-size:13px;padding:8px 12px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none}
+.fixer.busy .fx-busy{opacity:1}
+.fx-bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .vw-hint{margin:0;color:var(--mute);font-size:13px;text-align:center;max-width:36ch}
 .vw-dots{display:flex;gap:6px}
 .vw-dots i{width:7px;height:7px;border-radius:50%;background:var(--line-2)}
@@ -1229,7 +1240,7 @@ const PRIO = { alta:"Alta", media:"Media", baja:"Baja" };
 const F = (key, label, type, extra={}) => ({key, label, type, ...extra});
 const TEMPLATES = {
   peliculas:{name:"Películas y series", icon:"film", d:"Por ver, viendo, vistas y tu top 5", fields:[F("tipo","Tipo","select",{options:["Película","Serie","Documental","Anime"]}),F("estado","Estado","select",{options:["Por ver","Viendo","Vista"]}),F("valoracion","Valoración","rating"),F("fecha","Para ver el","date"),F("plataforma","Dónde verla","text"),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
-  armario:{name:"Armario", icon:"shirt", d:"Tus prendas con fotos y vista 3D", fields:[F("fotos","Fotos","photos"),F("categoria","Categoría","select",{options:["Arriba","Abajo","Vestido","Abrigo","Calzado","Accesorio"]}),F("cajon","Sitio en el cajón (accesorios)","select",{options:["Relojes","Gafas","Joyas","Neceseres","Bolsos","Otros"]}),F("color","Color","color"),F("temporada","Temporada","select",{options:["Todo el año","Primavera/Verano","Otoño/Invierno"]}),F("estado","Estado","select",{options:["En uso","Guardado","Para donar","Quiero comprar"]}),F("marca","Marca","text"),F("notas","Notas","longtext")], statusKey:"categoria"},
+  armario:{name:"Armario", icon:"shirt", d:"Tus prendas con fotos y vista 3D", fields:[F("fotos","Fotos","photos"),F("categoria","Categoría","select",{options:["Arriba","Abajo","Abrigo","Calzado","Accesorio"]}),F("cajon","Sitio en el cajón (accesorios)","select",{options:["Relojes","Gafas","Joyas","Neceseres","Bolsos","Otros"]}),F("color","Color","color"),F("temporada","Temporada","select",{options:["Todo el año","Primavera/Verano","Otoño/Invierno"]}),F("estado","Estado","select",{options:["En uso","Guardado","Para donar","Quiero comprar"]}),F("marca","Marca","text"),F("notas","Notas","longtext")], statusKey:"categoria"},
   outfits:{name:"Calendario de outfits", icon:"layers", d:"Qué te pones cada día", fields:[F("fecha","Día","date"),F("prendas_ids","Prendas del armario","garments"),F("fotos","Foto del outfit","photos"),F("ocasion","Ocasión","select",{options:["Diario","Trabajo","Deporte","Evento","Viaje"]}),F("valoracion","Cómo me sentí","rating"),F("notas","Notas","longtext")], statusKey:"ocasion", dateKey:"fecha", calendar:true},
   entrenos:{name:"Entrenamientos", icon:"dumbbell", d:"Horario semanal, rutinas y registro", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("hecho","Completado","check"),F("notas","Ejercicios y series","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true},
   rutina:{name:"Rutina", icon:"dumbbell", d:"Ejercicios, series y pesos", fields:[F("dia","Día de rutina","select",{options:["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]}),F("grupo","Grupo muscular","text"),F("series","Series x reps","text"),F("peso","Peso (kg)","number"),F("notas","Notas","longtext")], statusKey:"dia"},
@@ -1264,7 +1275,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "39";
+const APP_VERSION = "40";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -2896,7 +2907,7 @@ const photoIdsOf = it => { const s = it.kind === "entry" ? secById(it.sectionId)
 /* ================= wardrobe helpers ================= */
 const armarioSec = () => sections().find(s => s.tpl === "armario");
 const outfitSec = () => sections().find(s => s.tpl === "outfits");
-const CATS = ["Arriba","Abajo","Vestido","Abrigo","Calzado","Accesorio"];
+const CATS = ["Arriba","Abajo","Abrigo","Calzado","Accesorio"];
 function garmentInfo(e){
   const s = secById(e.sectionId) || {fields:[]};
   const catF = s.fields.find(f => f.type === "select" && (f.options || []).some(o => CATS.includes(o)));
@@ -3224,7 +3235,7 @@ function refineEdges(c){
 function cropAlpha(c, pad=.02){
   const x = c.getContext("2d"), d = x.getImageData(0, 0, c.width, c.height).data;
   let x0 = c.width, y0 = c.height, x1 = -1, y1 = -1;
-  for (let y = 0; y < c.height; y++) for (let i = 0; i < c.width; i++) if (d[(y * c.width + i) * 4 + 3] > 24){ if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  for (let y = 0; y < c.height; y++) for (let i = 0; i < c.width; i++) if (d[(y * c.width + i) * 4 + 3] > 60){ if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y; }
   if (x1 < 0) return null;
   const p = Math.round(Math.max(x1 - x0, y1 - y0) * pad);
   x0 = Math.max(0, x0 - p); y0 = Math.max(0, y0 - p); x1 = Math.min(c.width - 1, x1 + p); y1 = Math.min(c.height - 1, y1 + p);
@@ -3261,13 +3272,15 @@ function floodCut(src){
   const dist = (p, c) => Math.abs(d[p * 4] - c[0]) + Math.abs(d[p * 4 + 1] - c[1]) + Math.abs(d[p * 4 + 2] - c[2]);
   const plain = border.filter(p => dist(p, med) < 60).length / border.length;
   if (plain < .8) return null;
+  // a clean studio background lets us be strict, so white soles or light fabric don't melt into it
+  const spread = border.reduce((n, p) => n + dist(p, med), 0) / border.length, T1 = spread < 9 ? 30 : 46, T2 = spread < 9 ? 8 : 14;
   const bg = new Uint8Array(w * h), stack = border.filter(p => dist(p, med) < 60);
   stack.forEach(p => bg[p] = 1);
   while (stack.length){
     const p = stack.pop(), x = p % w, y = (p - x) / w, c = col(p);
     for (const q of [x > 0 ? p - 1 : -1, x < w - 1 ? p + 1 : -1, y > 0 ? p - w : -1, y < h - 1 ? p + w : -1]){
       if (q < 0 || bg[q]) continue;
-      if (dist(q, med) < 46 || dist(q, c) < 14){ bg[q] = 1; stack.push(q); }
+      if (dist(q, med) < T1 || dist(q, c) < T2){ bg[q] = 1; stack.push(q); }
     }
   }
   const a = new Float32Array(w * h);
@@ -3292,41 +3305,108 @@ function keepMain(c){
       if (q < n - w && !lab[q + w] && d[(q + w) * 4 + 3] >= 110){ lab[q + w] = id; st[top++] = q + w; } }
     sizes.push(cnt);
   }
-  if (id < 2) return c;
+  if (id < 1) return c;
   const big = Math.max(...sizes), keep = sizes.map(s => s >= big * .15);
   for (let p = 0; p < n; p++){ const l = lab[p]; if (l ? !keep[l] : d[p * 4 + 3] < 110) d[p * 4 + 3] = l && !keep[l] ? 0 : d[p * 4 + 3]; }
-  // also clear faint pixels that are far from any kept shape
+  // also clear faint pixels that are far from any kept shape (they stretched the crop and shrank the garment)
+  const k = new Uint8Array(n); for (let p = 0; p < n; p++) if (lab[p] && keep[lab[p]]) k[p] = 1;
+  const hz = new Uint8Array(n), R = 4;
+  for (let y = 0; y < hh; y++){ let run = -1e9; for (let i = 0; i < w; i++){ if (k[y * w + i]) run = i; if (i - run <= R) hz[y * w + i] = 1; } run = 1e9; for (let i = w - 1; i >= 0; i--){ if (k[y * w + i]) run = i; if (run - i <= R) hz[y * w + i] = 1; } }
+  for (let i = 0; i < w; i++){ let run = -1e9, near = new Uint8Array(hh); for (let y = 0; y < hh; y++){ if (hz[y * w + i]) run = y; if (y - run <= R) near[y] = 1; } run = 1e9; for (let y = hh - 1; y >= 0; y--){ if (hz[y * w + i]) run = y; if (run - y <= R) near[y] = 1; if (!near[y]) d[(y * w + i) * 4 + 3] = 0; } }
   x.putImageData(im, 0, 0); return c;
 }
-async function cutObject(blob){
-  const src = await blobCanvas(blob, 1200), n0 = src.width * src.height;
-  // 1. a garment worn by a person (shop photos with a model): keep only the clothes
-  try {
-    const seg = await mpTask("person"), r = seg.segment(src), ms = r.confidenceMasks || [];
-    if (ms.length >= 5){
-      const w = ms[0].width, hh = ms[0].height, n = w * hh, bg = ms[0].getAsFloat32Array(), b1 = ms[2].getAsFloat32Array(), b2 = ms[3].getAsFloat32Array(), cl = Float32Array.from(ms[4].getAsFloat32Array()), ot = ms[5] ? ms[5].getAsFloat32Array() : null;
-      let person = 0, skin = 0, clo = 0;
-      for (let i = 0; i < n; i++){ if (bg[i] < .5) person++; if (b1[i] > .5 || b2[i] > .5) skin++; if (cl[i] > .5) clo++; }
-      if (ot) for (let i = 0; i < n; i++) cl[i] = Math.max(cl[i], ot[i] * .9);
-      r.close && r.close();
-      if (person / n > .025 && skin / n > .004 && clo / n > .012){
-        const out = keepMain(applyAlpha(src, cl, w, hh));
-        if (coverage(out) > .005) return cropAlpha(out, .02);
-      }
-    } else r.close && r.close();
-  } catch {}
+// which part of a worn outfit belongs to this kind of garment (pose landmarks: 11/12 shoulders, 23/24 hips, 25/26 knees, 27/28 ankles)
+function regionMask(cl, w, hh, src, lm, cat){
+  const Y = i => lm[i][1], sh = (Y(11) + Y(12)) / 2, hip = (Y(23) + Y(24)) / 2, torso = Math.max(.05, hip - sh);
+  const knee = lm[25][2] > .3 || lm[26][2] > .3 ? (Y(25) + Y(26)) / 2 : hip + torso * .9, ank = lm[27][2] > .3 || lm[28][2] > .3 ? Math.max(Y(27), Y(28)) : knee + torso * .9;
+  const t = document.createElement("canvas"); t.width = w; t.height = hh; const tx = t.getContext("2d"); tx.drawImage(src, 0, 0, w, hh);
+  const px = tx.getImageData(0, 0, w, hh).data;
+  // typical colour of this garment, taken where it surely is
+  const [z0, z1] = cat === "Abajo" ? [hip + (knee - hip) * .15, knee] : [sh + torso * .2, hip - torso * .1];
+  const rs = [], gs = [], bs = [];
+  for (let y = Math.max(0, Math.floor(z0 * hh)); y < Math.min(hh, Math.ceil(z1 * hh)); y++) for (let i = 0; i < w; i += 2){ const p = y * w + i; if (cl[p] > .5){ rs.push(px[p * 4]); gs.push(px[p * 4 + 1]); bs.push(px[p * 4 + 2]); } }
+  if (rs.length < 30) return false;
+  const md = v => v.sort((a, b) => a - b)[v.length >> 1], C = [md(rs), md(gs), md(bs)];
+  const like = p => Math.abs(px[p * 4] - C[0]) + Math.abs(px[p * 4 + 1] - C[1]) + Math.abs(px[p * 4 + 2] - C[2]) < 120;
+  for (let y = 0; y < hh; y++){
+    const yn = (y + .5) / hh;
+    for (let i = 0; i < w; i++){
+      const p = y * w + i; if (cl[p] <= 0) continue;
+      let keep;
+      if (cat === "Abajo") keep = yn < hip - torso * .3 ? false : yn < hip + torso * .05 ? like(p) : yn <= ank + .01;
+      else if (cat === "Abrigo") keep = yn < sh - torso * .6 ? false : yn <= hip ? true : yn <= ank ? like(p) : false;
+      else keep = yn < sh - torso * .6 ? false : yn <= hip + torso * .12 ? true : yn <= hip + (knee - hip) * .45 ? like(p) : false;
+      if (!keep) cl[p] = 0;
+    }
+  }
+  return true;
+}
+// shoes on someone's feet: tap each foot with the object segmenter
+async function shoesWorn(src, lm){
+  const seg = await mpTask("object"), pts = [];
+  for (const [a, b] of [[29, 31], [30, 32]]){ if (lm[a][2] < .3 && lm[b][2] < .3) continue; const x = (lm[a][0] + lm[b][0]) / 2, y = (lm[a][1] + lm[b][1]) / 2; if (x > 0 && x < 1 && y > 0 && y < 1) pts.push([x, y]); }
+  if (!pts.length) return null;
+  let al = null, mw = 0, mh = 0;
+  for (const [x, y] of pts){
+    let m; try { m = await maskOf(seg, src, {keypoint:{x, y}}); } catch { continue; }
+    let k = 0; for (let i = 0; i < m.data.length; i++) if (m.data[i] > .5) k++;
+    const cv = k / m.data.length; if (cv < .001 || cv > .3) continue;
+    if (!al){ al = m.data; mw = m.w; mh = m.h; } else if (m.w === mw && m.h === mh) for (let i = 0; i < al.length; i++) if (m.data[i] > al[i]) al[i] = m.data[i];
+  }
+  if (!al) return null;
+  const out = keepMain(applyAlpha(src, al, mw, mh));
+  return coverage(out) > .002 ? cropAlpha(out, .03) : null;
+}
+// a garment worn by a person (shop photos with a model): keep only this garment
+async function cutWorn(src, cat){
+  const seg = await mpTask("person"), r = seg.segment(src), ms = r.confidenceMasks || [];
+  if (ms.length < 5){ r.close && r.close(); return null; }
+  const w = ms[0].width, hh = ms[0].height, n = w * hh, bg = Float32Array.from(ms[0].getAsFloat32Array()), b1 = ms[2].getAsFloat32Array(), b2 = ms[3].getAsFloat32Array(), cl = Float32Array.from(ms[4].getAsFloat32Array()), ot = ms[5] ? ms[5].getAsFloat32Array() : null;
+  let person = 0, skin = 0, clo = 0;
+  const sk = new Float32Array(n);
+  for (let i = 0; i < n; i++){ if (bg[i] < .5) person++; sk[i] = Math.max(b1[i], b2[i]); if (sk[i] > .5) skin++; if (cl[i] > .5) clo++; }
+  if (ot) for (let i = 0; i < n; i++) cl[i] = Math.max(cl[i], ot[i] * .9);
+  r.close && r.close();
+  if (!(person / n > .025 && skin / n > .004 && clo / n > .012)) return null;
+  let lm = null;
+  try { const pr = (await mpTask("pose")).detect(src), L = pr.landmarks?.[0]; pr.close && pr.close(); if (L) lm = L.map(q => [q.x, q.y, q.visibility == null ? 1 : q.visibility]); } catch {}
+  if (cat === "Calzado"){
+    if (lm){ try { const o = await shoesWorn(src, lm); if (o) return o; } catch {} }
+    // no feet found: the lowest part of the person, without skin
+    let y1 = -1, y0 = hh; for (let y = 0; y < hh; y++) for (let i = 0; i < w; i++) if (bg[y * w + i] < .5){ if (y < y0) y0 = y; y1 = y; }
+    if (y1 < 0) return null;
+    const cut = y1 - (y1 - y0) * .14, al = new Float32Array(n);
+    for (let y = Math.max(0, Math.floor(cut)); y < hh; y++) for (let i = 0; i < w; i++){ const p = y * w + i; al[p] = (1 - bg[p]) * (1 - sk[p]); }
+    const o = keepMain(applyAlpha(src, al, w, hh));
+    return coverage(o) > .002 ? cropAlpha(o, .03) : null;
+  }
+  if (lm && lm[11][2] > .3 && lm[12][2] > .3 && (lm[23][2] > .2 || lm[24][2] > .2)) regionMask(cl, w, hh, src, lm, cat);
+  const out = keepMain(applyAlpha(src, cl, w, hh));
+  return coverage(out) > .005 ? cropAlpha(out, .02) : null;
+}
+// tap points (normalized) with the object segmenter and join the pieces
+async function tapCut(src, pts, join){
+  const seg = await mpTask("object"), masks = [];
+  for (const [kx, ky] of pts){ try { masks.push(await maskOf(seg, src, {keypoint:{x:kx, y:ky}})); } catch {} }
+  if (!masks.length) return null;
+  const m0 = masks[0], len = m0.data.length, cover = m => { let k = 0; for (let i = 0; i < len; i++) if (m.data[i] > .5) k++; return k / len; };
+  const good = masks.filter(m => { if (m.data.length !== len) return false; const cv = cover(m); if (cv < .004 || cv > .9) return false; if (join || m === m0) return true; let inter = 0, a = 0; for (let i = 0; i < len; i++){ if (m0.data[i] > .5){ a++; if (m.data[i] > .5) inter++; } } return a && inter / a > .25; });
+  if (!good.length) return null;
+  const al = new Float32Array(len); for (const m of good) for (let i = 0; i < len; i++) if (m.data[i] > al[i]) al[i] = m.data[i];
+  return keepMain(applyAlpha(src, al, m0.w, m0.h));
+}
+async function cutObject(blob, cat=""){
+  const src = await blobCanvas(blob, 1200);
+  // 1. worn by a model
+  if (cat !== "Accesorio"){ try { const o = await cutWorn(src, cat); if (o) return o; } catch {} }
   // 2. plain background (product photos)
   let out = floodCut(src), cov = out ? coverage(out) : 0;
   if (out && cov >= .04 && cov <= .95) return cropAlpha(keepMain(out), .02);
-  // 3. anything else: tap the garment in a few places and join what belongs together
-  const seg = await mpTask("object"), pts = [[.5, .5], [.5, .36], [.5, .64], [.38, .5], [.62, .5]], masks = [];
-  for (const [kx, ky] of pts){ try { masks.push(await maskOf(seg, src, {keypoint:{x:kx, y:ky}})); } catch {} }
-  if (!masks.length) throw new Error("nothing");
-  const m0 = masks[0], len = m0.data.length, cover = m => { let k = 0; for (let i = 0; i < len; i++) if (m.data[i] > .5) k++; return k / len; };
-  const good = masks.filter(m => { const cv = cover(m); if (cv < .02 || cv > .9) return false; let inter = 0, a = 0; for (let i = 0; i < len; i++){ if (m0.data[i] > .5){ a++; if (m.data[i] > .5) inter++; } } return m === m0 || (a && inter / a > .25); });
-  if (!good.length) throw new Error("nothing");
-  const al = new Float32Array(len); for (const m of good) for (let i = 0; i < len; i++) if (m.data[i] > al[i]) al[i] = m.data[i];
-  out = keepMain(applyAlpha(src, al, m0.w, m0.h)); cov = coverage(out);
+  // 3. anything else: tap the garment in a few places (a pair of shoes sits side by side)
+  const pts = cat === "Calzado" ? [[.5, .55], [.32, .55], [.68, .55], [.5, .4]] : [[.5, .5], [.5, .36], [.5, .64], [.38, .5], [.62, .5]];
+  out = await tapCut(src, pts, cat === "Calzado");
+  if (!out) throw new Error("nothing");
+  cov = coverage(out);
   if (cov < .03 || cov > .95) throw new Error("nothing");
   return cropAlpha(out, .02);
 }
@@ -3342,10 +3422,12 @@ async function poseOf(canvas){
 }
 // cached cutouts of garment photos: IDB "cut:<photoId>"
 const cutJobs = new Map();
-S.cutPref = lsGet("orbita.cutpref", {});
+S.cutPref = lsGet("orbita.cutpref2", {});
+const catOfPhoto = pid => (garments().find(g => g.photo === pid) || {}).cat || "";
+const cutKey = (pid, cat) => "cut4:" + (cat || "") + ":" + pid;
 function garmentURL(pid){
   if (S.cutPref[pid] === "orig") return imgURL(pid);
-  const key = "cut3:" + pid;
+  const cat = catOfPhoto(pid), key = cutKey(pid, cat);
   if (imgCache.has(key)) return imgCache.get(key);
   if (cutJobs.has(pid)) return cutJobs.get(pid);
   const job = (async () => {
@@ -3353,9 +3435,9 @@ function garmentURL(pid){
     if (have){ const u = URL.createObjectURL(have); imgCache.set(key, Promise.resolve(u)); return u; }
     const orig = await IDB.get(pid).catch(() => null); if (!orig) return "";
     try {
-      const b = await canvasBlob(await cutObject(orig));
+      const b = await canvasBlob(await cutObject(orig, cat));
       await IDB.put(key, b); const u = URL.createObjectURL(b); imgCache.set(key, Promise.resolve(u)); return u;
-    } catch (err){ console.warn("recorte", err && err.message); S.cutPref[pid] = "orig"; lsSet("orbita.cutpref", S.cutPref); return imgURL(pid); }
+    } catch (err){ console.warn("recorte", err && err.message); S.cutPref[pid] = "orig"; lsSet("orbita.cutpref2", S.cutPref); return imgURL(pid); }
   })();
   cutJobs.set(pid, job); job.finally(() => cutJobs.delete(pid));
   return job;
@@ -3368,6 +3450,52 @@ function hydrateCuts(root=document){
   });
 }
 new MutationObserver(() => { clearTimeout(hydrateCuts._t); hydrateCuts._t = setTimeout(() => { hydrateCuts(); $$(".pb-l").forEach(l => { if (!l._p && (S.wearPos[l.dataset.g] || !$("img", l))) placeLayer(l); }); }, 20); }).observe(document.body, {childList:true, subtree:true});
+
+/* ---------- fix a cutout by hand: tap the garment ---------- */
+async function openCutFix(gid){
+  const g = garments().find(x => x.id === gid); if (!g || !g.photo) return;
+  const orig = await IDB.get(g.photo).catch(() => null); if (!orig){ toast("No encuentro la foto original."); return; }
+  const src = await blobCanvas(orig, 1200), key = cutKey(g.photo, g.cat);
+  const el = document.createElement("div"); el.className = "viewer fixer";
+  el.innerHTML = `<div class="vw-top"><b>Arreglar recorte</b><button class="ibtn" data-fx="close" aria-label="Cerrar">${ic("x")}</button></div>
+    <p class="vw-hint">Toca la prenda; si falta un trozo, toca también ahí. Toca un punto rojo para quitarlo.</p>
+    <div class="fx-stage"><canvas class="fx-c"></canvas><div class="fx-pts"></div><span class="fx-busy">Recortando…</span></div>
+    <div class="fx-bar"><button class="btn sm ghost" data-fx="auto">Automático</button><button class="btn sm ghost" data-fx="orig">Con fondo</button><button class="btn sm pri" data-fx="save" disabled>Guardar</button></div>`;
+  document.body.appendChild(el); requestAnimationFrame(() => el.classList.add("open"));
+  const cv = $(".fx-c", el), cx = cv.getContext("2d"), ptsEl = $(".fx-pts", el), save = $("[data-fx=save]", el);
+  cv.width = src.width; cv.height = src.height;
+  let pts = [], result = null, seq = 0;
+  const draw = () => {
+    cx.clearRect(0, 0, cv.width, cv.height);
+    if (result){ cx.globalAlpha = .18; cx.drawImage(src, 0, 0); cx.globalAlpha = 1; cx.drawImage(result, 0, 0); } else cx.drawImage(src, 0, 0);
+    ptsEl.innerHTML = pts.map(([x, y], i) => `<i style="left:${x * 100}%;top:${y * 100}%" data-i="${i}"></i>`).join("");
+    save.disabled = !result;
+  };
+  const run = async () => {
+    const my = ++seq; el.classList.add("busy");
+    try { const o = pts.length ? await tapCut(src, pts, true) : null; if (my !== seq) return; result = o && coverage(o) > .002 ? o : null; if (pts.length && !result) toast("No he encontrado nada ahí; prueba a tocar en el centro de la prenda."); }
+    catch { if (my === seq){ result = null; toast("No se ha podido recortar en este móvil."); } }
+    if (my === seq){ el.classList.remove("busy"); draw(); }
+  };
+  const done = async () => {
+    imgCache.delete(key); if (g.photo && S.wearPos[g.id]){ delete S.wearPos[g.id]; savePos(); }
+    close(); render();
+  };
+  const close = () => { el.classList.remove("open"); setTimeout(() => el.remove(), 300); };
+  cv.addEventListener("click", e => {
+    const b = cv.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+    if (x < 0 || x > 1 || y < 0 || y > 1) return; pts.push([x, y]); buzz(); draw(); run();
+  });
+  ptsEl.addEventListener("click", e => { const d = e.target.closest("i"); if (!d) return; pts.splice(+d.dataset.i, 1); draw(); run(); });
+  el.addEventListener("click", async e => {
+    const b = e.target.closest("[data-fx]"); if (!b) return; const a = b.dataset.fx;
+    if (a === "close") close();
+    else if (a === "orig"){ S.cutPref[g.photo] = "orig"; lsSet("orbita.cutpref2", S.cutPref); done(); }
+    else if (a === "auto"){ delete S.cutPref[g.photo]; lsSet("orbita.cutpref2", S.cutPref); await IDB.del(key).catch(() => {}); done(); toast("Recortando otra vez…"); }
+    else if (a === "save" && result){ const c = cropAlpha(result, .02); if (!c) return; await IDB.put(key, await canvasBlob(c)); delete S.cutPref[g.photo]; lsSet("orbita.cutpref2", S.cutPref); done(); toast("Recorte guardado"); }
+  });
+  draw();
+}
 
 /* ================= avatar from your photo ================= */
 const meAvatar = () => profile().photoAvatar || null;
@@ -3593,7 +3721,7 @@ Object.assign(ACT, {
   "pb-scale"(el){ const l = selEl(); if (l && l._p){ setPos(l, {...l._p, w:Math.max(.08, Math.min(1.6, l._p.w * (+el.dataset.d > 0 ? 1.08 : 1 / 1.08)))}); savePos(); } },
   "pb-rot"(el){ const l = selEl(); if (l && l._p){ setPos(l, {...l._p, r:(l._p.r || 0) + 4 * el.dataset.d}); savePos(); } },
   "pb-reset"(){ if (!S.pbSel) return; delete S.wearPos[S.pbSel]; savePos(); const l = selEl(); if (l){ l._p = null; placeLayer(l); } },
-  "pb-bg"(el){ const p = el.dataset.p; if (S.cutPref[p] === "orig") delete S.cutPref[p]; else S.cutPref[p] = "orig"; lsSet("orbita.cutpref", S.cutPref); if (S.pbSel){ delete S.wearPos[S.pbSel]; savePos(); } render(); },
+  "pb-bg"(el){ const p = el.dataset.p; if (S.cutPref[p] === "orig") delete S.cutPref[p]; else S.cutPref[p] = "orig"; lsSet("orbita.cutpref2", S.cutPref); if (S.pbSel){ delete S.wearPos[S.pbSel]; savePos(); } render(); },
   "wear-cat"(el){ S.wearCat = el.dataset.c; render(); },
   wear(el){ const c = el.dataset.c; S.wear[c] = S.wear[c] === el.dataset.id ? undefined : el.dataset.id; if (!S.wear[c]) delete S.wear[c]; if (c === "Vestido" && S.wear.Vestido){ delete S.wear.Arriba; delete S.wear.Abajo; } if ((c === "Arriba" || c === "Abajo") && S.wear[c]) delete S.wear.Vestido; S.pbSel = S.wear[c] || ""; lsSet("orbita.wear", S.wear); buzz(); render(); },
   "wear-clear"(){ S.wear = {}; S.pbSel = ""; lsSet("orbita.wear", S.wear); render(); },
@@ -3650,7 +3778,7 @@ function nearestSwatch(hex){
   return best;
 }
 const pickURL = t => { const m = String(t || "").match(/https?:\/\/[^\s"'<>]+/i); if (m) return m[0].replace(/[).,;]+$/, ""); const w = String(t || "").trim(); return /^[\w-]+(\.[\w-]+)+\/\S*/.test(w) ? "https://" + w : ""; };
-const CAT_WORDS = [[/vestido|mono\b|peto/i, "Vestido"],[/abrigo|chaqueta|cazadora|blazer|americana|gabardina|parka|plum[ií]fero|trench|chaleco|cardigan|c[aá]rdigan/i, "Abrigo"],[/zapat|bota|bot[ií]n|sandalia|mocas[ií]n|sneaker|deportiva|tac[oó]n|chancla|alpargata/i, "Calzado"],[/bolso|mochila|gorra|gorro|sombrero|cintur[oó]n|gafas|collar|pendiente|pulsera|anillo|bufanda|pa[ñn]uelo|cartera|reloj|calcet/i, "Accesorio"],[/pantal[oó]n|vaquero|jean|falda|short|bermuda|legging|jogger|chino/i, "Abajo"],[/camis|camiseta|jersey|su[eé]ter|sudadera|top\b|blusa|polo|body|punto|hoodie/i, "Arriba"]];
+const CAT_WORDS = [[/abrigo|chaqueta|cazadora|blazer|americana|gabardina|parka|plum[ií]fero|trench|chaleco|cardigan|c[aá]rdigan/i, "Abrigo"],[/zapat|bota|bot[ií]n|sandalia|mocas[ií]n|sneaker|deportiva|tac[oó]n|chancla|alpargata/i, "Calzado"],[/bolso|mochila|gorra|gorro|sombrero|cintur[oó]n|gafas|collar|pendiente|pulsera|anillo|bufanda|pa[ñn]uelo|cartera|reloj|calcet/i, "Accesorio"],[/pantal[oó]n|vaquero|jean|falda|short|bermuda|legging|jogger|chino/i, "Abajo"],[/camis|camiseta|jersey|su[eé]ter|sudadera|top\b|blusa|polo|body|punto|hoodie/i, "Arriba"]];
 const guessCat = t => { for (const [r, c] of CAT_WORDS) if (r.test(t || "")) return c; return "Arriba"; };
 function slugInfo(url){
   try {
@@ -4134,7 +4262,7 @@ function vEstudios(s){
 }
 
 /* ---------- Armario 3D ---------- */
-const CL_GROUPS = [["Arriba","Partes de arriba","hang"],["Abrigo","Abrigos","hang"],["Vestido","Vestidos","hang"],["Abajo","Partes de abajo","clip"],["Calzado","Calzado","shelf"],["Accesorio","Accesorios","shelf"]];
+const CL_GROUPS = [["Arriba","Partes de arriba","hang"],["Abrigo","Abrigos","hang"],["Abajo","Partes de abajo","clip"],["Calzado","Calzado","shelf"],["Accesorio","Accesorios","shelf"]];
 S.clOpened = new Set();
 const HANGER = `<svg class="hook" viewBox="0 0 120 52" aria-hidden="true"><path d="M60 22 V14 a6 6 0 1 1 6 -6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M60 22 L10 46 Q6 49 12 50 H108 Q114 49 110 46 Z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/></svg>`;
 const HOOK = `<svg class="hook" viewBox="0 0 120 34" aria-hidden="true"><path d="M60 34 V18 a7 7 0 1 1 7 -7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>`;
@@ -4177,7 +4305,7 @@ function vArmario(s){
     </div>
   </div>
   ${sel ? `<div class="cl-sel"><button class="cs-img" data-act="view-3d" data-id="${sel.id}" aria-label="Ver en 3D">${gArt(sel)}</button><div class="stack" style="gap:8px;min-width:0"><b class="cs-t">${esc(sel.title)}</b><span class="muted small">${esc(sel.cat)}${sel.color ? ` <i class="colorchip" style="background:${esc(sel.color)}"></i>` : ""}</span>
-      <div class="row"><button class="btn sm${Object.values(S.wear).includes(sel.id) ? "" : " pri"}" data-act="cl-wear" data-id="${sel.id}">${Object.values(S.wear).includes(sel.id) ? "Quitar del outfit" : ic("plus") + "Al outfit"}</button>${sel.photo ? `<button class="btn sm" data-act="view-3d" data-id="${sel.id}">${ic("spark")}3D</button>` : ""}<button class="btn sm ghost" data-act="open" data-id="${sel.id}">${ic("edit")}Editar</button></div></div></div>`
+      <div class="row"><button class="btn sm${Object.values(S.wear).includes(sel.id) ? "" : " pri"}" data-act="cl-wear" data-id="${sel.id}">${Object.values(S.wear).includes(sel.id) ? "Quitar del outfit" : ic("plus") + "Al outfit"}</button>${sel.photo ? `<button class="btn sm" data-act="view-3d" data-id="${sel.id}">${ic("spark")}3D</button><button class="btn sm" data-act="cut-fix" data-id="${sel.id}">${ic("edit")}Arreglar recorte</button>` : ""}<button class="btn sm ghost" data-act="open" data-id="${sel.id}">${ic("edit")}Editar</button></div></div></div>`
     : ""}
   ${sel ? "" : `<div class="cl-under"><p class="muted small" style="margin:0">Desliza para ver tu ropa y toca una prenda para elegirla.${list.length > 1 ? " Para cambiarla de sitio, mantenla pulsada y arrástrala." : ""}</p></div>`}
   <div class="row"><button class="btn" data-act="add" data-kind="entry" data-sec="${s.id}">${ic("cam")}Prenda con foto</button><button class="btn" data-act="g-link">${ic("link")}Desde un enlace</button></div>
@@ -4357,6 +4485,7 @@ Object.assign(ACT, {
   "cl-move"(el){ const r = $("[data-rail]"); if (!r) return; const ids = $$(".hg", r).map(x => x.dataset.id), i = ids.indexOf(el.dataset.id), j = i + +el.dataset.d; if (i < 0 || j < 0 || j >= ids.length) return; [ids[i], ids[j]] = [ids[j], ids[i]]; saveClOrder(r.dataset.cat, ids); r._last = r.scrollLeft; render(); },
   "cl-cat"(el){ if (el.dataset.c === "Accesorio" && S.clCat !== "Accesorio") S.drAnim = true; S.clCat = el.dataset.c; S.clSel = ""; render(); },
   "hg-pick"(el){ if (S.clSort) return; S.clSel = S.clSel === el.dataset.id ? "" : el.dataset.id; const r = el.closest("[data-rail]"); if (r) r._last = r.scrollLeft; buzz(); render(); },
+  "cut-fix"(el){ openCutFix(el.dataset.id); },
   "cl-wear"(el){ const g = garments().find(x => x.id === el.dataset.id); if (g) ACT.wear({dataset:{c:g.cat, id:g.id}}); },
   "topic-new"(el){ const p = secById(el.dataset.parent); swapLayer(() => openLayer(`${sheetHead(p && p.tpl === "conocimientos" ? "Nuevo tema" : "Nuevo apartado")}<form class="stack" data-form="topic-new" data-parent="${el.dataset.parent}"><div class="field"><label for="tn-name">Nombre</label><input type="text" id="tn-name" name="name" placeholder="Ej.: Tecnología, Mochilas, Zapatos…" required></div><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Crear</button></div></div></form>`)); },
   "con-loose"(el){ S.conLoose = {...(S.conLoose || {}), [el.dataset.sec]:!(S.conLoose || {})[el.dataset.sec]}; render(); },
@@ -4407,6 +4536,12 @@ function normalizeKits(){
     putItem({...e, sub:r.sub, fields:{...(e.fields || {}), ...(r.fields || {})}}, true); n++;
   }
   for (const x of sections()) if (x.tpl === "armario" && !x.fields.some(f => f.key === "cajon")){ const i = x.fields.findIndex(f => f.key === "categoria"); x.fields.splice(i + 1, 0, {key:"cajon", label:"Sitio en el cajón (accesorios)", type:"select", options:["Relojes","Gafas","Joyas","Neceseres","Bolsos","Otros"]}); ch = true; }
+  if (!S.settings.cleanup4){
+    for (const x of sections()) if (x.tpl === "armario"){ const f = x.fields.find(f => f.key === "categoria"); if (f && f.options) f.options = f.options.filter(o => o !== "Vestido"); }
+    for (const e of ofKind("entry")) if (secById(e.sectionId)?.tpl === "armario" && e.fields?.categoria === "Vestido"){ putItem({...e, fields:{...e.fields, categoria:"Arriba"}}, true); n++; }
+    if (S.wear && S.wear.Vestido){ delete S.wear.Vestido; lsSet("orbita.wear", S.wear); }
+    S.settings.cleanup4 = true; ch = true;
+  }
   if (!S.settings.cleanup3){
     const gone = sections().filter(x => x.tpl === "musica").flatMap(x => [x.id, ...descendants(x.id).map(c => c.id)]);
     for (const e of ofKind("entry").filter(e => gone.includes(e.sectionId))) delItem(e.id, true);
