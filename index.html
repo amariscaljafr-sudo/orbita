@@ -741,6 +741,13 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.mat-h{display:flex;align-items:center;gap:12px;padding:16px 16px 16px 20px;border-radius:20px;background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+.mat-h::before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:var(--c)}
+.mat-h > div{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.mat-h b{font-size:24px;font-weight:900;letter-spacing:-.03em}
+.mat-h span{font-size:13px;opacity:.75}
+.mat-h .ibtn{background:rgba(255,255,255,.12);color:var(--paper)}
+
 .gq.pic{background:#111}
 .gq-bg{position:absolute;inset:0;display:flex;z-index:0;pointer-events:none}
 .gq-bg img{flex:1;min-width:0;height:100%;object-fit:cover;filter:saturate(1.05)}
@@ -1144,7 +1151,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "24";
+const APP_VERSION = "25";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -3583,6 +3590,7 @@ const KITS = {
   aprender:{def:"tema", kinds:{tema:{label:"Tema", title:"Qué quieres aprender (política, inglés…)", fields:[F("progreso","Cuánto sé","progress"),F("prioridad","Prioridad","select",{options:["Alta","Media","Baja"]}),F("recursos","Vídeos, libros y enlaces","rows",{cols:[["n","Recurso"],["u","Enlace"]]}),F("notas","Lo que voy aprendiendo","longtext")]}},
     migrate(e){ const f = e.fields || {}; return {sub:"tema", fields:{recursos:typeof f.recursos === "string" && f.recursos ? [{n:"Recurso", u:f.recursos}] : Array.isArray(f.recursos) ? f.recursos : []}}; }},
   estudios:{def:"evento", kinds:{
+    apunte:{label:"Nota de la materia", short:"Nota", title:"Qué quieres apuntar", fields:[F("materia","Materia","ref",{ref:"materia", empty:"Primero crea tus materias."}),F("tipo","Tipo","select",{options:["Nota","Para el profesor","Pendiente","Importante"]}),F("hecho","Hecho","check"),F("fecha","Fecha (opcional)","date"),F("notas","Detalle","longtext")]},
     materia:{label:"Materia", title:"Nombre de la materia", fields:[F("color","Color","color"),F("profesor","Profesor o profesora","text"),F("aula","Aula","text"),F("notas","Apuntes y notas","longtext")]},
     clase:{label:"Clase", short:"Clase", fields:[F("materia","Materia","ref",{ref:"materia", empty:"Primero crea tus materias en la pestaña Materias."}),F("dias","Qué días","days"),F("hora","Empieza","time"),F("fin","Termina","time"),F("aula","Aula","text")], daysKey:"dias", timeKey:"hora", calendar:true, autoTitle:(f, s) => refName(f.materia) || "Clase"},
     evento:{label:"Examen, trabajo o tarea", short:"Estudios", title:"Qué es (examen del tema 3…)", fields:[F("tipo","Tipo","select",{options:["Examen","Trabajo","Tarea","Recordatorio"]}),F("materia","Materia","ref",{ref:"materia", empty:"Puedes crear materias en la pestaña Materias."}),F("fecha","Fecha","date"),F("hora","Hora","time"),F("importante","Fecha importante","check"),F("hecho","Hecho","check"),F("nota","Nota obtenida","number"),F("notas","Notas","longtext")], dateKey:"fecha", timeKey:"hora", calendar:true, red:e => !e.fields?.hecho && (e.fields?.tipo === "Examen" || !!e.fields?.importante)}
@@ -3866,6 +3874,7 @@ function vAprender(s){
 }
 
 /* ---------- Estudios ---------- */
+S.matSel = {};
 const matCol = id => S.items.get(id)?.fields?.color || "#8a8f98";
 function vEstudios(s){
   const mats = byKind(s, "materia"), clases = byKind(s, "clase"), evs = byKind(s, "evento"), tk = todayKey();
@@ -3904,13 +3913,25 @@ function vEstudios(s){
       : kempty("No hay fechas importantes a la vista.", "Los exámenes y trabajos aparecerán aquí con su cuenta atrás.")}
       <div class="row">${kbtn(s, "evento", "Añadir examen o trabajo", {tipo:"Examen", importante:true})}</div>
       ${grades.length ? `<section class="stack" style="gap:8px"><h2 class="sub-h">Notas</h2><div class="klist">${grades.map(e => `<button class="krow" data-act="open" data-id="${e.id}" style="--c:${matCol(e.fields?.materia)}"><span class="kr-t"><b>${esc(e.title)}</b><span>${esc(refName(e.fields?.materia))}</span></span><b class="grade${+e.fields.nota < 5 ? " low" : ""}">${esc(e.fields.nota)}</b></button>`).join("")}</div></section>` : ""}`;
+  } else if (S.matSel[s.id] && S.items.has(S.matSel[s.id])){
+    const m = S.items.get(S.matSel[s.id]), col = m.fields?.color || "#8a8f98", aps = byKind(s, "apunte").filter(a => a.fields?.materia === m.id);
+    const cs = clases.filter(c => c.fields?.materia === m.id), nexts = evs.filter(e => e.fields?.materia === m.id && !e.fields?.hecho && (e.fields?.fecha || "") >= tk).sort((a, b) => a.fields.fecha < b.fields.fecha ? -1 : 1);
+    const TIPOS = [["Para el profesor","Para hablar con el profesor"],["Pendiente","Pendientes"],["Importante","Importante"],["Nota","Notas"]];
+    const apRow = a => { const chk = a.fields?.tipo === "Pendiente" || a.fields?.tipo === "Para el profesor"; return `<div class="evrow${a.fields?.hecho ? " done" : ""}" style="--c:${col}">${chk ? `<button class="ck${a.fields?.hecho ? " on" : ""}" data-act="ev-done" data-id="${a.id}" aria-label="${a.fields?.hecho ? "Marcar pendiente" : "Marcar hecho"}">${ic("check")}</button>` : ""}<button class="kr-t" data-act="open" data-id="${a.id}"><b>${esc(a.title)}</b>${a.fields?.notas || a.fields?.fecha ? `<span>${esc([a.fields?.fecha ? relDay(a.fields.fecha) : "", a.fields?.notas || ""].filter(Boolean).join(" · "))}</span>` : ""}</button>${a.fields?.tipo === "Importante" ? '<span class="tag red">Importante</span>' : ""}</div>`; };
+    body = `<button class="crumb" data-act="mat-sel" data-sec="${s.id}" data-id="">${ic("left")}Todas las materias</button>
+      <div class="mat-h" style="--c:${col}"><div><b>${esc(m.title)}</b><span>${esc([m.fields?.profesor, m.fields?.aula ? "Aula " + m.fields.aula : ""].filter(Boolean).join(" · ") || "Sin profesor ni aula")}</span></div><button class="ibtn" data-act="open" data-id="${m.id}" aria-label="Editar materia">${ic("edit")}</button></div>
+      <div class="row" style="gap:6px">${TIPOS.map(([t]) => kbtn(s, "apunte", t === "Nota" ? "Nota" : t, {materia:m.id, tipo:t}, t === "Nota" ? "btn sm pri" : "btn sm")).join("")}</div>
+      ${aps.length ? TIPOS.map(([t, l]) => { const xs = aps.filter(a => (a.fields?.tipo || "Nota") === t).sort((a, b) => (a.fields?.hecho ? 1 : 0) - (b.fields?.hecho ? 1 : 0) || (b.updatedAt || 0) - (a.updatedAt || 0)); return xs.length ? `<section class="stack" style="gap:8px"><div class="sec-t"><h2 class="sub-h">${l}</h2><span class="n">${xs.filter(a => !a.fields?.hecho).length || ""}</span></div><div class="klist">${xs.map(apRow).join("")}</div></section>` : ""; }).join("") : kempty("Aún no hay nada apuntado en esta materia.", "Guarda notas, lo que quieres hablar con el profesor, pendientes o cosas importantes.")}
+      ${nexts.length ? `<section class="stack" style="gap:8px"><h2 class="sub-h">Próximos exámenes y entregas</h2><div class="klist">${nexts.slice(0, 6).map(evRow).join("")}</div></section>` : ""}
+      ${cs.length ? `<section class="stack" style="gap:8px"><h2 class="sub-h">Clases</h2><div class="klist">${cs.map(c => krow(c, [(c.fields?.dias || []).map(d => DOWL[d - 1]).join(", "), [c.fields?.hora, c.fields?.fin].filter(Boolean).join("–"), c.fields?.aula])).join("")}</div></section>` : ""}`;
   } else {
     body = (mats.length ? `<div class="mats">${mats.map(m => {
       const cs = clases.filter(c => c.fields?.materia === m.id), hrs = cs.reduce((n, c) => n + (c.fields?.dias || []).length, 0);
       const next = evs.filter(e => e.fields?.materia === m.id && !e.fields?.hecho && (e.fields?.fecha || "") >= tk).sort((a, b) => a.fields.fecha < b.fields.fecha ? -1 : 1)[0];
       const ns = evs.filter(e => e.fields?.materia === m.id && e.fields?.nota !== "" && e.fields?.nota != null && !isNaN(+e.fields.nota)).map(e => +e.fields.nota);
-      return `<button class="mat" style="--c:${m.fields?.color || "#8a8f98"}" data-act="open" data-id="${m.id}"><b>${esc(m.title)}</b>${m.fields?.profesor ? `<span>${esc(m.fields.profesor)}</span>` : ""}
-        <span class="mat-m">${hrs ? `<i>${hrs} ${hrs === 1 ? "clase" : "clases"}/semana</i>` : ""}${ns.length ? `<i>Media ${(ns.reduce((a, b) => a + b, 0) / ns.length).toFixed(1)}</i>` : ""}</span>
+      const na = byKind(s, "apunte").filter(a => a.fields?.materia === m.id && !a.fields?.hecho).length;
+      return `<button class="mat" style="--c:${m.fields?.color || "#8a8f98"}" data-act="mat-sel" data-sec="${s.id}" data-id="${m.id}"><b>${esc(m.title)}</b>${m.fields?.profesor ? `<span>${esc(m.fields.profesor)}</span>` : ""}
+        <span class="mat-m">${hrs ? `<i>${hrs} ${hrs === 1 ? "clase" : "clases"}/semana</i>` : ""}${na ? `<i>${na} ${na === 1 ? "nota" : "notas"}</i>` : ""}${ns.length ? `<i>Media ${(ns.reduce((a, b) => a + b, 0) / ns.length).toFixed(1)}</i>` : ""}</span>
         ${next ? `<span class="mat-n">${esc(next.fields?.tipo || "Próximo")}: ${esc(relDay(next.fields.fecha).toLowerCase())}</span>` : ""}</button>`; }).join("")}</div>`
       : kempty("Aún no tienes materias.", "Crea una por asignatura con su color; así todo queda organizado por materia.")) + `<div class="row">${kbtn(s, "materia", "Nueva materia", {color:SUBJ_COL[mats.length % SUBJ_COL.length]})}</div>`;
   }
@@ -4067,6 +4088,7 @@ Object.assign(ACT, {
     } catch { toast("No he podido traer ideas", "Prueba otra vez en un rato."); }
     render();
   },
+  "mat-sel"(el){ S.matSel[el.dataset.sec] = el.dataset.id; window.scrollTo(0, 0); render(); },
   "ev-done"(el){ const e = S.items.get(el.dataset.id); if (e){ kitPut(e, {hecho:!e.fields?.hecho}); buzz(); } },
   "cl-cat"(el){ S.clCat = el.dataset.c; S.clSel = ""; render(); },
   "hg-pick"(el){ S.clSel = S.clSel === el.dataset.id ? "" : el.dataset.id; const r = el.closest("[data-rail]"); if (r) r._last = r.scrollLeft; buzz(); render(); },
@@ -4476,12 +4498,50 @@ const itunes = (term, media, entity, limit=15) => jsonp(`https://itunes.apple.co
 const bigArt = u => (u || "").replace(/\/\d+x\d+(bb)?\.(jpg|png)/, "/600x600bb.jpg");
 const yearOf = d => (String(d || "").match(/\d{4}/) || [""])[0];
 const stripHtml = s => String(s || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
-const GENRE_MAP_PELI = [[/anim|anime|infantil/i, "Animación"],[/terror|horror/i, "Terror"],[/ciencia ficci|science/i, "Ciencia ficción"],[/fantas/i, "Fantasía"],[/comed/i, "Comedia"],[/romance|romant/i, "Romance"],[/thriller|suspense|mystery|misterio/i, "Suspense"],[/crim|policiac/i, "Crimen"],[/document/i, "Documental"],[/music/i, "Musical"],[/war|bélic|guerra/i, "Bélica"],[/histor/i, "Histórica"],[/famil|kids|niños/i, "Familiar"],[/aventur|adventure/i, "Aventura"],[/acci|action/i, "Acción"],[/drama/i, "Drama"]];
+const GENRE_MAP_PELI = [[/anim|anime|infantil/i, "Animación"],[/terror|horror/i, "Terror"],[/ciencia ficci|science/i, "Ciencia ficción"],[/fantas/i, "Fantasía"],[/comed/i, "Comedia"],[/romance|romant/i, "Romance"],[/thriller|suspense|mystery|misterio/i, "Suspense"],[/crim|policiac/i, "Crimen"],[/document/i, "Documental"],[/music/i, "Musical"],[/war|bélic|guerra/i, "Bélica"],[/histor/i, "Histórica"],[/famil|kids|niños/i, "Familiar"],[/aventur|adventure/i, "Aventura"],[/acci|action/i, "Acción"],[/dram/i, "Drama"]];
 const GENRE_MAP_LIB = [[/fantas/i, "Fantasía"],[/science fiction|ciencia ficci/i, "Ciencia ficción"],[/thriller|suspense|mystery|misterio|policiac|detective/i, "Thriller"],[/romance|romant/i, "Romance"],[/horror|terror/i, "Terror"],[/true crime|crimen real/i, "True crime"],[/biograf|memoir|memorias/i, "Biografías"],[/histor/i, "Historia"],[/self-help|autoayuda|desarrollo personal|personal development|salud mental/i, "Desarrollo personal"],[/psicolog|psychology/i, "Psicología"],[/business|negocio|econom|finanz|money|dinero/i, "Negocios y dinero"],[/philosoph|filosof/i, "Filosofía"],[/tecnolog|technology|computer/i, "Tecnología"],[/scien|cienc/i, "Ciencia"],[/comedy|humor|comedia/i, "Humor"],[/comic|cómic|graphic novel|manga/i, "Cómic"],[/poe/i, "Poesía"],[/fiction|novel|ficción|literatura/i, "Novela"]];
-const mapGenre = (list, text) => { for (const [r, g] of list) if (r.test(text || "")) return g; return ""; };
+const mapGenre = (list, text) => { const n = deacc(text); for (const [r, g] of list) if (r.test(text || "") || r.test(n)) return g; return ""; };
+const deacc = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "");
+async function wikiFilms(q, type){
+  const tpls = []; if (type !== "Serie") tpls.push(["Película", 'hastemplate:"Ficha de película"']); if (type !== "Película") tpls.push(["Serie", 'hastemplate:"Ficha de serie de televisión"']);
+  const pages = [];
+  await Promise.all(tpls.map(async ([tipo, flt]) => {
+    try {
+      const d = await getJSON(`https://es.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&generator=search&gsrlimit=12&gsrsearch=${encodeURIComponent(q + " " + flt)}&prop=pageprops|description|extracts|pageimages&ppprop=wikibase_item&exintro=1&explaintext=1&exsentences=3&exlimit=20&piprop=thumbnail&pithumbsize=500`, 12000);
+      Object.values(d.query?.pages || {}).forEach(pg => pages.push({...pg, tipo, rank:(tipo === "Película" ? 0 : .5) + (pg.index || 0)}));
+    } catch {}
+  }));
+  if (!pages.length) return [];
+  const qids = [...new Set(pages.map(p => p.pageprops?.wikibase_item).filter(Boolean))].slice(0, 40);
+  let ents = {};
+  try { if (qids.length) ents = (await getJSON(`https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&origin=*&ids=${qids.join("|")}&props=claims|sitelinks&sitefilter=enwiki`, 12000)).entities || {}; } catch {}
+  const cIds = (e, p) => (e?.claims?.[p] || []).map(c => c.mainsnak?.datavalue?.value?.id).filter(Boolean);
+  const cTime = (e, p) => (e?.claims?.[p] || []).map(c => c.mainsnak?.datavalue?.value?.time).filter(Boolean).sort()[0] || "";
+  const need = new Set(); for (const e of Object.values(ents)) [...cIds(e, "P57").slice(0, 2), ...cIds(e, "P170").slice(0, 2), ...cIds(e, "P136").slice(0, 4)].forEach(x => need.add(x));
+  const labels = {};
+  try { if (need.size) for (const [k, v] of Object.entries((await getJSON(`https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&origin=*&ids=${[...need].slice(0, 50).join("|")}&props=labels&languages=es|en`, 12000)).entities || {})) labels[k] = v.labels?.es?.value || v.labels?.en?.value || ""; } catch {}
+  const enT = {}; for (const [k, e] of Object.entries(ents)) if (e.sitelinks?.enwiki?.title) enT[k] = e.sitelinks.enwiki.title;
+  const posters = {};
+  try {
+    const ts = [...new Set(Object.values(enT))].slice(0, 45);
+    if (ts.length){
+      const d = await getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&piprop=thumbnail&pithumbsize=500&pilicense=any&pilimit=50&titles=${encodeURIComponent(ts.join("|"))}`, 12000), qq = d.query || {}, map = {};
+      for (const n of [...(qq.normalized || []), ...(qq.redirects || [])]) map[n.from] = n.to;
+      const byT = {}; for (const pg of Object.values(qq.pages || {})) if (pg.thumbnail) byT[pg.title] = pg.thumbnail.source;
+      for (const t of ts){ let k = t; for (let n = 0; n < 3 && map[k]; n++) k = map[k]; if (byT[k]) posters[t] = byT[k]; }
+    }
+  } catch {}
+  return pages.sort((a, b) => a.rank - b.rank).map(pg => {
+    const qid = pg.pageprops?.wikibase_item, e = ents[qid];
+    const who = [...cIds(e, "P57"), ...(pg.tipo === "Serie" || !cIds(e, "P57").length ? cIds(e, "P170") : [])].map(x => labels[x]).filter(Boolean).slice(0, 2).join(", ");
+    const gens = cIds(e, "P136").map(x => labels[x]).join(" ");
+    return {src:"wp", tipo:pg.tipo, title:pg.title.replace(/ \((pel[ií]cula|serie|miniserie)[^)]*\)$/i, ""), year:yearOf(cTime(e, "P577") || cTime(e, "P580")) || yearOf(pg.description) || yearOf(pg.extract), director:who, cover:(enT[qid] && posters[enT[qid]]) || pg.thumbnail?.source || "", genero:mapGenre(GENRE_MAP_PELI, gens + " " + (pg.description || "")), sinopsis:pg.extract || ""};
+  });
+}
 async function searchOnline(tpl, q, type){
   const out = [], jobs = [];
   if (tpl === "peliculas"){
+    jobs.push(wikiFilms(q, type).then(rs => out.unshift(...rs)).catch(() => {}));
     if (type !== "Serie") jobs.push(itunes(q, "movie", "movie").then(rs => rs.forEach(r => out.push({src:"it", tipo:"Película", title:r.trackName, year:yearOf(r.releaseDate), director:r.artistName || "", cover:bigArt(r.artworkUrl100), genero:mapGenre(GENRE_MAP_PELI, r.primaryGenreName), sinopsis:r.longDescription || r.shortDescription || ""}))).catch(() => {}));
     if (type !== "Película") jobs.push(getJSON(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(q)}`).then(rs => rs.slice(0, 10).forEach(({show:sh}) => out.push({src:"tm", id:sh.id, tipo:"Serie", title:sh.name, year:yearOf(sh.premiered), director:"", cover:sh.image?.original || sh.image?.medium || "", genero:mapGenre(GENRE_MAP_PELI, (sh.genres || []).join(" ")), sinopsis:stripHtml(sh.summary), canal:sh.network?.name || sh.webChannel?.name || ""}))).catch(() => {}));
   } else {
@@ -4489,7 +4549,7 @@ async function searchOnline(tpl, q, type){
     if (type !== "Libro") jobs.push(itunes(q, "podcast", "podcast", 10).then(rs => rs.forEach(r => out.push({src:"it", tipo:"Podcast", title:r.collectionName || r.trackName, year:yearOf(r.releaseDate), director:r.artistName || "", cover:bigArt(r.artworkUrl600 || r.artworkUrl100), genero:mapGenre(GENRE_MAP_LIB, (r.genres || []).join(" ") + " " + r.primaryGenreName), sinopsis:""}))).catch(() => {}));
   }
   await Promise.all(jobs);
-  if (out.length < 4){
+  if (out.length < 4 && tpl !== "peliculas"){
     const kind = tpl === "peliculas" ? (type === "Serie" ? "serie" : type === "Película" ? "película" : "película OR serie") : (type === "Podcast" ? "podcast" : "libro");
     try {
       const d = await getJSON(`https://es.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=10&gsrsearch=${encodeURIComponent(q + " " + kind)}&prop=pageimages|description|extracts&exintro=1&explaintext=1&exsentences=2&piprop=thumbnail&pithumbsize=500`);
@@ -4503,8 +4563,8 @@ async function searchOnline(tpl, q, type){
       });
     } catch {}
   }
-  const ql = q.toLowerCase();
-  return out.filter(x => x.title).sort((a, b) => (b.title.toLowerCase().includes(ql) ? 1 : 0) - (a.title.toLowerCase().includes(ql) ? 1 : 0) || (!!b.cover - !!a.cover)).slice(0, 24);
+  const ql = deacc(q.toLowerCase()), seen = new Set(), score = x => (deacc(x.title.toLowerCase()).includes(ql) ? 2 : 0) + (x.cover ? 1 : 0) + (x.year ? .3 : 0) + (x.director ? .3 : 0);
+  return out.filter(x => x.title).map((x, i) => ({x, i, s:score(x)})).sort((a, b) => b.s - a.s || a.i - b.i).map(o => o.x).filter(x => { const k = deacc(x.title.toLowerCase()).replace(/[^a-z0-9]/g, "") + "|" + x.tipo + "|" + (x.year || ""); if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 24);
 }
 async function seriesCreator(id){ try { const crew = await getJSON(`https://api.tvmaze.com/shows/${id}/crew`); return crew.filter(c => /creator/i.test(c.type)).map(c => c.person?.name).filter(Boolean).slice(0, 2).join(", "); } catch { return ""; } }
 
