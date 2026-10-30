@@ -741,6 +741,19 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.vw-card.cut{background:transparent;box-shadow:none;overflow:visible}
+.vw-card.cut img{background:transparent;filter:drop-shadow(0 22px 26px rgba(13,13,13,.28))}
+.vw-card.cut .vw-sheen{display:none}
+.hg.hgp .hook{width:60px;height:28px;margin-bottom:-3px;position:relative;z-index:2}
+.hg.hgp .ga{margin-top:0}
+.cl-rail.sorting{scroll-snap-type:none}
+.cl-rail.sorting .hg{touch-action:none;cursor:grab;animation:wob .5s ease-in-out infinite alternate;transition:none}
+.cl-rail.sorting .hg:nth-child(2n){animation-delay:.25s}
+.cl-rail.sorting .hg.lift{animation:none;z-index:20;opacity:1;filter:drop-shadow(0 18px 18px rgba(0,0,0,.6))}
+@keyframes wob{from{rotate:-1.2deg}to{rotate:1.2deg}}
+.cl-hint{position:relative;z-index:3;margin:-8px 12px 6px;text-align:center;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.75)}
+.cl-under{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;text-align:center}
+
 .mat-h{display:flex;align-items:center;gap:12px;padding:16px 16px 16px 20px;border-radius:20px;background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
 .mat-h::before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:var(--c)}
 .mat-h > div{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
@@ -1151,7 +1164,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "25";
+const APP_VERSION = "26";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1741,7 +1754,7 @@ const sheetHead = (title, extra="") => `<div class="sheet-h"><div class="t">${ti
 function openDrawer(){
   const r = currentRoute();
   const link = (to, label, icon, n, cls="") => `<a class="dnav${r === to ? " on" : ""} ${cls}" href="#${to}">${cls.includes("child") ? "" : ic(icon)}<span>${esc(label)}</span>${n ? `<span class="n">${n}</span>` : ""}</a>`;
-  const tree = s => link("s-" + s.id, s.name, s.icon, deepCount(s.id)) + descendants(s.id).map(c => link("s-" + c.id, (c.parentId !== s.id ? "· " : "") + c.name, c.icon, entriesOf(c.id).length, "child")).join("");
+  const tree = s => link("s-" + s.id, s.name, s.icon) + descendants(s.id).map(c => link("s-" + c.id, (c.parentId !== s.id ? "· " : "") + c.name, c.icon, 0, "child")).join("");
   openLayer(`<div class="brand"><b>Órbita<i>.</i></b><button class="ibtn" data-act="close" aria-label="Cerrar menú">${ic("x")}</button></div>
     <a class="dnav ai${r === "nuevo" ? " on" : ""}" href="#nuevo">${ic("plus")}<span>Añadir</span></a>
     ${link("inicio","Inicio","home")}${link("tareas","Tareas","task", ofKind("task").filter(t => !t.done).length)}${link("avisos","Avisos","bell", ofKind("reminder").filter(t => !t.done).length)}
@@ -2949,11 +2962,11 @@ function outfitCalendar(s){
 }
 
 /* ================= 3D viewer ================= */
-function openViewer(ids, title){
+function openViewer(ids, title, opts={}){
   if (!ids || !ids.length) return;
   const el = document.createElement("div"); el.className = "viewer";
   el.innerHTML = `<div class="vw-top"><b>${esc(title || "")}</b><button class="ibtn" data-vw="close" aria-label="Cerrar">${ic("x")}</button></div>
-    <div class="vw-stage"><div class="vw-card">${ids.map((id, i) => `<img data-img="${id}" alt="" class="${i ? "" : "on"}" draggable="false">`).join("")}<i class="vw-sheen"></i></div><div class="vw-shadow"></div></div>
+    <div class="vw-stage"><div class="vw-card${opts.cut ? " cut" : ""}">${ids.map((id, i) => `<img ${opts.cut ? "data-cut" : "data-img"}="${id}" alt="" class="${i ? "" : "on"}" draggable="false">`).join("")}<i class="vw-sheen"></i></div><div class="vw-shadow"></div></div>
     <p class="vw-hint">${ids.length > 1 ? "Arrastra a los lados para girar la prenda" : "Mueve el dedo o el dispositivo para verla en relieve · doble toque para acercar"}</p>
     ${ids.length > 1 ? `<div class="vw-dots">${ids.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>` : ""}`;
   document.body.appendChild(el);
@@ -3030,10 +3043,10 @@ Object.assign(ACT, {
     if (b) addToPhotoField(box, [b]); else toast("No he podido descargar esa imagen", "Prueba a guardarla en Fotos y súbela desde la galería.");
   },
   "ph-del"(el){ const box = el.closest(".ph-field"), hid = $("input[type=hidden]", box); const ids = JSON.parse(hid.value || "[]").filter(x => x !== el.dataset.id); hid.value = JSON.stringify(ids); el.closest(".ph").remove(); },
-  "ph-view"(el){ const box = el.closest(".ph-field"), ids = JSON.parse($("input[type=hidden]", box).value || "[]"); const i = ids.indexOf(el.dataset.id); openViewer([...ids.slice(i), ...ids.slice(0, i)], $("#en-title")?.value); },
-  "ph-3d"(el){ const box = el.closest(".ph-field"); openViewer(JSON.parse($("input[type=hidden]", box).value || "[]"), $("#en-title")?.value); },
+  "ph-view"(el){ const box = el.closest(".ph-field"), ids = JSON.parse($("input[type=hidden]", box).value || "[]"); const i = ids.indexOf(el.dataset.id); openViewer([...ids.slice(i), ...ids.slice(0, i)], $("#en-title")?.value, {cut:secById(box.closest("form")?.dataset.sec)?.tpl === "armario"}); },
+  "ph-3d"(el){ const box = el.closest(".ph-field"); openViewer(JSON.parse($("input[type=hidden]", box).value || "[]"), $("#en-title")?.value, {cut:secById(box.closest("form")?.dataset.sec)?.tpl === "armario"}); },
   "gf-tog"(el){ const box = el.closest(".gf"), hid = $("input[type=hidden]", box); let ids = JSON.parse(hid.value || "[]"); ids = ids.includes(el.dataset.id) ? ids.filter(x => x !== el.dataset.id) : [...ids, el.dataset.id]; hid.value = JSON.stringify(ids); el.classList.toggle("on"); buzz(); },
-  "view-3d"(el){ const it = S.items.get(el.dataset.id); if (it) openViewer(photoIdsOf(it), it.title); },
+  "view-3d"(el){ const it = S.items.get(el.dataset.id); if (it) openViewer(photoIdsOf(it), it.title, {cut:secById(it.sectionId)?.tpl === "armario"}); },
   "oc-move"(el){ let {y, m} = S.ocal; m += +el.dataset.d; if (m < 0){ m = 11; y--; } if (m > 11){ m = 0; y++; } S.ocal = {y, m}; render(); }
 });
 
@@ -3072,7 +3085,24 @@ function applyAlpha(src, alpha, mw, mh){
   mx.putImageData(md, 0, 0);
   const out = document.createElement("canvas"); out.width = src.width; out.height = src.height;
   const ox = out.getContext("2d"); ox.drawImage(src, 0, 0); ox.globalCompositeOperation = "destination-in"; ox.imageSmoothingQuality = "high"; ox.drawImage(m, 0, 0, out.width, out.height);
-  return out;
+  return refineEdges(out);
+}
+// shrink the edge 1px, soften it and take the colour from inside, so no halo of the old background remains
+function refineEdges(c){
+  const w = c.width, hh = c.height, x = c.getContext("2d"), im = x.getImageData(0, 0, w, hh), d = im.data, n = w * hh;
+  const a = new Uint8ClampedArray(n); for (let i = 0; i < n; i++) a[i] = d[i * 4 + 3];
+  const e = new Uint8ClampedArray(a);
+  for (let y = 1; y < hh - 1; y++) for (let i = 1; i < w - 1; i++){ const p = y * w + i; if (a[p]) e[p] = Math.min(a[p], a[p - 1], a[p + 1], a[p - w], a[p + w]); }
+  const b = new Uint8ClampedArray(e);
+  for (let y = 1; y < hh - 1; y++) for (let i = 1; i < w - 1; i++){ const p = y * w + i; b[p] = (e[p] * 4 + e[p - 1] + e[p + 1] + e[p - w] + e[p + w] + (e[p - w - 1] + e[p - w + 1] + e[p + w - 1] + e[p + w + 1]) * .5) / 10; }
+  for (let y = 1; y < hh - 1; y++) for (let i = 1; i < w - 1; i++){
+    const p = y * w + i; if (!b[p] || a[p] >= 250) continue;
+    let best = p, ba = a[p];
+    for (const q of [p - 1, p + 1, p - w, p + w, p - w - 1, p - w + 1, p + w - 1, p + w + 1]) if (a[q] > ba){ ba = a[q]; best = q; }
+    if (best !== p){ d[p * 4] = d[best * 4]; d[p * 4 + 1] = d[best * 4 + 1]; d[p * 4 + 2] = d[best * 4 + 2]; }
+  }
+  for (let i = 0; i < n; i++) d[i * 4 + 3] = b[i];
+  x.putImageData(im, 0, 0); return c;
 }
 function cropAlpha(c, pad=.02){
   const x = c.getContext("2d"), d = x.getImageData(0, 0, c.width, c.height).data;
@@ -3155,7 +3185,7 @@ const cutJobs = new Map();
 S.cutPref = lsGet("orbita.cutpref", {});
 function garmentURL(pid){
   if (S.cutPref[pid] === "orig") return imgURL(pid);
-  const key = "cut:" + pid;
+  const key = "cut2:" + pid;
   if (imgCache.has(key)) return imgCache.get(key);
   if (cutJobs.has(pid)) return cutJobs.get(pid);
   const job = (async () => {
@@ -3165,7 +3195,7 @@ function garmentURL(pid){
     try {
       const b = await canvasBlob(await cutObject(orig));
       await IDB.put(key, b); const u = URL.createObjectURL(b); imgCache.set(key, Promise.resolve(u)); return u;
-    } catch { S.cutPref[pid] = "orig"; lsSet("orbita.cutpref", S.cutPref); return imgURL(pid); }
+    } catch (err){ console.warn("recorte", err && err.message); S.cutPref[pid] = "orig"; lsSet("orbita.cutpref", S.cutPref); return imgURL(pid); }
   })();
   cutJobs.set(pid, job); job.finally(() => cutJobs.delete(pid));
   return job;
@@ -3945,15 +3975,18 @@ function vEstudios(s){
 const CL_GROUPS = [["Arriba","Partes de arriba","hang"],["Abrigo","Abrigos","hang"],["Vestido","Vestidos","hang"],["Abajo","Partes de abajo","clip"],["Calzado","Calzado","shelf"],["Accesorio","Accesorios","shelf"]];
 S.clOpened = new Set();
 const HANGER = `<svg class="hook" viewBox="0 0 120 52" aria-hidden="true"><path d="M60 22 V14 a6 6 0 1 1 6 -6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M60 22 L10 46 Q6 49 12 50 H108 Q114 49 110 46 Z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/></svg>`;
+const HOOK = `<svg class="hook" viewBox="0 0 120 34" aria-hidden="true"><path d="M60 34 V18 a7 7 0 1 1 7 -7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>`;
 const CLIP = `<svg class="hook" viewBox="0 0 120 52" aria-hidden="true"><path d="M60 24 V14 a6 6 0 1 1 6 -6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M16 26 H104 M22 26 v18 M98 26 v18" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/><rect x="17" y="40" width="10" height="8" rx="2" fill="currentColor"/><rect x="93" y="40" width="10" height="8" rx="2" fill="currentColor"/></svg>`;
 const gArt = (g, cls="") => g.photo ? `<img class="ga ${cls}" data-cut="${g.photo}" alt="" draggable="false">` : `<span class="ga sv ${cls}">${shapeSVG(g.cat, g.color)}</span>`;
 function outfitThumbs(e){ const s = secById(e.sectionId), gF = s && s.fields.find(f => f.type === "garments"), ids = gF && Array.isArray(e.fields?.[gF.key]) ? e.fields[gF.key].filter(id => S.items.has(id)) : []; return ids.length ? `<span class="g-strip sm">${ids.slice(0, 5).map(id => `<span class="g-mini">${gThumb(garmentInfo(S.items.get(id)))}</span>`).join("")}</span>` : ""; }
 function vArmario(s){
-  const gs = garments(), cat = S.clCat || (CL_GROUPS.find(([k]) => gs.some(g => g.cat === k)) || CL_GROUPS[0])[0], grp = CL_GROUPS.find(x => x[0] === cat) || CL_GROUPS[0], list = gs.filter(g => g.cat === cat);
+  const ordIdx = id => { const o = (S.settings.clOrder || {})[cat0] || []; const k = o.indexOf(id); return k < 0 ? 1e6 : k; };
+  let cat0 = S.clCat || (CL_GROUPS.find(([k]) => garments().some(g => g.cat === k)) || CL_GROUPS[0])[0];
+  const gs = garments(), cat = S.clCat || (CL_GROUPS.find(([k]) => gs.some(g => g.cat === k)) || CL_GROUPS[0])[0], grp = CL_GROUPS.find(x => x[0] === cat) || CL_GROUPS[0], list = gs.filter(g => g.cat === cat).sort((a, b) => ordIdx(a.id) - ordIdx(b.id));
   const opened = S.clOpened.has(s.id) || reduce.matches; S.clOpened.add(s.id);
   const sel = gs.find(g => g.id === S.clSel), worn = Object.values(S.wear).map(id => gs.find(g => g.id === id)).filter(Boolean);
   const os = outfitSec(), outs = os ? entriesOf(os.id).filter(e => isDate(e.fields?.fecha)).sort((a, b) => a.fields.fecha < b.fields.fecha ? 1 : -1).slice(0, 4) : [];
-  const item = g => `<button class="hg ${grp[2]}${S.clSel === g.id ? " on" : ""}${Object.values(S.wear).includes(g.id) ? " worn" : ""}" data-act="hg-pick" data-id="${g.id}" aria-label="${esc(g.title)}">${grp[2] === "shelf" ? "" : grp[2] === "clip" ? CLIP : HANGER}${gArt(g)}<span class="hn">${esc(g.title)}</span></button>`;
+  const item = g => `<button class="hg ${grp[2]}${g.photo ? " hgp" : ""}${S.clSel === g.id ? " on" : ""}${Object.values(S.wear).includes(g.id) ? " worn" : ""}" data-act="hg-pick" data-id="${g.id}" aria-label="${esc(g.title)}">${grp[2] === "shelf" ? "" : grp[2] === "clip" ? CLIP : g.photo ? HOOK : HANGER}${gArt(g)}<span class="hn">${esc(g.title)}</span></button>`;
   return `
   <div class="closet ${opened ? "open" : "opening"}">
     <div class="cl-top"><b>${esc(myName() ? "Armario de " + myName() : "Tu armario")}</b><span>${gs.length} ${gs.length === 1 ? "prenda" : "prendas"}</span><button class="ibtn" data-act="sec-edit" data-sec="${s.id}" aria-label="Editar sección">${ic("edit")}</button></div>
@@ -3961,15 +3994,16 @@ function vArmario(s){
       <div class="cl-in">
         <div class="cl-cats">${CL_GROUPS.map(([k, l]) => `<button class="cl-cat${k === cat ? " on" : ""}" data-act="cl-cat" data-c="${k}">${esc(l)}<span>${gs.filter(g => g.cat === k).length}</span></button>`).join("")}</div>
         <div class="cl-stage ${grp[2]}">${grp[2] === "shelf" ? "" : `<div class="cl-bar"></div>`}
-          <div class="cl-rail" data-rail>${list.length ? list.map(item).join("") : `<div class="cl-empty">Aún no hay ${esc(grp[1].toLowerCase())}.<br>Añádelas con una foto o con el enlace de la tienda.</div>`}</div>
+          <div class="cl-rail${S.clSort ? " sorting" : ""}" data-rail data-cat="${cat}">${list.length ? list.map(item).join("") : `<div class="cl-empty">Aún no hay ${esc(grp[1].toLowerCase())}.<br>Añádelas con una foto o con el enlace de la tienda.</div>`}</div>
           ${grp[2] === "shelf" ? `<div class="cl-shelf"></div>` : ""}</div>
       </div>
       <div class="cl-door l" aria-hidden="true"><i></i></div><div class="cl-door r" aria-hidden="true"><i></i></div>
     </div>
   </div>
   ${sel ? `<div class="cl-sel"><button class="cs-img" data-act="view-3d" data-id="${sel.id}" aria-label="Ver en 3D">${gArt(sel)}</button><div class="stack" style="gap:8px;min-width:0"><b class="cs-t">${esc(sel.title)}</b><span class="muted small">${esc(sel.cat)}${sel.color ? ` <i class="colorchip" style="background:${esc(sel.color)}"></i>` : ""}</span>
-      <div class="row"><button class="btn sm${Object.values(S.wear).includes(sel.id) ? "" : " pri"}" data-act="cl-wear" data-id="${sel.id}">${Object.values(S.wear).includes(sel.id) ? "Quitar del outfit" : ic("plus") + "Al outfit"}</button>${sel.photo ? `<button class="btn sm" data-act="view-3d" data-id="${sel.id}">${ic("spark")}3D</button>` : ""}<button class="btn sm ghost" data-act="open" data-id="${sel.id}">${ic("edit")}Editar</button></div></div></div>`
-    : `<p class="muted small" style="text-align:center;margin:0">Desliza para ver tus prendas y toca una para elegirla.</p>`}
+      <div class="row"><button class="ibtn" data-act="cl-move" data-id="${sel.id}" data-d="-1" aria-label="Mover a la izquierda">${ic("left")}</button><button class="ibtn" data-act="cl-move" data-id="${sel.id}" data-d="1" aria-label="Mover a la derecha">${ic("right")}</button><button class="btn sm${Object.values(S.wear).includes(sel.id) ? "" : " pri"}" data-act="cl-wear" data-id="${sel.id}">${Object.values(S.wear).includes(sel.id) ? "Quitar del outfit" : ic("plus") + "Al outfit"}</button>${sel.photo ? `<button class="btn sm" data-act="view-3d" data-id="${sel.id}">${ic("spark")}3D</button>` : ""}<button class="btn sm ghost" data-act="open" data-id="${sel.id}">${ic("edit")}Editar</button></div></div></div>`
+    : ""}
+  <div class="cl-under">${sel ? "" : `<p class="muted small" style="margin:0">${S.clSort ? "Arrastra cada prenda a izquierda o derecha. Toca «Listo» al terminar." : "Desliza para ver tus prendas y toca una para elegirla."}</p>`}${list.length > 1 ? `<button class="btn sm${S.clSort ? " pri" : ""}" data-act="cl-sort">${S.clSort ? ic("check") + "Listo" : ic("list") + "Ordenar prendas"}</button>` : ""}</div>
   <div class="row"><button class="btn" data-act="add" data-kind="entry" data-sec="${s.id}">${ic("cam")}Prenda con foto</button><button class="btn" data-act="g-link">${ic("link")}Desde un enlace</button></div>
   <div class="box stack" style="gap:12px">
     <div class="sec-t"><span class="lbl">Tu outfit</span><span class="sp"></span><a class="lnk" href="#probador">Probármelo${ic("right")}</a></div>
@@ -3981,6 +4015,7 @@ function vArmario(s){
     <div class="klist">${outs.map(e => `<button class="krow" data-act="open" data-id="${e.id}"><span class="kr-t"><b>${esc(cap1(relDay(e.fields.fecha)))}</b><span>${esc(e.fields?.ocasion || e.title)}</span></span>${outfitThumbs(e)}</button>`).join("")}</div></section>` : ""}`;
 }
 function coverflow(rail){
+  if (rail.classList.contains("sorting")){ for (const hg of rail.children) if (hg.classList.contains("hg")){ hg.style.transform = ""; hg.style.opacity = ""; hg.style.zIndex = ""; } return; }
   const r = rail.getBoundingClientRect(), cx = r.left + r.width / 2;
   for (const h of rail.children){
     if (!h.classList.contains("hg")) continue;
@@ -3997,6 +4032,27 @@ new MutationObserver(() => $$("[data-rail]:not([data-cf])").forEach(r => {
   coverflow(r);
 })).observe(document.body, {childList:true, subtree:true});
 addEventListener("resize", () => $$("[data-rail]").forEach(coverflow));
+function saveClOrder(cat, ids){ S.settings.clOrder = {...(S.settings.clOrder || {}), [cat]:ids}; putSettings(); }
+// drag garments along the rail to reorder them
+(() => {
+  let el = null, rail = null, x0 = 0, moved = false, raf = 0, lastX = 0;
+  document.addEventListener("pointerdown", e => {
+    const h = e.target.closest && e.target.closest(".cl-rail.sorting .hg"); if (!h) return;
+    el = h; rail = h.parentElement; x0 = lastX = e.clientX; moved = false; el.classList.add("lift"); el.setPointerCapture?.(e.pointerId); e.preventDefault();
+  });
+  document.addEventListener("pointermove", e => {
+    if (!el) return; lastX = e.clientX; if (Math.abs(lastX - x0) > 4) moved = true;
+    el.style.transform = `translateX(${lastX - x0}px) scale(1.04)`;
+    const r = rail.getBoundingClientRect();
+    if (!raf) raf = requestAnimationFrame(function edge(){ raf = 0; if (!el) return; if (lastX < r.left + 40) rail.scrollLeft -= 10; else if (lastX > r.right - 40) rail.scrollLeft += 10; else return; raf = requestAnimationFrame(edge); });
+    const sibs = $$(".hg", rail).filter(x => x !== el), cx = el.getBoundingClientRect().left + el.offsetWidth / 2;
+    const before = sibs.find(x => { const b = x.getBoundingClientRect(); return cx < b.left + b.width / 2; });
+    const cur = el.nextElementSibling;
+    if (before ? before !== cur : cur){ const oldOff = el.offsetLeft; rail.insertBefore(el, before || null); x0 += el.offsetLeft - oldOff; el.style.transform = `translateX(${lastX - x0}px) scale(1.04)`; }
+  });
+  const up = () => { if (!el) return; el.classList.remove("lift"); el.style.transform = ""; const ids = $$(".hg", rail).map(x => x.dataset.id); if (moved){ saveClOrder(rail.dataset.cat, ids); buzz(); } el = null; };
+  document.addEventListener("pointerup", up); document.addEventListener("pointercancel", up);
+})();
 document.addEventListener("animationend", e => { if (e.target.classList && e.target.classList.contains("cl-door")){ const c = e.target.closest(".closet"); if (c){ c.classList.remove("opening"); c.classList.add("open"); } } });
 
 /* ---------- Temas (subsections) ---------- */
@@ -4090,8 +4146,10 @@ Object.assign(ACT, {
   },
   "mat-sel"(el){ S.matSel[el.dataset.sec] = el.dataset.id; window.scrollTo(0, 0); render(); },
   "ev-done"(el){ const e = S.items.get(el.dataset.id); if (e){ kitPut(e, {hecho:!e.fields?.hecho}); buzz(); } },
+  "cl-sort"(){ S.clSort = !S.clSort; S.clSel = ""; buzz(); render(); },
+  "cl-move"(el){ const r = $("[data-rail]"); if (!r) return; const ids = $$(".hg", r).map(x => x.dataset.id), i = ids.indexOf(el.dataset.id), j = i + +el.dataset.d; if (i < 0 || j < 0 || j >= ids.length) return; [ids[i], ids[j]] = [ids[j], ids[i]]; saveClOrder(r.dataset.cat, ids); r._last = r.scrollLeft; render(); },
   "cl-cat"(el){ S.clCat = el.dataset.c; S.clSel = ""; render(); },
-  "hg-pick"(el){ S.clSel = S.clSel === el.dataset.id ? "" : el.dataset.id; const r = el.closest("[data-rail]"); if (r) r._last = r.scrollLeft; buzz(); render(); },
+  "hg-pick"(el){ if (S.clSort) return; S.clSel = S.clSel === el.dataset.id ? "" : el.dataset.id; const r = el.closest("[data-rail]"); if (r) r._last = r.scrollLeft; buzz(); render(); },
   "cl-wear"(el){ const g = garments().find(x => x.id === el.dataset.id); if (g) ACT.wear({dataset:{c:g.cat, id:g.id}}); },
   "topic-new"(el){ const p = secById(el.dataset.parent); swapLayer(() => openLayer(`${sheetHead(p && p.tpl === "conocimientos" ? "Nuevo tema" : "Nuevo apartado")}<form class="stack" data-form="topic-new" data-parent="${el.dataset.parent}"><div class="field"><label for="tn-name">Nombre</label><input type="text" id="tn-name" name="name" placeholder="Ej.: Tecnología, Mochilas, Zapatos…" required></div><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Crear</button></div></div></form>`)); },
   "topic-quick"(el){ makeTopic(el.dataset.parent, el.dataset.name); render(); toast("Tema creado", el.dataset.name); }
