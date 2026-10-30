@@ -1189,7 +1189,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "29";
+const APP_VERSION = "30";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -3826,6 +3826,7 @@ function vMedia(s){
       <div class="row">${kbtn(s, "obra", c.add, {estado:c.st[0]})}</div>`;
   }
   const mqBar = `<div class="mq"><span>${ic("search")}</span><input type="search" id="mq-${s.id}" data-mq="${s.id}" placeholder="${s.tpl === "peliculas" ? "Busca una película o serie para añadirla" : "Busca un libro o podcast para añadirlo"}" autocomplete="off" enterkeyhint="search" aria-label="Buscar en internet para añadir"></div><div class="mq-res" id="mqr-${s.id}" hidden></div>`;
+  if (tab === "generos" && g) return body;
   return `${kitHead(s, c.sub)}${mqBar}${kitTabs(s, [["generos", "Géneros"], ["general", "General"]], tab)}${body}`;
 }
 function openRate(id){
