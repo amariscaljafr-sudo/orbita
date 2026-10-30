@@ -741,6 +741,35 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.cdrawer{position:relative;margin:10px 10px 22px;perspective:900px}
+.dw-in{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;border-radius:12px;background:linear-gradient(180deg,#3a1418,#24090c);box-shadow:inset 0 6px 14px rgba(0,0,0,.6),inset 0 0 0 3px #e9e4da,0 2px 0 #cfc7b8;transform-origin:50% 0}
+.dw-box{position:relative;min-height:112px;border-radius:9px;padding:24px 8px 8px;background:radial-gradient(120% 90% at 50% 0%,#5a2026,#3a1217);box-shadow:inset 0 2px 6px rgba(0,0,0,.6),inset 0 -1px 0 rgba(255,255,255,.06)}
+.dw-relojes,.dw-bolsos{grid-column:1/-1}
+.dw-l{position:absolute;left:10px;top:7px;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,235,225,.6)}
+.dw-slots{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.dw-it{display:flex;flex-direction:column;align-items:center;gap:4px;width:84px;color:rgba(255,240,235,.85);font-size:10.5px;font-weight:700;transition:transform .2s var(--spring)}
+.dw-it span{max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dw-it .ga{width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 6px rgba(0,0,0,.55))}
+.dw-it .ga.sv svg{width:80px;height:80px}
+.dw-it.on{transform:translateY(-4px)}
+.dw-it.on span{color:#fff}
+.dw-it.on .ga{filter:drop-shadow(0 0 0 #fff) drop-shadow(0 8px 10px rgba(0,0,0,.6))}
+.dw-it.cushion{position:relative;padding-bottom:6px;isolation:isolate}
+.dw-it.cushion::before{content:"";position:absolute;left:12px;right:12px;bottom:22px;height:26px;border-radius:13px;background:linear-gradient(180deg,#e9e1d2,#bdb3a1);box-shadow:inset 0 -3px 5px rgba(0,0,0,.25),0 3px 6px rgba(0,0,0,.4);z-index:-1}
+.dw-it.slot .ga{width:96px;height:56px}
+.dw-it.slot{width:100px}
+.dw-empty{display:flex;gap:10px;align-items:center;color:rgba(255,235,225,.35);font-size:12px;font-weight:700;min-height:60px}
+.dw-relojes .dw-empty i{width:58px;height:26px;border-radius:13px;background:linear-gradient(180deg,#d9d0bf,#a89e8c);opacity:.5;box-shadow:inset 0 -3px 5px rgba(0,0,0,.25)}
+.dw-gafas .dw-empty i{width:70px;height:20px;border-radius:10px;border:2px solid rgba(255,235,225,.25)}
+.dw-bolsos .dw-slots .dw-it{width:110px}
+.dw-bolsos .dw-it .ga{width:104px;height:104px}
+.dw-front{position:absolute;left:-6px;right:-6px;bottom:-14px;height:30px;border-radius:0 0 12px 12px;background:linear-gradient(180deg,#fbfbfa,#e7e5e1);box-shadow:0 10px 18px -8px rgba(0,0,0,.6);display:grid;place-items:center;transform-origin:50% 100%}
+.dw-front i{width:70px;height:6px;border-radius:3px;background:var(--red)}
+.cdrawer.opening .dw-in{animation:drIn .9s var(--ease) both}
+.cdrawer.opening .dw-front{animation:drFront .9s var(--ease) both}
+@keyframes drIn{from{transform:rotateX(62deg) translateY(-40px) scaleY(.35);opacity:.2}to{transform:none;opacity:1}}
+@keyframes drFront{from{transform:translateY(-260px) scaleY(4.5)}to{transform:none}}
+
 .ktw{position:relative;border-radius:var(--r-lg);overflow:hidden;min-width:0}
 .ktw .ktopic{-webkit-user-drag:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;position:relative;z-index:1;transition:transform .3s var(--ease);touch-action:pan-x pan-down}
 .kt-del{position:absolute;left:0;right:0;bottom:0;height:56px;z-index:0;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--red);color:#fff;font-weight:800;font-size:14px}
@@ -976,11 +1005,11 @@ button.crumb{align-self:flex-start}
 .cl-cat.on{background:#fff;color:var(--ink)}
 .cl-stage{position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-start;padding-top:18px}
 .cl-bar{position:absolute;left:4%;right:4%;top:30px;height:8px;border-radius:999px;background:linear-gradient(180deg,#f2f2f0,#9b9b97 55%,#5b5b58);box-shadow:0 3px 6px rgba(0,0,0,.5);z-index:1}
-.cl-rail{position:relative;z-index:2;display:flex;align-items:flex-start;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 calc(50% - 64px) 14px;perspective:900px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.cl-rail{position:relative;z-index:2;display:flex;align-items:flex-start;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 calc(50% - 76px) 14px;perspective:900px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
 .cl-rail::-webkit-scrollbar{display:none}
-.hg{flex:none;width:128px;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;color:#d6d6d2;transform-style:preserve-3d;transition:transform .12s linear,opacity .12s linear;transform-origin:50% 12px;-webkit-tap-highlight-color:transparent}
+.hg{flex:none;width:152px;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;color:#d6d6d2;transform-style:preserve-3d;transition:transform .12s linear,opacity .12s linear;transform-origin:50% 12px;-webkit-tap-highlight-color:transparent}
 .hg .hook{width:86px;height:38px;margin-top:2px;flex:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
-.hg .ga{width:118px;height:168px;margin-top:-6px;object-fit:contain;object-position:top center;filter:drop-shadow(0 14px 14px rgba(0,0,0,.55));transform-origin:50% 0;pointer-events:none}
+.hg .ga{width:146px;height:200px;margin-top:-6px;object-fit:contain;object-position:top center;filter:drop-shadow(0 14px 14px rgba(0,0,0,.55));transform-origin:50% 0;pointer-events:none}
 .hg .ga.sv{display:grid;place-items:start center}
 .hg .ga.sv svg{width:100%;height:100%}
 .hg .hn{margin-top:8px;max-width:120px;font-size:11.5px;font-weight:700;color:rgba(255,255,255,.75);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -991,7 +1020,7 @@ button.crumb{align-self:flex-start}
 @keyframes sway{0%{transform:rotate(0)}20%{transform:rotate(5deg)}45%{transform:rotate(-3.5deg)}70%{transform:rotate(1.5deg)}100%{transform:rotate(0)}}
 .cl-stage.shelf{justify-content:flex-end;padding-top:30px}
 .cl-rail.shelf,.cl-stage.shelf .cl-rail{align-items:flex-end;padding-bottom:0}
-.hg.shelf .ga{height:120px;margin-top:0;object-position:bottom center}
+.hg.shelf .ga{height:150px;margin-top:0;object-position:bottom center}
 .hg.shelf .hn{margin:8px 0 22px}
 .cl-shelf{position:relative;height:16px;margin:-34px 3% 18px;border-radius:3px;background:linear-gradient(180deg,#f7f5f0,#cfcac0);box-shadow:0 10px 16px rgba(0,0,0,.55);z-index:1}
 .cl-empty{width:100%;flex:none;padding:56px 20px 50px;text-align:center;color:rgba(255,255,255,.7);font-weight:700;font-size:14px;line-height:1.5;scroll-snap-align:center}
@@ -1181,7 +1210,7 @@ const PRIO = { alta:"Alta", media:"Media", baja:"Baja" };
 const F = (key, label, type, extra={}) => ({key, label, type, ...extra});
 const TEMPLATES = {
   peliculas:{name:"Películas y series", icon:"film", d:"Por ver, viendo, vistas y tu top 5", fields:[F("tipo","Tipo","select",{options:["Película","Serie","Documental","Anime"]}),F("estado","Estado","select",{options:["Por ver","Viendo","Vista"]}),F("valoracion","Valoración","rating"),F("fecha","Para ver el","date"),F("plataforma","Dónde verla","text"),F("enlace","Enlace","link"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
-  armario:{name:"Armario", icon:"shirt", d:"Tus prendas con fotos y vista 3D", fields:[F("fotos","Fotos","photos"),F("categoria","Categoría","select",{options:["Arriba","Abajo","Vestido","Abrigo","Calzado","Accesorio"]}),F("color","Color","color"),F("temporada","Temporada","select",{options:["Todo el año","Primavera/Verano","Otoño/Invierno"]}),F("estado","Estado","select",{options:["En uso","Guardado","Para donar","Quiero comprar"]}),F("marca","Marca","text"),F("notas","Notas","longtext")], statusKey:"categoria"},
+  armario:{name:"Armario", icon:"shirt", d:"Tus prendas con fotos y vista 3D", fields:[F("fotos","Fotos","photos"),F("categoria","Categoría","select",{options:["Arriba","Abajo","Vestido","Abrigo","Calzado","Accesorio"]}),F("cajon","Sitio en el cajón (accesorios)","select",{options:["Relojes","Gafas","Joyas","Neceseres","Bolsos","Otros"]}),F("color","Color","color"),F("temporada","Temporada","select",{options:["Todo el año","Primavera/Verano","Otoño/Invierno"]}),F("estado","Estado","select",{options:["En uso","Guardado","Para donar","Quiero comprar"]}),F("marca","Marca","text"),F("notas","Notas","longtext")], statusKey:"categoria"},
   outfits:{name:"Calendario de outfits", icon:"layers", d:"Qué te pones cada día", fields:[F("fecha","Día","date"),F("prendas_ids","Prendas del armario","garments"),F("fotos","Foto del outfit","photos"),F("ocasion","Ocasión","select",{options:["Diario","Trabajo","Deporte","Evento","Viaje"]}),F("valoracion","Cómo me sentí","rating"),F("notas","Notas","longtext")], statusKey:"ocasion", dateKey:"fecha", calendar:true},
   entrenos:{name:"Entrenamientos", icon:"dumbbell", d:"Horario semanal, rutinas y registro", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("hecho","Completado","check"),F("notas","Ejercicios y series","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true},
   rutina:{name:"Rutina", icon:"dumbbell", d:"Ejercicios, series y pesos", fields:[F("dia","Día de rutina","select",{options:["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]}),F("grupo","Grupo muscular","text"),F("series","Series x reps","text"),F("peso","Peso (kg)","number"),F("notas","Notas","longtext")], statusKey:"dia"},
@@ -1216,7 +1245,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "37";
+const APP_VERSION = "38";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -3225,15 +3254,58 @@ function floodCut(src){
   for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++){ const i = y * w + x; s[i] = (a[i] * 4 + a[i - 1] + a[i + 1] + a[i - w] + a[i + w]) / 8; }
   return applyAlpha(src, s, w, h);
 }
-async function cutObject(blob){
-  const src = await blobCanvas(blob, 1100);
-  let out = floodCut(src), cov = out ? coverage(out) : 0;
-  if (!out || cov < .04 || cov > .97){
-    const seg = await mpTask("object"), m = await maskOf(seg, src, {keypoint:{x:.5, y:.5}});
-    out = applyAlpha(src, m.data, m.w, m.h); cov = coverage(out);
-    if (cov < .04 || cov > .97) throw new Error("nothing");
+// keep only the main shape (and pieces at least 15% of it, like the other shoe of a pair)
+function keepMain(c){
+  const w = c.width, hh = c.height, x = c.getContext("2d"), im = x.getImageData(0, 0, w, hh), d = im.data, n = w * hh;
+  const lab = new Int32Array(n), sizes = [0], st = new Int32Array(n);
+  let id = 0;
+  for (let p = 0; p < n; p++){
+    if (lab[p] || d[p * 4 + 3] < 110) continue;
+    id++; let top = 0, cnt = 0; st[top++] = p; lab[p] = id;
+    while (top){ const q = st[--top]; cnt++; const qx = q % w;
+      if (qx > 0 && !lab[q - 1] && d[(q - 1) * 4 + 3] >= 110){ lab[q - 1] = id; st[top++] = q - 1; }
+      if (qx < w - 1 && !lab[q + 1] && d[(q + 1) * 4 + 3] >= 110){ lab[q + 1] = id; st[top++] = q + 1; }
+      if (q >= w && !lab[q - w] && d[(q - w) * 4 + 3] >= 110){ lab[q - w] = id; st[top++] = q - w; }
+      if (q < n - w && !lab[q + w] && d[(q + w) * 4 + 3] >= 110){ lab[q + w] = id; st[top++] = q + w; } }
+    sizes.push(cnt);
   }
-  return cropAlpha(out, .01);
+  if (id < 2) return c;
+  const big = Math.max(...sizes), keep = sizes.map(s => s >= big * .15);
+  for (let p = 0; p < n; p++){ const l = lab[p]; if (l ? !keep[l] : d[p * 4 + 3] < 110) d[p * 4 + 3] = l && !keep[l] ? 0 : d[p * 4 + 3]; }
+  // also clear faint pixels that are far from any kept shape
+  x.putImageData(im, 0, 0); return c;
+}
+async function cutObject(blob){
+  const src = await blobCanvas(blob, 1200), n0 = src.width * src.height;
+  // 1. a garment worn by a person (shop photos with a model): keep only the clothes
+  try {
+    const seg = await mpTask("person"), r = seg.segment(src), ms = r.confidenceMasks || [];
+    if (ms.length >= 5){
+      const w = ms[0].width, hh = ms[0].height, n = w * hh, bg = ms[0].getAsFloat32Array(), b1 = ms[2].getAsFloat32Array(), b2 = ms[3].getAsFloat32Array(), cl = Float32Array.from(ms[4].getAsFloat32Array()), ot = ms[5] ? ms[5].getAsFloat32Array() : null;
+      let person = 0, skin = 0, clo = 0;
+      for (let i = 0; i < n; i++){ if (bg[i] < .5) person++; if (b1[i] > .5 || b2[i] > .5) skin++; if (cl[i] > .5) clo++; }
+      if (ot) for (let i = 0; i < n; i++) cl[i] = Math.max(cl[i], ot[i] * .9);
+      r.close && r.close();
+      if (person / n > .025 && skin / n > .004 && clo / n > .012){
+        const out = keepMain(applyAlpha(src, cl, w, hh));
+        if (coverage(out) > .005) return cropAlpha(out, .02);
+      }
+    } else r.close && r.close();
+  } catch {}
+  // 2. plain background (product photos)
+  let out = floodCut(src), cov = out ? coverage(out) : 0;
+  if (out && cov >= .04 && cov <= .95) return cropAlpha(keepMain(out), .02);
+  // 3. anything else: tap the garment in a few places and join what belongs together
+  const seg = await mpTask("object"), pts = [[.5, .5], [.5, .36], [.5, .64], [.38, .5], [.62, .5]], masks = [];
+  for (const [kx, ky] of pts){ try { masks.push(await maskOf(seg, src, {keypoint:{x:kx, y:ky}})); } catch {} }
+  if (!masks.length) throw new Error("nothing");
+  const m0 = masks[0], len = m0.data.length, cover = m => { let k = 0; for (let i = 0; i < len; i++) if (m.data[i] > .5) k++; return k / len; };
+  const good = masks.filter(m => { const cv = cover(m); if (cv < .02 || cv > .9) return false; let inter = 0, a = 0; for (let i = 0; i < len; i++){ if (m0.data[i] > .5){ a++; if (m.data[i] > .5) inter++; } } return m === m0 || (a && inter / a > .25); });
+  if (!good.length) throw new Error("nothing");
+  const al = new Float32Array(len); for (const m of good) for (let i = 0; i < len; i++) if (m.data[i] > al[i]) al[i] = m.data[i];
+  out = keepMain(applyAlpha(src, al, m0.w, m0.h)); cov = coverage(out);
+  if (cov < .03 || cov > .95) throw new Error("nothing");
+  return cropAlpha(out, .02);
 }
 // body landmarks of the cutout (normalized), used to place garments
 async function poseOf(canvas){
@@ -3250,7 +3322,7 @@ const cutJobs = new Map();
 S.cutPref = lsGet("orbita.cutpref", {});
 function garmentURL(pid){
   if (S.cutPref[pid] === "orig") return imgURL(pid);
-  const key = "cut2:" + pid;
+  const key = "cut3:" + pid;
   if (imgCache.has(key)) return imgCache.get(key);
   if (cutJobs.has(pid)) return cutJobs.get(pid);
   const job = (async () => {
@@ -4046,6 +4118,20 @@ const HOOK = `<svg class="hook" viewBox="0 0 120 34" aria-hidden="true"><path d=
 const CLIP = `<svg class="hook" viewBox="0 0 120 52" aria-hidden="true"><path d="M60 24 V14 a6 6 0 1 1 6 -6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M16 26 H104 M22 26 v18 M98 26 v18" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/><rect x="17" y="40" width="10" height="8" rx="2" fill="currentColor"/><rect x="93" y="40" width="10" height="8" rx="2" fill="currentColor"/></svg>`;
 const gArt = (g, cls="") => g.photo ? `<img class="ga ${cls}" data-cut="${g.photo}" alt="" draggable="false">` : `<span class="ga sv ${cls}">${shapeSVG(g.cat, g.color)}</span>`;
 function outfitThumbs(e){ const s = secById(e.sectionId), gF = s && s.fields.find(f => f.type === "garments"), ids = gF && Array.isArray(e.fields?.[gF.key]) ? e.fields[gF.key].filter(id => S.items.has(id)) : []; return ids.length ? `<span class="g-strip sm">${ids.slice(0, 5).map(id => `<span class="g-mini">${gThumb(garmentInfo(S.items.get(id)))}</span>`).join("")}</span>` : ""; }
+const DRAWER = [["Relojes","Guardarrelojes","clock"],["Gafas","Gafas de sol y de ver","search"],["Joyas","Joyero","star"],["Neceseres","Neceseres","bookmark"],["Bolsos","Bolsos y mochilas","gift"],["Otros","Gorras, cinturones y más","layers"]];
+const DRAWER_WORDS = [[/reloj|watch|smartwatch/i, "Relojes"],[/gafa|lente|sunglass/i, "Gafas"],[/collar|pulsera|anillo|pendiente|joya|cadena|brazalete|broche/i, "Joyas"],[/neceser|estuche|cosm[eé]tic/i, "Neceseres"],[/bolso|mochila|cartera|ri[ñn]onera|bandolera|maleta|tote|clutch/i, "Bolsos"]];
+const drawerOf = g => { const e = S.items.get(g.id), v = e?.fields?.cajon; if (v) return v; for (const [r, k] of DRAWER_WORDS) if (r.test(g.title)) return k; return "Otros"; };
+function drawerHtml(list, sel){
+  const anim = S.drAnim; S.drAnim = false;
+  const by = k => list.filter(g => drawerOf(g) === k);
+  const piece = (g, cls="") => `<button class="dw-it ${cls}${sel === g.id ? " on" : ""}" data-act="hg-pick" data-id="${g.id}" aria-label="${esc(g.title)}">${gArt(g)}<span>${esc(g.title)}</span></button>`;
+  return `<div class="cdrawer${anim && !reduce.matches ? " opening" : ""}">
+    <div class="dw-in">${DRAWER.map(([k, l]) => { const xs = by(k);
+      return `<div class="dw-box dw-${k.toLowerCase()}"><span class="dw-l">${esc(l)}</span>
+        <div class="dw-slots">${xs.length ? xs.map(g => piece(g, k === "Relojes" ? "cushion" : k === "Gafas" ? "slot" : "")).join("") : `<span class="dw-empty">${k === "Relojes" ? '<i></i><i></i><i></i>' : k === "Gafas" ? '<i></i><i></i>' : "Vacío"}</span>`}</div></div>`; }).join("")}</div>
+    <div class="dw-front" aria-hidden="true"><i></i></div>
+  </div>`;
+}
 function vArmario(s){
   const ordIdx = id => { const o = (S.settings.clOrder || {})[cat0] || []; const k = o.indexOf(id); return k < 0 ? 1e6 : k; };
   let cat0 = S.clCat || (CL_GROUPS.find(([k]) => garments().some(g => g.cat === k)) || CL_GROUPS[0])[0];
@@ -4060,9 +4146,9 @@ function vArmario(s){
     <div class="cl-body">
       <div class="cl-in">
         <div class="cl-cats">${CL_GROUPS.map(([k, l]) => `<button class="cl-cat${k === cat ? " on" : ""}" data-act="cl-cat" data-c="${k}">${esc(l)}<span>${gs.filter(g => g.cat === k).length}</span></button>`).join("")}</div>
-        <div class="cl-stage ${grp[2]}">${grp[2] === "shelf" ? "" : `<div class="cl-bar"></div>`}
+        ${cat === "Accesorio" ? drawerHtml(list, S.clSel) : `<div class="cl-stage ${grp[2]}">${grp[2] === "shelf" ? "" : `<div class="cl-bar"></div>`}
           <div class="cl-rail" data-rail data-cat="${cat}" style="--ov:${Math.min(70, Math.max(0, (list.length - 3) * 11))}px">${list.length ? list.map(item).join("") : `<div class="cl-empty">Aún no hay ${esc(grp[1].toLowerCase())}.<br>Añádelas con una foto o con el enlace de la tienda.</div>`}</div>
-          ${grp[2] === "shelf" ? `<div class="cl-shelf"></div>` : ""}</div>
+          ${grp[2] === "shelf" ? `<div class="cl-shelf"></div>` : ""}</div>`}
       </div>
       <div class="cl-door l" aria-hidden="true"><i></i></div><div class="cl-door r" aria-hidden="true"><i></i></div>
     </div>
@@ -4246,7 +4332,7 @@ Object.assign(ACT, {
   "ev-done"(el){ const e = S.items.get(el.dataset.id); if (e){ kitPut(e, {hecho:!e.fields?.hecho}); buzz(); } },
   "cl-sort"(){ S.clSort = !S.clSort; S.clSel = ""; buzz(); render(); },
   "cl-move"(el){ const r = $("[data-rail]"); if (!r) return; const ids = $$(".hg", r).map(x => x.dataset.id), i = ids.indexOf(el.dataset.id), j = i + +el.dataset.d; if (i < 0 || j < 0 || j >= ids.length) return; [ids[i], ids[j]] = [ids[j], ids[i]]; saveClOrder(r.dataset.cat, ids); r._last = r.scrollLeft; render(); },
-  "cl-cat"(el){ S.clCat = el.dataset.c; S.clSel = ""; render(); },
+  "cl-cat"(el){ if (el.dataset.c === "Accesorio" && S.clCat !== "Accesorio") S.drAnim = true; S.clCat = el.dataset.c; S.clSel = ""; render(); },
   "hg-pick"(el){ if (S.clSort) return; S.clSel = S.clSel === el.dataset.id ? "" : el.dataset.id; const r = el.closest("[data-rail]"); if (r) r._last = r.scrollLeft; buzz(); render(); },
   "cl-wear"(el){ const g = garments().find(x => x.id === el.dataset.id); if (g) ACT.wear({dataset:{c:g.cat, id:g.id}}); },
   "topic-new"(el){ const p = secById(el.dataset.parent); swapLayer(() => openLayer(`${sheetHead(p && p.tpl === "conocimientos" ? "Nuevo tema" : "Nuevo apartado")}<form class="stack" data-form="topic-new" data-parent="${el.dataset.parent}"><div class="field"><label for="tn-name">Nombre</label><input type="text" id="tn-name" name="name" placeholder="Ej.: Tecnología, Mochilas, Zapatos…" required></div><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Crear</button></div></div></form>`)); },
@@ -4297,6 +4383,7 @@ function normalizeKits(){
     const r = kit.migrate ? kit.migrate(e, s) : {sub:kit.def};
     putItem({...e, sub:r.sub, fields:{...(e.fields || {}), ...(r.fields || {})}}, true); n++;
   }
+  for (const x of sections()) if (x.tpl === "armario" && !x.fields.some(f => f.key === "cajon")){ const i = x.fields.findIndex(f => f.key === "categoria"); x.fields.splice(i + 1, 0, {key:"cajon", label:"Sitio en el cajón (accesorios)", type:"select", options:["Relojes","Gafas","Joyas","Neceseres","Bolsos","Otros"]}); ch = true; }
   if (!S.settings.cleanup3){
     const gone = sections().filter(x => x.tpl === "musica").flatMap(x => [x.id, ...descendants(x.id).map(c => c.id)]);
     for (const e of ofKind("entry").filter(e => gone.includes(e.sectionId))) delItem(e.id, true);
