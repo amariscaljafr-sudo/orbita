@@ -741,6 +741,27 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.gq.pic{background:#111}
+.gq-bg{position:absolute;inset:0;display:flex;z-index:0;pointer-events:none}
+.gq-bg img{flex:1;min-width:0;height:100%;object-fit:cover;filter:saturate(1.05)}
+.gq-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.25) 55%,hsla(var(--h),60%,18%,.55) 100%)}
+.gq.pic b,.gq.pic > span:not(.gq-bg){text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.genre-h{position:relative;overflow:hidden}
+.genre-h.pic{min-height:120px;align-items:flex-end;background:#111}
+.genre-h > b,.genre-h > span:not(.gq-bg){position:relative;z-index:1;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.msearch{display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:18px;background:var(--paper-2)}
+.ms-in{display:flex;align-items:center;gap:8px;padding:0 14px;min-height:48px;border-radius:14px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line)}
+.ms-in svg{width:18px;height:18px;color:var(--mute)}
+.ms-in input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;font-family:inherit}
+.ms-res{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto}
+.ms-r{display:flex;align-items:center;gap:12px;padding:6px;border-radius:12px;text-align:left;background:var(--paper);min-width:0}
+.ms-r:active{transform:scale(.98)}
+.ms-r img,.ms-r .mp-t{flex:none;width:44px;height:64px;border-radius:7px;object-fit:cover;font-size:16px}
+.ms-cur{display:flex;align-items:center;gap:12px;padding:10px;border-radius:16px;background:var(--paper-2)}
+.ms-cur img,.ms-cur .mp-t{flex:none;width:52px;height:76px;border-radius:8px;object-fit:cover;font-size:18px}
+.ms-cur > span{flex:1;min-width:0;font-size:13px;color:var(--mute);display:flex;flex-direction:column;gap:2px}
+.ms-cur > span b{color:var(--ink);font-size:15px}
+
 .rep .seg{margin-bottom:2px}
 .rep-days,.rep-until{display:none;flex-direction:column;gap:8px;margin-top:10px}
 .rep:has(#it-r-days:checked) .rep-days{display:flex}
@@ -821,7 +842,7 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .gq{position:relative;overflow:hidden;min-height:118px;border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;color:#fff;background:linear-gradient(150deg,hsl(var(--h) 58% 36%),hsl(calc(var(--h) + 30) 62% 15%));box-shadow:0 12px 24px -16px hsl(var(--h) 60% 20%);transition:transform .2s var(--spring)}
 .gq:active{transform:scale(.96)}
 .gq b{font-size:17px;font-weight:900;letter-spacing:-.02em;line-height:1.1;position:relative;z-index:1}
-.gq > span:not(.gq-p){font-size:12px;font-weight:700;opacity:.75;margin-top:3px;position:relative;z-index:1}
+.gq > span:not(.gq-bg){font-size:12px;font-weight:700;opacity:.75;margin-top:3px;position:relative;z-index:1}
 .gq.empty0 > span{opacity:.6}
 .gq-p{position:absolute;right:10px;bottom:10px;display:flex}
 .gq-p .tp{width:30px;margin-left:-12px;box-shadow:0 4px 10px rgba(0,0,0,.4);transform:rotate(6deg);border:2px solid rgba(255,255,255,.85)}
@@ -1123,7 +1144,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "21";
+const APP_VERSION = "22";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1865,6 +1886,7 @@ function fieldInput(f, v, id){
     case "link": return `<div class="row" style="flex-wrap:nowrap"><input type="url" id="${id}" name="${n}" value="${esc(v || "")}" placeholder="https://…">${v ? `<a class="ibtn" style="flex:none;background:var(--paper-2)" href="${esc(safeUrl(v))}" target="_blank" rel="noopener" aria-label="Abrir enlace">${ic("link")}</a>` : ""}</div>`;
     case "check": return `<label class="toggle"><span><b>${esc(f.label)}</b></span><input type="checkbox" id="${id}" name="${n}"${v ? " checked" : ""}></label>`;
     case "photos": return photosField(f, v, id);
+    case "hidden": return `<input type="hidden" id="${id}" name="${n}" value="${esc(v ?? "")}">`;
     case "days": { const a = Array.isArray(v) ? v : []; return `<div class="days-in">${DOW.map((d, i) => `<input type="checkbox" name="${n}" id="${id}-${i}" value="${i + 1}"${a.includes(i + 1) ? " checked" : ""}><label for="${id}-${i}" title="${DOWL[i]}">${d}</label>`).join("")}</div>`; }
     case "rows": return rowsField(f, v, id);
     case "ref": { const opts = refOptions(f); if (!opts.length) return `<div class="note-box">${esc(f.empty || "Aún no hay opciones.")}</div><input type="hidden" name="${n}" value="${esc(v || "")}">`; return opts.length <= 8 ? `<div class="seg">${[["", "—"], ...opts].map(([val, l], i) => `<input type="radio" name="${n}" id="${id}-${i}" value="${esc(val)}"${(v || "") === val ? " checked" : ""}><label for="${id}-${i}">${esc(l)}</label>`).join("")}</div>` : `<select id="${id}" name="${n}"><option value="">—</option>${opts.map(([val, l]) => `<option value="${esc(val)}"${v === val ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`; }
@@ -1895,8 +1917,8 @@ function openEntry(sid, item, preset={}){
   openLayer(`${sheetHead(esc(secPath(s)) + (kd && kd.label ? ` <span class="kd-l">· ${esc(kd.label)}</span>` : ""), e.example ? '<span class="tag ex">Ejemplo</span>' : "")}
     <form class="stack" data-form="entry" data-id="${e.id}" data-sec="${s.id}" data-sub="${kd ? e.sub : ""}" autocomplete="off">
       ${kd && kd.autoTitle ? `<input type="hidden" name="title" value="${esc(e.title || "-")}">` : `<div class="field"><input type="text" class="title-in" id="en-title" name="title" value="${esc(e.title)}" placeholder="${esc(kd?.title || "Nombre")}" aria-label="Nombre" required></div>`}
-      ${kd && kd.meal ? mealFormTop(s, e) : ""}
-      ${flds.map((f, i) => `<div class="field">${f.type === "check" ? "" : `<label for="en-f${i}">${esc(f.label)}</label>`}${fieldInput(f, e.fields[f.key], "en-f" + i)}</div>`).join("")}
+      ${kd && kd.meal ? mealFormTop(s, e) : ""}${kd && kd.formTop ? kd.formTop(s, e) : ""}
+      ${flds.map((f, i) => f.type === "hidden" ? fieldInput(f, e.fields[f.key], "en-f" + i) : `<div class="field">${f.type === "check" ? "" : `<label for="en-f${i}">${esc(f.label)}</label>`}${fieldInput(f, e.fields[f.key], "en-f" + i)}</div>`).join("")}
       ${kd && kd.meal ? mealFormEnd() : ""}
       <div id="linked">${linked()}</div>
       <div class="sheet-f">${isNew ? "<span></span>" : `<button type="button" class="btn danger" data-act="del" data-id="${e.id}">${ic("trash")}<span>Eliminar</span></button>`}<div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button type="submit" class="btn pri">Guardar</button></div></div>
@@ -3493,7 +3515,7 @@ const weekStart = (off=0) => { const t = new Date(); return addDays(new Date(t.g
 const MEALS = ["Desayuno","Comida","Merienda","Cena","Snack"];
 const NUT = [["kcal","Calorías","kcal"],["prot","Proteínas","g"],["carb","Carbohidratos","g"],["grasa","Grasas","g"],["azucar","Azúcares","g"],["fibra","Fibra","g"]];
 const MACROS = NUT.map(([k, l, u]) => F(k, `${l} (${u})`, "number"));
-const KIT_V = 2;
+const KIT_V = 3;
 const GEN_PELI = ["Acción","Aventura","Comedia","Drama","Terror","Suspense","Ciencia ficción","Fantasía","Romance","Animación","Crimen","Documental","Histórica","Musical","Bélica","Familiar"];
 const GEN_LIB = ["Novela","Fantasía","Ciencia ficción","Thriller","Romance","Terror","Historia","Biografías","Desarrollo personal","Psicología","Negocios y dinero","Ciencia","Filosofía","Tecnología","True crime","Humor","Cómic","Poesía"];
 const mediaFields = (types, states, who, prog, gens) => [F("tipo","Tipo","select",{options:types}),F("genero","Género","select",{options:gens}),F("estado","Estado","select",{options:states}),F("valoracion","Mi nota","rating"),F("autor",who,"text"),F("progreso",prog,"text"),F("portada","Portada","photos"),F("enlace","Enlace","link"),F("notas","Notas","longtext")];
@@ -3503,9 +3525,9 @@ const KITS = {
     rutina:{label:"Rutina", title:"Nombre de la rutina (pierna, torso…)", fields:[F("dias","Días que toca","days"),F("grupo","Grupo muscular","text"),F("ejercicios","Ejercicios","rows",{cols:[["n","Ejercicio"],["s","Series"],["r","Reps"],["k","Kg"]]}),F("notas","Notas","longtext")]},
     sesion:{label:"Entreno hecho", short:"Entreno", title:"Qué entrenaste", fields:[F("fecha","Día","date"),F("hora","Hora","time"),F("tipo","Tipo","select",{options:["Fuerza","Cardio","Movilidad","Deporte","Descanso"]}),F("duracion","Minutos","number"),F("intensidad","Intensidad","select",{options:["Suave","Media","Alta"]}),F("sensacion","Cómo me sentí","rating"),F("notas","Ejercicios y series","longtext")], dateKey:"fecha", timeKey:"hora", calendar:true}
   }},
-  peliculas:{def:"obra", kinds:{obra:{label:"Película o serie", title:"Título", fields:mediaFields(["Película","Serie"], ["Quiero ver","Viendo","Vista"], "Dónde verla", "Por dónde voy (T2 · E5)", GEN_PELI)}},
+  peliculas:{def:"obra", kinds:{obra:{label:"Película o serie", title:"Título", formTop:(s, e) => mediaSearchTop(s, e), fields:[F("tipo","Tipo","select",{options:["Película","Serie"]}),F("genero","Género","select",{options:GEN_PELI}),F("estado","Estado","select",{options:["Quiero ver","Viendo","Vista"]}),F("valoracion","Mi nota","rating"),F("anio","Año","number"),F("director","Director o creador","text"),F("autor","Dónde verla","text"),F("progreso","Por dónde voy (T2 · E5)","text"),F("cover","Portada","hidden"),F("portada","Tu propia portada (opcional)","photos"),F("enlace","Enlace","link"),F("notas","Sinopsis y notas","longtext")]}},
     migrate(e){ const f = e.fields || {}; return {sub:"obra", fields:{estado:{"Por ver":"Quiero ver"}[f.estado] || f.estado || "Quiero ver", tipo:{Documental:"Película", Anime:"Serie"}[f.tipo] || f.tipo || "Película", autor:f.autor || f.plataforma || ""}}; }},
-  libros:{def:"obra", rename:[/^Libros$/, "Libros y podcasts"], kinds:{obra:{label:"Libro o podcast", title:"Título", fields:mediaFields(["Libro","Podcast"], ["Quiero leer","Leyendo","Terminado"], "Autor o presentador", "Por dónde voy (página, episodio)", GEN_LIB)}},
+  libros:{def:"obra", rename:[/^Libros$/, "Libros y podcasts"], kinds:{obra:{label:"Libro o podcast", title:"Título", formTop:(s, e) => mediaSearchTop(s, e), fields:[F("tipo","Tipo","select",{options:["Libro","Podcast"]}),F("genero","Género","select",{options:GEN_LIB}),F("estado","Estado","select",{options:["Quiero leer","Leyendo","Terminado"]}),F("valoracion","Mi nota","rating"),F("anio","Año","number"),F("autor","Autor o presentador","text"),F("progreso","Por dónde voy (página, episodio)","text"),F("cover","Portada","hidden"),F("portada","Tu propia portada (opcional)","photos"),F("enlace","Enlace","link"),F("notas","Sinopsis y notas","longtext")]}},
     migrate(e){ const f = e.fields || {}; return {sub:"obra", fields:{estado:{"Por leer":"Quiero leer", "Leído":"Terminado"}[f.estado] || f.estado || "Quiero leer", tipo:f.tipo || "Libro"}}; }},
   comidas:{def:"comida", rename:[/^Comidas$/, "Comidas y salud"], kinds:{
     comida:{label:"Comida", title:"Qué comes (plato)", fields:[F("fecha","Día","date"),F("momento","Momento","select",{options:MEALS}),...MACROS,F("notas","Ingredientes y notas","longtext")], dateKey:"fecha", meal:true},
@@ -3640,7 +3662,7 @@ const MEDIA_CFG = {
 };
 S.mtype = {}; S.mgenre = {}; S.mst = {};
 const hue = t => { let h = 0; for (const c of String(t)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
-const poster = (e, cls="") => { const ph = (e.fields?.portada || [])[0]; return ph ? `<img class="${cls}" data-img="${ph}" alt="">` : `<span class="mp-t ${cls}" style="--h:${hue(e.title)}">${esc((e.title || "?").split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase())}</span>`; };
+const poster = (e, cls="") => { const ph = (e.fields?.portada || [])[0]; return ph ? `<img class="${cls}" data-img="${ph}" alt="">` : e.fields?.cover ? `<img class="${cls}" src="${esc(e.fields.cover)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : `<span class="mp-t ${cls}" style="--h:${hue(e.title)}">${esc((e.title || "?").split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase())}</span>`; };
 const rateBtns = e => `<span class="mrate">${[1,2,3,4,5].map(i => `<button class="${i <= (+e.fields?.valoracion || 0) ? "on" : ""}" data-act="m-rate" data-id="${e.id}" data-v="${i}" aria-label="${i} estrellas"><svg viewBox="0 0 24 24"><path d="${P.star}"/></svg></button>`).join("")}</span>`;
 const NOGEN = "Sin género";
 const genOf = e => e.fields?.genero || NOGEN;
@@ -3658,8 +3680,8 @@ function topBlock(s, key, label, n){
 function mediaCard(s, e, c){
   const f = e.fields || {}, st = Math.max(0, c.st.indexOf(f.estado || c.st[0]));
   return `<article class="mcard"><button class="mposter" data-act="open" data-id="${e.id}">${poster(e)}${f.tipo ? `<i class="mtype">${esc(f.tipo)}</i>` : ""}</button>
-    <div class="mbody"><b class="mt">${esc(e.title)}</b><span class="ms">${esc([f.autor, st === 1 ? f.progreso : ""].filter(Boolean).join(" · "))}</span>
-    ${st === 2 ? rateBtns(e) : `<button class="chip sm" data-act="m-move" data-id="${e.id}" data-to="${st + 1}">${st === 0 ? ic("play") + c.start : ic("check") + c.end}</button>`}</div></article>`;
+    <div class="mbody"><b class="mt">${esc(e.title)}</b><span class="ms">${esc([f.anio, s.tpl === "peliculas" ? f.director : f.autor, st === 1 ? f.progreso : ""].filter(Boolean).join(" · "))}</span>
+    ${st === 2 ? rateBtns(e) : `<button class="chip sm" data-act="m-move" data-id="${e.id}" data-to="2">${ic("check")}${c.end}</button>`}</div></article>`;
 }
 function vMedia(s){
   const c = MEDIA_CFG[s.tpl], es = entriesOf(s.id), tab = ["generos","general"].includes(kitTab(s, "generos")) ? kitTab(s, "generos") : "generos";
@@ -3672,25 +3694,25 @@ function vMedia(s){
       ${topBlock(s, "__all", "Top 10 general", 10)}
       ${now.length ? `<section class="stack" style="gap:10px"><h2 class="sub-h">${esc(c.stl[1])} ahora</h2><div class="mgrid">${now.map(e => mediaCard(s, e, c)).join("")}</div></section>` : ""}`;
   } else if (g){
-    const st = S.mst[s.id] || "0", tf = S.mtype[s.id] || "";
+    const st = ["all","0","2","top"].includes(S.mst[s.id]) ? S.mst[s.id] : "all", tf = S.mtype[s.id] || "";
     const inG = es.filter(e => genOf(e) === g);
     const cnt = i => inG.filter(e => (e.fields?.estado || c.st[0]) === c.st[i]).length;
     let inner;
     if (st === "top") inner = topBlock(s, "g:" + g, "Top 5 de " + g.toLowerCase(), 5);
     else {
-      const list = inG.filter(e => (e.fields?.estado || c.st[0]) === c.st[+st] && (!tf || e.fields?.tipo === tf)).sort((a, b) => +st === 2 ? (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0) : (b.updatedAt || 0) - (a.updatedAt || 0));
+      const list = inG.filter(e => (st === "all" || (e.fields?.estado || c.st[0]) === c.st[+st]) && (!tf || e.fields?.tipo === tf)).sort((a, b) => st === "2" ? (+b.fields?.valoracion || 0) - (+a.fields?.valoracion || 0) : (b.updatedAt || 0) - (a.updatedAt || 0));
       inner = `<div class="chips">${["", ...c.types].map(t => `<button class="chip${t === tf ? " on" : ""}" data-act="m-type" data-sec="${s.id}" data-t="${esc(t)}">${t ? esc(t) + "s" : "Todo"}</button>`).join("")}</div>
-        ${list.length ? `<div class="mgrid">${list.map(e => mediaCard(s, e, c)).join("")}</div>` : kempty(+st === 0 ? "Nada pendiente en este género." : +st === 1 ? "Nada a medias en este género." : "Aún no has terminado nada de este género.", "Añade algo y aparecerá aquí.")}
-        <div class="row">${kbtn(s, "obra", c.add, {estado:c.st[+st], ...(g !== NOGEN ? {genero:g} : {}), ...(tf ? {tipo:tf} : {})})}</div>`;
+        ${list.length ? `<div class="mgrid">${list.map(e => mediaCard(s, e, c)).join("")}</div>` : kempty(st === "all" ? "Aún no hay nada en este género." : st === "0" ? "Nada pendiente en este género." : "Aún no has terminado nada de este género.", "Añade algo y aparecerá aquí.")}
+        <div class="row">${kbtn(s, "obra", c.add, {estado:st === "all" ? c.st[0] : c.st[+st], ...(g !== NOGEN ? {genero:g} : {}), ...(tf ? {tipo:tf} : {})})}</div>`;
     }
     body = `<button class="crumb" data-act="m-genre" data-sec="${s.id}" data-g="">${ic("left")}Todos los géneros</button>
-      <div class="genre-h" style="--h:${hue(g)}"><b>${esc(g)}</b><span>${inG.length} ${inG.length === 1 ? "título" : "títulos"}</span></div>
-      <div class="ktabs sm">${[["0", c.stl[0], cnt(0)], ["1", c.stl[1], cnt(1)], ["2", c.stl[2], cnt(2)], ["top", "Top 5"]].map(([k, l, n]) => `<button class="ktab${k === st ? " on" : ""}" data-act="m-st" data-sec="${s.id}" data-t="${k}">${esc(l)}${n ? `<span class="n">${n}</span>` : ""}</button>`).join("")}</div>
+      <div class="genre-h${(S.gimg[s.tpl + ":" + g] || []).length ? " pic" : ""}" style="--h:${hue(g)}">${(S.gimg[s.tpl + ":" + g] || []).length ? `<span class="gq-bg" aria-hidden="true">${S.gimg[s.tpl + ":" + g].map(u => `<img src="${esc(u)}" alt="" referrerpolicy="no-referrer">`).join("")}</span>` : ""}<b>${esc(g)}</b><span>${inG.length} ${inG.length === 1 ? "título" : "títulos"}</span></div>
+      <div class="ktabs sm">${[["all", "Todas", inG.length], ["0", c.stl[0], cnt(0)], ["2", c.stl[2], cnt(2)], ["top", "Top 5"]].map(([k, l, n]) => `<button class="ktab${k === st ? " on" : ""}" data-act="m-st" data-sec="${s.id}" data-t="${k}">${esc(l)}${n ? `<span class="n">${n}</span>` : ""}</button>`).join("")}</div>
       ${inner}`;
   } else {
     const gens = [...c.genres, ...(es.some(e => genOf(e) === NOGEN) ? [NOGEN] : []), ...[...new Set(es.map(genOf))].filter(x => x !== NOGEN && !c.genres.includes(x))];
-    body = `<div class="genres">${gens.map(x => { const xs = es.filter(e => genOf(e) === x), pics = xs.slice(0, 3);
-      return `<button class="gq${xs.length ? "" : " empty0"}" style="--h:${hue(x)}" data-act="m-genre" data-sec="${s.id}" data-g="${esc(x)}"><b>${esc(x)}</b><span>${xs.length ? `${xs.length} ${xs.length === 1 ? "título" : "títulos"}` : "Vacío"}</span>${pics.length ? `<span class="gq-p">${pics.map(e => `<span class="tp">${poster(e)}</span>`).join("")}</span>` : ""}</button>`; }).join("")}</div>
+    body = `<div class="genres" data-tpl="${s.tpl}">${gens.map(x => { const xs = es.filter(e => genOf(e) === x), own = xs.map(e => e.fields?.cover).filter(Boolean).slice(0, 3);
+      return `<button class="gq${xs.length ? "" : " empty0"}" style="--h:${hue(x)}" data-act="m-genre" data-sec="${s.id}" data-g="${esc(x)}" data-own="${esc(JSON.stringify(own))}"><b>${esc(x)}</b><span>${xs.length ? `${xs.length} ${xs.length === 1 ? "título" : "títulos"}` : "Vacío"}</span></button>`; }).join("")}</div>
       <div class="row">${kbtn(s, "obra", c.add, {estado:c.st[0]})}</div>`;
   }
   return `${kitHead(s, c.sub)}${kitTabs(s, [["generos", "Géneros"], ["general", "General"]], tab)}${body}`;
@@ -4389,6 +4411,142 @@ Object.assign(ACT, {
   "c-day"(el){ const e = S.items.get(el.dataset.id); if (!e) return; const tk = todayKey(), ds = new Set(e.days || []); ds.has(tk) ? ds.delete(tk) : ds.add(tk); putItem({...e, days:[...ds].sort().slice(-400)}); buzz(); },
   "c-st"(el){ S.cst[el.dataset.sec] = el.dataset.v; render(); }
 });
+
+/* ================= online search for films, series, books and podcasts (free, no account) ================= */
+let jsonpN = 0;
+function jsonp(url, ms=12000){
+  return new Promise((res, rej) => {
+    const cb = "__orbJ" + (++jsonpN), sc = document.createElement("script");
+    const done = () => { clearTimeout(t); try { delete window[cb]; } catch { window[cb] = undefined; } sc.remove(); };
+    const t = setTimeout(() => { done(); rej(new Error("timeout")); }, ms);
+    window[cb] = d => { done(); res(d); };
+    sc.onerror = () => { done(); rej(new Error("net")); };
+    sc.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb;
+    document.head.appendChild(sc);
+  });
+}
+const getJSON = async (url, ms=12000) => { const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms); try { const r = await fetch(url, {signal:ctl.signal}); if (!r.ok) throw new Error(String(r.status)); return await r.json(); } finally { clearTimeout(t); } };
+const itunes = (term, media, entity, limit=15) => jsonp(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=${media}&entity=${entity}&country=es&lang=es_es&limit=${limit}`).then(d => d.results || []);
+const bigArt = u => (u || "").replace(/\/\d+x\d+(bb)?\.(jpg|png)/, "/600x600bb.jpg");
+const yearOf = d => (String(d || "").match(/\d{4}/) || [""])[0];
+const stripHtml = s => String(s || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+const GENRE_MAP_PELI = [[/anim|anime|infantil/i, "Animación"],[/terror|horror/i, "Terror"],[/ciencia ficci|science/i, "Ciencia ficción"],[/fantas/i, "Fantasía"],[/comed/i, "Comedia"],[/romance|romant/i, "Romance"],[/thriller|suspense|mystery|misterio/i, "Suspense"],[/crim|policiac/i, "Crimen"],[/document/i, "Documental"],[/music/i, "Musical"],[/war|bélic|guerra/i, "Bélica"],[/histor/i, "Histórica"],[/famil|kids|niños/i, "Familiar"],[/aventur|adventure/i, "Aventura"],[/acci|action/i, "Acción"],[/drama/i, "Drama"]];
+const GENRE_MAP_LIB = [[/fantas/i, "Fantasía"],[/science fiction|ciencia ficci/i, "Ciencia ficción"],[/thriller|suspense|mystery|misterio|policiac|detective/i, "Thriller"],[/romance|romant/i, "Romance"],[/horror|terror/i, "Terror"],[/true crime|crimen real/i, "True crime"],[/biograf|memoir|memorias/i, "Biografías"],[/histor/i, "Historia"],[/self-help|autoayuda|desarrollo personal|personal development|salud mental/i, "Desarrollo personal"],[/psicolog|psychology/i, "Psicología"],[/business|negocio|econom|finanz|money|dinero/i, "Negocios y dinero"],[/philosoph|filosof/i, "Filosofía"],[/tecnolog|technology|computer/i, "Tecnología"],[/scien|cienc/i, "Ciencia"],[/comedy|humor|comedia/i, "Humor"],[/comic|cómic|graphic novel|manga/i, "Cómic"],[/poe/i, "Poesía"],[/fiction|novel|ficción|literatura/i, "Novela"]];
+const mapGenre = (list, text) => { for (const [r, g] of list) if (r.test(text || "")) return g; return ""; };
+async function searchOnline(tpl, q, type){
+  const out = [], jobs = [];
+  if (tpl === "peliculas"){
+    if (type !== "Serie") jobs.push(itunes(q, "movie", "movie").then(rs => rs.forEach(r => out.push({src:"it", tipo:"Película", title:r.trackName, year:yearOf(r.releaseDate), director:r.artistName || "", cover:bigArt(r.artworkUrl100), genero:mapGenre(GENRE_MAP_PELI, r.primaryGenreName), sinopsis:r.longDescription || r.shortDescription || ""}))).catch(() => {}));
+    if (type !== "Película") jobs.push(getJSON(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(q)}`).then(rs => rs.slice(0, 10).forEach(({show:sh}) => out.push({src:"tm", id:sh.id, tipo:"Serie", title:sh.name, year:yearOf(sh.premiered), director:"", cover:sh.image?.original || sh.image?.medium || "", genero:mapGenre(GENRE_MAP_PELI, (sh.genres || []).join(" ")), sinopsis:stripHtml(sh.summary), canal:sh.network?.name || sh.webChannel?.name || ""}))).catch(() => {}));
+  } else {
+    if (type !== "Podcast") jobs.push(getJSON(`https://openlibrary.org/search.json?q=${encodeURIComponent(q)}&limit=12&fields=title,author_name,first_publish_year,cover_i,subject,key`).then(d => (d.docs || []).forEach(b => out.push({src:"ol", tipo:"Libro", title:b.title, year:String(b.first_publish_year || ""), director:(b.author_name || []).slice(0, 2).join(", "), cover:b.cover_i ? `https://covers.openlibrary.org/b/id/${b.cover_i}-L.jpg` : "", genero:mapGenre(GENRE_MAP_LIB, (b.subject || []).slice(0, 12).join(" ")), sinopsis:""}))).catch(() => {}));
+    if (type !== "Libro") jobs.push(itunes(q, "podcast", "podcast", 10).then(rs => rs.forEach(r => out.push({src:"it", tipo:"Podcast", title:r.collectionName || r.trackName, year:yearOf(r.releaseDate), director:r.artistName || "", cover:bigArt(r.artworkUrl600 || r.artworkUrl100), genero:mapGenre(GENRE_MAP_LIB, (r.genres || []).join(" ") + " " + r.primaryGenreName), sinopsis:""}))).catch(() => {}));
+  }
+  await Promise.all(jobs);
+  const ql = q.toLowerCase();
+  return out.filter(x => x.title).sort((a, b) => (b.title.toLowerCase().includes(ql) ? 1 : 0) - (a.title.toLowerCase().includes(ql) ? 1 : 0) || (!!b.cover - !!a.cover)).slice(0, 24);
+}
+async function seriesCreator(id){ try { const crew = await getJSON(`https://api.tvmaze.com/shows/${id}/crew`); return crew.filter(c => /creator/i.test(c.type)).map(c => c.person?.name).filter(Boolean).slice(0, 2).join(", "); } catch { return ""; } }
+
+/* ---------- search box inside the add form ---------- */
+S.msr = [];
+function mediaSearchTop(s, e){
+  if (e.fields?.cover || (e.fields?.portada || []).length) return `<div class="ms-cur">${poster(e)}<span>Portada lista. Puedes buscar otra si quieres.</span><button type="button" class="lnk" data-act="ms-open">${ic("search")}Buscar</button></div><div class="msearch" hidden>${msBox(s)}</div>`;
+  return `<div class="msearch">${msBox(s)}</div>`;
+}
+const msBox = s => { const c = MEDIA_CFG[s.tpl]; return `<span class="lbl">Buscar en internet</span>
+  <div class="ms-in"><span>${ic("search")}</span><input type="search" id="ms-q" placeholder="${s.tpl === "peliculas" ? "Ej.: piratas, Dune, Friends…" : "Ej.: Harry Potter, El Hormiguero…"}" autocomplete="off" enterkeyhint="search" data-ms="${s.id}"></div>
+  <div class="ms-res" id="ms-res"><p class="muted small" style="margin:0">Escribe y elige: se rellenan la portada, el año, ${s.tpl === "peliculas" ? "el director" : "el autor"} y el género. Si no lo encuentras, rellénalo a mano.</p></div>`; };
+document.addEventListener("input", e => {
+  const t = e.target; if (t.id !== "ms-q") return;
+  clearTimeout(t._t); const q = t.value.trim(), box = $("#ms-res"); if (!box) return;
+  if (q.length < 2){ box.innerHTML = ""; return; }
+  t._t = setTimeout(async () => {
+    const s = secById(t.dataset.ms); if (!s) return;
+    box.innerHTML = `<div class="gl-step"><span class="spin"></span>Buscando «${esc(q)}»…</div>`;
+    const tipo = $('form[data-form=entry] [name="f_tipo"]:checked')?.value || "";
+    const rs = await searchOnline(s.tpl, q, "");
+    if (t.value.trim() !== q) return;
+    S.msr = rs;
+    box.innerHTML = rs.length ? rs.map((r, i) => `<button type="button" class="ms-r" data-act="ms-pick" data-i="${i}">${r.cover ? `<img src="${esc(r.cover)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : `<span class="mp-t" style="--h:${hue(r.title)}">${esc(r.title[0] || "?")}</span>`}<span class="kr-t"><b>${esc(r.title)}</b><span>${esc([r.tipo, r.year, r.director || r.canal].filter(Boolean).join(" · "))}</span></span></button>`).join("")
+      : `<p class="muted small" style="margin:0">No encuentro nada con «${esc(q)}». Prueba con otro nombre o rellénalo a mano.</p>`;
+  }, 420);
+});
+Object.assign(ACT, {
+  "ms-open"(el){ const f = el.closest("form"), b = $(".msearch", f); if (b){ b.hidden = false; $("#ms-q", b)?.focus(); } el.closest(".ms-cur").remove(); },
+  async "ms-pick"(el){
+    const r = S.msr[+el.dataset.i], f = el.closest("form"); if (!r || !f) return;
+    const set = (k, v) => { if (v === undefined || v === null || v === "") return; const radios = $$(`[name="f_${k}"]`, f); if (radios.length && radios[0].type === "radio"){ const m = radios.find(x => x.value === v); if (m) m.checked = true; return; } const inp = $(`[name="f_${k}"]`, f); if (inp) inp.value = v; };
+    $("#en-title", f).value = r.title;
+    set("tipo", r.tipo); set("anio", r.year); set("cover", r.cover);
+    if (r.genero){ const sel = $('[name="f_genero"]', f); if (sel) sel.value = r.genero; }
+    const s = secById(f.dataset.sec);
+    if (s && s.tpl === "peliculas"){ set("director", r.director); if (r.canal) set("autor", r.canal); }
+    else set("autor", r.director);
+    const notes = $('[name="f_notas"]', f); if (notes && !notes.value && r.sinopsis) notes.value = r.sinopsis.slice(0, 600);
+    const box = el.closest(".msearch");
+    box.insertAdjacentHTML("beforebegin", `<div class="ms-cur">${r.cover ? `<img src="${esc(r.cover)}" alt="" referrerpolicy="no-referrer">` : ""}<span><b>${esc(r.title)}</b>${esc([r.year, r.director].filter(Boolean).join(" · "))}</span><button type="button" class="lnk" data-act="ms-open">${ic("search")}Otra</button></div>`);
+    box.hidden = true; buzz();
+    if (r.src === "tm" && r.id && s && s.tpl === "peliculas"){ const who = await seriesCreator(r.id); if (who && !$('[name="f_director"]', f)?.value) set("director", who); }
+  }
+});
+
+/* ---------- covers for genre tiles ---------- */
+const GENRE_SEEDS = {Acción:"Mad Max", Aventura:"Indiana Jones", Comedia:"Resacón en Las Vegas", Drama:"Cadena perpetua", Terror:"Expediente Warren", Suspense:"Seven", "Ciencia ficción":"Interstellar", Fantasía:"El señor de los anillos", Romance:"Titanic", Animación:"Toy Story", Crimen:"El padrino", Documental:"documental naturaleza", Histórica:"Gladiator", Musical:"La La Land", Bélica:"Salvar al soldado Ryan", Familiar:"Solo en casa"};
+const GENRE_SUBJ = {Novela:"fiction", Fantasía:"fantasy", "Ciencia ficción":"science_fiction", Thriller:"thriller", Romance:"romance", Terror:"horror", Historia:"history", Biografías:"biography", "Desarrollo personal":"self-help", Psicología:"psychology", "Negocios y dinero":"business", Ciencia:"science", Filosofía:"philosophy", Tecnología:"technology", "True crime":"true_crime", Humor:"humor", Cómic:"comics", Poesía:"poetry"};
+S.gimg = lsGet("orbita.gimg", {});
+let gimgBusy = false;
+async function loadGenreImages(tpl){
+  if (gimgBusy) return; gimgBusy = true;
+  const c = MEDIA_CFG[tpl], todo = c.genres.filter(g => !S.gimg[tpl + ":" + g]);
+  for (const g of todo){
+    try {
+      let urls = [];
+      if (tpl === "peliculas"){ const rs = await itunes(GENRE_SEEDS[g] || g, "movie", "movie", 6); urls = rs.map(r => bigArt(r.artworkUrl100)).filter(Boolean).slice(0, 3); }
+      else { const d = await getJSON(`https://openlibrary.org/subjects/${GENRE_SUBJ[g] || "fiction"}.json?limit=6`); urls = (d.works || []).filter(w => w.cover_id).map(w => `https://covers.openlibrary.org/b/id/${w.cover_id}-M.jpg`).slice(0, 3); }
+      if (urls.length){ S.gimg[tpl + ":" + g] = urls; lsSet("orbita.gimg", S.gimg); $$(`.gq[data-g="${CSS.escape(g)}"]`).forEach(b => paintGenre(b, urls)); }
+    } catch {}
+  }
+  gimgBusy = false;
+}
+function paintGenre(b, urls){ if (b.querySelector(".gq-bg")) return; b.insertAdjacentHTML("afterbegin", `<span class="gq-bg" aria-hidden="true">${urls.map(u => `<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer">`).join("")}</span>`); b.classList.add("pic"); }
+new MutationObserver(() => {
+  const grid = $(".genres[data-tpl]"); if (!grid || grid.dataset.gi) return; grid.dataset.gi = "1";
+  const tpl = grid.dataset.tpl;
+  $$(".gq", grid).forEach(b => { const own = b.dataset.own ? JSON.parse(b.dataset.own) : []; const urls = own.length ? own : S.gimg[tpl + ":" + b.dataset.g]; if (urls && urls.length) paintGenre(b, urls); });
+  loadGenreImages(tpl);
+  enrichMedia(tpl);
+}).observe(document.body, {childList:true, subtree:true});
+
+/* ---------- fill cover, year and director for titles saved without them ---------- */
+let enrichBusy = false; const enrichTried = new Set();
+async function enrichMedia(tpl){
+  if (enrichBusy || !navigator.onLine) return; enrichBusy = true;
+  const s = sections().find(x => x.tpl === tpl);
+  const list = s ? entriesOf(s.id).filter(e => !e.enr && !enrichTried.has(e.id) && !(e.fields?.portada || []).length && !e.fields?.cover).slice(0, 12) : [];
+  let changed = 0;
+  for (const e of list){
+    enrichTried.add(e.id);
+    try {
+      const rs = await searchOnline(tpl, e.title, e.fields?.tipo || "");
+      if (!rs.length) continue;
+      const t = e.title.toLowerCase(), r = rs.find(x => x.title.toLowerCase() === t && (!e.fields?.tipo || x.tipo === e.fields.tipo)) || rs.find(x => x.title.toLowerCase().startsWith(t) && (!e.fields?.tipo || x.tipo === e.fields.tipo));
+      const cur = S.items.get(e.id); if (!cur) continue;
+      const f = {...(cur.fields || {})};
+      if (r){
+        if (!f.cover && r.cover) f.cover = r.cover;
+        if (!f.anio && r.year) f.anio = +r.year;
+        if (tpl === "peliculas"){ let who = r.director; if (!who && r.src === "tm" && r.id) who = await seriesCreator(r.id); if (!f.director && who) f.director = who; }
+        else if (!f.autor && r.director) f.autor = r.director;
+        if (!f.genero && r.genero) f.genero = r.genero;
+        if (!f.tipo && r.tipo) f.tipo = r.tipo;
+      }
+      putItem({...cur, fields:f, enr:1}, true); changed++;
+    } catch {}
+  }
+  if (changed) flushBulk();
+  enrichBusy = false;
+}
 
 /* ================= boot ================= */
 (async function boot(){
