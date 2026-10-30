@@ -1144,7 +1144,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "22";
+const APP_VERSION = "23";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -4443,6 +4443,20 @@ async function searchOnline(tpl, q, type){
     if (type !== "Libro") jobs.push(itunes(q, "podcast", "podcast", 10).then(rs => rs.forEach(r => out.push({src:"it", tipo:"Podcast", title:r.collectionName || r.trackName, year:yearOf(r.releaseDate), director:r.artistName || "", cover:bigArt(r.artworkUrl600 || r.artworkUrl100), genero:mapGenre(GENRE_MAP_LIB, (r.genres || []).join(" ") + " " + r.primaryGenreName), sinopsis:""}))).catch(() => {}));
   }
   await Promise.all(jobs);
+  if (out.length < 4){
+    const kind = tpl === "peliculas" ? (type === "Serie" ? "serie" : type === "Película" ? "película" : "película OR serie") : (type === "Podcast" ? "podcast" : "libro");
+    try {
+      const d = await getJSON(`https://es.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=10&gsrsearch=${encodeURIComponent(q + " " + kind)}&prop=pageimages|description|extracts&exintro=1&explaintext=1&exsentences=2&piprop=thumbnail&pithumbsize=500`);
+      Object.values(d.query?.pages || {}).sort((a, b) => a.index - b.index).forEach(pg => {
+        const desc = pg.description || "", txt = (pg.extract || "") + " " + desc;
+        if (tpl === "peliculas" && !/pel[ií]cula|serie|film|televisi/i.test(txt)) return;
+        if (tpl === "libros" && !/libro|novela|ensayo|podcast|obra|escrit/i.test(txt)) return;
+        const tipo = tpl === "peliculas" ? (/serie/i.test(desc || txt.slice(0, 200)) ? "Serie" : "Película") : (/podcast/i.test(txt) ? "Podcast" : "Libro");
+        const who = (txt.match(/dirigida por ([A-ZÁÉÍÓÚÑ][\wáéíóúñ.]+(?: [A-ZÁÉÍÓÚÑ][\wáéíóúñ.]+){0,3})/) || txt.match(/(?:escrita|escrito|creada|creado) por ([A-ZÁÉÍÓÚÑ][\wáéíóúñ.]+(?: [A-ZÁÉÍÓÚÑ][\wáéíóúñ.]+){0,3})/) || [])[1]?.replace(/[.,;]+$/, "") || "";
+        out.push({src:"wp", tipo, title:pg.title.replace(/ \((pel[ií]cula|serie|novela|libro)[^)]*\)$/i, ""), year:yearOf(desc) || yearOf(pg.extract), director:who, cover:pg.thumbnail?.source || "", genero:mapGenre(tpl === "peliculas" ? GENRE_MAP_PELI : GENRE_MAP_LIB, txt), sinopsis:pg.extract || ""});
+      });
+    } catch {}
+  }
   const ql = q.toLowerCase();
   return out.filter(x => x.title).sort((a, b) => (b.title.toLowerCase().includes(ql) ? 1 : 0) - (a.title.toLowerCase().includes(ql) ? 1 : 0) || (!!b.cover - !!a.cover)).slice(0, 24);
 }
