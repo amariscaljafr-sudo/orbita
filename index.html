@@ -742,7 +742,7 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
 .dock{transition:transform .35s var(--ease)}
-body.dock-hide .dock{transform:translateY(calc(100% + 4px))}
+body.dock-hide .dock{transform:translate3d(0,calc(100% + 6px),0)!important;pointer-events:none}
 
 .kstats.sel button{padding:12px 14px;border-radius:16px;background:var(--paper-2);color:var(--ink);display:flex;flex-direction:column;gap:2px;text-align:left;min-width:0;transition:transform .2s var(--spring),background .2s}
 .kstats.sel button:active{transform:scale(.96)}
@@ -751,10 +751,11 @@ body.dock-hide .dock{transform:translateY(calc(100% + 4px))}
 .kstats.sel button.on{background:var(--ink);color:var(--paper)}
 .kstats.sel button:first-child.on{background:var(--red)}
 
-.genres{grid-template-columns:repeat(auto-fill,minmax(min(46%,200px),1fr))!important;gap:12px!important}
-.gq{min-height:0!important;aspect-ratio:3/4;justify-content:flex-end;padding:16px!important;border-radius:22px!important}
-.gq b{font-size:20px!important}
-.gq-bg img{object-position:center 20%}
+.genres{grid-template-columns:repeat(auto-fill,minmax(min(46%,170px),1fr))!important;gap:10px!important}
+.gq{min-height:0!important;aspect-ratio:16/10;justify-content:flex-end;padding:12px 14px!important;border-radius:18px!important}
+.gq b{font-size:16.5px!important}
+.gq > span:not(.gq-bg){font-size:11px!important;margin-top:1px!important}
+.gq-bg img{object-position:center 22%}
 .gq-bg::after{background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.35) 60%,rgba(0,0,0,.85) 100%)!important}
 .genre-h.pic{min-height:180px!important}
 .genre-h .gq-bg img{object-position:center 25%}
@@ -1199,7 +1200,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "32";
+const APP_VERSION = "33";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1408,13 +1409,17 @@ const topBar = title => `<div class="top"><button class="ibtn" data-act="drawer"
 // in Películas and Libros the bottom bar hides and only shows at the end of the page
 function dockAuto(){
   const r = currentRoute(), s = r.startsWith("s-") ? secById(r.slice(2)) : null, on = !!(s && MEDIA_CFG[s.tpl]) && !layerOpen();
-  const end = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 24;
+  const se = document.scrollingElement || document.documentElement, vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  const end = vh + (window.scrollY || se.scrollTop || 0) >= se.scrollHeight - 40;
   document.body.classList.toggle("dock-hide", on && !end);
 }
+document.addEventListener("scroll", () => dockAuto(), {passive:true, capture:true});
+addEventListener("hashchange", () => setTimeout(dockAuto, 80));
+addEventListener("load", () => setTimeout(dockAuto, 300));
 addEventListener("scroll", () => { if (!dockAuto._r) dockAuto._r = requestAnimationFrame(() => { dockAuto._r = 0; dockAuto(); }); }, {passive:true});
 addEventListener("resize", () => dockAuto());
 function renderDock(){
-  setTimeout(dockAuto, 60);
+  setTimeout(dockAuto, 60); setTimeout(dockAuto, 600);
   if (!S.settings || S.locked){ $("#dock").innerHTML = ""; return; }
   const r = currentRoute();
   const tabs = [["inicio","Inicio","home"],["buscar","Buscar","search"],["horario","Horario","cal"],["asistente","Asistente","spark"]];
