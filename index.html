@@ -741,6 +741,16 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.cl-rail .hg + .hg{margin-left:calc(-1 * var(--ov, 0px))}
+.cl-rail .hg{-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+.cl-rail.dragging{scroll-snap-type:none}
+.cl-rail .hg.lift{z-index:30!important;opacity:1!important;filter:drop-shadow(0 20px 20px rgba(0,0,0,.65));transition:none;cursor:grabbing}
+.cl-rail.dragging .hg:not(.lift){transition:transform .18s var(--ease)}
+.mq{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 16px;border-radius:16px;background:var(--paper-2)}
+.mq svg{width:20px;height:20px;color:var(--mute);flex:none}
+.mq input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;font-family:inherit;font-weight:600}
+.mq-res{display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:18px;background:var(--paper-2);margin-top:-6px}
+
 .ms-title{position:relative}
 .ms-title .title-in{padding-left:36px!important}
 .ms-ico{position:absolute;left:0;display:grid;top:50%;transform:translateY(-50%);color:var(--mute);pointer-events:none}
@@ -1171,7 +1181,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "27";
+const APP_VERSION = "28";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1929,6 +1939,7 @@ function openEntry(sid, item, preset={}){
   const kd = kindDef(s, item || {sub:preset.sub}); if (kd) e.sub = subOf(s, item || {sub:preset.sub});
   const flds = kd ? kd.fields : mergeF(s.fields, s), sch = kd || schedOf(s, e);
   if (isNew && preset.fields) Object.assign(e.fields, preset.fields);
+  if (isNew && preset.title) e.title = preset.title;
   if (isNew && sch.dateKey && (sch.calendar || kd) && !e.fields[sch.dateKey]) e.fields[sch.dateKey] = preset.date || todayKey();
   if (isNew && sch.timeKey && preset.time) e.fields[sch.timeKey] = preset.time;
   S.formSec = s.id;
@@ -3806,7 +3817,8 @@ function vMedia(s){
       return `<button class="gq${xs.length ? "" : " empty0"}" style="--h:${hue(x)}" data-act="m-genre" data-sec="${s.id}" data-g="${esc(x)}" data-own="${esc(JSON.stringify(own))}"><b>${esc(x)}</b><span>${xs.length ? `${xs.length} ${xs.length === 1 ? "título" : "títulos"}` : "Vacío"}</span></button>`; }).join("")}</div>
       <div class="row">${kbtn(s, "obra", c.add, {estado:c.st[0]})}</div>`;
   }
-  return `${kitHead(s, c.sub)}${kitTabs(s, [["generos", "Géneros"], ["general", "General"]], tab)}${body}`;
+  const mqBar = `<div class="mq"><span>${ic("search")}</span><input type="search" id="mq-${s.id}" data-mq="${s.id}" placeholder="${s.tpl === "peliculas" ? "Busca una película o serie para añadirla" : "Busca un libro o podcast para añadirlo"}" autocomplete="off" enterkeyhint="search" aria-label="Buscar en internet para añadir"></div><div class="mq-res" id="mqr-${s.id}" hidden></div>`;
+  return `${kitHead(s, c.sub)}${mqBar}${kitTabs(s, [["generos", "Géneros"], ["general", "General"]], tab)}${body}`;
 }
 function openRate(id){
   const e = S.items.get(id); if (!e) return;
@@ -4001,16 +4013,16 @@ function vArmario(s){
       <div class="cl-in">
         <div class="cl-cats">${CL_GROUPS.map(([k, l]) => `<button class="cl-cat${k === cat ? " on" : ""}" data-act="cl-cat" data-c="${k}">${esc(l)}<span>${gs.filter(g => g.cat === k).length}</span></button>`).join("")}</div>
         <div class="cl-stage ${grp[2]}">${grp[2] === "shelf" ? "" : `<div class="cl-bar"></div>`}
-          <div class="cl-rail${S.clSort ? " sorting" : ""}" data-rail data-cat="${cat}">${list.length ? list.map(item).join("") : `<div class="cl-empty">Aún no hay ${esc(grp[1].toLowerCase())}.<br>Añádelas con una foto o con el enlace de la tienda.</div>`}</div>
+          <div class="cl-rail" data-rail data-cat="${cat}" style="--ov:${Math.min(70, Math.max(0, (list.length - 3) * 11))}px">${list.length ? list.map(item).join("") : `<div class="cl-empty">Aún no hay ${esc(grp[1].toLowerCase())}.<br>Añádelas con una foto o con el enlace de la tienda.</div>`}</div>
           ${grp[2] === "shelf" ? `<div class="cl-shelf"></div>` : ""}</div>
       </div>
       <div class="cl-door l" aria-hidden="true"><i></i></div><div class="cl-door r" aria-hidden="true"><i></i></div>
     </div>
   </div>
   ${sel ? `<div class="cl-sel"><button class="cs-img" data-act="view-3d" data-id="${sel.id}" aria-label="Ver en 3D">${gArt(sel)}</button><div class="stack" style="gap:8px;min-width:0"><b class="cs-t">${esc(sel.title)}</b><span class="muted small">${esc(sel.cat)}${sel.color ? ` <i class="colorchip" style="background:${esc(sel.color)}"></i>` : ""}</span>
-      <div class="row"><button class="ibtn" data-act="cl-move" data-id="${sel.id}" data-d="-1" aria-label="Mover a la izquierda">${ic("left")}</button><button class="ibtn" data-act="cl-move" data-id="${sel.id}" data-d="1" aria-label="Mover a la derecha">${ic("right")}</button><button class="btn sm${Object.values(S.wear).includes(sel.id) ? "" : " pri"}" data-act="cl-wear" data-id="${sel.id}">${Object.values(S.wear).includes(sel.id) ? "Quitar del outfit" : ic("plus") + "Al outfit"}</button>${sel.photo ? `<button class="btn sm" data-act="view-3d" data-id="${sel.id}">${ic("spark")}3D</button>` : ""}<button class="btn sm ghost" data-act="open" data-id="${sel.id}">${ic("edit")}Editar</button></div></div></div>`
+      <div class="row"><button class="btn sm${Object.values(S.wear).includes(sel.id) ? "" : " pri"}" data-act="cl-wear" data-id="${sel.id}">${Object.values(S.wear).includes(sel.id) ? "Quitar del outfit" : ic("plus") + "Al outfit"}</button>${sel.photo ? `<button class="btn sm" data-act="view-3d" data-id="${sel.id}">${ic("spark")}3D</button>` : ""}<button class="btn sm ghost" data-act="open" data-id="${sel.id}">${ic("edit")}Editar</button></div></div></div>`
     : ""}
-  <div class="cl-under">${sel ? "" : `<p class="muted small" style="margin:0">${S.clSort ? "Arrastra cada prenda a izquierda o derecha. Toca «Listo» al terminar." : "Desliza para ver tus prendas y toca una para elegirla."}</p>`}${list.length > 1 ? `<button class="btn sm${S.clSort ? " pri" : ""}" data-act="cl-sort">${S.clSort ? ic("check") + "Listo" : ic("list") + "Ordenar prendas"}</button>` : ""}</div>
+  ${sel ? "" : `<div class="cl-under"><p class="muted small" style="margin:0">Desliza para ver tu ropa y toca una prenda para elegirla.${list.length > 1 ? " Para cambiarla de sitio, mantenla pulsada y arrástrala." : ""}</p></div>`}
   <div class="row"><button class="btn" data-act="add" data-kind="entry" data-sec="${s.id}">${ic("cam")}Prenda con foto</button><button class="btn" data-act="g-link">${ic("link")}Desde un enlace</button></div>
   <div class="box stack" style="gap:12px">
     <div class="sec-t"><span class="lbl">Tu outfit</span><span class="sp"></span><a class="lnk" href="#probador">Probármelo${ic("right")}</a></div>
@@ -4022,6 +4034,7 @@ function vArmario(s){
     <div class="klist">${outs.map(e => `<button class="krow" data-act="open" data-id="${e.id}"><span class="kr-t"><b>${esc(cap1(relDay(e.fields.fecha)))}</b><span>${esc(e.fields?.ocasion || e.title)}</span></span>${outfitThumbs(e)}</button>`).join("")}</div></section>` : ""}`;
 }
 function coverflow(rail){
+  if (rail.classList.contains("dragging")) return;
   if (rail.classList.contains("sorting")){ for (const hg of rail.children) if (hg.classList.contains("hg")){ hg.style.transform = ""; hg.style.opacity = ""; hg.style.zIndex = ""; } return; }
   const r = rail.getBoundingClientRect(), cx = r.left + r.width / 2;
   for (const h of rail.children){
@@ -4040,24 +4053,37 @@ new MutationObserver(() => $$("[data-rail]:not([data-cf])").forEach(r => {
 })).observe(document.body, {childList:true, subtree:true});
 addEventListener("resize", () => $$("[data-rail]").forEach(coverflow));
 function saveClOrder(cat, ids){ S.settings.clOrder = {...(S.settings.clOrder || {}), [cat]:ids}; putSettings(); }
-// drag garments along the rail to reorder them
+// hold a garment for a moment, then drag it along the rail to reorder
 (() => {
-  let el = null, rail = null, x0 = 0, moved = false, raf = 0, lastX = 0;
+  let el = null, cand = null, rail = null, x0 = 0, lastX = 0, sx = 0, sy = 0, moved = false, raf = 0, timer = 0, block = false;
+  document.addEventListener("touchmove", e => { if (el && e.cancelable) e.preventDefault(); }, {passive:false});
+  document.addEventListener("contextmenu", e => { if (e.target.closest && e.target.closest(".cl-rail .hg")) e.preventDefault(); });
+  window.addEventListener("click", e => { if (block){ block = false; e.preventDefault(); e.stopPropagation(); } }, true);
+  const start = () => {
+    el = cand; cand = null; rail = el.parentElement; rail.classList.add("dragging");
+    for (const x of rail.children) if (x.classList && x.classList.contains("hg")){ x.style.transform = ""; x.style.opacity = ""; x.style.zIndex = ""; }
+    el.classList.add("lift"); x0 = lastX = sx; moved = false; buzz();
+  };
   document.addEventListener("pointerdown", e => {
-    const h = e.target.closest && e.target.closest(".cl-rail.sorting .hg"); if (!h) return;
-    el = h; rail = h.parentElement; x0 = lastX = e.clientX; moved = false; el.classList.add("lift"); el.setPointerCapture?.(e.pointerId); e.preventDefault();
+    const h = e.target.closest && e.target.closest(".cl-rail .hg"); if (!h || e.button > 0) return;
+    cand = h; sx = e.clientX; sy = e.clientY; clearTimeout(timer); timer = setTimeout(() => { if (cand) start(); }, 300);
   });
   document.addEventListener("pointermove", e => {
-    if (!el) return; lastX = e.clientX; if (Math.abs(lastX - x0) > 4) moved = true;
-    el.style.transform = `translateX(${lastX - x0}px) scale(1.04)`;
+    if (!el){ if (cand && (Math.abs(e.clientX - sx) > 8 || Math.abs(e.clientY - sy) > 8)){ clearTimeout(timer); cand = null; } return; }
+    lastX = e.clientX; if (Math.abs(lastX - x0) > 4) moved = true;
+    el.style.transform = `translateX(${lastX - x0}px) scale(1.06)`;
     const r = rail.getBoundingClientRect();
-    if (!raf) raf = requestAnimationFrame(function edge(){ raf = 0; if (!el) return; if (lastX < r.left + 40) rail.scrollLeft -= 10; else if (lastX > r.right - 40) rail.scrollLeft += 10; else return; raf = requestAnimationFrame(edge); });
+    if (!raf) raf = requestAnimationFrame(function edge(){ raf = 0; if (!el) return; const before = rail.scrollLeft; if (lastX < r.left + 44) rail.scrollLeft -= 12; else if (lastX > r.right - 44) rail.scrollLeft += 12; else return; x0 -= rail.scrollLeft - before; el.style.transform = `translateX(${lastX - x0}px) scale(1.06)`; raf = requestAnimationFrame(edge); });
     const sibs = $$(".hg", rail).filter(x => x !== el), cx = el.getBoundingClientRect().left + el.offsetWidth / 2;
     const before = sibs.find(x => { const b = x.getBoundingClientRect(); return cx < b.left + b.width / 2; });
-    const cur = el.nextElementSibling;
-    if (before ? before !== cur : cur){ const oldOff = el.offsetLeft; rail.insertBefore(el, before || null); x0 += el.offsetLeft - oldOff; el.style.transform = `translateX(${lastX - x0}px) scale(1.04)`; }
+    if (before ? before !== el.nextElementSibling : el.nextElementSibling){ const oldOff = el.offsetLeft; rail.insertBefore(el, before || null); x0 += el.offsetLeft - oldOff; el.style.transform = `translateX(${lastX - x0}px) scale(1.06)`; }
   });
-  const up = () => { if (!el) return; el.classList.remove("lift"); el.style.transform = ""; const ids = $$(".hg", rail).map(x => x.dataset.id); if (moved){ saveClOrder(rail.dataset.cat, ids); buzz(); } el = null; };
+  const up = () => {
+    clearTimeout(timer); cand = null; if (!el) return;
+    el.classList.remove("lift"); el.style.transform = ""; rail.classList.remove("dragging");
+    if (moved){ block = true; setTimeout(() => { block = false; }, 400); saveClOrder(rail.dataset.cat, $$(".hg", rail).map(x => x.dataset.id)); buzz(); }
+    const r = rail; el = null; coverflow(r);
+  };
   document.addEventListener("pointerup", up); document.addEventListener("pointercancel", up);
 })();
 document.addEventListener("animationend", e => { if (e.target.classList && e.target.classList.contains("cl-door")){ const c = e.target.closest(".closet"); if (c){ c.classList.remove("opening"); c.classList.add("open"); } } });
@@ -4082,14 +4108,16 @@ function vConocimientos(s){
   const pool = q ? [s, ...descendants(s.id)].flatMap(x => entriesOf(x.id)) : entriesOf(s.id);
   const ns = pool.filter(e => !q || JSON.stringify([e.title, e.fields]).toLowerCase().includes(q)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   const sugg = top ? ["Tecnología","Ropa","Zapatos","Mochilas","Cocina","Salud","Viajes","Dinero"].filter(n => !subs.some(x => x.name.toLowerCase() === n.toLowerCase())).slice(0, 6) : [];
-  const tile = t => { const es = [t, ...descendants(t.id)].flatMap(x => entriesOf(x.id)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); return `<a class="ktopic" href="#s-${t.id}"><span class="ic">${ic(t.icon)}</span><b>${esc(t.name)}</b><span class="kt-n">${es.length} ${es.length === 1 ? "nota" : "notas"}</span>${es[0] ? `<i>${esc(es[0].title)}</i>` : ""}</a>`; };
+  const tile = t => { const es = [t, ...descendants(t.id)].flatMap(x => entriesOf(x.id)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); return `<a class="ktopic" href="#s-${t.id}"><span class="ic">${ic(t.icon)}</span><b>${esc(t.name)}</b><span class="kt-n">${es.length} ${es.length === 1 ? "nota" : "notas"}</span></a>`; };
+  const nrow = e => { const sec = secById(e.sectionId); return `<button class="krow" data-act="open" data-id="${e.id}"><span class="kr-t"><b>${esc(e.title)}</b><span>${esc([e.fields?.fecha ? relDay(e.fields.fecha) : "", q && sec && sec.id !== s.id ? sec.name : ""].filter(Boolean).join(" · "))}</span></span>${e.example ? '<span class="tag ex">Ejemplo</span>' : ""}${ic("right")}</button>`; };
+  const showLoose = !top || q || S.conLoose?.[s.id];
   return `${kitHead(s, top ? "Todo lo que vas aprendiendo, ordenado por temas." : `Tus notas sobre ${esc(s.name.toLowerCase())}.`)}
     <input class="search-in" id="sq-${s.id}" data-input="secq" data-sec="${s.id}" placeholder="${top ? "Buscar en todos tus conocimientos" : "Buscar en " + esc(s.name.toLowerCase())}" value="${esc(S.secQuery[s.id] || "")}" aria-label="Buscar">
     ${q ? "" : `<section class="stack" style="gap:12px"><div class="sec-t"><h2 class="sub-h">${top ? "Temas" : "Dentro de " + esc(s.name)}</h2><span class="n">${subs.length || ""}</span><span class="sp"></span><button class="plus-sm" data-act="topic-new" data-parent="${s.id}" aria-label="Nuevo tema">${ic("plus")}</button></div>
       ${subs.length ? `<div class="ktopics">${subs.map(tile).join("")}</div>` : `<p class="muted small" style="margin:0">${top ? "Crea un tema para cada cosa: tecnología, ropa, zapatos, mochilas…" : "Si este tema crece, toca + para dividirlo en partes."}</p>`}
       ${sugg.length ? `<div class="chips">${sugg.map(n => `<button class="chip" data-act="topic-quick" data-parent="${s.id}" data-name="${esc(n)}">${ic("plus")}${esc(n)}</button>`).join("")}</div>` : ""}</section>`}
-    <section class="stack" style="gap:12px"><div class="sec-t"><h2 class="sub-h">${q ? "Resultados" : top ? "Notas sueltas" : "Notas"}</h2><span class="n">${ns.length || ""}</span><span class="sp"></span>${kbtn(s, "nota", "Nota", {fecha:todayKey()}, "btn sm pri")}</div>
-      ${ns.length ? `<div class="notes">${ns.map(e => noteCard(e, !!q)).join("")}</div>` : kempty(q ? "Nada coincide." : "Aún no hay notas aquí.", q ? "Prueba con otra palabra." : "Apunta lo que aprendas: un truco, un dato, un resumen de un vídeo…")}</section>`;
+    <section class="stack" style="gap:12px"><div class="sec-t">${top && !q ? `<button class="lnk" data-act="con-loose" data-sec="${s.id}" style="font-size:15px">${ic(showLoose ? "left" : "right")}Notas sin tema${ns.length ? ` (${ns.length})` : ""}</button>` : `<h2 class="sub-h">${q ? "Resultados" : "Notas"}</h2><span class="n">${ns.length || ""}</span>`}<span class="sp"></span>${kbtn(s, "nota", "Nota", {fecha:todayKey()}, "btn sm pri")}</div>
+      ${showLoose ? (ns.length ? `<div class="klist">${ns.map(nrow).join("")}</div>` : kempty(q ? "Nada coincide." : "Aún no hay notas aquí.", q ? "Prueba con otra palabra." : "Apunta lo que aprendas: un truco, un dato, un resumen de un vídeo…")) : ""}</section>`;
 }
 KIT_VIEWS.conocimientos = vConocimientos;
 /* ---------- actions ---------- */
@@ -4159,6 +4187,7 @@ Object.assign(ACT, {
   "hg-pick"(el){ if (S.clSort) return; S.clSel = S.clSel === el.dataset.id ? "" : el.dataset.id; const r = el.closest("[data-rail]"); if (r) r._last = r.scrollLeft; buzz(); render(); },
   "cl-wear"(el){ const g = garments().find(x => x.id === el.dataset.id); if (g) ACT.wear({dataset:{c:g.cat, id:g.id}}); },
   "topic-new"(el){ const p = secById(el.dataset.parent); swapLayer(() => openLayer(`${sheetHead(p && p.tpl === "conocimientos" ? "Nuevo tema" : "Nuevo apartado")}<form class="stack" data-form="topic-new" data-parent="${el.dataset.parent}"><div class="field"><label for="tn-name">Nombre</label><input type="text" id="tn-name" name="name" placeholder="Ej.: Tecnología, Mochilas, Zapatos…" required></div><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Crear</button></div></div></form>`)); },
+  "con-loose"(el){ S.conLoose = {...(S.conLoose || {}), [el.dataset.sec]:!(S.conLoose || {})[el.dataset.sec]}; render(); },
   "topic-quick"(el){ makeTopic(el.dataset.parent, el.dataset.name); render(); toast("Tema creado", el.dataset.name); }
 });
 document.addEventListener("submit", e => {
@@ -4656,7 +4685,30 @@ document.addEventListener("input", e => {
       : `<p class="muted small" style="margin:0">No encuentro nada con «${esc(q)}». Prueba con otro nombre o rellénalo a mano.</p>`;
   }, 420);
 });
+S.mqr = [];
+document.addEventListener("input", e => {
+  const t = e.target; if (!t.dataset || !t.dataset.mq) return;
+  clearTimeout(t._t); const q = t.value.trim(), box = $("#mqr-" + t.dataset.mq); if (!box) return;
+  if (q.length < 2){ box.hidden = true; box.innerHTML = ""; return; }
+  t._t = setTimeout(async () => {
+    const s = secById(t.dataset.mq); if (!s) return;
+    box.hidden = false; box.innerHTML = `<div class="gl-step" style="padding:6px"><span class="spin"></span>Buscando «${esc(q)}»…</div>`;
+    const rs = await searchOnline(s.tpl, q, "");
+    if (t.value.trim() !== q) return;
+    S.mqr = rs;
+    box.innerHTML = rs.length ? rs.map((r, i) => `<button type="button" class="ms-r" data-act="mq-pick" data-sec="${s.id}" data-i="${i}">${r.cover ? `<img src="${esc(r.cover)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : `<span class="mp-t" style="--h:${hue(r.title)}">${esc(r.title[0] || "?")}</span>`}<span class="kr-t"><b>${esc(r.title)}</b><span>${esc([r.tipo, r.year, r.director || r.canal].filter(Boolean).join(" · "))}</span></span>${ic("plus")}</button>`).join("")
+      : `<p class="muted small" style="margin:6px">No encuentro nada con «${esc(q)}». <button type="button" class="lnk" data-act="mq-manual" data-sec="${s.id}" style="display:inline">Añadirla a mano</button></p>`;
+  }, 420);
+});
+async function mqPrefill(s, r){
+  const c = MEDIA_CFG[s.tpl], f = {estado:c.st[0], tipo:r.tipo, anio:r.year ? +r.year : "", cover:r.cover || "", notas:(r.sinopsis || "").slice(0, 600)};
+  if (r.genero) f.genero = r.genero;
+  if (s.tpl === "peliculas"){ let who = r.director; if (!who && r.src === "tm" && r.id) who = await seriesCreator(r.id); f.director = who || ""; if (r.canal) f.autor = r.canal; } else f.autor = r.director || "";
+  return f;
+}
 Object.assign(ACT, {
+  async "mq-pick"(el){ const s = secById(el.dataset.sec), r = S.mqr[+el.dataset.i]; if (!s || !r) return; const fields = await mqPrefill(s, r); swapLayer(() => openEntry(s.id, null, {sub:"obra", title:r.title, fields})); },
+  "mq-manual"(el){ const s = secById(el.dataset.sec), q = $("#mq-" + el.dataset.sec)?.value.trim() || ""; if (s) swapLayer(() => openEntry(s.id, null, {sub:"obra", title:q, fields:{estado:MEDIA_CFG[s.tpl].st[0]}})); },
   "ms-open"(el){ const f = el.closest("form"), b = $(".msearch", f); if (b) b.hidden = false; el.closest(".ms-cur").remove(); const t = $("#en-title", f); if (t){ t.focus(); t.dispatchEvent(new Event("input", {bubbles:true})); } },
   async "ms-pick"(el){
     const r = S.msr[+el.dataset.i], f = el.closest("form"); if (!r || !f) return;
