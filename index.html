@@ -741,16 +741,25 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.bd-presets{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr))}
+.bd-pre{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;border-radius:18px;background:var(--paper-2);text-align:left;transition:transform .2s var(--spring)}
+.bd-pre:active{transform:scale(.97)}
+.bd-pre .ic{width:34px;height:34px;border-radius:11px;background:var(--ink);color:var(--paper);display:grid;place-items:center;margin-bottom:6px}
+.bd-pre .ic svg{width:17px;height:17px;color:var(--red)}
+.bd-pre b{font-size:15px;font-weight:900}
+.bd-pre span:last-child{font-size:12px;color:var(--mute);font-weight:600;line-height:1.3}
+
 .nogen{align-self:flex-start;font-size:13.5px}
 .dock{transition:transform .35s var(--ease)}
 body.dock-hide .dock{transform:translate3d(0,calc(100% + 6px),0)!important;pointer-events:none}
 
-.kstats.sel button{padding:12px 14px;border-radius:16px;background:var(--paper-2);color:var(--ink);display:flex;flex-direction:column;gap:2px;text-align:left;min-width:0;transition:transform .2s var(--spring),background .2s}
+.kstats.sel button{padding:12px 14px;border-radius:16px;background:var(--ink);color:var(--paper);display:flex;flex-direction:column;gap:2px;text-align:left;min-width:0;transition:transform .2s var(--spring),background .2s}
 .kstats.sel button:active{transform:scale(.96)}
 .kstats.sel button b{font-size:clamp(22px,6vw,28px);font-weight:900;letter-spacing:-.03em;line-height:1}
 .kstats.sel button span{font-size:12px;font-weight:700;opacity:.75;line-height:1.2}
-.kstats.sel button.on{background:var(--ink);color:var(--paper)}
-.kstats.sel button:first-child.on{background:var(--red)}
+.kstats.sel button:first-child{background:var(--red)}
+.kstats.sel button.on{box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--ink);transform:translateY(-2px)}
+.kstats.sel button:first-child.on{box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--red)}
 
 .genres{grid-template-columns:repeat(auto-fill,minmax(min(46%,170px),1fr))!important;gap:10px!important}
 .gq{min-height:0!important;aspect-ratio:16/10;justify-content:flex-end;padding:12px 14px!important;border-radius:18px!important}
@@ -1173,7 +1182,6 @@ const TEMPLATES = {
   progreso:{name:"Progreso", icon:"trend", d:"Logros, niveles y mejoras", fields:[F("fecha","Fecha","date"),F("nivel","Nivel o grado","text"),F("logro","Qué he conseguido","longtext"),F("valoracion","Cómo me siento","rating")], dateKey:"fecha"},
   pendientes:{name:"Pendientes", icon:"task", d:"Lo que te queda por hacer", fields:[F("estado","Estado","select",{options:["Pendiente","En curso","Hecho"]}),F("fecha","Para cuándo","date"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
   comidas:{name:"Comidas y salud", icon:"utensils", d:"Menú semanal, nutrientes y tu objetivo", fields:[F("fecha","Día","date"),F("momento","Momento","select",{options:["Desayuno","Comida","Merienda","Cena","Snack"]}),F("notas","Qué comí","longtext"),F("receta","Receta","link")], statusKey:"momento", dateKey:"fecha", calendar:true},
-  musica:{name:"Música", icon:"music", d:"Canciones que descubres", fields:[F("artista","Artista","text"),F("genero","Género","text"),F("estado","Estado","select",{options:["Descubierta","Favorita","En bucle"]}),F("valoracion","Valoración","rating"),F("fecha","Descubierta el","date"),F("enlace","Escuchar","link")], statusKey:"estado", dateKey:"fecha"},
   aprender:{name:"Quiero aprender", icon:"bulb", d:"Temas con barra de progreso e ideas", fields:[F("estado","Estado","select",{options:["Idea","Empezado","En curso","Dominado"]}),F("prioridad","Prioridad","select",{options:["Alta","Media","Baja"]}),F("progreso","Progreso","progress"),F("recursos","Recursos","link"),F("notas","Notas","longtext")], statusKey:"estado", tasks:true},
   conocimientos:{name:"Conocimientos", icon:"spark", d:"Lo que sabes, ordenado por temas", fields:[F("tema","Tema","text"),F("fecha","Aprendido el","date"),F("notas","Resumen","longtext"),F("fuente","Fuente","link")], dateKey:"fecha"},
   proyectos:{name:"Proyectos", icon:"folder", d:"Avance, tareas y fechas límite", fields:[F("estado","Estado","select",{options:["Idea","En marcha","En pausa","Terminado"]}),F("progreso","Progreso","progress"),F("fecha","Fecha límite","date"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true, tasks:true},
@@ -1187,7 +1195,7 @@ const PURPOSES = [
   ["dia","Organizar mi día","cal",[]],
   ["estudios","Estudios","cap",["estudios","conocimientos"]],
   ["deporte","Deporte y salud","dumbbell",["entrenos"]],
-  ["ocio","Pelis, series y música","film",["peliculas","musica"]],
+  ["ocio","Películas y series","film",["peliculas"]],
   ["lectura","Lectura","book",["libros"]],
   ["estilo","Ropa y estilo","shirt",["armario","outfits"]],
   ["comida","Comida","utensils",["comidas"]],
@@ -1201,7 +1209,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "35";
+const APP_VERSION = "36";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -2478,7 +2486,6 @@ function seedExamples(secs){
     outfits:[["Casual de oficina", {fecha:k(-1), ocasion:"Trabajo", valoracion:4, notas:"Jersey de punto, vaqueros rectos y zapatillas blancas"}]],
     entrenos:[["Gimnasio", {dias:[1,3,5], hora:"19:00", fin:"20:15", lugar:"Gimnasio del barrio"}, "plan"],["Pierna", {dias:[1,5], grupo:"Pierna y glúteo", ejercicios:[{n:"Sentadilla", s:"4", r:"8", k:"60"},{n:"Peso muerto rumano", s:"3", r:"10", k:"50"},{n:"Zancadas", s:"3", r:"12", k:"14"}]}, "rutina"],["Carrera suave", {fecha:k(-1), hora:"08:00", tipo:"Cardio", duracion:35, intensidad:"Suave", sensacion:4}, "sesion"]],
     comidas:[["Bowl de salmón", {fecha:k(0), momento:"Comida", kcal:640, prot:38, carb:62, grasa:24, azucar:6, fibra:9, notas:"Arroz, salmón, aguacate, edamame"}, "comida"],["Tostadas con huevo", {fecha:k(0), momento:"Desayuno", kcal:380, prot:19, carb:34, grasa:17, azucar:4, fibra:5}, "comida"],["Lentejas estofadas", {momento:"Comida", kcal:520, prot:28, carb:70, grasa:12, azucar:7, fibra:16}, "idea"]],
-    musica:[["Midnight City", {artista:"M83", genero:"Electrónica", estado:"En bucle", valoracion:5, fecha:k(-3)}]],
     aprender:[["Tocar la guitarra", {prioridad:"Media", progreso:20, recursos:[{n:"Curso de acordes básicos", u:""}]}, "tema"],["Política", {prioridad:"Alta", progreso:10, recursos:[]}, "tema"]],
     conocimientos:[["La regla de los dos minutos", {tema:"Productividad", fecha:k(-2), notas:"Si algo lleva menos de dos minutos, hazlo ya."}]],
     libros:[["Hábitos atómicos", {tipo:"Libro", genero:"Desarrollo personal", autor:"James Clear", estado:"Leyendo", progreso:"Página 120"}, "obra"],["Entiende tu mente", {tipo:"Podcast", genero:"Psicología", autor:"Molo Cebrián", estado:"Quiero leer"}, "obra"]]
@@ -4262,6 +4269,11 @@ function normalizeKits(){
     const r = kit.migrate ? kit.migrate(e, s) : {sub:kit.def};
     putItem({...e, sub:r.sub, fields:{...(e.fields || {}), ...(r.fields || {})}}, true); n++;
   }
+  if (!S.settings.cleanup3){
+    const gone = sections().filter(x => x.tpl === "musica").flatMap(x => [x.id, ...descendants(x.id).map(c => c.id)]);
+    for (const e of ofKind("entry").filter(e => gone.includes(e.sectionId))) delItem(e.id, true);
+    S.settings.sections = sections().filter(x => !gone.includes(x.id)); S.settings.cleanup3 = true; ch = true; n++;
+  }
   if (!S.settings.cleanup2){
     const gone = sections().filter(x => x.tpl === "videos" || /^v[ií]deos$/i.test(x.name)).flatMap(x => [x.id, ...descendants(x.id).map(c => c.id)]);
     for (const e of ofKind("entry").filter(e => gone.includes(e.sectionId))) delItem(e.id, true);
@@ -4433,6 +4445,20 @@ const extrasBlock = s => s && s.tpl !== "custom" && (s.mods || s.extra) ? vCusto
 
 /* ---------- builder ---------- */
 S.bd = null;
+const BD_PRESETS = [
+  {name:"Videojuegos", icon:"play", purpose:"Los juegos que quiero jugar, a los que juego y mis favoritos", mods:{cats:{on:true, label:"Género", opts:["Acción","Aventura","RPG","Shooter","Deportes","Estrategia","Plataformas","Puzles","Carreras","Terror","Simulación","Mundo abierto"]}, estados:{on:true, opts:["Quiero jugar","Jugando","Terminado"]}, top:{on:true, n:10, perCat:true}, valor:{on:true}, fotos:{on:true}, cantidad:{on:true, unidad:"horas"}, notas:{on:true}}, extra:[{label:"Plataforma", type:"select", opts:["PS5","Xbox","Switch","PC","Móvil"]}]},
+  {name:"Viajes", icon:"plane", purpose:"Sitios a los que quiero ir, viajes planeados y los que ya hice", mods:{estados:{on:true, opts:["Quiero ir","Planeado","Visitado"]}, cats:{on:true, label:"Continente", opts:["Europa","Asia","África","América del Norte","América del Sur","Oceanía"]}, calendario:{on:true}, cuenta:{on:true}, lugar:{on:true}, dinero:{on:true, moneda:"€", meta:""}, fotos:{on:true}, valor:{on:true}, tareas:{on:true}, notas:{on:true}}, extra:[{label:"Con quién", type:"text"},{label:"Alojamiento", type:"text"}]},
+  {name:"Hábitos", icon:"spark", purpose:"Hábitos diarios con su racha de días seguidos", mods:{racha:{on:true}, cats:{on:true, label:"Área", opts:["Salud","Mente","Deporte","Productividad","Social","Casa"]}, notas:{on:true}}, extra:[{label:"Hora ideal", type:"time"},{label:"Por qué lo hago", type:"text"}]},
+  {name:"Gastos y ahorro", icon:"wallet", purpose:"Lo que gasto cada mes por categorías, con presupuesto", mods:{dinero:{on:true, moneda:"€", meta:"1000"}, cats:{on:true, label:"Categoría", opts:["Comida","Casa","Transporte","Ocio","Ropa","Salud","Suscripciones","Regalos","Otros"]}, calendario:{on:true}, etiquetas:{on:true}, notas:{on:true}}, extra:[{label:"Forma de pago", type:"select", opts:["Tarjeta","Efectivo","Bizum","Transferencia"]}]},
+  {name:"Recetas", icon:"utensils", purpose:"Mis recetas por tipo de plato, con tiempo y dificultad", mods:{cats:{on:true, label:"Tipo de plato", opts:["Desayunos","Entrantes","Pasta","Arroces","Carnes","Pescados","Verduras","Postres","Salsas"]}, top:{on:true, n:5, perCat:false}, valor:{on:true}, fotos:{on:true}, enlace:{on:true}, notas:{on:true}}, extra:[{label:"Tiempo (min)", type:"number"},{label:"Dificultad", type:"select", opts:["Fácil","Media","Difícil"]},{label:"Raciones", type:"number"},{label:"Ingredientes", type:"longtext"}]},
+  {name:"Lista de deseos", icon:"gift", purpose:"Cosas que quiero comprarme, con precio y enlace", mods:{estados:{on:true, opts:["Lo quiero","Ahorrando","Comprado"]}, cats:{on:true, label:"Categoría", opts:["Ropa","Tecnología","Casa","Libros","Belleza","Deporte","Viajes","Otros"]}, dinero:{on:true, moneda:"€", meta:""}, enlace:{on:true}, fotos:{on:true}, notas:{on:true}}, extra:[{label:"Prioridad", type:"select", opts:["Alta","Media","Baja"]},{label:"Tienda", type:"text"}]},
+  {name:"Cumpleaños y regalos", icon:"gift", purpose:"Los cumpleaños de mi gente con cuenta atrás e ideas de regalo", mods:{calendario:{on:true}, cuenta:{on:true}, dinero:{on:true, moneda:"€", meta:""}, tareas:{on:true}, notas:{on:true}}, extra:[{label:"Idea de regalo", type:"text"},{label:"Relación", type:"select", opts:["Familia","Pareja","Amistad","Trabajo"]}]},
+  {name:"Conciertos y eventos", icon:"music", purpose:"Conciertos, festivales y planes con fecha, lugar y entradas", mods:{cats:{on:true, label:"Tipo", opts:["Concierto","Festival","Teatro","Deporte","Exposición","Cine","Otro"]}, calendario:{on:true}, cuenta:{on:true}, lugar:{on:true}, dinero:{on:true, moneda:"€", meta:""}, fotos:{on:true}, valor:{on:true}, notas:{on:true}}, extra:[{label:"Con quién", type:"text"},{label:"Entradas compradas", type:"check"}]},
+  {name:"Plantas", icon:"leaf", purpose:"Mis plantas y cuándo regarlas", mods:{racha:{on:true}, fotos:{on:true}, lugar:{on:true}, notas:{on:true}}, extra:[{label:"Regar cada (días)", type:"number"},{label:"Luz", type:"select", opts:["Sol directo","Mucha luz","Semisombra","Sombra"]},{label:"Último abono", type:"date"}]},
+  {name:"Mascotas", icon:"heart", purpose:"Veterinario, vacunas y cuidados de mis mascotas", mods:{calendario:{on:true}, cuenta:{on:true}, tareas:{on:true}, cats:{on:true, label:"Tipo", opts:["Veterinario","Vacuna","Desparasitación","Peluquería","Compra","Otro"]}, dinero:{on:true, moneda:"€", meta:""}, notas:{on:true}}, extra:[{label:"Mascota", type:"text"},{label:"Peso (kg)", type:"number"}]},
+  {name:"Salud y citas", icon:"shield", purpose:"Citas médicas, revisiones y medicación", mods:{calendario:{on:true}, cuenta:{on:true}, tareas:{on:true}, cats:{on:true, label:"Especialidad", opts:["Medicina general","Dentista","Oculista","Dermatología","Fisioterapia","Psicología","Análisis","Otra"]}, lugar:{on:true}, notas:{on:true}}, extra:[{label:"Profesional", type:"text"},{label:"Medicación", type:"longtext"}]},
+  {name:"Series de anime", icon:"film", purpose:"Anime por género con lo que veo y mi top", mods:{cats:{on:true, label:"Género", opts:["Shōnen","Shōjo","Seinen","Isekai","Mecha","Slice of life","Deportes","Romance","Terror","Fantasía"]}, estados:{on:true, opts:["Quiero ver","Viendo","Visto"]}, top:{on:true, n:10, perCat:true}, valor:{on:true}, fotos:{on:true}, cantidad:{on:true, unidad:"episodios"}, notas:{on:true}}, extra:[{label:"Estudio", type:"text"}]}
+];
 const BD_IDEAS = ["Videojuegos por género con top 10","Hábitos diarios con racha","Viajes y lugares con fotos","Gastos del mes con presupuesto","Recetas por tipo de plato","Conciertos y eventos con cuenta atrás","Plantas y cuándo regarlas","Discos y canciones por género"];
 function bdSuggest(text){
   const t = text.toLowerCase(), mods = {}, add = (k, c={}) => { mods[k] = {on:true, ...c}; };
@@ -4506,6 +4532,9 @@ function bdBody(){
         <button type="button" class="bd-opt pri" data-act="bd-start"><span class="ic">${ic("grid")}</span><b>Crearla yo, paso a paso</b><span>Te propongo nombre y elementos según lo que me cuentes, y tú lo ajustas todo.</span></button>
         <button type="button" class="bd-opt" data-act="bd-ai"><span class="ic">${ic("spark")}</span><b>Que la diseñe el asistente</b><span>${aiKey() ? "La crea por ti a partir de tu descripción." : "Antes conecta el asistente en Perfil y ajustes (Gemini es gratis)."}</span></button>
       </div>
+      <div class="group-t">Ideas listas para usar</div>
+      <p class="muted small" style="margin:-6px 0 0">Ya vienen configuradas con todo. Elige una, revisa y créala.</p>
+      <div class="bd-presets">${BD_PRESETS.map((p, i) => `<button type="button" class="bd-pre" data-act="bd-preset" data-i="${i}"><span class="ic">${ic(p.icon)}</span><b>${esc(p.name)}</b><span>${esc(p.purpose)}</span></button>`).join("")}</div>
       <details class="bd-tpl"><summary>O empieza con una plantilla</summary><div class="qa" style="margin-top:12px">${Object.entries(TEMPLATES).map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${d.parentId}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="qd">${esc(t.d)}</span></button>`).join("")}</div></details>
     </div>`;
   if (d.step === 2) return `${sheetHead(title)}${dots}
@@ -4556,6 +4585,12 @@ document.addEventListener("change", e => {
   if (t.tagName === "SELECT" && /^extra\.\d+\.type$/.test(t.dataset.bd)) bdRedraw();
 });
 Object.assign(ACT, {
+  "bd-preset"(el){
+    const p = BD_PRESETS[+el.dataset.i]; if (!p) return;
+    const mods = clean(p.mods); for (const k of ["estados","cats"]) if (mods[k] && Array.isArray(mods[k].opts)) mods[k].opts = mods[k].opts.join(", ");
+    Object.assign(S.bd, {name:p.name, icon:p.icon, purpose:p.purpose, mods, extra:p.extra.map(x => ({key:"x" + uid(), label:x.label, type:x.type, opts:(x.opts || []).join(", ")})), touched:true, step:4});
+    buzz(); bdRedraw(true);
+  },
   "bd-go"(el){ S.bd.step = +el.dataset.s; bdRedraw(true); },
   "bd-set"(el){ bdSetPath(el.dataset.path, el.dataset.v); bdRedraw(); },
   "bd-start"(){
