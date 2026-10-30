@@ -741,6 +741,7 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.nogen{align-self:flex-start;font-size:13.5px}
 .dock{transition:transform .35s var(--ease)}
 body.dock-hide .dock{transform:translate3d(0,calc(100% + 6px),0)!important;pointer-events:none}
 
@@ -1200,7 +1201,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "34";
+const APP_VERSION = "35";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -3649,7 +3650,7 @@ const MEALS = ["Desayuno","Comida","Merienda","Cena","Snack"];
 const NUT = [["kcal","Calorías","kcal"],["prot","Proteínas","g"],["carb","Carbohidratos","g"],["grasa","Grasas","g"],["azucar","Azúcares","g"],["fibra","Fibra","g"]];
 const MACROS = NUT.map(([k, l, u]) => F(k, `${l} (${u})`, "number"));
 const KIT_V = 3;
-const GEN_PELI = ["Acción","Aventura","Comedia","Drama","Terror","Suspense","Ciencia ficción","Fantasía","Romance","Animación","Crimen","Documental","Histórica","Musical","Bélica","Familiar"];
+const GEN_PELI = ["Acción","Aventura","Comedia","Drama","Terror","Suspense","Ciencia ficción","Fantasía","Romance","Animación","Crimen","Documental","Histórica","Musical","Bélica","Familiar","Superhéroes","Western"];
 const GEN_LIB = ["Novela","Fantasía","Ciencia ficción","Thriller","Romance","Terror","Historia","Biografías","Desarrollo personal","Psicología","Negocios y dinero","Ciencia","Filosofía","Tecnología","True crime","Humor","Cómic","Poesía"];
 const mediaFields = (types, states, who, prog, gens) => [F("tipo","Tipo","select",{options:types}),F("genero","Género","select",{options:gens}),F("estado","Estado","select",{options:states}),F("valoracion","Mi nota","rating"),F("autor",who,"text"),F("progreso",prog,"text"),F("portada","Portada","photos"),F("enlace","Enlace","link"),F("notas","Notas","longtext")];
 const KITS = {
@@ -3845,8 +3846,8 @@ function vMedia(s){
       <div class="ktabs sm">${[["all", "Todas", inG.length], ["1", s.tpl === "peliculas" ? "Viendo" : "Leyendo", cnt(1)], ["top", "Top 5"]].map(([k, l, n]) => `<button class="ktab${k === st ? " on" : ""}" data-act="m-st" data-sec="${s.id}" data-t="${k}">${esc(l)}${n ? `<span class="n">${n}</span>` : ""}</button>`).join("")}</div>
       ${inner}`;
   } else {
-    const gens = [...c.genres, ...(es.some(e => genOf(e) === NOGEN) ? [NOGEN] : []), ...[...new Set(es.map(genOf))].filter(x => x !== NOGEN && !c.genres.includes(x))];
-    body = `<div class="genres" data-tpl="${s.tpl}">${gens.map(x => { const xs = es.filter(e => genOf(e) === x), own = xs.map(e => e.fields?.cover).filter(Boolean).slice(0, 3);
+    const gens = [...c.genres, ...[...new Set(es.map(genOf))].filter(x => x !== NOGEN && !c.genres.includes(x))], nog = es.filter(e => genOf(e) === NOGEN).length;
+    body = `${nog ? `<button class="lnk nogen" data-act="m-genre" data-sec="${s.id}" data-g="${NOGEN}">${ic("right")}Sin género (${nog}): ponles uno para que salgan en su cuadro</button>` : ""}<div class="genres" data-tpl="${s.tpl}">${gens.map(x => { const xs = es.filter(e => genOf(e) === x), own = xs.map(e => e.fields?.cover).filter(Boolean).slice(0, 3);
       return `<button class="gq${xs.length ? "" : " empty0"}" style="--h:${hue(x)}" data-act="m-genre" data-sec="${s.id}" data-g="${esc(x)}" data-own="${esc(JSON.stringify(own))}"><b>${esc(x)}</b><span>${xs.length ? `${xs.length} ${xs.length === 1 ? "título" : "títulos"}` : "Vacío"}</span></button>`; }).join("")}</div>`;
   }
   const mqBar = `<div class="mq"><span>${ic("search")}</span><input type="search" id="mq-${s.id}" data-mq="${s.id}" placeholder="${s.tpl === "peliculas" ? "Busca una película o serie para añadirla" : "Busca un libro o podcast para añadirlo"}" autocomplete="off" enterkeyhint="search" aria-label="Buscar en internet para añadir"></div><div class="mq-res" id="mqr-${s.id}" hidden></div>`;
@@ -4626,7 +4627,7 @@ const itunes = (term, media, entity, limit=15) => jsonp(`https://itunes.apple.co
 const bigArt = u => (u || "").replace(/\/\d+x\d+(bb)?\.(jpg|png)/, "/600x600bb.jpg");
 const yearOf = d => (String(d || "").match(/\d{4}/) || [""])[0];
 const stripHtml = s => String(s || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
-const GENRE_MAP_PELI = [[/anim|anime|infantil/i, "Animación"],[/terror|horror/i, "Terror"],[/ciencia ficci|science/i, "Ciencia ficción"],[/fantas/i, "Fantasía"],[/comed/i, "Comedia"],[/romance|romant/i, "Romance"],[/thriller|suspense|mystery|misterio/i, "Suspense"],[/crim|policiac/i, "Crimen"],[/document/i, "Documental"],[/music/i, "Musical"],[/war|bélic|guerra/i, "Bélica"],[/histor/i, "Histórica"],[/famil|kids|niños/i, "Familiar"],[/aventur|adventure/i, "Aventura"],[/acci|action/i, "Acción"],[/dram/i, "Drama"]];
+const GENRE_MAP_PELI = [[/superh[eé]roe|superhero|marvel|dc comics/i, "Superhéroes"],[/western|del oeste/i, "Western"],[/anim|anime|infantil/i, "Animación"],[/terror|horror/i, "Terror"],[/ciencia ficci|science/i, "Ciencia ficción"],[/fantas/i, "Fantasía"],[/comed/i, "Comedia"],[/romance|romant/i, "Romance"],[/thriller|suspense|mystery|misterio/i, "Suspense"],[/crim|policiac/i, "Crimen"],[/document/i, "Documental"],[/music/i, "Musical"],[/war|bélic|guerra/i, "Bélica"],[/histor/i, "Histórica"],[/famil|kids|niños/i, "Familiar"],[/aventur|adventure/i, "Aventura"],[/acci|action/i, "Acción"],[/dram/i, "Drama"]];
 const GENRE_MAP_LIB = [[/fantas/i, "Fantasía"],[/science fiction|ciencia ficci/i, "Ciencia ficción"],[/thriller|suspense|mystery|misterio|policiac|detective/i, "Thriller"],[/romance|romant/i, "Romance"],[/horror|terror/i, "Terror"],[/true crime|crimen real/i, "True crime"],[/biograf|memoir|memorias/i, "Biografías"],[/histor/i, "Historia"],[/self-help|autoayuda|desarrollo personal|personal development|salud mental/i, "Desarrollo personal"],[/psicolog|psychology/i, "Psicología"],[/business|negocio|econom|finanz|money|dinero/i, "Negocios y dinero"],[/philosoph|filosof/i, "Filosofía"],[/tecnolog|technology|computer/i, "Tecnología"],[/scien|cienc/i, "Ciencia"],[/comedy|humor|comedia/i, "Humor"],[/comic|cómic|graphic novel|manga/i, "Cómic"],[/poe/i, "Poesía"],[/fiction|novel|ficción|literatura/i, "Novela"]];
 const mapGenre = (list, text) => { const n = deacc(text); for (const [r, g] of list) if (r.test(text || "") || r.test(n)) return g; return ""; };
 const deacc = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "");
@@ -4763,7 +4764,7 @@ Object.assign(ACT, {
 });
 
 /* ---------- covers for genre tiles ---------- */
-const GENRE_WIKI = {Acción:["Mad Max: Fury Road","John Wick","Die Hard"], Aventura:["Raiders of the Lost Ark","Pirates of the Caribbean: The Curse of the Black Pearl","Jurassic Park (film)"], Comedia:["The Hangover","Superbad (film)","The Grand Budapest Hotel"], Drama:["The Shawshank Redemption","Forrest Gump","Whiplash (2014 film)"], Terror:["The Conjuring","The Shining (film)","It (2017 film)"], Suspense:["Seven (1995 film)","Gone Girl (film)","Shutter Island (film)"], "Ciencia ficción":["Interstellar (film)","Blade Runner 2049","The Matrix"], Fantasía:["The Lord of the Rings: The Fellowship of the Ring","Harry Potter and the Philosopher's Stone (film)","Pan's Labyrinth"], Romance:["Titanic (1997 film)","The Notebook","Pride & Prejudice (2005 film)"], Animación:["Toy Story","Spirited Away","Coco (2017 film)"], Crimen:["The Godfather","Pulp Fiction","Goodfellas"], Documental:["March of the Penguins","Free Solo","Super Size Me"], Histórica:["Gladiator (2000 film)","Braveheart","Schindler's List"], Musical:["La La Land","The Greatest Showman","Mamma Mia! (film)"], Bélica:["Saving Private Ryan","1917 (2019 film)","Dunkirk (2017 film)"], Familiar:["Home Alone","Paddington (film)","Finding Nemo"]};
+const GENRE_WIKI = {Acción:["Mad Max: Fury Road","John Wick","Die Hard"], Aventura:["Raiders of the Lost Ark","Pirates of the Caribbean: The Curse of the Black Pearl","Jurassic Park (film)"], Comedia:["The Hangover","Superbad (film)","The Grand Budapest Hotel"], Drama:["The Shawshank Redemption","Forrest Gump","Whiplash (2014 film)"], Terror:["The Conjuring","The Shining (film)","It (2017 film)"], Suspense:["Seven (1995 film)","Gone Girl (film)","Shutter Island (film)"], "Ciencia ficción":["Interstellar (film)","Blade Runner 2049","The Matrix"], Fantasía:["The Lord of the Rings: The Fellowship of the Ring","Harry Potter and the Philosopher's Stone (film)","Pan's Labyrinth"], Romance:["Titanic (1997 film)","The Notebook","Pride & Prejudice (2005 film)"], Animación:["Toy Story","Spirited Away","Coco (2017 film)"], Crimen:["The Godfather","Pulp Fiction","Goodfellas"], Documental:["March of the Penguins","Free Solo","Super Size Me"], Histórica:["Gladiator (2000 film)","Braveheart","Schindler's List"], Musical:["La La Land","The Greatest Showman","Mamma Mia! (film)"], Bélica:["Saving Private Ryan","1917 (2019 film)","Dunkirk (2017 film)"], Familiar:["Home Alone","Paddington (film)","Finding Nemo"], Superhéroes:["The Dark Knight","Avengers: Endgame","Spider-Man: Into the Spider-Verse"], Western:["The Good, the Bad and the Ugly","Django Unchained","Unforgiven"]};
 async function wikiPosters(){
   const all = Object.values(GENRE_WIKI).flat(), out = {};
   for (let i = 0; i < all.length; i += 45){
@@ -4776,7 +4777,7 @@ async function wikiPosters(){
   }
   return out;
 }
-const GENRE_SEEDS = {Acción:"Mad Max", Aventura:"Indiana Jones", Comedia:"Resacón en Las Vegas", Drama:"Cadena perpetua", Terror:"Expediente Warren", Suspense:"Seven", "Ciencia ficción":"Interstellar", Fantasía:"El señor de los anillos", Romance:"Titanic", Animación:"Toy Story", Crimen:"El padrino", Documental:"documental naturaleza", Histórica:"Gladiator", Musical:"La La Land", Bélica:"Salvar al soldado Ryan", Familiar:"Solo en casa"};
+const GENRE_SEEDS = {Acción:"Mad Max", Aventura:"Indiana Jones", Comedia:"Resacón en Las Vegas", Drama:"Cadena perpetua", Terror:"Expediente Warren", Suspense:"Seven", "Ciencia ficción":"Interstellar", Fantasía:"El señor de los anillos", Romance:"Titanic", Animación:"Toy Story", Crimen:"El padrino", Documental:"documental naturaleza", Histórica:"Gladiator", Musical:"La La Land", Bélica:"Salvar al soldado Ryan", Familiar:"Solo en casa", Superhéroes:"Vengadores", Western:"El bueno, el feo y el malo"};
 const GENRE_SUBJ = {Novela:"fiction", Fantasía:"fantasy", "Ciencia ficción":"science_fiction", Thriller:"thriller", Romance:"romance", Terror:"horror", Historia:"history", Biografías:"biography", "Desarrollo personal":"self-help", Psicología:"psychology", "Negocios y dinero":"business", Ciencia:"science", Filosofía:"philosophy", Tecnología:"technology", "True crime":"true_crime", Humor:"humor", Cómic:"comics", Poesía:"poetry"};
 S.gimg = lsGet("orbita.gimg", {});
 let gimgBusy = false;

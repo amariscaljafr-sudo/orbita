@@ -1,5 +1,5 @@
 // Órbita — caché sin conexión. Sube VERSION al publicar cambios.
-const VERSION = "orbita-v34";
+const VERSION = "orbita-v35";
 const MP_CACHE = "orbita-mp-1.1.1";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/apple-touch-icon.png"];
 
