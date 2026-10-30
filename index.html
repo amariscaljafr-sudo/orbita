@@ -741,6 +741,14 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.swatches.big{flex-direction:column;align-items:stretch;gap:6px}
+.sw-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.swatches.big .sw{width:32px;height:32px}
+.sw-pick{position:relative;display:grid;place-items:center;font-weight:900;font-size:18px;color:var(--ink-2);background:conic-gradient(#e0141c,#f2d16b,#3fa34d,#20a4c9,#6b4f9e,#d6336c,#e0141c);overflow:hidden}
+.sw-pick input[type=color]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
+.sw-l{margin:0 8px 0 2px}
+.sw-name{margin-left:auto}
+
 .cdrawer{position:relative;margin:10px 10px 22px;perspective:900px}
 .dw-in{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;border-radius:12px;background:linear-gradient(180deg,#3a1418,#24090c);box-shadow:inset 0 6px 14px rgba(0,0,0,.6),inset 0 0 0 3px #e9e4da,0 2px 0 #cfc7b8;transform-origin:50% 0}
 .dw-box{position:relative;min-height:112px;border-radius:9px;padding:24px 8px 8px;background:radial-gradient(120% 90% at 50% 0%,#5a2026,#3a1217);box-shadow:inset 0 2px 6px rgba(0,0,0,.6),inset 0 -1px 0 rgba(255,255,255,.06)}
@@ -1173,6 +1181,17 @@ const P = {
   send:"M4 12l16-8-6 16-2-6z",
   back:"M10 6l-6 6 6 6M4 12h16"
 };
+const COLOR_FAMILIES = [
+  ["Neutros", [["#ffffff","Blanco"],["#f4f1ea","Crudo"],["#e8e4dc","Hueso"],["#c9c6c0","Gris perla"],["#9a9a96","Gris"],["#6b6b68","Gris marengo"],["#3b3b39","Antracita"],["#111111","Negro"]]],
+  ["Tierras", [["#efe3cf","Beige claro"],["#d9c3a0","Beige"],["#c9a66b","Camel"],["#a67c52","Tostado"],["#8b5a3c","Marrón"],["#5c3a24","Chocolate"],["#b5a27a","Caqui claro"],["#7d7450","Caqui"]]],
+  ["Rojos y rosas", [["#f7d6d9","Rosa palo"],["#f2a7b8","Rosa"],["#e0607e","Rosa intenso"],["#d6336c","Fucsia"],["#e0141c","Rojo"],["#b23a48","Cereza"],["#7a1f2b","Burdeos"],["#4a1420","Granate"]]],
+  ["Naranjas y amarillos", [["#f6c9a8","Melocotón"],["#f08a4b","Naranja"],["#d35400","Teja"],["#c0632f","Óxido"],["#fff3b0","Amarillo pastel"],["#f2d16b","Amarillo"],["#e0a800","Mostaza"],["#c8a951","Dorado"]]],
+  ["Verdes", [["#dcebd2","Verde agua"],["#a8d5b5","Menta"],["#8fae7e","Salvia"],["#3fa34d","Verde"],["#6b8e23","Oliva"],["#2f6b4f","Verde botella"],["#1f4d3a","Verde inglés"],["#0f766e","Petróleo"]]],
+  ["Azules", [["#dbe9f7","Azul hielo"],["#a8c8ec","Celeste"],["#7fb0e8","Azul claro"],["#20a4c9","Turquesa"],["#3b82c4","Azul"],["#4a6a94","Azul vaquero"],["#1e3a6e","Azul marino"],["#0b1f3f","Azul noche"]]],
+  ["Morados y metales", [["#e6dcf2","Lavanda"],["#b9a3d9","Lila"],["#6b4f9e","Morado"],["#3e2a63","Berenjena"],["#c7cad1","Plateado"],["#d4af37","Oro"],["#b87333","Cobre"],["#2f2f35","Grafito"]]]
+];
+const COLORS = COLOR_FAMILIES.flatMap(f => f[1]);
+const colorName = v => (COLORS.find(c => c[0] === (v || "").toLowerCase()) || [])[1] || "";
 const ic = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="${P[n]||P.star}"/></svg>`;
 const SEC_ICONS = ["film","shirt","layers","dumbbell","fist","trend","clock","utensils","music","play","bulb","spark","folder","cap","bookmark","book","heart","star","pin","gift","globe","leaf","cam","wallet","plane","note","list","task"];
 
@@ -1245,7 +1264,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "38";
+const APP_VERSION = "39";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -2005,7 +2024,10 @@ function fieldInput(f, v, id){
     case "rows": return rowsField(f, v, id);
     case "ref": { const opts = refOptions(f); if (!opts.length) return `<div class="note-box">${esc(f.empty || "Aún no hay opciones.")}</div><input type="hidden" name="${n}" value="${esc(v || "")}">`; return opts.length <= 8 ? `<div class="seg">${[["", "—"], ...opts].map(([val, l], i) => `<input type="radio" name="${n}" id="${id}-${i}" value="${esc(val)}"${(v || "") === val ? " checked" : ""}><label for="${id}-${i}">${esc(l)}</label>`).join("")}</div>` : `<select id="${id}" name="${n}"><option value="">—</option>${opts.map(([val, l]) => `<option value="${esc(val)}"${v === val ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`; }
     case "garments": return garmentsField(f, v);
-    case "color": { const cs = ["#111111","#f4f4f2","#8a8f98","#2f4f8f","#7fb0e8","#2f6b4f","#c9a66b","#8b5a3c","#b23a48","#f2a7b8","#f2d16b","#6b4f9e"]; return `<div class="swatches">${cs.map((c, i) => `<input type="radio" name="${n}" id="${id}-${i}" value="${c}"${v === c ? " checked" : ""}><label class="sw" for="${id}-${i}" style="background:${c}"></label>`).join("")}<input type="radio" name="${n}" id="${id}-x" value=""${!v ? " checked" : ""}><label for="${id}-x" class="lnk" style="cursor:pointer">Ninguno</label></div>`; }
+    case "color": { const lv = (v || "").toLowerCase(), known = COLORS.some(c => c[0] === lv), cust = lv && !known; let k = 0;
+      return `<div class="swatches big">${COLOR_FAMILIES.map(([fam, cs]) => `<div class="sw-row" role="group" aria-label="${fam}">${cs.map(([c, nm]) => { const i = k++; return `<input type="radio" name="${n}" id="${id}-${i}" value="${c}"${lv === c ? " checked" : ""}><label class="sw" for="${id}-${i}" style="background:${c}" title="${nm}" aria-label="${nm}"></label>`; }).join("")}</div>`).join("")}
+        <div class="sw-row"><input type="radio" name="${n}" id="${id}-c" value="${cust ? esc(lv) : ""}" data-custom${cust ? " checked" : ""}><label class="sw sw-pick" for="${id}-c" style="${cust ? `background:${esc(lv)}` : ""}" title="Otro color"><input type="color" value="${cust ? esc(lv) : "#888888"}" aria-label="Elegir otro color" oninput="const b=this.closest('.swatches'),r=b.querySelector('[data-custom]');r.value=this.value;r.checked=true;this.parentElement.style.background=this.value;b.querySelector('.sw-name').textContent='Color personalizado'">${cust ? "" : "+"}</label><span class="lbl sw-l">Otro</span>
+        <input type="radio" name="${n}" id="${id}-x" value=""${!v ? " checked" : ""}><label for="${id}-x" class="lnk" style="cursor:pointer">Ninguno</label><span class="sw-name muted small">${esc(colorName(lv) || (cust ? "Color personalizado" : ""))}</span></div></div>`; }
     default: return `<input type="text" id="${id}" name="${n}" value="${esc(v || "")}">`;
   }
 }
@@ -2474,6 +2496,7 @@ function drawOnb(){
   el.innerHTML = `<div class="onb-in">${prog}${body}${nav}</div>`;
   el.scrollTop = 0;
 }
+document.addEventListener("change", e => { const t = e.target; if (t.type === "radio" && t.closest && t.closest(".swatches.big")){ const nm = $(".sw-name", t.closest(".swatches.big")); if (nm) nm.textContent = t.dataset.custom !== undefined ? (t.value ? "Color personalizado" : "") : colorName(t.value); } });
 document.addEventListener("input", e => { const k = e.target.dataset?.ob; if (k && onbDraft) onbDraft[k] = e.target.type === "checkbox" ? e.target.checked : e.target.value; });
 document.addEventListener("change", e => { const k = e.target.dataset?.ob; if (k && onbDraft && e.target.type === "checkbox") onbDraft[k] = e.target.checked; });
 document.addEventListener("click", e => {
@@ -3623,7 +3646,7 @@ function nearestSwatch(hex){
   const m = /^#?([0-9a-f]{6})$/i.exec(hex || ""); if (!m) return "";
   const rgb = v => [0, 2, 4].map(i => parseInt(v.slice(i, i + 2), 16)), a = rgb(m[1]);
   let best = "", bd = Infinity;
-  for (const c of ["#111111","#f4f4f2","#8a8f98","#2f4f8f","#7fb0e8","#2f6b4f","#c9a66b","#8b5a3c","#b23a48","#f2a7b8","#f2d16b","#6b4f9e"]){ const b = rgb(c.slice(1)), d = (a[0] - b[0]) ** 2 * 2 + (a[1] - b[1]) ** 2 * 4 + (a[2] - b[2]) ** 2 * 3; if (d < bd){ bd = d; best = c; } }
+  for (const [c] of COLORS){ const b = rgb(c.slice(1)), d = (a[0] - b[0]) ** 2 * 2 + (a[1] - b[1]) ** 2 * 4 + (a[2] - b[2]) ** 2 * 3; if (d < bd){ bd = d; best = c; } }
   return best;
 }
 const pickURL = t => { const m = String(t || "").match(/https?:\/\/[^\s"'<>]+/i); if (m) return m[0].replace(/[).,;]+$/, ""); const w = String(t || "").trim(); return /^[\w-]+(\.[\w-]+)+\/\S*/.test(w) ? "https://" + w : ""; };
