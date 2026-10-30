@@ -741,6 +741,13 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.ktw{position:relative;border-radius:var(--r-lg);overflow:hidden;min-width:0}
+.ktw .ktopic{-webkit-user-drag:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;position:relative;z-index:1;transition:transform .3s var(--ease);touch-action:pan-x pan-down}
+.kt-del{position:absolute;left:0;right:0;bottom:0;height:56px;z-index:0;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--red);color:#fff;font-weight:800;font-size:14px}
+.kt-del svg{width:18px;height:18px}
+.kt-del.armed{background:var(--ink)}
+.ktw:not(.open) .kt-del{pointer-events:none}
+
 .bd-presets{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr))}
 .bd-pre{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;border-radius:18px;background:var(--paper-2);text-align:left;transition:transform .2s var(--spring)}
 .bd-pre:active{transform:scale(.97)}
@@ -1209,7 +1216,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "36";
+const APP_VERSION = "37";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -4129,6 +4136,20 @@ function saveClOrder(cat, ids){ S.settings.clOrder = {...(S.settings.clOrder || 
 })();
 document.addEventListener("animationend", e => { if (e.target.classList && e.target.classList.contains("cl-door")){ const c = e.target.closest(".closet"); if (c){ c.classList.remove("opening"); c.classList.add("open"); } } });
 
+// swipe a topic up to reveal its delete button
+(() => {
+  let tile = null, wrap = null, x0 = 0, y0 = 0, dy = 0, drag = false, block = false;
+  const closeAll = except => $$(".ktw.open").forEach(w => { if (w !== except){ w.classList.remove("open"); $(".ktopic", w).style.transform = ""; } });
+  window.addEventListener("click", e => { if (block){ block = false; e.preventDefault(); e.stopPropagation(); return; } if (!(e.target.closest && e.target.closest(".ktw.open"))) closeAll(); }, true);
+  document.addEventListener("pointerdown", e => { const t = e.target.closest && e.target.closest(".ktw .ktopic"); if (!t) return; tile = t; wrap = t.parentElement; x0 = e.clientX; y0 = e.clientY; dy = 0; drag = false; });
+  document.addEventListener("pointermove", e => {
+    if (!tile) return; const dx = e.clientX - x0; dy = e.clientY - y0;
+    if (!drag){ if (dy < -8 && Math.abs(dy) > Math.abs(dx)){ drag = true; tile.setPointerCapture?.(e.pointerId); tile.style.transition = "none"; } else if (Math.abs(dx) > 10 || dy > 10){ tile = null; return; } else return; }
+    const base = wrap.classList.contains("open") ? -56 : 0; tile.style.transform = `translateY(${Math.max(-64, Math.min(0, base + dy))}px)`;
+  });
+  const up = () => { if (!tile) return; tile.style.transition = ""; if (drag){ block = true; setTimeout(() => { block = false; }, 350); const open = dy < -28 || (wrap.classList.contains("open") && dy < 20); closeAll(wrap); wrap.classList.toggle("open", open); tile.style.transform = open ? "translateY(-56px)" : ""; if (open) buzz(); } tile = null; drag = false; };
+  document.addEventListener("pointerup", up); document.addEventListener("pointercancel", up);
+})();
 /* ---------- Temas (subsections) ---------- */
 function subsBlock(s, kitMode){
   const subs = childrenOf(s.id), con = s.tpl === "conocimientos", L = con ? "Temas" : "Apartados";
@@ -4149,13 +4170,13 @@ function vConocimientos(s){
   const pool = q ? [s, ...descendants(s.id)].flatMap(x => entriesOf(x.id)) : entriesOf(s.id);
   const ns = pool.filter(e => !q || JSON.stringify([e.title, e.fields]).toLowerCase().includes(q)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   const sugg = top ? ["Tecnología","Ropa","Zapatos","Mochilas","Cocina","Salud","Viajes","Dinero"].filter(n => !subs.some(x => x.name.toLowerCase() === n.toLowerCase())).slice(0, 6) : [];
-  const tile = t => { const es = [t, ...descendants(t.id)].flatMap(x => entriesOf(x.id)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); return `<a class="ktopic" href="#s-${t.id}"><span class="ic">${ic(t.icon)}</span><b>${esc(t.name)}</b><span class="kt-n">${es.length} ${es.length === 1 ? "nota" : "notas"}</span></a>`; };
+  const tile = t => { const es = [t, ...descendants(t.id)].flatMap(x => entriesOf(x.id)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); return `<div class="ktw"><button class="kt-del" data-act="topic-del" data-sec="${t.id}" aria-label="Borrar el tema ${esc(t.name)}">${ic("trash")}<span>Borrar</span></button><a class="ktopic" href="#s-${t.id}" draggable="false"><span class="ic">${ic(t.icon)}</span><b>${esc(t.name)}</b><span class="kt-n">${es.length} ${es.length === 1 ? "nota" : "notas"}</span></a></div>`; };
   const nrow = e => { const sec = secById(e.sectionId); return `<button class="krow" data-act="open" data-id="${e.id}"><span class="kr-t"><b>${esc(e.title)}</b><span>${esc([e.fields?.fecha ? relDay(e.fields.fecha) : "", q && sec && sec.id !== s.id ? sec.name : ""].filter(Boolean).join(" · "))}</span></span>${e.example ? '<span class="tag ex">Ejemplo</span>' : ""}${ic("right")}</button>`; };
   const showLoose = !top || q || S.conLoose?.[s.id];
   return `${kitHead(s, top ? "Todo lo que vas aprendiendo, ordenado por temas." : `Tus notas sobre ${esc(s.name.toLowerCase())}.`)}
     <input class="search-in" id="sq-${s.id}" data-input="secq" data-sec="${s.id}" placeholder="${top ? "Buscar en todos tus conocimientos" : "Buscar en " + esc(s.name.toLowerCase())}" value="${esc(S.secQuery[s.id] || "")}" aria-label="Buscar">
     ${q ? "" : `<section class="stack" style="gap:12px"><div class="sec-t"><h2 class="sub-h">${top ? "Temas" : "Dentro de " + esc(s.name)}</h2><span class="n">${subs.length || ""}</span><span class="sp"></span><button class="plus-sm" data-act="topic-new" data-parent="${s.id}" aria-label="Nuevo tema">${ic("plus")}</button></div>
-      ${subs.length ? `<div class="ktopics">${subs.map(tile).join("")}</div>` : `<p class="muted small" style="margin:0">${top ? "Crea un tema para cada cosa: tecnología, ropa, zapatos, mochilas…" : "Si este tema crece, toca + para dividirlo en partes."}</p>`}
+      ${subs.length ? `<div class="ktopics">${subs.map(tile).join("")}</div><p class="muted small" style="margin:-4px 0 0">Para borrar un tema, deslízalo hacia arriba.</p>` : `<p class="muted small" style="margin:0">${top ? "Crea un tema para cada cosa: tecnología, ropa, zapatos, mochilas…" : "Si este tema crece, toca + para dividirlo en partes."}</p>`}
       ${sugg.length ? `<div class="chips">${sugg.map(n => `<button class="chip" data-act="topic-quick" data-parent="${s.id}" data-name="${esc(n)}">${ic("plus")}${esc(n)}</button>`).join("")}</div>` : ""}</section>`}
     <section class="stack" style="gap:12px"><div class="sec-t">${top && !q ? `<button class="lnk" data-act="con-loose" data-sec="${s.id}" style="font-size:15px">${ic(showLoose ? "left" : "right")}Notas sin tema${ns.length ? ` (${ns.length})` : ""}</button>` : `<h2 class="sub-h">${q ? "Resultados" : "Notas"}</h2><span class="n">${ns.length || ""}</span>`}<span class="sp"></span>${kbtn(s, "nota", "Nota", {fecha:todayKey()}, "btn sm pri")}</div>
       ${showLoose ? (ns.length ? `<div class="klist">${ns.map(nrow).join("")}</div>` : kempty(q ? "Nada coincide." : "Aún no hay notas aquí.", q ? "Prueba con otra palabra." : "Apunta lo que aprendas: un truco, un dato, un resumen de un vídeo…")) : ""}</section>`;
@@ -4230,6 +4251,13 @@ Object.assign(ACT, {
   "cl-wear"(el){ const g = garments().find(x => x.id === el.dataset.id); if (g) ACT.wear({dataset:{c:g.cat, id:g.id}}); },
   "topic-new"(el){ const p = secById(el.dataset.parent); swapLayer(() => openLayer(`${sheetHead(p && p.tpl === "conocimientos" ? "Nuevo tema" : "Nuevo apartado")}<form class="stack" data-form="topic-new" data-parent="${el.dataset.parent}"><div class="field"><label for="tn-name">Nombre</label><input type="text" id="tn-name" name="name" placeholder="Ej.: Tecnología, Mochilas, Zapatos…" required></div><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Crear</button></div></div></form>`)); },
   "con-loose"(el){ S.conLoose = {...(S.conLoose || {}), [el.dataset.sec]:!(S.conLoose || {})[el.dataset.sec]}; render(); },
+  "topic-del"(el){
+    const id = el.dataset.sec, t = secById(id); if (!t) return;
+    const subs = descendants(id), ids = [id, ...subs.map(x => x.id)], n = ofKind("entry").filter(e => ids.includes(e.sectionId)).length;
+    if (!armed(el, n ? `¿Borrar con ${n} ${n === 1 ? "nota" : "notas"}?` : "¿Seguro?")) return;
+    for (const e of ofKind("entry").filter(e => ids.includes(e.sectionId))) delItem(e.id, true);
+    S.settings.sections = sections().filter(x => !ids.includes(x.id)); putSettings(true); flushBulk(); toast("Tema borrado", t.name);
+  },
   "topic-quick"(el){ makeTopic(el.dataset.parent, el.dataset.name); render(); toast("Tema creado", el.dataset.name); }
 });
 document.addEventListener("submit", e => {
