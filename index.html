@@ -741,6 +741,13 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .mat-m i{font-style:normal;font-size:12px;font-weight:800;background:var(--paper);padding:3px 9px;border-radius:999px;color:var(--ink)}
 .mat .mat-n{margin-top:auto;color:var(--red);font-weight:800}
 .subs .tiles.sm{margin-top:2px}
+.ms-title{position:relative}
+.ms-title .title-in{padding-left:36px!important}
+.ms-ico{position:absolute;left:0;display:grid;top:50%;transform:translateY(-50%);color:var(--mute);pointer-events:none}
+.ms-ico svg{width:24px;height:24px}
+.ms-tip{margin:0;display:flex;gap:8px;align-items:flex-start}
+.ms-tip svg{flex:none;width:16px;height:16px;margin-top:1px}
+
 .vw-card.cut{background:transparent;box-shadow:none;overflow:visible}
 .vw-card.cut img{background:transparent;filter:drop-shadow(0 22px 26px rgba(13,13,13,.28))}
 .vw-card.cut .vw-sheen{display:none}
@@ -1164,7 +1171,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "26";
+const APP_VERSION = "27";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1936,7 +1943,7 @@ function openEntry(sid, item, preset={}){
   };
   openLayer(`${sheetHead(esc(secPath(s)) + (kd && kd.label ? ` <span class="kd-l">· ${esc(kd.label)}</span>` : ""), e.example ? '<span class="tag ex">Ejemplo</span>' : "")}
     <form class="stack" data-form="entry" data-id="${e.id}" data-sec="${s.id}" data-sub="${kd ? e.sub : ""}" autocomplete="off">
-      ${kd && kd.autoTitle ? `<input type="hidden" name="title" value="${esc(e.title || "-")}">` : `<div class="field"><input type="text" class="title-in" id="en-title" name="title" value="${esc(e.title)}" placeholder="${esc(kd?.title || "Nombre")}" aria-label="Nombre" required></div>`}
+      ${kd && kd.autoTitle ? `<input type="hidden" name="title" value="${esc(e.title || "-")}">` : `<div class="field${MEDIA_CFG[s.tpl] ? " ms-title" : ""}">${MEDIA_CFG[s.tpl] ? `<span class="ms-ico">${ic("search")}</span>` : ""}<input type="text" class="title-in" id="en-title" name="title" value="${esc(e.title)}" placeholder="${esc(MEDIA_CFG[s.tpl] ? (s.tpl === "peliculas" ? "Título: busca «Dune», «Friends»…" : "Título: busca «Harry Potter»…") : kd?.title || "Nombre")}" aria-label="${MEDIA_CFG[s.tpl] ? "Título (busca en internet)" : "Nombre"}" required${MEDIA_CFG[s.tpl] ? ` data-ms="${s.id}" autocomplete="off" enterkeyhint="search"` : ""}></div>`}
       ${kd && kd.meal ? mealFormTop(s, e) : ""}${kd && kd.formTop ? kd.formTop(s, e) : ""}
       ${flds.map((f, i) => f.type === "hidden" ? fieldInput(f, e.fields[f.key], "en-f" + i) : `<div class="field">${f.type === "check" ? "" : `<label for="en-f${i}">${esc(f.label)}</label>`}${fieldInput(f, e.fields[f.key], "en-f" + i)}</div>`).join("")}
       ${kd && kd.meal ? mealFormEnd() : ""}
@@ -4629,16 +4636,15 @@ async function seriesCreator(id){ try { const crew = await getJSON(`https://api.
 /* ---------- search box inside the add form ---------- */
 S.msr = [];
 function mediaSearchTop(s, e){
-  if (e.fields?.cover || (e.fields?.portada || []).length) return `<div class="ms-cur">${poster(e)}<span>Portada lista. Puedes buscar otra si quieres.</span><button type="button" class="lnk" data-act="ms-open">${ic("search")}Buscar</button></div><div class="msearch" hidden>${msBox(s)}</div>`;
+  if (e.fields?.cover || (e.fields?.portada || []).length) return `<div class="ms-cur">${poster(e)}<span>Portada lista. Si cambias el título te enseño otras opciones.</span></div><div class="msearch" hidden>${msBox(s)}</div>`;
   return `<div class="msearch">${msBox(s)}</div>`;
 }
-const msBox = s => { const c = MEDIA_CFG[s.tpl]; return `<span class="lbl">Buscar en internet</span>
-  <div class="ms-in"><span>${ic("search")}</span><input type="search" id="ms-q" placeholder="${s.tpl === "peliculas" ? "Ej.: piratas, Dune, Friends…" : "Ej.: Harry Potter, El Hormiguero…"}" autocomplete="off" enterkeyhint="search" data-ms="${s.id}"></div>
-  <div class="ms-res" id="ms-res"><p class="muted small" style="margin:0">Escribe y elige: se rellenan la portada, el año, ${s.tpl === "peliculas" ? "el director" : "el autor"} y el género. Si no lo encuentras, rellénalo a mano.</p></div>`; };
+const msBox = s => `<div class="ms-res" id="ms-res"><p class="muted small ms-tip">${ic("search")}Escribe el título y te enseño lo que hay en internet: al elegir uno se rellenan la portada, el año, ${s.tpl === "peliculas" ? "el director" : "el autor"} y el género.</p></div>`;
 document.addEventListener("input", e => {
-  const t = e.target; if (t.id !== "ms-q") return;
+  const t = e.target; if (!(t.id === "en-title" && t.dataset.ms)) return;
   clearTimeout(t._t); const q = t.value.trim(), box = $("#ms-res"); if (!box) return;
-  if (q.length < 2){ box.innerHTML = ""; return; }
+  const wrap = box.closest(".msearch"); if (wrap) wrap.hidden = false;
+  if (q.length < 2){ box.innerHTML = msBox(secById(t.dataset.ms)).replace(/^<div class="ms-res" id="ms-res">|<\/div>$/g, ""); return; }
   t._t = setTimeout(async () => {
     const s = secById(t.dataset.ms); if (!s) return;
     box.innerHTML = `<div class="gl-step"><span class="spin"></span>Buscando «${esc(q)}»…</div>`;
@@ -4651,7 +4657,7 @@ document.addEventListener("input", e => {
   }, 420);
 });
 Object.assign(ACT, {
-  "ms-open"(el){ const f = el.closest("form"), b = $(".msearch", f); if (b){ b.hidden = false; $("#ms-q", b)?.focus(); } el.closest(".ms-cur").remove(); },
+  "ms-open"(el){ const f = el.closest("form"), b = $(".msearch", f); if (b) b.hidden = false; el.closest(".ms-cur").remove(); const t = $("#en-title", f); if (t){ t.focus(); t.dispatchEvent(new Event("input", {bubbles:true})); } },
   async "ms-pick"(el){
     const r = S.msr[+el.dataset.i], f = el.closest("form"); if (!r || !f) return;
     const set = (k, v) => { if (v === undefined || v === null || v === "") return; const radios = $$(`[name="f_${k}"]`, f); if (radios.length && radios[0].type === "radio"){ const m = radios.find(x => x.value === v); if (m) m.checked = true; return; } const inp = $(`[name="f_${k}"]`, f); if (inp) inp.value = v; };
@@ -4663,6 +4669,7 @@ Object.assign(ACT, {
     else set("autor", r.director);
     const notes = $('[name="f_notas"]', f); if (notes && !notes.value && r.sinopsis) notes.value = r.sinopsis.slice(0, 600);
     const box = el.closest(".msearch");
+    $$(".ms-cur", f).forEach(x => x.remove());
     box.insertAdjacentHTML("beforebegin", `<div class="ms-cur">${r.cover ? `<img src="${esc(r.cover)}" alt="" referrerpolicy="no-referrer">` : ""}<span><b>${esc(r.title)}</b>${esc([r.year, r.director].filter(Boolean).join(" · "))}</span><button type="button" class="lnk" data-act="ms-open">${ic("search")}Otra</button></div>`);
     box.hidden = true; buzz();
     if (r.src === "tm" && r.id && s && s.tpl === "peliculas"){ const who = await seriesCreator(r.id); if (who && !$('[name="f_director"]', f)?.value) set("director", who); }
