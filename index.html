@@ -1017,7 +1017,7 @@ button.crumb{align-self:flex-start}
 .cl-rail::-webkit-scrollbar{display:none}
 .hg{flex:none;width:152px;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;color:#d6d6d2;transform-style:preserve-3d;transition:transform .12s linear,opacity .12s linear;transform-origin:50% 12px;-webkit-tap-highlight-color:transparent}
 .hg .hook{width:86px;height:38px;margin-top:2px;flex:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
-.hg .ga{width:146px;height:200px;margin-top:-6px;object-fit:contain;object-position:top center;filter:drop-shadow(0 14px 14px rgba(0,0,0,.55));transform-origin:50% 0;pointer-events:none}
+.hg .ga{width:150px;height:172px;margin-top:-6px;object-fit:contain;object-position:top center;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45));transform-origin:50% 0;pointer-events:none}
 .hg .ga.sv{display:grid;place-items:start center}
 .hg .ga.sv svg{width:100%;height:100%}
 .hg .hn{margin-top:8px;max-width:120px;font-size:11.5px;font-weight:700;color:rgba(255,255,255,.75);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1113,6 +1113,77 @@ button.crumb{align-self:flex-start}
 .fx-busy{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#111;color:#fff;font-size:13px;padding:8px 12px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none}
 .fixer.busy .fx-busy{opacity:1}
 .fx-bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.cl-new{width:100%;justify-content:center;height:52px;font-size:16px}
+.nw-opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--paper);font:inherit;color:inherit}
+.nw-opt:active{background:var(--paper-2)}
+.nw-i{width:46px;height:46px;border-radius:14px;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none}
+.nw-opt:first-child .nw-i{background:var(--red)}
+.nw-i .i{width:22px;height:22px}
+.nw-opt b{display:block;font-size:16px}
+.nw-opt span span{display:block;font-size:13px;color:var(--mute);margin-top:2px}
+.trv{display:flex;flex-direction:column;gap:14px}
+.globe{display:flex;flex-direction:column;gap:10px;position:relative}
+.gl-search{display:flex;align-items:center;gap:8px;background:var(--paper);border:1.5px solid #111;border-radius:999px;padding:0 6px 0 14px;height:46px;position:relative;z-index:6}
+.gl-search .gl-si .i{width:18px;height:18px}
+.gl-search input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:16px;height:100%;outline:none;color:inherit}
+.gl-search input::-webkit-search-cancel-button{display:none}
+.gl-x{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:0;background:transparent;color:inherit}
+.gl-x .i{width:16px;height:16px}
+.gl-res{position:absolute;top:52px;left:0;right:0;z-index:7;background:var(--paper);border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,.22);border:1px solid var(--line);max-height:330px;overflow:auto;padding:6px}
+.gr{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:transparent;padding:9px 10px;border-radius:12px;color:inherit;font:inherit}
+.gr:active,.gr:hover{background:var(--paper-2)}
+.gr-i{width:30px;height:30px;display:grid;place-items:center;font-size:20px;flex:none}
+.gr-i .i{width:18px;height:18px}
+.gr-t{display:flex;flex-direction:column;min-width:0}
+.gr-t b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gr-t span{font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gr-more{font-size:12.5px;color:var(--mute);padding:8px 12px}
+.gl-stage{position:relative;height:min(118vw,470px);border-radius:24px;overflow:hidden;background:radial-gradient(120% 90% at 50% 45%,#24262b 0,#0c0d0f 62%,#050505 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.gl-stage::before{content:"";position:absolute;inset:0;background-image:radial-gradient(1px 1px at 12% 18%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 78% 12%,rgba(255,255,255,.4),transparent),radial-gradient(1px 1px at 88% 64%,rgba(255,255,255,.35),transparent),radial-gradient(1px 1px at 22% 82%,rgba(255,255,255,.35),transparent),radial-gradient(1.5px 1.5px at 60% 92%,rgba(255,255,255,.3),transparent),radial-gradient(1px 1px at 40% 8%,rgba(255,255,255,.4),transparent);pointer-events:none}
+.gl-stage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
+.gl-stage canvas:active{cursor:grabbing}
+.globe.pop .gl-stage{animation:glpop .9s var(--ease) both}
+@keyframes glpop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
+.gl-load{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,.75);font-size:13px;font-weight:600;text-align:center;max-width:80%}
+.globe.ready .gl-load{display:none}
+.gl-zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px;z-index:3}
+.gl-zoom button{width:38px;height:38px;border-radius:12px;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:20px;font-weight:700;display:grid;place-items:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.gl-zoom .i{width:17px;height:17px}
+.gl-card{position:absolute;left:10px;right:10px;bottom:10px;z-index:4;background:#fff;color:#111;border-radius:18px;padding:14px 44px 14px 16px;display:flex;flex-direction:column;gap:6px;box-shadow:0 14px 34px rgba(0,0,0,.4);animation:glcard .28s var(--ease)}
+.gl-card[hidden]{display:none}
+@keyframes glcard{from{transform:translateY(14px);opacity:0}}
+.gc-x{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;border:0;background:#f1f0ed;display:grid;place-items:center;color:#111}
+.gc-x .i{width:15px;height:15px}
+.gc-t{font-size:19px;letter-spacing:-.01em}
+.gc-s{font-size:13px;color:#6b6c70}
+.gc-st{align-self:flex-start;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:#f1f0ed}
+.gc-st.on{background:var(--red);color:#fff}
+.gc-b{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.gc-chips{display:flex;flex-wrap:wrap;gap:6px}
+.gc-chips span{font-size:12px;background:#f1f0ed;border-radius:999px;padding:4px 9px}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.trv-bars{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tbar{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:12px 12px 10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tb-h{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:13px}
+.tb-h span{color:var(--mute);white-space:nowrap}
+.tb-h span b{color:var(--ink);font-size:17px}
+.tb-t{height:10px;border-radius:999px;background:#ecebe7;overflow:hidden}
+.tb-t > i{display:block;height:100%;background:var(--red);border-radius:999px;transition:width .8s var(--ease)}
+.tb-t.seg7{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;background:transparent}
+.tb-t.seg7 i{background:#ecebe7;border-radius:3px;height:100%;transition:background .4s}
+.tb-t.seg7 i.on{background:#111}
+.tb-p{font-size:11.5px;color:var(--mute);line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.trv-list{display:flex;flex-direction:column;gap:8px}
+.tl-c{border:1px solid var(--line);border-radius:16px;padding:10px 12px;background:var(--paper);display:flex;flex-direction:column;gap:8px}
+.tl-h{display:flex;align-items:center;gap:10px;border:0;background:transparent;padding:0;font:inherit;color:inherit;text-align:left}
+.tl-f{font-size:22px}
+.tl-h b{flex:1;font-size:15px}
+.tl-h > span:last-child{font-size:11.5px;font-weight:700;color:var(--mute)}
+.tl-c.on .tl-h > span:last-child{color:var(--red)}
+.tl-p{display:flex;flex-wrap:wrap;gap:6px}
+.tl-p:empty{display:none}
+.trv-hint{margin:0}
+
 .vw-hint{margin:0;color:var(--mute);font-size:13px;text-align:center;max-width:36ch}
 .vw-dots{display:flex;gap:6px}
 .vw-dots i{width:7px;height:7px;border-radius:50%;background:var(--line-2)}
@@ -1275,7 +1346,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "40";
+const APP_VERSION = "41";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1465,6 +1536,7 @@ function render(){
     if (focusId){ const f = document.getElementById(focusId); if (f){ f.focus(); try { if (typeof f.value === "string" && f.setSelectionRange) f.setSelectionRange(f.value.length, f.value.length); } catch {} } }
   }
   bindSwipe(); fitGreet(); fitAgenda(); afterView(r, changed); dockAuto();
+  try { mountGlobe(); } catch {}
 }
 function onData(){
   if (!S.ready) return;
@@ -2896,7 +2968,7 @@ function compressImage(file, max=1000){
 async function addImages(files){
   const ids = [];
   for (const f of files){
-    try { const b = await compressImage(f); const id = "img" + uid(); await IDB.put(id, b); ids.push(id); }
+    try { const b = await compressImage(f, 1600); const id = "img" + uid(); await IDB.put(id, b); ids.push(id); }
     catch { toast("No se pudo guardar una foto", "Prueba con otra imagen (JPG o PNG)."); }
   }
   return ids;
@@ -3385,7 +3457,7 @@ async function cutWorn(src, cat){
   return coverage(out) > .005 ? cropAlpha(out, .02) : null;
 }
 // tap points (normalized) with the object segmenter and join the pieces
-async function tapCut(src, pts, join){
+async function tapCut(src, pts, join, fg){
   const seg = await mpTask("object"), masks = [];
   for (const [kx, ky] of pts){ try { masks.push(await maskOf(seg, src, {keypoint:{x:kx, y:ky}})); } catch {} }
   if (!masks.length) return null;
@@ -3393,10 +3465,10 @@ async function tapCut(src, pts, join){
   const good = masks.filter(m => { if (m.data.length !== len) return false; const cv = cover(m); if (cv < .004 || cv > .9) return false; if (join || m === m0) return true; let inter = 0, a = 0; for (let i = 0; i < len; i++){ if (m0.data[i] > .5){ a++; if (m.data[i] > .5) inter++; } } return a && inter / a > .25; });
   if (!good.length) return null;
   const al = new Float32Array(len); for (const m of good) for (let i = 0; i < len; i++) if (m.data[i] > al[i]) al[i] = m.data[i];
+  if (fg){ const r = resample(fg.data, fg.w, fg.h, m0.w, m0.h); for (let i = 0; i < len; i++) al[i] = Math.min(al[i] > .35 ? 1 : al[i], r[i]); }
   return keepMain(applyAlpha(src, al, m0.w, m0.h));
 }
-async function cutObject(blob, cat=""){
-  const src = await blobCanvas(blob, 1200);
+async function cutObjectMP(src, cat=""){
   // 1. worn by a model
   if (cat !== "Accesorio"){ try { const o = await cutWorn(src, cat); if (o) return o; } catch {} }
   // 2. plain background (product photos)
@@ -3410,6 +3482,73 @@ async function cutObject(blob, cat=""){
   if (cov < .03 || cov > .95) throw new Error("nothing");
   return cropAlpha(out, .02);
 }
+/* --- background removal with ISNet: runs on the phone, the model is downloaded once and kept --- */
+const loadScript = src => new Promise((res, rej) => { const x = document.createElement("script"); x.src = src; x.onload = res; x.onerror = () => rej(new Error(src)); document.head.appendChild(x); });
+const ORT_URL = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.3/dist/";
+const ISNET_URL = "https://amariscaljafr-sudo.github.io/orbita/models/isnet_small.onnx";
+let isnetP = null, isnetIdle = 0;
+function isnetSession(){
+  clearTimeout(isnetIdle);
+  return isnetP || (isnetP = (async () => {
+    if (!window.ort) await loadScript(ORT_URL + "ort.min.js");
+    ort.env.wasm.wasmPaths = ORT_URL; ort.env.wasm.numThreads = 1;
+    return ort.InferenceSession.create(ISNET_URL, {executionProviders:["wasm"], graphOptimizationLevel:"all"});
+  })().catch(e => { isnetP = null; throw e; }));
+}
+// free the memory when nothing has been cut for a while
+function isnetRelease(){ clearTimeout(isnetIdle); isnetIdle = setTimeout(async () => { const p = isnetP; isnetP = null; try { const se = await p; se && se.release && se.release(); } catch {} }, 90000); }
+async function isnetMask(src){
+  const sess = await isnetSession(), R = 1024, n = R * R, c = document.createElement("canvas"); c.width = R; c.height = R;
+  const x = c.getContext("2d", {willReadFrequently:true}); x.drawImage(src, 0, 0, R, R);
+  const d = x.getImageData(0, 0, R, R).data, inp = new Float32Array(3 * n);
+  for (let i = 0; i < n; i++){ inp[i] = (d[i * 4] - 128) / 256; inp[i + n] = (d[i * 4 + 1] - 128) / 256; inp[i + 2 * n] = (d[i * 4 + 2] - 128) / 256; }
+  try { const out = await sess.run({input:new ort.Tensor("float32", inp, [1, 3, R, R])}), m = out.output || out[sess.outputNames[0]]; return {data:Float32Array.from(m.data), w:R, h:R}; }
+  finally { isnetRelease(); }
+}
+function resample(m, w, h, W, H){
+  const o = new Float32Array(W * H);
+  for (let y = 0; y < H; y++){ const sy = Math.max(0, Math.min(h - 1, (y + .5) * h / H - .5)), y0 = Math.floor(sy), y1 = Math.min(h - 1, y0 + 1), fy = sy - y0;
+    for (let x = 0; x < W; x++){ const sx = Math.max(0, Math.min(w - 1, (x + .5) * w / W - .5)), x0 = Math.floor(sx), x1 = Math.min(w - 1, x0 + 1), fx = sx - x0;
+      o[y * W + x] = (m[y0 * w + x0] * (1 - fx) + m[y0 * w + x1] * fx) * (1 - fy) + (m[y1 * w + x0] * (1 - fx) + m[y1 * w + x1] * fx) * fy; } }
+  return o;
+}
+// what to keep when a model wears the garment (null if there's no person in the photo)
+async function wornMask(src, cat){
+  const seg = await mpTask("person"), r = seg.segment(src), ms = r.confidenceMasks || [];
+  if (ms.length < 5){ r.close && r.close(); return null; }
+  const w = ms[0].width, hh = ms[0].height, n = w * hh, bg = Float32Array.from(ms[0].getAsFloat32Array()), b1 = ms[2].getAsFloat32Array(), b2 = ms[3].getAsFloat32Array(), cl = Float32Array.from(ms[4].getAsFloat32Array()), ot = ms[5] ? ms[5].getAsFloat32Array() : null;
+  let person = 0, skin = 0, clo = 0; const sk = new Float32Array(n);
+  for (let i = 0; i < n; i++){ if (bg[i] < .5) person++; sk[i] = Math.max(b1[i], b2[i]); if (sk[i] > .5) skin++; if (cl[i] > .5) clo++; }
+  if (ot) for (let i = 0; i < n; i++) cl[i] = Math.max(cl[i], ot[i] * .9);
+  r.close && r.close();
+  if (!(person / n > .03 && skin / n > .008 && clo / n > .012)) return null;
+  let lm = null;
+  try { const pr = (await mpTask("pose")).detect(src), L = pr.landmarks?.[0]; pr.close && pr.close(); if (L) lm = L.map(q => [q.x, q.y, q.visibility == null ? 1 : q.visibility]); } catch {}
+  if (cat === "Calzado"){
+    let cut;
+    if (lm && (lm[27][2] > .3 || lm[28][2] > .3) && (lm[25][2] > .2 || lm[26][2] > .2)){ const knee = (lm[25][1] + lm[26][1]) / 2, ank = Math.max(lm[27][1], lm[28][1]); cut = ank - (ank - knee) * .12; }
+    else { let y0 = hh, y1 = -1; for (let y = 0; y < hh; y++) for (let i = 0; i < w; i++) if (bg[y * w + i] < .5){ if (y < y0) y0 = y; y1 = y; } if (y1 < 0) return null; cut = (y1 - (y1 - y0) * .14) / hh; }
+    const keep = new Float32Array(n);
+    for (let y = Math.max(0, Math.floor(cut * hh)); y < hh; y++) for (let i = 0; i < w; i++){ const p = y * w + i; keep[p] = 1 - sk[p]; }
+    return {data:keep, w, h:hh};
+  }
+  if (lm && lm[11][2] > .3 && lm[12][2] > .3 && (lm[23][2] > .2 || lm[24][2] > .2)) regionMask(cl, w, hh, src, lm, cat);
+  return {data:cl, w, h:hh};
+}
+let cutQ = Promise.resolve();
+const cutQueued = fn => { const p = cutQ.then(fn, fn); cutQ = p.catch(() => {}); return p; };
+async function cutObject(blob, cat=""){
+  const src = await blobCanvas(blob, 1400);
+  let fg = null;
+  try { fg = await isnetMask(src); } catch (e) { console.warn("isnet", e && e.message); }
+  if (fg){
+    const al = fg.data;
+    if (cat !== "Accesorio"){ try { const wm = await wornMask(src, cat); if (wm){ const r = resample(wm.data, wm.w, wm.h, fg.w, fg.h); for (let i = 0; i < al.length; i++) al[i] *= Math.min(1, r[i] * 1.3); } } catch {} }
+    const out = keepMain(applyAlpha(src, al, fg.w, fg.h));
+    if (coverage(out) > .004) return cropAlpha(out, .02);
+  }
+  return cutObjectMP(src, cat);
+}
 // body landmarks of the cutout (normalized), used to place garments
 async function poseOf(canvas){
   try {
@@ -3422,9 +3561,9 @@ async function poseOf(canvas){
 }
 // cached cutouts of garment photos: IDB "cut:<photoId>"
 const cutJobs = new Map();
-S.cutPref = lsGet("orbita.cutpref2", {});
+S.cutPref = lsGet("orbita.cutpref3", {});
 const catOfPhoto = pid => (garments().find(g => g.photo === pid) || {}).cat || "";
-const cutKey = (pid, cat) => "cut4:" + (cat || "") + ":" + pid;
+const cutKey = (pid, cat) => "cut5:" + (cat || "") + ":" + pid;
 function garmentURL(pid){
   if (S.cutPref[pid] === "orig") return imgURL(pid);
   const cat = catOfPhoto(pid), key = cutKey(pid, cat);
@@ -3435,9 +3574,9 @@ function garmentURL(pid){
     if (have){ const u = URL.createObjectURL(have); imgCache.set(key, Promise.resolve(u)); return u; }
     const orig = await IDB.get(pid).catch(() => null); if (!orig) return "";
     try {
-      const b = await canvasBlob(await cutObject(orig, cat));
+      const b = await canvasBlob(await cutQueued(() => cutObject(orig, cat)));
       await IDB.put(key, b); const u = URL.createObjectURL(b); imgCache.set(key, Promise.resolve(u)); return u;
-    } catch (err){ console.warn("recorte", err && err.message); S.cutPref[pid] = "orig"; lsSet("orbita.cutpref2", S.cutPref); return imgURL(pid); }
+    } catch (err){ console.warn("recorte", err && err.message); S.cutPref[pid] = "orig"; lsSet("orbita.cutpref3", S.cutPref); return imgURL(pid); }
   })();
   cutJobs.set(pid, job); job.finally(() => cutJobs.delete(pid));
   return job;
@@ -3455,7 +3594,8 @@ new MutationObserver(() => { clearTimeout(hydrateCuts._t); hydrateCuts._t = setT
 async function openCutFix(gid){
   const g = garments().find(x => x.id === gid); if (!g || !g.photo) return;
   const orig = await IDB.get(g.photo).catch(() => null); if (!orig){ toast("No encuentro la foto original."); return; }
-  const src = await blobCanvas(orig, 1200), key = cutKey(g.photo, g.cat);
+  const src = await blobCanvas(orig, 1400), key = cutKey(g.photo, g.cat);
+  let fgP = null; const fgOf = () => fgP || (fgP = isnetMask(src).catch(() => null));
   const el = document.createElement("div"); el.className = "viewer fixer";
   el.innerHTML = `<div class="vw-top"><b>Arreglar recorte</b><button class="ibtn" data-fx="close" aria-label="Cerrar">${ic("x")}</button></div>
     <p class="vw-hint">Toca la prenda; si falta un trozo, toca también ahí. Toca un punto rojo para quitarlo.</p>
@@ -3473,7 +3613,7 @@ async function openCutFix(gid){
   };
   const run = async () => {
     const my = ++seq; el.classList.add("busy");
-    try { const o = pts.length ? await tapCut(src, pts, true) : null; if (my !== seq) return; result = o && coverage(o) > .002 ? o : null; if (pts.length && !result) toast("No he encontrado nada ahí; prueba a tocar en el centro de la prenda."); }
+    try { const o = pts.length ? await tapCut(src, pts, true, await fgOf()) : null; if (my !== seq) return; result = o && coverage(o) > .002 ? o : null; if (pts.length && !result) toast("No he encontrado nada ahí; prueba a tocar en el centro de la prenda."); }
     catch { if (my === seq){ result = null; toast("No se ha podido recortar en este móvil."); } }
     if (my === seq){ el.classList.remove("busy"); draw(); }
   };
@@ -3490,9 +3630,9 @@ async function openCutFix(gid){
   el.addEventListener("click", async e => {
     const b = e.target.closest("[data-fx]"); if (!b) return; const a = b.dataset.fx;
     if (a === "close") close();
-    else if (a === "orig"){ S.cutPref[g.photo] = "orig"; lsSet("orbita.cutpref2", S.cutPref); done(); }
-    else if (a === "auto"){ delete S.cutPref[g.photo]; lsSet("orbita.cutpref2", S.cutPref); await IDB.del(key).catch(() => {}); done(); toast("Recortando otra vez…"); }
-    else if (a === "save" && result){ const c = cropAlpha(result, .02); if (!c) return; await IDB.put(key, await canvasBlob(c)); delete S.cutPref[g.photo]; lsSet("orbita.cutpref2", S.cutPref); done(); toast("Recorte guardado"); }
+    else if (a === "orig"){ S.cutPref[g.photo] = "orig"; lsSet("orbita.cutpref3", S.cutPref); done(); }
+    else if (a === "auto"){ delete S.cutPref[g.photo]; lsSet("orbita.cutpref3", S.cutPref); await IDB.del(key).catch(() => {}); done(); toast("Recortando otra vez…"); }
+    else if (a === "save" && result){ const c = cropAlpha(result, .02); if (!c) return; await IDB.put(key, await canvasBlob(c)); delete S.cutPref[g.photo]; lsSet("orbita.cutpref3", S.cutPref); done(); toast("Recorte guardado"); }
   });
   draw();
 }
@@ -3721,7 +3861,7 @@ Object.assign(ACT, {
   "pb-scale"(el){ const l = selEl(); if (l && l._p){ setPos(l, {...l._p, w:Math.max(.08, Math.min(1.6, l._p.w * (+el.dataset.d > 0 ? 1.08 : 1 / 1.08)))}); savePos(); } },
   "pb-rot"(el){ const l = selEl(); if (l && l._p){ setPos(l, {...l._p, r:(l._p.r || 0) + 4 * el.dataset.d}); savePos(); } },
   "pb-reset"(){ if (!S.pbSel) return; delete S.wearPos[S.pbSel]; savePos(); const l = selEl(); if (l){ l._p = null; placeLayer(l); } },
-  "pb-bg"(el){ const p = el.dataset.p; if (S.cutPref[p] === "orig") delete S.cutPref[p]; else S.cutPref[p] = "orig"; lsSet("orbita.cutpref2", S.cutPref); if (S.pbSel){ delete S.wearPos[S.pbSel]; savePos(); } render(); },
+  "pb-bg"(el){ const p = el.dataset.p; if (S.cutPref[p] === "orig") delete S.cutPref[p]; else S.cutPref[p] = "orig"; lsSet("orbita.cutpref3", S.cutPref); if (S.pbSel){ delete S.wearPos[S.pbSel]; savePos(); } render(); },
   "wear-cat"(el){ S.wearCat = el.dataset.c; render(); },
   wear(el){ const c = el.dataset.c; S.wear[c] = S.wear[c] === el.dataset.id ? undefined : el.dataset.id; if (!S.wear[c]) delete S.wear[c]; if (c === "Vestido" && S.wear.Vestido){ delete S.wear.Arriba; delete S.wear.Abajo; } if ((c === "Arriba" || c === "Abajo") && S.wear[c]) delete S.wear.Vestido; S.pbSel = S.wear[c] || ""; lsSet("orbita.wear", S.wear); buzz(); render(); },
   "wear-clear"(){ S.wear = {}; S.pbSel = ""; lsSet("orbita.wear", S.wear); render(); },
@@ -3874,6 +4014,9 @@ document.addEventListener("submit", async e => {
 });
 Object.assign(ACT, {
   "g-link"(){ swapLayer(openLinkImport); },
+  "g-new"(el){ const sid = el.dataset.sec; swapLayer(() => openLayer(`${sheetHead("Nueva prenda")}<div class="stack" style="gap:10px">
+    <button class="nw-opt" data-act="add" data-kind="entry" data-sec="${sid}"><span class="nw-i">${ic("cam")}</span><span><b>Con una foto</b><span>Hazla ahora o elígela de la galería; el fondo se quita solo.</span></span></button>
+    <button class="nw-opt" data-act="g-link"><span class="nw-i">${ic("link")}</span><span><b>Desde el enlace de una tienda</b><span>Pega el enlace (Zara, Pull&amp;Bear…) y se crea con su foto.</span></span></button></div>`)); },
   "g-link-key"(){ swapLayer(() => openAIKey("", "gemini")); },
   async "g-paste"(){ try { const t = await navigator.clipboard.readText(); if (t) $("#gl-url").value = t.trim(); } catch { toast("No puedo leer el portapapeles", "Mantén pulsado el campo y elige Pegar."); } },
   "g-photo"(){ const s = armarioSec(); if (s) swapLayer(() => openEntry(s.id)); }
@@ -4308,7 +4451,7 @@ function vArmario(s){
       <div class="row"><button class="btn sm${Object.values(S.wear).includes(sel.id) ? "" : " pri"}" data-act="cl-wear" data-id="${sel.id}">${Object.values(S.wear).includes(sel.id) ? "Quitar del outfit" : ic("plus") + "Al outfit"}</button>${sel.photo ? `<button class="btn sm" data-act="view-3d" data-id="${sel.id}">${ic("spark")}3D</button><button class="btn sm" data-act="cut-fix" data-id="${sel.id}">${ic("edit")}Arreglar recorte</button>` : ""}<button class="btn sm ghost" data-act="open" data-id="${sel.id}">${ic("edit")}Editar</button></div></div></div>`
     : ""}
   ${sel ? "" : `<div class="cl-under"><p class="muted small" style="margin:0">Desliza para ver tu ropa y toca una prenda para elegirla.${list.length > 1 ? " Para cambiarla de sitio, mantenla pulsada y arrástrala." : ""}</p></div>`}
-  <div class="row"><button class="btn" data-act="add" data-kind="entry" data-sec="${s.id}">${ic("cam")}Prenda con foto</button><button class="btn" data-act="g-link">${ic("link")}Desde un enlace</button></div>
+  <button class="btn pri cl-new" data-act="g-new" data-sec="${s.id}">${ic("plus")}Nueva prenda</button>
   <div class="box stack" style="gap:12px">
     <div class="sec-t"><span class="lbl">Tu outfit</span><span class="sp"></span><a class="lnk" href="#probador">Probármelo${ic("right")}</a></div>
     ${worn.length ? `<div class="g-strip">${worn.map(g => `<span class="g-mini">${gThumb(g)}<b>${esc(g.title)}</b></span>`).join("")}</div>` : `<p class="muted small" style="margin:0">Elige prendas en el armario y toca «Al outfit».</p>`}
@@ -4321,14 +4464,8 @@ function vArmario(s){
 function coverflow(rail){
   if (rail.classList.contains("dragging")) return;
   if (rail.classList.contains("sorting")){ for (const hg of rail.children) if (hg.classList.contains("hg")){ hg.style.transform = ""; hg.style.opacity = ""; hg.style.zIndex = ""; } return; }
-  const r = rail.getBoundingClientRect(), cx = r.left + r.width / 2;
-  for (const h of rail.children){
-    if (!h.classList.contains("hg")) continue;
-    const b = h.getBoundingClientRect(), o = Math.max(-1.6, Math.min(1.6, (b.left + b.width / 2 - cx) / (r.width / 2)));
-    h.style.transform = `rotateY(${(-o * 34).toFixed(1)}deg) scale(${(1 - Math.abs(o) * .16).toFixed(3)})`;
-    h.style.zIndex = String(10 - Math.round(Math.abs(o) * 5));
-    h.style.opacity = String(1 - Math.min(.5, Math.abs(o) * .28));
-  }
+  // every garment at the same size and fully sharp (no 3D tilt, no fading)
+  for (const h of rail.children) if (h.classList.contains("hg")){ h.style.transform = ""; h.style.opacity = ""; h.style.zIndex = ""; }
 }
 document.addEventListener("scroll", e => { const t = e.target; if (t && t.matches && t.matches("[data-rail]") && !t._raf) t._raf = requestAnimationFrame(() => { t._raf = 0; coverflow(t); }); }, true);
 new MutationObserver(() => $$("[data-rail]:not([data-cf])").forEach(r => {
@@ -4713,7 +4850,325 @@ function vCustom(s, extras=false){
   if (extras) return `<section class="xblock stack"><div class="sec-t"><h2 class="sub-h">Añadido por ti</h2><span class="sp"></span><button class="lnk" data-act="sec-edit" data-sec="${s.id}">${ic("edit")}Editar</button></div>${statsH}${tabs.length > 1 ? kitTabs(sx, tabs, tab) : ""}${body}</section>`;
   return `${kitHead(s, esc(s.purpose || "Tu sección a medida."))}${statsH}${tabs.length > 1 ? kitTabs(s, tabs, tab) : ""}${body}`;
 }
-KIT_VIEWS.custom = s => vCustom(s);
+/* ================= Viajes: 3D globe ================= */
+const GEO = {"countries":[["AW","533","Aruba",3,0,12.5,-70,"Aruba"],["AF","004","Afganistán",1,1,33,65,"Afghanistan"],["AO","024","Angola",2,1,-12.5,18.5,"Angola"],["AI","660","Anguilla",3,0,18.3,-63.2,"Anguilla"],["AX","248","Alandia",0,0,60.1,19.9,"Åland Islands"],["AL","008","Albania",0,1,41,20,"Albania"],["AD","020","Andorra",0,1,42.5,1.5,"Andorra"],["AE","784","Emiratos Árabes Unidos",1,1,24,54,"United Arab Emirates"],["AR","032","Argentina",4,1,-34,-64,"Argentina"],["AM","051","Armenia",1,1,40,45,"Armenia"],["AS","016","Samoa Americana",5,0,-14.3,-170,"American Samoa"],["AQ","010","Antártida",6,0,-90,0,"Antarctica"],["TF","260","Tierras Australes y Antárticas Francesas",6,0,-49.3,69.2,"French Southern and Antarctic Lands"],["AG","028","Antigua y Barbuda",3,1,17.1,-61.8,"Antigua and Barbuda"],["AU","036","Australia",5,1,-27,133,"Australia"],["AT","040","Austria",0,1,47.3,13.3,"Austria"],["AZ","031","Azerbaiyán",1,1,40.5,47.5,"Azerbaijan"],["BI","108","Burundi",2,1,-3.5,30,"Burundi"],["BE","056","Bélgica",0,1,50.8,4,"Belgium"],["BJ","204","Benín",2,1,9.5,2.3,"Benin"],["BF","854","Burkina Faso",2,1,13,-2,"Burkina Faso"],["BD","050","Bangladesh",1,1,24,90,"Bangladesh"],["BG","100","Bulgaria",0,1,43,25,"Bulgaria"],["BH","048","Bahrein",1,1,26,50.5,"Bahrain"],["BS","044","Bahamas",3,1,24.3,-76,"Bahamas"],["BA","070","Bosnia y Herzegovina",0,1,44,18,"Bosnia and Herzegovina"],["BL","652","San Bartolomé",3,0,18.5,-63.4,"Saint Barthélemy"],["SH","654","Santa Elena, Ascensión y Tristán de Acuña",2,0,-15.9,-5.7,"Saint Helena, Ascension and Tristan da Cunha"],["BY","112","Bielorrusia",0,1,53,28,"Belarus"],["BZ","084","Belice",3,1,17.3,-88.8,"Belize"],["BM","060","Bermudas",3,0,32.3,-64.8,"Bermuda"],["BO","068","Bolivia",4,1,-17,-65,"Bolivia"],["BQ","535","Caribe Neerlandés",3,0,12.2,-68.3,"Caribbean Netherlands"],["BR","076","Brasil",4,1,-10,-55,"Brazil"],["BB","052","Barbados",3,1,13.2,-59.5,"Barbados"],["BN","096","Brunei",1,1,4.5,114.7,"Brunei"],["BT","064","Bután",1,1,27.5,90.5,"Bhutan"],["BV","074","Isla Bouvet",6,0,-54.4,3.4,"Bouvet Island"],["BW","072","Botswana",2,1,-22,24,"Botswana"],["CF","140","República Centroafricana",2,1,7,21,"Central African Republic"],["CA","124","Canadá",3,1,60,-95,"Canada"],["CC","166","Islas Cocos o Islas Keeling",5,0,-12.5,96.8,"Cocos (Keeling) Islands"],["CH","756","Suiza",0,1,47,8,"Switzerland"],["CL","152","Chile",4,1,-30,-71,"Chile"],["CN","156","China",1,1,35,105,"China"],["CI","384","Costa de Marfil",2,1,8,-5,"Ivory Coast"],["CM","120","Camerún",2,1,6,12,"Cameroon"],["CD","180","Congo (Rep. Dem.)",2,1,0,25,"DR Congo"],["CG","178","Congo",2,1,-1,15,"Republic of the Congo"],["CK","184","Islas Cook",5,0,-21.2,-159.8,"Cook Islands"],["CO","170","Colombia",4,1,4,-72,"Colombia"],["KM","174","Comoras",2,1,-12.2,44.3,"Comoros"],["CV","132","Cabo Verde",2,1,16,-24,"Cape Verde"],["CR","188","Costa Rica",3,1,10,-84,"Costa Rica"],["CU","192","Cuba",3,1,21.5,-80,"Cuba"],["CW","531","Curazao",3,0,12.1,-68.9,"Curaçao"],["CX","162","Isla de Navidad",5,0,-10.5,105.7,"Christmas Island"],["KY","136","Islas Caimán",3,0,19.5,-80.5,"Cayman Islands"],["CY","196","Chipre",0,1,35,33,"Cyprus"],["CZ","203","Chequia",0,1,49.8,15.5,"Czechia"],["DE","276","Alemania",0,1,51,9,"Germany"],["DJ","262","Djibouti",2,1,11.5,43,"Djibouti"],["DM","212","Dominica",3,1,15.4,-61.3,"Dominica"],["DK","208","Dinamarca",0,1,56,10,"Denmark"],["DO","214","República Dominicana",3,1,19,-70.7,"Dominican Republic"],["DZ","012","Argelia",2,1,28,3,"Algeria"],["EC","218","Ecuador",4,1,-2,-77.5,"Ecuador"],["EG","818","Egipto",2,1,27,30,"Egypt"],["ER","232","Eritrea",2,1,15,39,"Eritrea"],["EH","732","Sahara Occidental",2,0,24.5,-13,"Western Sahara"],["ES","724","España",0,1,40,-4,"Spain"],["EE","233","Estonia",0,1,59,26,"Estonia"],["ET","231","Etiopía",2,1,8,38,"Ethiopia"],["FI","246","Finlandia",0,1,64,26,"Finland"],["FJ","242","Fiyi",5,1,-18,175,"Fiji"],["FK","238","Islas Malvinas",4,0,-51.8,-59,"Falkland Islands"],["FR","250","Francia",0,1,46,2,"France"],["FO","234","Islas Faroe",0,0,62,-7,"Faroe Islands"],["FM","583","Micronesia",5,1,6.9,158.3,"Micronesia"],["GA","266","Gabón",2,1,-1,11.8,"Gabon"],["GB","826","Reino Unido",0,1,54,-2,"United Kingdom"],["GE","268","Georgia",1,1,42,43.5,"Georgia"],["GG","831","Guernsey",0,0,49.5,-2.6,"Guernsey"],["GH","288","Ghana",2,1,8,-2,"Ghana"],["GI","292","Gibraltar",0,0,36.1,-5.3,"Gibraltar"],["GN","324","Guinea",2,1,11,-10,"Guinea"],["GP","312","Guadalupe",3,0,16.3,-61.6,"Guadeloupe"],["GM","270","Gambia",2,1,13.5,-16.6,"Gambia"],["GW","624","Guinea-Bisáu",2,1,12,-15,"Guinea-Bissau"],["GQ","226","Guinea Ecuatorial",2,1,2,10,"Equatorial Guinea"],["GR","300","Grecia",0,1,39,22,"Greece"],["GD","308","Grenada",3,1,12.1,-61.7,"Grenada"],["GL","304","Groenlandia",3,0,72,-40,"Greenland"],["GT","320","Guatemala",3,1,15.5,-90.3,"Guatemala"],["GF","254","Guayana Francesa",4,0,4,-53,"French Guiana"],["GU","316","Guam",5,0,13.5,144.8,"Guam"],["GY","328","Guyana",4,1,5,-59,"Guyana"],["HK","344","Hong Kong",1,0,22.3,114.2,"Hong Kong"],["HM","334","Islas Heard y McDonald",6,0,-53.1,72.5,"Heard Island and McDonald Islands"],["HN","340","Honduras",3,1,15,-86.5,"Honduras"],["HR","191","Croacia",0,1,45.2,15.5,"Croatia"],["HT","332","Haití",3,1,19,-72.4,"Haiti"],["HU","348","Hungría",0,1,47,20,"Hungary"],["ID","360","Indonesia",1,1,-5,120,"Indonesia"],["IM","833","Isla de Man",0,0,54.3,-4.5,"Isle of Man"],["IN","356","India",1,1,20,77,"India"],["IO","086","Territorio Británico del Océano Índico",2,0,-6,71.5,"British Indian Ocean Territory"],["IE","372","Irlanda",0,1,53,-8,"Ireland"],["IR","364","Iran",1,1,32,53,"Iran"],["IQ","368","Irak",1,1,33,44,"Iraq"],["IS","352","Islandia",0,1,65,-18,"Iceland"],["IL","376","Israel",1,1,31.5,35.1,"Israel"],["IT","380","Italia",0,1,42.8,12.8,"Italy"],["JM","388","Jamaica",3,1,18.3,-77.5,"Jamaica"],["JE","832","Jersey",0,0,49.3,-2.2,"Jersey"],["JO","400","Jordania",1,1,31,36,"Jordan"],["JP","392","Japón",1,1,36,138,"Japan"],["KZ","398","Kazajistán",1,1,48,68,"Kazakhstan"],["KE","404","Kenia",2,1,1,38,"Kenya"],["KG","417","Kirguizistán",1,1,41,75,"Kyrgyzstan"],["KH","116","Camboya",1,1,13,105,"Cambodia"],["KI","296","Kiribati",5,1,1.4,173,"Kiribati"],["KN","659","San Cristóbal y Nieves",3,1,17.3,-62.8,"Saint Kitts and Nevis"],["KR","410","Corea del Sur",1,1,37,127.5,"South Korea"],["XK","","Kosovo",0,0,42.7,21.2,"Kosovo"],["KW","414","Kuwait",1,1,29.5,45.8,"Kuwait"],["LA","418","Laos",1,1,18,105,"Laos"],["LB","422","Líbano",1,1,33.8,35.8,"Lebanon"],["LR","430","Liberia",2,1,6.5,-9.5,"Liberia"],["LY","434","Libia",2,1,25,17,"Libya"],["LC","662","Santa Lucía",3,1,13.9,-61,"Saint Lucia"],["LI","438","Liechtenstein",0,1,47.3,9.5,"Liechtenstein"],["LK","144","Sri Lanka",1,1,7,81,"Sri Lanka"],["LS","426","Lesotho",2,1,-29.5,28.5,"Lesotho"],["LT","440","Lituania",0,1,56,24,"Lithuania"],["LU","442","Luxemburgo",0,1,49.8,6.2,"Luxembourg"],["LV","428","Letonia",0,1,57,25,"Latvia"],["MO","446","Macao",1,0,22.2,113.5,"Macau"],["MF","663","Saint Martin",3,0,18.1,-64,"Saint Martin"],["MA","504","Marruecos",2,1,32,-5,"Morocco"],["MC","492","Mónaco",0,1,43.7,7.4,"Monaco"],["MD","498","Moldavia",0,1,47,29,"Moldova"],["MG","450","Madagascar",2,1,-20,47,"Madagascar"],["MV","462","Maldivas",1,1,3.3,73,"Maldives"],["MX","484","México",3,1,23,-102,"Mexico"],["MH","584","Islas Marshall",5,1,9,168,"Marshall Islands"],["MK","807","Macedonia del Norte",0,1,41.8,22,"North Macedonia"],["ML","466","Mali",2,1,17,-4,"Mali"],["MT","470","Malta",0,1,35.8,14.6,"Malta"],["MM","104","Myanmar",1,1,22,98,"Myanmar"],["ME","499","Montenegro",0,1,42.5,19.3,"Montenegro"],["MN","496","Mongolia",1,1,46,105,"Mongolia"],["MP","580","Islas Marianas del Norte",5,0,15.2,145.8,"Northern Mariana Islands"],["MZ","508","Mozambique",2,1,-18.3,35,"Mozambique"],["MR","478","Mauritania",2,1,20,-12,"Mauritania"],["MS","500","Montserrat",3,0,16.8,-62.2,"Montserrat"],["MQ","474","Martinica",3,0,14.7,-61,"Martinique"],["MU","480","Mauricio",2,1,-20.3,57.5,"Mauritius"],["MW","454","Malawi",2,1,-13.5,34,"Malawi"],["MY","458","Malasia",1,1,2.5,112.5,"Malaysia"],["YT","175","Mayotte",2,0,-12.8,45.2,"Mayotte"],["NA","516","Namibia",2,1,-22,17,"Namibia"],["NC","540","Nueva Caledonia",5,0,-21.5,165.5,"New Caledonia"],["NE","562","Níger",2,1,16,8,"Niger"],["NF","574","Isla de Norfolk",5,0,-29,167.9,"Norfolk Island"],["NG","566","Nigeria",2,1,10,8,"Nigeria"],["NI","558","Nicaragua",3,1,13,-85,"Nicaragua"],["NU","570","Niue",5,0,-19,-169.9,"Niue"],["NL","528","Países Bajos",0,1,52.5,5.8,"Netherlands"],["NO","578","Noruega",0,1,62,10,"Norway"],["NP","524","Nepal",1,1,28,84,"Nepal"],["NR","520","Nauru",5,1,-0.5,166.9,"Nauru"],["NZ","554","Nueva Zelanda",5,1,-41,174,"New Zealand"],["OM","512","Omán",1,1,21,57,"Oman"],["PK","586","Pakistán",1,1,30,70,"Pakistan"],["PA","591","Panamá",3,1,9,-80,"Panama"],["PN","612","Islas Pitcairn",5,0,-25.1,-130.1,"Pitcairn Islands"],["PE","604","Perú",4,1,-10,-76,"Peru"],["PH","608","Filipinas",1,1,13,122,"Philippines"],["PW","585","Palau",5,1,7.5,134.5,"Palau"],["PG","598","Papúa Nueva Guinea",5,1,-6,147,"Papua New Guinea"],["PL","616","Polonia",0,1,52,20,"Poland"],["PR","630","Puerto Rico",3,0,18.3,-66.5,"Puerto Rico"],["KP","408","Corea del Norte",1,1,40,127,"North Korea"],["PT","620","Portugal",0,1,39.5,-8,"Portugal"],["PY","600","Paraguay",4,1,-23,-58,"Paraguay"],["PS","275","Palestina",1,1,31.9,35.2,"Palestine"],["PF","258","Polinesia Francesa",5,0,-15,-140,"French Polynesia"],["QA","634","Catar",1,1,25.5,51.3,"Qatar"],["RE","638","Reunión",2,0,-21.1,55.5,"Réunion"],["RO","642","Rumania",0,1,46,25,"Romania"],["RU","643","Rusia",0,1,60,100,"Russia"],["RW","646","Ruanda",2,1,-2,30,"Rwanda"],["SA","682","Arabia Saudí",1,1,25,45,"Saudi Arabia"],["SD","729","Sudán",2,1,15,30,"Sudan"],["SN","686","Senegal",2,1,14,-14,"Senegal"],["SG","702","Singapur",1,1,1.4,103.8,"Singapore"],["GS","239","Islas Georgias del Sur y Sandwich del Sur",6,0,-54.5,-37,"South Georgia"],["SJ","744","Islas Svalbard y Jan Mayen",0,0,78,20,"Svalbard and Jan Mayen"],["SB","090","Islas Salomón",5,1,-8,159,"Solomon Islands"],["SL","694","Sierra Leone",2,1,8.5,-11.5,"Sierra Leone"],["SV","222","El Salvador",3,1,13.8,-88.9,"El Salvador"],["SM","674","San Marino",0,1,43.8,12.4,"San Marino"],["SO","706","Somalia",2,1,10,49,"Somalia"],["PM","666","San Pedro y Miquelón",3,0,46.8,-56.3,"Saint Pierre and Miquelon"],["RS","688","Serbia",0,1,44,21,"Serbia"],["SS","728","Sudán del Sur",2,1,7,30,"South Sudan"],["ST","678","Santo Tomé y Príncipe",2,1,1,7,"São Tomé and Príncipe"],["SR","740","Surinam",4,1,4,-56,"Suriname"],["SK","703","Eslovaquia",0,1,48.7,19.5,"Slovakia"],["SI","705","Eslovenia",0,1,46.1,14.8,"Slovenia"],["SE","752","Suecia",0,1,62,15,"Sweden"],["SZ","748","Suazilandia",2,1,-26.5,31.5,"Eswatini"],["SX","534","Sint Maarten",3,0,18,-63,"Sint Maarten"],["SC","690","Seychelles",2,1,-4.6,55.7,"Seychelles"],["SY","760","Siria",1,1,35,38,"Syria"],["TC","796","Islas Turks y Caicos",3,0,21.8,-71.6,"Turks and Caicos Islands"],["TD","148","Chad",2,1,15,19,"Chad"],["TG","768","Togo",2,1,8,1.2,"Togo"],["TH","764","Tailandia",1,1,15,100,"Thailand"],["TJ","762","Tayikistán",1,1,39,71,"Tajikistan"],["TK","772","Islas Tokelau",5,0,-9,-172,"Tokelau"],["TM","795","Turkmenistán",1,1,40,60,"Turkmenistan"],["TL","626","Timor Oriental",1,1,-8.8,125.9,"Timor-Leste"],["TO","776","Tonga",5,1,-20,-175,"Tonga"],["TT","780","Trinidad y Tobago",3,1,11,-61,"Trinidad and Tobago"],["TN","788","Túnez",2,1,34,9,"Tunisia"],["TR","792","Turquía",1,1,39,35,"Türkiye"],["TV","798","Tuvalu",5,1,-8,178,"Tuvalu"],["TW","158","Taiwán",1,0,23.5,121,"Taiwan"],["TZ","834","Tanzania",2,1,-6,35,"Tanzania"],["UG","800","Uganda",2,1,1,32,"Uganda"],["UA","804","Ucrania",0,1,49,32,"Ukraine"],["UM","581","Islas Ultramarinas Menores de Estados Unidos",3,0,19.3,166.6,"United States Minor Outlying Islands"],["UY","858","Uruguay",4,1,-33,-56,"Uruguay"],["US","840","Estados Unidos",3,1,38,-97,"United States"],["UZ","860","Uzbekistán",1,1,41,64,"Uzbekistan"],["VA","336","Ciudad del Vaticano",0,1,41.9,12.4,"Vatican City"],["VC","670","San Vicente y Granadinas",3,1,13.3,-61.2,"Saint Vincent and the Grenadines"],["VE","862","Venezuela",4,1,8,-66,"Venezuela"],["VG","092","Islas Vírgenes del Reino Unido",3,0,18.4,-64.6,"British Virgin Islands"],["VI","850","Islas Vírgenes de los Estados Unidos",3,0,18.4,-64.9,"United States Virgin Islands"],["VN","704","Vietnam",1,1,16.2,107.8,"Vietnam"],["VU","548","Vanuatu",5,1,-16,167,"Vanuatu"],["WF","876","Wallis y Futuna",5,0,-13.3,-176.2,"Wallis and Futuna"],["WS","882","Samoa",5,1,-13.6,-172.3,"Samoa"],["YE","887","Yemen",1,1,15,48,"Yemen"],["ZA","710","Sudáfrica",2,1,-29,24,"South Africa"],["ZM","894","Zambia",2,1,-15,30,"Zambia"],["ZW","716","Zimbabue",2,1,-20,30,"Zimbabwe"]],"cities":[["Shanghái","CN",31.222,121.458,0,22315],["Estambul","TR",41.014,28.95,0,14804],["Buenos Aires","AR",-34.613,-58.377,1,13076],["Bombay","IN",19.073,72.883,0,12692],["Ciudad de México","MX",19.428,-99.128,1,12294],["Pekín","CN",39.907,116.397,1,11717],["Karachi","PK",24.861,67.01,0,11624],["Tianjin","CN",39.142,117.177,0,11090],["Cantón","CN",23.117,113.25,0,11071],["Delhi","IN",28.652,77.231,0,10928],["Moscú","RU",55.752,37.616,1,10381],["Shenzhen","CN",22.546,114.068,0,10358],["Daca","BD",23.71,90.407,1,10357],["Seúl","KR",37.566,126.978,1,10349],["São Paulo","BR",-23.547,-46.636,0,10021],["Wuhan","CN",30.583,114.267,0,9785],["Lagos","NG",6.454,3.395,0,9000],["Yakarta","ID",-6.215,106.845,1,8540],["Tokio","JP",35.69,139.692,1,8337],["Nueva York","US",40.714,-74.006,0,8175],["Dongguan","CN",23.018,113.749,0,8000],["Taipéi","TW",25.048,121.532,1,7872],["Kinshasa","CD",-4.328,15.314,1,7786],["Lima","PE",-12.043,-77.028,1,7737],["El Cairo","EG",30.063,31.25,1,7735],["Bogotá","CO",4.61,-74.082,1,7674],["Londres","GB",51.509,-0.126,1,7557],["Chongqing","CN",29.563,106.553,0,7458],["Chengdu","CN",30.667,104.067,0,7416],["Bagdad","IQ",33.341,44.401,1,7216],["Nanjing","CN",32.062,118.778,0,7165],["Teherán","IR",35.694,51.422,1,7153],["Nanchong","CN",30.795,106.085,0,7150],["Hong Kong","HK",22.278,114.175,1,7013],["Xi’an","CN",34.258,108.929,0,6501],["Lahore","PK",31.558,74.351,0,6311],["Shenyang","CN",41.792,123.433,0,6256],["Hangzhou","CN",30.294,120.161,0,6242],["Río de Janeiro","BR",-22.906,-43.182,0,6024],["Harbin","CN",45.75,126.65,0,5879],["Tai’an","CN",36.185,117.12,0,5499],["Suzhou","CN",31.304,120.595,0,5346],["Shantou","CN",23.368,116.715,0,5329],["Bangkok","TH",13.754,100.501,1,5104],["Bengaluru","IN",12.972,77.594,0,5104],["San Petersburgo","RU",59.939,30.314,0,5028],["Santiago de Chile","CL",-33.457,-70.648,1,4837],["Calcuta","IN",22.563,88.363,0,4631],["Sídney","AU",-33.868,151.207,0,4627],["Yangon","MM",16.805,96.156,0,4478],["Jinan","CN",36.668,116.997,0,4336],["Chennai","IN",13.088,80.278,0,4328],["Zhengzhou","CN",34.758,113.649,0,4254],["Melbourne","AU",-37.814,144.963,0,4246],["Riad","SA",24.688,46.722,1,4206],["Changchun","CN",43.88,125.323,0,4193],["Dalian","CN",38.912,121.602,0,4088],["Los Ángeles","US",34.052,-118.244,0,3972],["Chittagong","BD",22.338,91.832,0,3920],["Kunming","CN",25.039,102.718,0,3855],["Alexandria","EG",31.202,29.916,0,3812],["Ahmedabad","IN",23.026,72.587,0,3720],["Qingdao","CN",36.065,120.38,0,3719],["Busan","KR",35.102,129.03,0,3679],["Abidjan","CI",5.354,-4.002,0,3677],["Kano","NG",12,8.517,0,3626],["Foshan","CN",23.027,113.131,0,3600],["Hyderabad","IN",17.384,78.456,0,3598],["Puyang","CN",29.457,119.889,0,3590],["Yokohama","JP",35.433,139.65,0,3574],["Ibadan","NG",7.378,3.906,0,3565],["Singapur","SG",1.29,103.85,1,3548],["Wuxi","CN",31.569,120.289,0,3544],["Xiamen","CN",24.48,118.082,0,3531],["Ankara","TR",39.92,32.854,1,3517],["Tianshui","CN",34.58,105.742,0,3500],["Ningbo","CN",29.878,121.549,0,3492],["Ciudad Ho Chi Minh","VN",10.823,106.63,0,3467],["Shiyan","CN",32.648,110.778,0,3460],["Ciudad del Cabo","ZA",-33.926,18.423,0,3433],["Taiyuan","CN",37.869,112.56,0,3427],["Berlín","DE",52.524,13.411,1,3426],["Tangshan","CN",39.633,118.183,0,3372],["Hefei","CN",31.864,117.281,0,3310],["Madrid","ES",40.416,-3.703,1,3256],["Pionyang","KP",39.034,125.754,1,3222],["Casablanca","MA",33.588,-7.611,0,3145],["Zibo","CN",36.791,118.063,0,3129],["Zhongshan","CN",21.32,110.572,0,3121],["Durban","ZA",-29.858,31.029,0,3120],["Changsha","CN",28.199,112.971,0,3094],["Kabul","AF",34.528,69.172,1,3044],["Ürümqi","CN",43.801,87.6,0,3029],["Caracas","VE",10.488,-66.879,1,3000],["Dubái","AE",25.077,55.309,0,2957],["Pune","IN",18.52,73.855,0,2936],["Sūrat","IN",21.196,72.83,0,2895],["Jeddah","SA",21.49,39.186,0,2867],["Shijiazhuang","CN",38.041,114.479,0,2835],["Kanpur","IN",26.465,80.35,0,2823],["Kiev","UA",50.455,30.524,1,2798],["Luanda","AO",-8.837,13.234,1,2776],["Quezon City","PH",14.649,121.051,0,2762],["Adís Abeba","ET",9.025,38.747,1,2758],["Nairobi","KE",-1.283,36.817,1,2751],["Chicago","US",41.85,-87.65,0,2721],["Salvador","BR",-12.971,-38.511,0,2712],["Jaipur","IN",26.92,75.788,0,2712],["Dar es Salaam","TZ",-6.823,39.27,0,2699],["Lanzhou","CN",36.057,103.84,0,2628],["Incheon","KR",37.456,126.705,0,2628],["Yunfu","CN",22.928,112.04,0,2613],["Toronto","CA",43.7,-79.416,0,2600],["Navi Mumbai","IN",19.037,73.016,0,2600],["Basrah","IQ",30.509,47.78,0,2600],["Osaka","JP",34.694,135.502,0,2592],["Mogadishu","SO",2.037,45.344,1,2587],["Daegu","KR",35.87,128.591,0,2567],["Faisalabad","PK",31.416,73.09,0,2507],["İzmir","TR",38.413,27.138,0,2501],["Dakar","SN",14.694,-17.444,1,2476],["Lucknow","IN",26.839,80.923,0,2472],["Giza","EG",30.009,31.209,0,2443],["Fortaleza","BR",-3.717,-38.543,0,2400],["Cali","CO",3.437,-76.522,0,2393],["Surabaya","ID",-7.249,112.751,0,2375],["Belo Horizonte","BR",-19.921,-43.938,0,2373],["Nanchang","CN",28.684,115.853,0,2358],["Roma","IT",41.892,12.511,1,2319],["Mashhad","IR",36.316,59.568,0,2307],["Brooklyn","US",40.65,-73.95,0,2301],["Houston","US",29.763,-95.363,0,2296],["Queens","US",40.681,-73.837,0,2273],["Nagpur","IN",21.146,79.085,0,2228],["Maracaibo","VE",10.667,-71.612,0,2225],["Brasilia","BR",-15.78,-47.93,1,2208],["Santo Domingo","DO",18.472,-69.892,1,2202],["Nagoya","JP",35.181,136.906,0,2191],["Brisbane","AU",-27.468,153.028,0,2190],["La Habana","CU",23.133,-82.383,1,2164],["París","FR",48.853,2.349,1,2139],["Al Mawşil al Jadīdah","IQ",36.333,43.106,0,2066],["Johannesburg","ZA",-26.202,28.044,0,2026],["Kowloon","HK",22.317,114.183,0,2020],["Al Başrah al Qadīmah","IQ",30.503,47.815,0,2015],["Almaty","KZ",43.257,76.929,0,2001],["Dadonghai","CN",18.221,109.51,0,2000],["Medellín","CO",6.252,-75.564,0,2000],["Tashkent","UZ",41.265,69.216,1,1978],["Argel","DZ",36.732,3.087,1,1978],["Jartum","SD",15.552,32.532,1,1975],["Accra","GH",5.556,-0.197,1,1963],["Guayaquil","EC",-2.196,-79.886,0,1952],["Ordos","CN",39.609,109.782,0,1941],["Sanaa","YE",15.355,44.207,1,1937],["Beirut","LB",33.893,35.502,1,1916],["Perth","AU",-31.952,115.861,0,1897],["Sapporo","JP",43.067,141.35,0,1883],["Jilin","CN",43.851,126.56,0,1882],["Bucarest","RO",44.432,26.106,1,1877],["Camayenne","GN",9.535,-13.688,0,1871],["Indore","IN",22.718,75.833,0,1837],["Iztapalapa","MX",19.355,-99.062,0,1816],["Conakry","GN",9.538,-13.677,1,1767],["Bayan Nur","CN",40.741,107.386,0,1760],["Maracay","VE",10.235,-67.591,0,1754],["Medan","ID",3.583,98.667,0,1751],["Rawalpindi","PK",33.597,73.048,0,1743],["Minsk","BY",53.9,27.567,1,1742],["Budapest","HU",47.498,19.04,1,1741],["Mosul","IQ",36.335,43.119,0,1740],["Hamburgo","DE",53.551,9.993,0,1739],["Curitiba","BR",-25.428,-49.273,0,1718],["Varsovia","PL",52.23,21.012,1,1702],["Bandung","ID",-6.922,107.607,0,1700],["Soweto","ZA",-26.268,27.858,0,1695],["Viena","AT",48.208,16.372,1,1691],["Rabat","MA",34.013,-6.833,1,1656],["Ecatepec de Morelos","MX",19.605,-99.061,0,1655],["Barcelona","ES",41.389,2.159,0,1622],["Pretoria","ZA",-25.745,28.188,1,1619],["Aleppo","SY",36.201,37.161,0,1602],["Manila","PH",14.604,120.982,1,1600],["Montreal","CA",45.509,-73.588,0,1600],["Kunshan","CN",31.378,120.954,0,1600],["Patna","IN",25.594,85.136,0,1600],["Bhopal","IN",23.255,77.403,0,1600],["Manaus","BR",-3.102,-60.025,0,1598],["Xinyang","CN",32.123,114.066,0,1591],["Kaduna","NG",10.526,7.439,0,1582],["Phnom Penh","KH",11.562,104.916,1,1574],["Damasco","SY",33.51,36.291,1,1569],["Filadelfia","US",39.952,-75.164,0,1567],["Phoenix","US",33.448,-112.074,0,1563],["Isfahan","IR",32.652,51.675,0,1547],["Ludhiāna","IN",30.912,75.854,0,1545],["Harare","ZW",-17.828,31.053,1,1543],["Kobe","JP",34.691,135.183,0,1528],["Bekasi","ID",-6.235,106.99,0,1520],["Kaohsiung","TW",22.616,120.313,0,1520],["Estocolmo","SE",59.329,18.069,1,1515],["Caloocan City","PH",14.65,120.968,0,1500],["Guadalajara","MX",20.667,-103.392,0,1495],["Manhattan","US",40.783,-73.966,0,1488],["Asunción","PY",-25.286,-57.647,1,1482],["San Antonio","US",29.424,-98.494,0,1470],["Kuala Lumpur","MY",3.141,101.687,1,1454],["Katmandú","NP",27.702,85.321,1,1442],["Puebla","MX",19.038,-98.203,0,1434],["Hanói","VN",21.024,105.841,1,1431],["Córdoba","AR",-31.413,-64.181,0,1428],["Quito","EC",-0.23,-78.525,1,1400],["San Diego","US",32.716,-117.165,0,1395],["Antananarivo","MG",-18.914,47.536,1,1391],["The Bronx","US",40.85,-73.866,0,1385],["Kampala","UG",0.316,32.582,1,1353],["Juárez","MX",31.72,-106.461,0,1321],["Tijuana","MX",32.503,-117.004,0,1301],["Dallas","US",32.783,-96.807,0,1300],["Yaoundé","CM",3.867,11.517,1,1299],["Bamako","ML",12.65,-8,1,1297],["Brazzaville","CG",-4.266,15.283,1,1285],["Amán","JO",31.955,35.945,1,1276],["Belgrado","RS",44.804,20.465,1,1274],["Montevideo","UY",-34.903,-56.188,1,1271],["Lusaka","ZM",-15.407,28.287,1,1267],["Múnich","DE",48.137,11.575,0,1260],["León de los Aldama","MX",21.129,-101.674,0,1239],["Milán","IT",45.464,9.19,0,1237],["Port-au-Prince","HT",18.543,-72.339,1,1235],["Maputo","MZ",-25.966,32.583,1,1192],["Gustavo Adolfo Madero","MX",19.494,-99.111,0,1186],["Rosario","AR",-32.947,-60.639,0,1174],["Praga","CZ",50.088,14.421,1,1166],["Copenhague","DK",55.676,12.566,1,1154],["Sofía","BG",42.698,23.324,1,1153],["Tripoli","LY",32.887,13.187,1,1151],["Zapopan","MX",20.724,-103.385,0,1142],["Monterrey","MX",25.675,-100.318,0,1136],["Bakú","AZ",40.378,49.892,1,1117],["Ciudad Nezahualcoyotl","MX",19.401,-99.015,0,1105],["Ereván","AM",40.181,44.514,1,1093],["Ouagadougou","BF",12.366,-1.534,1,1087],["Tiflis","GE",41.694,44.834,1,1049],["San Jose","US",37.339,-121.895,0,1027],["Dublín","IE",53.333,-6.249,1,1024],["Bruselas","BE",50.85,4.349,1,1019],["Guatemala City","GT",14.641,-90.513,1,995],["Birmingham","GB",52.481,-1.9,0,984],["Managua","NI",12.133,-86.25,1,973],["Colonia","DE",50.933,6.95,0,963],["Nápoles","IT",40.852,14.268,0,959],["Monrovia","LR",6.301,-10.797,1,940],["Kingston","JM",17.997,-76.794,1,938],["Austin","US",30.267,-97.743,0,932],["Nay Pyi Taw","MM",19.745,96.13,1,925],["Bishkek","KG",42.87,74.59,1,900],["Mendoza","AR",-32.891,-68.827,0,877],["Turín","IT",45.07,7.687,0,870],["Jacksonville","US",30.332,-81.656,0,868],["San Francisco","US",37.775,-122.419,0,865],["Liverpool","GB",53.411,-2.978,0,864],["Tegucigalpa","HN",14.082,-87.207,1,851],["Columbus","US",39.961,-82.999,0,850],["Ulan Bator","MN",47.908,106.883,1,845],["Fort Worth","US",32.725,-97.321,0,833],["Indianapolis","US",39.768,-86.158,0,830],["Charlotte","US",35.227,-80.843,0,827],["Valencia","ES",39.47,-0.377,0,814],["Ottawa","CA",45.411,-75.698,1,812],["Chihuahua","MX",28.635,-106.089,0,809],["Freetown","SL",8.487,-13.236,1,803],["Mascate","OM",23.584,58.408,1,797],["Marsella","FR",43.297,5.381,0,795],["Naucalpan de Juárez","MX",19.479,-99.24,0,792],["San Miguel de Tucumán","AR",-26.824,-65.223,0,781],["Mérida","MX",20.975,-89.617,0,778],["Niamey","NE",13.514,2.11,1,774],["Lomé","TG",6.129,1.222,1,750],["Kigali","RW",-1.95,30.059,1,745],["Riga","LV",56.946,24.106,1,743],["Ámsterdam","NL",52.374,4.89,1,742],["Nottingham","GB",52.954,-1.15,0,730],["Ashgabat","TM",37.95,58.383,1,728],["Álvaro Obregón","MX",19.359,-99.203,0,727],["San Luis Potosí","MX",22.15,-100.979,0,723],["Aguascalientes","MX",21.882,-102.283,0,722],["N'Djamena","TD",12.107,15.044,1,721],["Hermosillo","MX",29.103,-110.977,0,715],["Saltillo","MX",25.423,-101.005,0,710],["Sevilla","ES",37.383,-5.973,0,703],["Zagreb","HR",45.814,15.978,1,699],["Sarajevo","BA",43.849,18.356,1,697],["La Plata","AR",-34.921,-57.955,0,694],["Túnez","TN",36.819,10.166,1,693],["Mexicali","MX",32.628,-115.454,0,690],["Sheffield","GB",53.383,-1.466,0,685],["Seattle","US",47.606,-122.332,0,684],["Denver","US",39.739,-104.985,0,683],["El Paso","US",31.759,-106.487,0,681],["Dushanbe","TJ",38.536,68.779,1,679],["Detroit","US",42.331,-83.046,0,677],["Culiacán","MX",24.79,-107.388,0,676],["Zaragoza","ES",41.656,-0.877,0,674],["Guadalupe","MX",25.677,-100.256,0,674],["Acapulco de Juárez","MX",16.849,-99.909,0,673],["Boston","US",42.358,-71.06,0,667],["Atenas","GR",37.984,23.728,1,664],["Nouakchott","MR",18.086,-15.979,1,661],["Memphis","US",35.15,-90.049,0,656],["Tlalnepantla","MX",19.54,-99.195,0,653],["Fráncfort","DE",50.116,8.684,0,650],["Palermo","IT",38.132,13.336,0,648],["Colombo","LK",6.935,79.849,1,648],["Lilongwe","MW",-13.967,33.787,1,647],["New South Memphis","US",35.087,-90.057,0,642],["Chisináu","MD",47.006,28.858,1,636],["Portland","US",45.523,-122.676,0,632],["Oklahoma City","US",35.468,-97.516,0,631],["Cancún","MX",21.174,-86.847,0,628],["Santiago de Querétaro","MX",20.588,-100.388,0,626],["Djibouti","DJ",11.589,43.145,1,624],["Las Vegas","US",36.175,-115.137,0,624],["Baltimore","US",39.29,-76.612,0,622],["Coyoacán","MX",19.347,-99.162,0,620],["Bristol","GB",51.455,-2.597,0,617],["Santa María Chimalhuacán","MX",19.422,-98.95,0,612],["Torreón","MX",25.544,-103.419,0,609],["Abu Dabi","AE",24.451,54.397,1,603],["Washington D. C.","US",38.895,-77.036,1,602],["Islamabad","PK",33.721,73.043,1,602],["Milwaukee","US",43.039,-87.906,0,600],["Morelia","MX",19.701,-101.184,0,598],["Essen","DE",51.457,7.012,0,593],["Glasgow","GB",55.865,-4.258,0,592],["Abuja","NG",9.058,7.495,1,590],["Stuttgart","DE",48.782,9.177,0,590],["Reynosa","MX",26.081,-98.288,0,589],["Dortmund","DE",51.515,7.466,0,588],["Génova","IT",44.405,8.944,0,580],["Oslo","NO",59.913,10.746,1,580],["Libreville","GA",0.392,9.454,1,578],["Tlaquepaque","MX",20.641,-103.293,0,576],["Tlalpan","MX",19.295,-99.162,0,575],["Düsseldorf","DE",51.222,6.776,0,573],["South Boston","US",42.333,-71.049,0,571],["Málaga","ES",36.72,-4.42,0,568],["Asmara","ER",15.338,38.932,1,564],["Albuquerque","US",35.084,-106.651,0,559],["Helsinki","FI",60.17,24.935,1,558],["Mar del Plata","AR",-38,-57.556,0,554],["Pristina","XK",42.673,21.167,1,550],["Bremen","DE",53.076,8.807,0,547],["Bangui","CF",4.361,18.555,1,542],["Vilna","LT",54.689,25.28,1,542],["Tuxtla","MX",16.76,-93.113,0,537],["Cuauhtémoc","MX",19.445,-99.146,0,532],["Tucson","US",32.222,-110.926,0,532],["Nashville","US",36.166,-86.784,0,531],["San Salvador","SV",13.689,-89.187,1,526],["Macau","MO",22.201,113.546,1,520],["Fresno","US",36.748,-119.772,0,520],["Victoria de Durango","MX",24.02,-104.658,0,519],["Lisboa","PT",38.717,-9.133,1,518],["Hannover","DE",52.371,9.733,0,515],["Salta","AR",-24.786,-65.412,0,513],["Leicester","GB",52.639,-1.132,0,509],["Leipzig","DE",51.34,12.371,0,505],["Duisburg","DE",51.432,6.765,0,504],["Skopje","MK",41.996,21.431,1,475],["Juba","SS",4.852,31.582,1,450],["Murcia","ES",37.987,-1.13,0,437],["Bratislava","SK",48.148,17.107,1,424],["San Juan","PR",18.466,-66.106,1,418],["Panamá","PA",8.994,-79.52,1,408],["Palma","ES",39.569,2.65,0,401],["Tallinn","EE",59.437,24.754,1,394],["Bissau","GW",11.864,-15.598,1,388],["Wellington","NZ",-41.287,174.776,1,382],["Las Palmas de Gran Canaria","ES",28.1,-15.413,0,382],["Tirana","AL",41.328,19.819,1,375],["Canberra","AU",-35.283,149.128,1,368],["Bilbao","ES",43.263,-2.925,0,355],["Nur-Sultan","KZ",51.18,71.446,1,346],["Doha","QA",25.285,51.531,1,345],["San José","CR",9.933,-84.083,1,335],["Alicante","ES",38.345,-0.481,0,335],["Córdoba","ES",37.892,-4.773,0,328],["Valladolid","ES",41.655,-4.724,0,318],["Nueva Delhi","IN",28.636,77.224,1,318],["Vigo","ES",42.233,-8.723,0,297],["Port Moresby","PG",-9.477,147.151,1,284],["Gijón","ES",43.536,-5.662,0,278],["Liubliana","SI",46.051,14.505,1,272],["Windhoek","NA",-22.559,17.083,1,268],["Eixample","ES",41.389,2.162,0,266],["L'Hospitalet de Llobregat","ES",41.36,2.1,0,257],["Latina","ES",40.389,-3.746,0,257],["Carabanchel","ES",40.391,-3.724,0,254],["A Coruña","ES",43.371,-8.396,0,246],["Puente de Vallecas","ES",40.394,-3.662,0,244],["Sant Martí","ES",41.418,2.199,0,236],["Gasteiz / Vitoria","ES",42.85,-2.673,0,236],["Georgetown","GY",6.804,-58.155,1,235],["Granada","ES",37.188,-3.607,0,234],["Porto-Novo","BJ",6.496,2.604,1,234],["Elche","ES",38.262,-0.701,0,230],["Ciudad Lineal","ES",40.445,-3.651,0,228],["Nassau","BS",25.058,-77.343,1,228],["Sucre","BO",-19.033,-65.263,1,225],["Oviedo","ES",43.36,-5.845,0,224],["Paramaribo","SR",5.866,-55.167,1,224],["Santa Cruz de Tenerife","ES",28.468,-16.255,0,222],["Fuencarral-El Pardo","ES",40.498,-3.731,0,220],["Badalona","ES",41.45,2.247,0,220],["Cartagena","ES",37.605,-0.986,0,212],["Terrassa","ES",41.567,2.017,0,211],["Gaborone","BW",-24.655,25.909,1,208],["Jerez de la Frontera","ES",36.686,-6.136,0,208],["Sabadell","ES",41.543,2.109,0,206],["Móstoles","ES",40.322,-3.865,0,206],["Alcalá de Henares","ES",40.482,-3.36,0,205],["Nicosia","CY",35.175,33.364,1,200],["Pamplona","ES",42.817,-1.643,0,198],["Fuenlabrada","ES",40.284,-3.794,0,198],["Vientiane","LA",17.967,102.6,1,197],["Yamoussoukro","CI",6.821,-5.277,1,195],["Almería","ES",36.838,-2.46,0,189],["Leganés","ES",40.327,-3.764,0,186],["Donostia / San Sebastián","ES",43.313,-1.975,0,185],["Sants-Montjuïc","ES",41.373,2.155,0,183],["Santander","ES",43.465,-3.804,0,183],["Dodoma","TZ",-6.172,35.739,1,181],["Castelló de la Plana","ES",39.986,-0.049,0,180],["Burgos","ES",42.341,-3.702,0,179],["Albacete","ES",38.994,-1.856,0,170],["Horta-Guinardó","ES",41.418,2.168,0,168],["Alcorcón","ES",40.346,-3.825,0,168],["Getafe","ES",40.306,-3.733,0,167],["Nou Barris","ES",41.442,2.177,0,166],["Hortaleza","ES",40.474,-3.641,0,162],["San Blas-Canillejas","ES",40.439,-3.615,0,157],["Malabo","GQ",3.756,8.782,1,156],["Salamanca","ES",40.969,-5.664,0,156],["Port Louis","MU",-20.162,57.499,1,155],["Tetuán de las Victorias","ES",40.46,-3.697,0,155],["Logroño","ES",42.467,-2.45,0,152],["La Laguna","ES",28.485,-16.32,0,151],["Dili","TL",-8.559,125.574,1,150],["City Center","ES",40.418,-3.703,0,150],["Huelva","ES",37.266,-6.94,0,149],["Arganzuela","ES",40.4,-3.696,0,149],["Badajoz","ES",38.878,-6.971,0,148],["Sarrià-Sant Gervasi","ES",41.401,2.139,0,148],["Sant Andreu","ES",41.435,2.19,0,148],["Salamanca","ES",40.43,-3.68,0,148],["Manama","BH",26.228,50.586,1,147],["Chamberí","ES",40.434,-3.704,0,146],["Usera","ES",40.389,-3.7,0,141],["Tarragona","ES",41.117,1.25,0,140],["Chamartín","ES",40.462,-3.677,0,140],["Saint-Denis","RE",-20.882,55.45,1,137],["Podgorica","ME",42.441,19.264,1,136],["Lleida","ES",41.617,0.622,0,136],["Marbella","ES",36.515,-4.886,0,135],["León","ES",42.6,-5.57,0,134],["Villaverde","ES",40.35,-3.7,0,127],["Cadiz","ES",36.527,-6.289,0,127],["Retiro","ES",40.413,-3.683,0,126],["Willemstad","CW",12.108,-68.934,1,125],["Dos Hermanas","ES",37.283,-5.921,0,123],["Mataró","ES",41.542,2.445,0,122],["Berna","CH",46.948,7.447,1,122],["Gràcia","ES",41.402,2.156,0,122],["Santa Coloma de Gramenet","ES",41.452,2.208,0,120],["Reikiavik","IS",64.135,-21.895,1,119],["Maseru","LS",-29.317,27.483,1,118],["Torrejón de Ardoz","ES",40.455,-3.47,0,118],["Jaén","ES",37.769,-3.79,0,117],["Moncloa-Aravaca","ES",40.435,-3.732,0,117],["Algeciras","ES",36.133,-5.451,0,116],["Parla","ES",40.236,-3.768,0,116],["Praia","CV",14.932,-23.513,1,113],["Delicias","ES",41.649,-0.908,0,111],["Ourense","ES",42.337,-7.864,0,108],["Alcobendas","ES",40.547,-3.642,0,108],["Reus","ES",41.156,1.107,0,107],["Moratalaz","ES",40.407,-3.649,0,105],["Male","MV",4.175,73.509,1,104],["Ciutat Vella","ES",41.38,2.173,0,102],["Torrevieja","ES",37.979,-0.682,0,102],["Telde","ES",27.992,-15.419,0,100],["Thimphu","BT",27.466,89.642,1,99],["Bridgetown","BB",13.107,-59.62,1,99],["Barakaldo","ES",43.296,-2.988,0,98],["Lugo","ES",43.01,-7.556,0,97],["San Fernando","ES",36.476,-6.198,0,96],["Girona","ES",41.983,2.825,0,96],["Santiago de Compostela","ES",42.881,-8.546,0,95],["Cáceres","ES",39.476,-6.372,0,93],["Nouméa","NC",-22.274,166.449,1,93],["Lorca","ES",37.671,-1.702,0,92],["Coslada","ES",40.424,-3.561,0,90],["Fort-de-France","MQ",14.604,-61.074,1,90],["Suva","FJ",-18.142,178.441,1,77],["Luxemburgo","LU",49.612,6.13,1,77],["Mbabane","SZ",-26.317,31.133,1,76],["Bandar Seri Begawan","BN",4.89,114.94,1,64],["Cayenne","GF",4.933,-52.333,1,62],["Kuwait","KW",29.37,47.978,1,60],["Honiara","SB",-9.433,159.95,1,56],["Mamoudzou","YT",-12.782,45.229,1,55],["São Tomé","ST",0.337,6.727,1,53],["Port of Spain","TT",10.667,-61.519,1,49],["Saipan","MP",15.212,145.755,1,48],["Moroni","KM",-11.702,43.255,1,43],["Gitega","BI",-3.427,29.925,1,41],["Apia","WS",-13.833,-171.767,1,40],["Tarawa","KI",1.328,172.977,1,40],["Port-Vila","VU",-17.736,168.314,1,36],["Banjul","GM",13.453,-16.578,1,35],["Mónaco","MC",43.733,7.417,1,33],["Oranjestad","AW",12.524,-70.027,1,30],["George Town","KY",19.287,-81.374,1,29],["Saint Helier","JE",49.188,-2.105,1,28],["Gibraltar","GI",36.145,-5.353,1,27],["Papeete","PF",-17.537,-149.566,1,26],["Douglas","IM",54.15,-4.483,1,26],["Majuro","MH",7.09,171.38,1,25],["Kingstown","VC",13.155,-61.227,1,25],["Saint John’s","AG",17.121,-61.843,1,24],["Victoria","SC",-4.62,55.455,1,23],["Nuku‘alofa","TO",-21.139,-175.202,1,22],["Andorra la Vella","AD",42.508,1.521,1,20],["Castries","LC",13.996,-61.006,1,20],["Charlotte Amalie","VI",18.342,-64.931,1,20],["Roseau","DM",15.302,-61.388,1,17],["Saint Peter Port","GG",49.46,-2.535,1,16],["Nuuk","GL",64.183,-51.722,1,15],["Belmopan","BZ",17.25,-88.767,1,13],["Avarua","CK",-21.207,-159.775,1,13],["Tórshavn","FO",62.01,-6.772,1,13],["Basseterre","KN",17.296,-62.725,1,13],["Pago Pago","AS",-14.278,-170.702,1,12],["Basse-Terre","GP",15.997,-61.732,1,11],["Mariehamn","AX",60.097,19.935,1,11],["Road Town","VG",18.427,-64.621,1,8],["Saint George's","GD",12.053,-61.752,1,8],["La Valeta","MT",35.9,14.515,1,7],["Saint-Pierre","PM",46.779,-56.177,1,6],["Gustavia","BL",17.896,-62.85,1,6],["Marigot","MF",18.068,-63.083,1,6],["Vaduz","LI",47.142,9.522,1,5],["San Marino","SM",43.937,12.446,1,5],["Funafuti","TV",-8.524,179.194,1,4],["Cockburn Town","TC",21.461,-71.142,1,4],["Kralendijk","BQ",12.15,-68.267,1,3],["Stanley","FK",-51.694,-57.857,1,2],["Longyearbyen","SJ",78.223,15.647,1,2],["The Valley","AI",18.217,-63.058,1,2],["Philipsburg","SX",18.026,-63.046,1,1],["Mata-Utu","WF",-13.282,-176.175,1,1],["Yaren","NR",-0.551,166.925,1,1],["Hagåtña","GU",13.476,144.749,1,1],["Hamilton","BM",32.295,-64.783,1,1],["Kingston","NF",-29.055,167.966,1,1],["Ciudad del Vaticano","VA",41.903,12.454,1,1],["Jamestown","SH",-15.939,-5.717,1,1],["Alofi","NU",-19.055,-169.918,1,1],["Flying Fish Cove","CX",-10.422,105.679,1,1],["West Island","CC",-12.157,96.823,1,0],["Adamstown","PN",-25.066,-130.101,1,0],["Port-aux-Français","TF",-49.349,70.219,1,0],["Grytviken","GS",-54.281,-36.509,1,0],["Palikir - National Government Center","FM",6.925,158.161,1,0],["Plymouth","MS",16.706,-62.213,1,0],["Ngerulmud","PW",7.501,134.624,1,0]]};
+const CONTS = ["Europa","Asia","África","América del Norte","América del Sur","Oceanía","Antártida"];
+const CONT_C = [[15, 50, 2.2], [90, 35, 1.4], [20, 3, 1.6], [-100, 42, 1.5], [-60, -18, 1.7], [145, -25, 1.9], [0, -80, 1.6]];
+const CTRY = new Map(GEO.countries.map(c => [c[0], {cc:c[0], n3:c[1] ? String(+c[1]) : "", name:c[2], cont:c[3], ok:!!c[4], lat:c[5], lng:c[6], en:c[7]}]));
+const CTRY_N3 = new Map([...CTRY.values()].filter(c => c.n3).map(c => [c.n3, c]));
+const CTRY_TOTAL = [...CTRY.values()].filter(c => c.ok).length;
+const CITIES = GEO.cities.map(([name, cc, lat, lng, cap, pop], i) => ({name, cc, lat, lng, cap:!!cap, pop, rank:i}));
+const flagOf = cc => cc && cc.length === 2 ? String.fromCodePoint(...[...cc.toUpperCase()].map(c => 127397 + c.charCodeAt(0))) : "";
+const normT = t => String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+const CTRY_BY_NAME = new Map(); for (const c of CTRY.values()){ CTRY_BY_NAME.set(normT(c.name), c); CTRY_BY_NAME.set(normT(c.en), c); }
+const CITY_BY_NAME = new Map(); for (const c of CITIES) if (!CITY_BY_NAME.has(normT(c.name))) CITY_BY_NAME.set(normT(c.name), c);
+const isTravel = s => !!s && (s.tpl === "viajes" || /viaj/i.test(s.name || ""));
+const trvStates = s => mOn(s, "estados") ? splitList(s.mods.estados.opts) : [];
+const trvVisitedLabel = s => { const st = trvStates(s); return st.find(x => /visit|fui|estado|hecho/i.test(x)) || st[st.length - 1] || ""; };
+const trvWishLabel = s => { const st = trvStates(s); return st.find(x => /quiero|deseo|pendiente/i.test(x)) || st[0] || ""; };
+// where an entry is: saved geo, or guessed from its name for places added by hand
+function geoOf(e){
+  const g = e.fields?.geo; if (g && g.cc) return g;
+  const t = normT(e.title), l = normT(String(e.fields?.lugar || "").split(",")[0]);
+  const c = CTRY_BY_NAME.get(t); if (c) return {type:"country", cc:c.cc};
+  const ci = CITY_BY_NAME.get(t) || CITY_BY_NAME.get(l); if (ci) return {type:"city", cc:ci.cc, lat:ci.lat, lng:ci.lng};
+  const rest = String(e.fields?.lugar || "").split(",").slice(1).map(normT); for (const r of rest){ const c2 = CTRY_BY_NAME.get(r); if (c2) return {type:"place", cc:c2.cc}; }
+  return null;
+}
+const trvVisited = (s, e) => !trvStates(s).length || !e.fields?.estado || e.fields.estado === trvVisitedLabel(s);
+function travelStats(s){
+  const all = entriesOf(s.id).map(e => ({e, g:geoOf(e)})).filter(x => x.g);
+  const vis = all.filter(x => trvVisited(s, x.e)), wish = all.filter(x => !trvVisited(s, x.e));
+  const ccs = new Set(vis.map(x => x.g.cc)), wcc = new Set(wish.map(x => x.g.cc).filter(c => !ccs.has(c)));
+  const conts = new Set([...ccs].map(c => CTRY.get(c)?.cont).filter(x => x != null));
+  return {all, vis, wish, ccs, wcc, conts, counted:[...ccs].filter(c => CTRY.get(c)?.ok).length};
+}
+function vTravel(s){
+  const st = travelStats(s), pc = Math.round(st.counted / CTRY_TOTAL * 100), byC = new Map();
+  for (const x of st.all){ const k = x.g.cc; if (!byC.has(k)) byC.set(k, []); byC.get(k).push(x); }
+  const groups = [...byC.entries()].sort((a, b) => (st.ccs.has(b[0]) - st.ccs.has(a[0])) || (CTRY.get(a[0])?.name || "").localeCompare(CTRY.get(b[0])?.name || "", "es"));
+  return `<section class="trv">
+    <div class="globe-slot" data-globe="${s.id}"></div>
+    <div class="trv-bars">
+      <div class="tbar"><div class="tb-h"><b>Países</b><span><b>${st.counted}</b> de ${CTRY_TOTAL}</span></div><div class="tb-t"><i style="width:${Math.max(st.counted ? 2 : 0, pc)}%"></i></div><span class="tb-p">${pc} % del mundo</span></div>
+      <div class="tbar"><div class="tb-h"><b>Continentes</b><span><b>${st.conts.size}</b> de ${CONTS.length}</span></div><div class="tb-t seg7">${CONTS.map((c, i) => `<i class="${st.conts.has(i) ? "on" : ""}" title="${c}"></i>`).join("")}</div><span class="tb-p">${st.conts.size ? [...st.conts].sort().map(i => CONTS[i]).join(" · ") : "Aún ninguno"}</span></div>
+    </div>
+    ${groups.length ? `<div class="trv-list">${groups.map(([cc, xs]) => { const c = CTRY.get(cc), v = st.ccs.has(cc);
+      return `<div class="tl-c${v ? " on" : ""}"><button class="tl-h" data-act="trv-go" data-cc="${cc}"><span class="tl-f">${flagOf(cc)}</span><b>${esc(c?.name || cc)}</b><span>${v ? "Visitado" : "Quiero ir"}</span></button>
+        <div class="tl-p">${xs.filter(x => x.g.type !== "country").map(x => `<button class="chip" data-act="open" data-id="${x.e.id}">${esc(x.e.title)}</button>`).join("")}</div></div>`; }).join("")}</div>`
+      : `<p class="muted small trv-hint">Gira el globo, toca una ciudad o búscala arriba y pulsa «He estado aquí». Se irán completando los países y los continentes.</p>`}
+  </section>`;
+}
+
+/* --- the globe itself: drawn with d3-geo on a canvas and kept alive between renders --- */
+const GEO_LIBS = ["https://cdn.jsdelivr.net/npm/d3-array@3.2.4/dist/d3-array.min.js", "https://cdn.jsdelivr.net/npm/d3-geo@3.1.1/dist/d3-geo.min.js", "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"];
+const ATLAS = z => `https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-${z}.json`;
+let geoP = null;
+function geoData(){
+  return geoP || (geoP = (async () => {
+    for (const u of GEO_LIBS) if (!(u.includes("d3-array") ? window.d3?.bisect : u.includes("d3-geo") ? window.d3?.geoOrthographic : window.topojson)) await loadScript(u);
+    const feats = t => topojson.feature(t, t.objects.countries).features.map(f => { const c = f.id ? CTRY_N3.get(String(+f.id)) : CTRY_BY_NAME.get(normT({"N. Cyprus":"Cyprus", Somaliland:"Somalia"}[f.properties.name] || f.properties.name)); f.cc = c ? c.cc : ""; return f; });
+    const t1 = await (await fetch(ATLAS("110m"))).json();
+    return {lo:feats(t1), mesh:topojson.mesh(t1, t1.objects.countries, (a, b) => a !== b), hi:null};
+  })().catch(e => { geoP = null; throw e; }));
+}
+const GL = {el:null, sid:"", rot:[10, -30], zoom:1, auto:true, raf:0, anim:null, sel:null, opened:"", vel:[0, 0]};
+function globeEl(){
+  if (GL.el) return GL.el;
+  const el = document.createElement("div"); el.className = "globe";
+  el.innerHTML = `<form class="gl-search" role="search"><span class="gl-si">${ic("search")}</span><input type="search" placeholder="Busca ciudades, pueblos, países o continentes" aria-label="Buscar un lugar" enterkeyhint="search" autocomplete="off"><button type="button" class="gl-x" aria-label="Borrar">${ic("x")}</button></form>
+    <div class="gl-res" hidden></div>
+    <div class="gl-stage"><canvas aria-label="Globo terráqueo: arrastra para girarlo y pellizca para acercar"></canvas>
+      <div class="gl-zoom"><button type="button" data-gz="in" aria-label="Acercar">+</button><button type="button" data-gz="out" aria-label="Alejar">−</button><button type="button" data-gz="home" aria-label="Ver todo el mundo">${ic("rot")}</button></div>
+      <div class="gl-load">Cargando el mapa…</div><div class="gl-card" hidden></div></div>`;
+  GL.el = el; GL.cv = $("canvas", el); GL.ctx = GL.cv.getContext("2d"); GL.card = $(".gl-card", el); GL.res = $(".gl-res", el); GL.inp = $("input", el);
+  globeInput(el);
+  geoData().then(d => { GL.geo = d; el.classList.add("ready"); globeDraw(); }).catch(() => { $(".gl-load", el).textContent = "No se ha podido cargar el mapa. Revisa la conexión."; });
+  new ResizeObserver(() => globeSize()).observe($(".gl-stage", el));
+  return el;
+}
+function mountGlobe(){
+  const slot = $("[data-globe]");
+  if (!slot){ if (GL.el && GL.el.isConnected) GL.el.remove(); cancelAnimationFrame(GL.raf); GL.raf = 0; GL.opened = ""; return; }
+  const el = globeEl(), s = secById(slot.dataset.globe);
+  if (el.parentNode !== slot) slot.appendChild(el);
+  GL.sid = slot.dataset.globe; GL.stats = s ? travelStats(s) : null;
+  if (GL.opened !== GL.sid){ GL.opened = GL.sid; GL.auto = true; GL.zoom = 1; globeOpen(); }
+  globeSize(); if (GL.sel) globeCard(GL.sel); globeLoop();
+}
+function globeSize(){
+  if (!GL.el || !GL.el.isConnected) return;
+  const st = $(".gl-stage", GL.el), w = st.clientWidth, h = st.clientHeight, dpr = Math.min(3, devicePixelRatio || 1);
+  if (!w || !h) return;
+  if (GL.W !== w || GL.H !== h || GL.dpr !== dpr){ GL.W = w; GL.H = h; GL.dpr = dpr; GL.cv.width = Math.round(w * dpr); GL.cv.height = Math.round(h * dpr); }
+  globeDraw();
+}
+const easeIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+function globeOpen(){
+  if (reduce.matches) return;
+  const r0 = [GL.rot[0] + 140, GL.rot[1] + 20], r1 = [...GL.rot];
+  GL.anim = {t0:performance.now(), d:1300, from:{rot:r0, zoom:.25}, to:{rot:r1, zoom:1}, ease:t => 1 - Math.pow(1 - t, 3)};
+  GL.el.classList.remove("pop"); void GL.el.offsetWidth; GL.el.classList.add("pop");
+}
+function globeFly(lng, lat, zoom){
+  GL.auto = false;
+  let dl = (-lng - GL.rot[0]) % 360; if (dl > 180) dl -= 360; if (dl < -180) dl += 360;
+  GL.anim = {t0:performance.now(), d:1000, from:{rot:[...GL.rot], zoom:GL.zoom}, to:{rot:[GL.rot[0] + dl, -lat], zoom:zoom || Math.max(GL.zoom, 2.6)}, ease:easeIO};
+  globeLoop();
+}
+function globeLoop(){
+  if (GL.raf) return;
+  const step = now => {
+    GL.raf = 0;
+    if (!GL.el || !GL.el.isConnected || document.hidden) return;
+    let more = false;
+    if (GL.anim){ const a = GL.anim, t = Math.min(1, (now - a.t0) / a.d), k = a.ease(t);
+      GL.rot = [a.from.rot[0] + (a.to.rot[0] - a.from.rot[0]) * k, a.from.rot[1] + (a.to.rot[1] - a.from.rot[1]) * k]; GL.zoom = a.from.zoom + (a.to.zoom - a.from.zoom) * k;
+      if (t >= 1) GL.anim = null; more = true; }
+    else if (GL.drag) more = true;
+    else if (Math.abs(GL.vel[0]) + Math.abs(GL.vel[1]) > .02){ GL.rot[0] += GL.vel[0]; GL.rot[1] = Math.max(-88, Math.min(88, GL.rot[1] + GL.vel[1])); GL.vel = [GL.vel[0] * .93, GL.vel[1] * .93]; more = true; }
+    else if (GL.auto && !reduce.matches){ GL.rot[0] += .12; more = true; }
+    globeDraw();
+    if (more) GL.raf = requestAnimationFrame(step);
+  };
+  GL.raf = requestAnimationFrame(step);
+}
+const RED = "#e10600";
+function globeDraw(){
+  const {ctx, W, H, dpr, geo} = GL; if (!ctx || !W) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  const R = Math.min(W, H) * .43 * GL.zoom, cx = W / 2, cy = H / 2;
+  // halo
+  const halo = ctx.createRadialGradient(cx, cy, R * .96, cx, cy, R * 1.18); halo.addColorStop(0, "rgba(255,255,255,.16)"); halo.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(cx, cy, R * 1.18, 0, 7); ctx.fill();
+  const sea = ctx.createRadialGradient(cx - R * .35, cy - R * .4, R * .05, cx, cy, R); sea.addColorStop(0, "#3a3e46"); sea.addColorStop(.7, "#17191d"); sea.addColorStop(1, "#08090a");
+  ctx.fillStyle = sea; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fill();
+  if (!geo){ return; }
+  const proj = d3.geoOrthographic().scale(R).translate([cx, cy]).rotate([GL.rot[0], GL.rot[1]]).clipAngle(90).precision(.6), path = d3.geoPath(proj, ctx);
+  GL.proj = proj; GL.R = R;
+  ctx.beginPath(); path(d3.geoGraticule10()); ctx.strokeStyle = "rgba(255,255,255,.07)"; ctx.lineWidth = .6; ctx.stroke();
+  const st = GL.stats || {ccs:new Set(), wcc:new Set(), all:[]}, feats = GL.zoom > 2.2 && geo.hi ? geo.hi : geo.lo;
+  if (GL.zoom > 2.2 && !geo.hi && !geo.hiP) geo.hiP = fetch(ATLAS("50m")).then(r => r.json()).then(t => { geo.hi = topojson.feature(t, t.objects.countries).features.map(f => { const c = f.id ? CTRY_N3.get(String(+f.id)) : CTRY_BY_NAME.get(normT(f.properties.name)); f.cc = c ? c.cc : ""; return f; }); geo.hiMesh = topojson.mesh(t, t.objects.countries, (a, b) => a !== b); globeDraw(); }).catch(() => {});
+  for (const f of feats){
+    ctx.beginPath(); path(f);
+    ctx.fillStyle = st.ccs.has(f.cc) ? RED : st.wcc.has(f.cc) ? "#f3c9c5" : (GL.sel && GL.sel.cc === f.cc && GL.sel.type === "country") ? "#ffffff" : "#e6e5e1"; ctx.fill();
+  }
+  ctx.beginPath(); path(feats === geo.hi ? geo.hiMesh : geo.mesh); ctx.strokeStyle = "rgba(0,0,0,.28)"; ctx.lineWidth = .5; ctx.stroke();
+  if (GL.sel && GL.sel.cc && GL.sel.type === "country"){ const f = feats.find(f => f.cc === GL.sel.cc); if (f){ ctx.beginPath(); path(f); ctx.strokeStyle = "#111"; ctx.lineWidth = 1.6; ctx.stroke(); } }
+  // light from the top left, dark edge: makes it read as a sphere
+  const sh = ctx.createRadialGradient(cx - R * .4, cy - R * .45, R * .1, cx, cy, R * 1.02); sh.addColorStop(0, "rgba(255,255,255,.22)"); sh.addColorStop(.55, "rgba(255,255,255,0)"); sh.addColorStop(1, "rgba(0,0,0,.42)");
+  ctx.fillStyle = sh; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fill();
+  // cities: capitals and the biggest ones; more appear as you zoom in
+  const center = [-GL.rot[0], -GL.rot[1]], vis = [], taken = [], z = GL.zoom;
+  const limit = z < 1.4 ? 60 : z < 2.5 ? 160 : z < 4 ? 320 : 9999;
+  const near = (x, y, w) => taken.some(b => x + w > b[0] && x < b[2] && Math.abs(y - b[1]) < 11);
+  const pins = st.all.filter(x => x.g.lat != null);
+  for (const c of CITIES){
+    if (c.rank > limit && !c.cap) continue; if (c.cap && z < 1.4 && c.rank > 140) continue;
+    if (d3.geoDistance([c.lng, c.lat], center) > 1.52) continue;
+    const [x, y] = proj([c.lng, c.lat]); vis.push({c, x, y});
+  }
+  ctx.font = "600 10.5px Archivo, system-ui, sans-serif"; ctx.textBaseline = "middle";
+  for (const v of vis){
+    const on = GL.sel && GL.sel.type !== "country" && GL.sel.name === v.c.name && GL.sel.cc === v.c.cc;
+    ctx.beginPath(); ctx.arc(v.x, v.y, v.c.cap ? 2.3 : 1.7, 0, 7); ctx.fillStyle = on ? RED : "#2b2d31"; ctx.fill();
+    if (v.c.cap){ ctx.lineWidth = 1; ctx.strokeStyle = "#fff"; ctx.stroke(); }
+  }
+  for (const v of vis){
+    const show = z >= 3 || (z >= 1.6 && (v.c.cap || v.c.rank < 120)) || v.c.rank < 18;
+    if (!show) continue;
+    const w = ctx.measureText(v.c.name).width + 6; if (near(v.x + 5, v.y, w)) continue; taken.push([v.x + 5, v.y, v.x + 5 + w]);
+    ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.strokeText(v.c.name, v.x + 5, v.y); ctx.fillStyle = "#16171a"; ctx.fillText(v.c.name, v.x + 5, v.y);
+  }
+  // your places
+  for (const p of pins){
+    if (d3.geoDistance([p.g.lng, p.g.lat], center) > 1.55) continue;
+    const [x, y] = proj([p.g.lng, p.g.lat]), v = st.ccs.has(p.g.cc) && trvVisited(secById(GL.sid) || {}, p.e);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.arc(x, y - 11, 6, Math.PI * .75, Math.PI * .25); ctx.closePath();
+    ctx.fillStyle = v ? RED : "#fff"; ctx.strokeStyle = v ? "#fff" : RED; ctx.lineWidth = 1.6; ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.arc(x, y - 11, 2.2, 0, 7); ctx.fillStyle = v ? "#fff" : RED; ctx.fill();
+    vis.push({pin:p, x, y:y - 10});
+  }
+  GL.vis = vis;
+}
+function globeHit(x, y){
+  let best = null, bd = 16 * 16;
+  for (const v of GL.vis || []){ const d = (v.x - x) ** 2 + (v.y - y) ** 2; if (d < bd || (v.pin && d < 22 * 22 && (!best || !best.pin))){ bd = d; best = v; } }
+  if (best && best.pin){ const e = best.pin.e, g = best.pin.g; return {type:g.type || "place", name:e.title, cc:g.cc, lat:g.lat, lng:g.lng}; }
+  if (best) return {type:"city", name:best.c.name, cc:best.c.cc, lat:best.c.lat, lng:best.c.lng, cap:best.c.cap};
+  if (!GL.proj || Math.hypot(x - GL.W / 2, y - GL.H / 2) > GL.R) return null;
+  const ll = GL.proj.invert([x, y]); if (!ll) return null;
+  const feats = GL.geo.hi || GL.geo.lo, f = feats.find(f => f.cc && d3.geoContains(f, ll));
+  return f ? {type:"country", name:CTRY.get(f.cc)?.name || "", cc:f.cc, lat:ll[1], lng:ll[0]} : null;
+}
+function trvFind(s, p){
+  return entriesOf(s.id).find(e => { const g = geoOf(e); if (!g || g.cc !== p.cc) return false;
+    if (p.type === "country") return g.type === "country";
+    if (g.type === "country") return false;
+    return normT(e.title) === normT(p.name) || (g.lat != null && p.lat != null && Math.abs(g.lat - p.lat) < .03 && Math.abs(g.lng - p.lng) < .03); });
+}
+function globeCard(p){
+  GL.sel = p; const s = secById(GL.sid), card = GL.card; if (!s || !card) return;
+  if (!p){ card.hidden = true; globeDraw(); return; }
+  const c = CTRY.get(p.cc), st = GL.stats || travelStats(s), e = p.type === "continent" ? null : trvFind(s, p), has = trvStates(s).length;
+  let body = "";
+  if (p.type === "continent"){
+    const all = [...CTRY.values()].filter(x => x.cont === p.cont && x.ok), vis = all.filter(x => st.ccs.has(x.cc));
+    body = `<b class="gc-t">${esc(p.name)}</b><span class="gc-s">${vis.length} de ${all.length} países visitados</span>
+      ${vis.length ? `<div class="gc-chips">${vis.map(x => `<span>${flagOf(x.cc)} ${esc(x.name)}</span>`).join("")}</div>` : ""}`;
+  } else {
+    const kind = p.type === "country" ? "País" : p.kind || (p.cap ? "Capital" : "Ciudad");
+    body = `<b class="gc-t">${p.type === "country" ? flagOf(p.cc) + " " : ""}${esc(p.name)}</b>
+      <span class="gc-s">${esc(kind)}${p.type !== "country" && c ? ` · ${flagOf(p.cc)} ${esc(c.name)}` : ""}${c ? ` · ${esc(CONTS[c.cont])}` : ""}</span>
+      ${e ? `<span class="gc-st${trvVisited(s, e) ? " on" : ""}">${trvVisited(s, e) ? "Has estado aquí" : esc(e.fields?.estado || "Quiero ir")}</span>
+        <div class="gc-b"><button class="btn sm" data-act="open" data-id="${e.id}">${ic("edit")}Fecha, fotos y notas</button>${!trvVisited(s, e) ? `<button class="btn sm pri red" data-gc="vis" data-id="${e.id}">${ic("check")}He estado</button>` : ""}<button class="btn sm ghost" data-gc="del" data-id="${e.id}">${ic("trash")}Quitar</button></div>`
+      : `<div class="gc-b"><button class="btn sm pri red" data-gc="add" data-v="1">${ic("check")}He estado aquí</button>${has ? `<button class="btn sm" data-gc="add" data-v="0">${ic("star")}Quiero ir</button>` : ""}</div>`}`;
+  }
+  card.innerHTML = `<button class="gc-x" data-gc="close" aria-label="Cerrar">${ic("x")}</button>${body}`; card.hidden = false;
+  globeDraw();
+}
+function trvAdd(s, p, visited){
+  const c = CTRY.get(p.cc), fields = {geo:{type:p.type, cc:p.cc, ...(p.type !== "country" && p.lat != null ? {lat:+(+p.lat).toFixed(4), lng:+(+p.lng).toFixed(4)} : {})}};
+  if (trvStates(s).length) fields.estado = visited ? trvVisitedLabel(s) : trvWishLabel(s);
+  if (mOn(s, "cats") && c){ const opts = splitList(s.mods.cats.opts), cn = CONTS[c.cont]; if (opts.includes(cn)) fields.genero = cn; }
+  if (mOn(s, "lugar")) fields.lugar = p.type === "country" ? p.name : `${p.name}${c ? ", " + c.name : ""}`;
+  const e = putItem({id:uid(), kind:"entry", sectionId:s.id, title:p.name, fields});
+  buzz(); toast(visited ? `${p.name}: ¡visitado!` : `${p.name}: a la lista`, visited && c && !GL.stats?.ccs.has(p.cc) ? `País nuevo: ${c.name}` : "");
+  return e;
+}
+function globeInput(el){
+  const cv = GL.cv, pts = new Map(); let p0 = null, z0 = 1, d0 = 0, moved = 0, t0 = 0, last = null, lastTap = 0;
+  cv.addEventListener("pointerdown", e => { cv.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.offsetX, e.offsetY]); GL.auto = false; GL.anim = null; GL.vel = [0, 0];
+    if (pts.size === 1){ p0 = [e.offsetX, e.offsetY]; last = [e.offsetX, e.offsetY, performance.now()]; moved = 0; t0 = performance.now(); GL.drag = true; }
+    else if (pts.size === 2){ const [a, b] = [...pts.values()]; d0 = Math.hypot(a[0] - b[0], a[1] - b[1]); z0 = GL.zoom; moved = 99; }
+    globeLoop(); });
+  cv.addEventListener("pointermove", e => {
+    if (!pts.has(e.pointerId)) return; const prev = pts.get(e.pointerId); pts.set(e.pointerId, [e.offsetX, e.offsetY]);
+    if (pts.size >= 2){ const [a, b] = [...pts.values()]; const d = Math.hypot(a[0] - b[0], a[1] - b[1]); if (d0) GL.zoom = Math.max(.8, Math.min(14, z0 * d / d0)); return; }
+    const dx = e.offsetX - prev[0], dy = e.offsetY - prev[1], k = 57.3 / (GL.R || 150);
+    moved += Math.abs(dx) + Math.abs(dy);
+    GL.rot = [GL.rot[0] + dx * k, Math.max(-88, Math.min(88, GL.rot[1] - dy * k))];
+    const now = performance.now(); if (last && now - last[2] > 0) GL.vel = [dx * k * .9, -dy * k * .9]; last = [e.offsetX, e.offsetY, now];
+  });
+  const up = e => {
+    if (!pts.has(e.pointerId)) return; pts.delete(e.pointerId);
+    if (pts.size) return; GL.drag = false;
+    if (performance.now() - (last ? last[2] : 0) > 80) GL.vel = [0, 0];
+    if (moved < 8 && performance.now() - t0 < 400){
+      const now = performance.now();
+      if (now - lastTap < 300){ GL.zoom = Math.min(14, GL.zoom * 2); lastTap = 0; globeLoop(); return; }
+      lastTap = now; const h = globeHit(e.offsetX, e.offsetY); GL.vel = [0, 0];
+      if (h){ globeCard(h); buzz(); } else globeCard(null);
+    }
+    globeLoop();
+  };
+  cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
+  cv.addEventListener("wheel", e => { e.preventDefault(); GL.auto = false; GL.zoom = Math.max(.8, Math.min(14, GL.zoom * Math.exp(-e.deltaY / 300))); globeDraw(); }, {passive:false});
+  el.addEventListener("click", e => {
+    const z = e.target.closest("[data-gz]");
+    if (z){ const k = z.dataset.gz; GL.anim = {t0:performance.now(), d:450, from:{rot:[...GL.rot], zoom:GL.zoom}, to:{rot:k === "home" ? [GL.rot[0], -20] : [...GL.rot], zoom:k === "in" ? Math.min(14, GL.zoom * 1.8) : k === "out" ? Math.max(.8, GL.zoom / 1.8) : 1}, ease:easeIO}; GL.auto = false; globeLoop(); return; }
+    const g = e.target.closest("[data-gc]"), s = secById(GL.sid);
+    if (g && s){ const a = g.dataset.gc;
+      if (a === "close") globeCard(null);
+      else if (a === "add"){ trvAdd(s, GL.sel, g.dataset.v === "1"); }
+      else if (a === "vis"){ const it = S.items.get(g.dataset.id); if (it) putItem({...it, fields:{...it.fields, estado:trvVisitedLabel(s)}}); buzz(); }
+      else if (a === "del"){ delItem(g.dataset.id); toast("Quitado de tus viajes"); }
+      return; }
+    const r = e.target.closest("[data-gr]");
+    if (r){ const p = GL.found[+r.dataset.gr]; GL.res.hidden = true; GL.inp.blur(); globeGo(p); }
+    if (e.target.closest(".gl-x")){ GL.inp.value = ""; GL.res.hidden = true; GL.inp.focus(); }
+  });
+  $("form", el).addEventListener("submit", e => { e.preventDefault(); if (GL.found && GL.found[0]){ GL.res.hidden = true; GL.inp.blur(); globeGo(GL.found[0]); } });
+  let timer = 0;
+  GL.inp.addEventListener("input", () => { clearTimeout(timer); const q = GL.inp.value.trim(); if (!q){ GL.res.hidden = true; return; } globeResults(q, null); timer = setTimeout(() => globeOnline(q), 550); });
+  GL.inp.addEventListener("focus", () => { if (GL.inp.value.trim() && GL.found?.length) GL.res.hidden = false; });
+}
+function globeGo(p){
+  if (!p) return;
+  if (p.type === "continent"){ const [lng, lat, z] = CONT_C[p.cont]; globeFly(lng, lat, z); }
+  else if (p.type === "country"){ const c = CTRY.get(p.cc); globeFly(c ? c.lng : p.lng, c ? c.lat : p.lat, Math.max(1.6, Math.min(5, 1.6 + 6 / Math.sqrt(1 + (p.area || 0))))); }
+  else globeFly(p.lng, p.lat, Math.max(GL.zoom, 4));
+  globeCard(p);
+}
+const KIND_ES = {city:"Ciudad", town:"Pueblo", village:"Pueblo", hamlet:"Aldea", municipality:"Municipio", country:"País", state:"Región", region:"Región", province:"Provincia", county:"Comarca", island:"Isla", archipelago:"Islas", continent:"Continente", suburb:"Barrio", neighbourhood:"Barrio", quarter:"Barrio", city_district:"Distrito", locality:"Lugar", tourism:"Lugar", attraction:"Lugar", national_park:"Parque natural", peak:"Montaña", beach:"Playa", lake:"Lago", bay:"Bahía"};
+function globeLocal(q){
+  const n = normT(q); if (!n) return [];
+  const out = [], sc = t => { const x = normT(t); return x === n ? 3 : x.startsWith(n) ? 2 : x.includes(" " + n) ? 1 : 0; };
+  CONTS.forEach((c, i) => { if (sc(c)) out.push({type:"continent", name:c, cont:i, s:sc(c) + 2}); });
+  for (const c of CTRY.values()){ const v = Math.max(sc(c.name), sc(c.en)); if (v) out.push({type:"country", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng, s:v + 1}); }
+  for (const c of CITIES){ const v = sc(c.name); if (v) out.push({type:"city", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng, cap:c.cap, s:v + (c.cap ? .5 : 0) - c.rank / 2000}); }
+  return out.sort((a, b) => b.s - a.s).slice(0, 7);
+}
+function globeResults(q, online){
+  const loc = globeLocal(q), seen = new Set(loc.map(p => p.type + normT(p.name) + p.cc));
+  const web = (online || []).filter(p => !seen.has(p.type + normT(p.name) + p.cc) && !(p.type !== "country" && loc.some(l => l.cc === p.cc && normT(l.name) === normT(p.name))));
+  GL.found = [...loc, ...web]; GL.q = q;
+  const row = (p, i) => { const c = CTRY.get(p.cc);
+    const sub = p.type === "continent" ? "Continente" : p.type === "country" ? `País · ${CONTS[c?.cont] || ""}` : `${p.kind || (p.cap ? "Capital" : "Ciudad")}${p.sub ? " · " + p.sub : c ? " · " + c.name : ""}`;
+    return `<button type="button" class="gr" data-gr="${i}"><span class="gr-i">${p.type === "continent" ? ic("globe") : p.cc ? flagOf(p.cc) : ic("pin")}</span><span class="gr-t"><b>${esc(p.name)}</b><span>${esc(sub)}</span></span></button>`; };
+  GL.res.innerHTML = (GL.found.length ? GL.found.map(row).join("") : "") + (online === null ? `<div class="gr-more">Buscando también en el mapa del mundo…</div>` : !GL.found.length ? `<div class="gr-more">No encuentro «${esc(q)}». Prueba con otro nombre.</div>` : "");
+  GL.res.hidden = false;
+}
+async function globeOnline(q){
+  let out = [];
+  try {
+    const r = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=8&accept-language=es&q=${encodeURIComponent(q)}`);
+    const js = await r.json();
+    out = js.map(x => { const t = x.addresstype || x.type, cc = (x.address?.country_code || "").toUpperCase(), parts = String(x.display_name || "").split(", ");
+      return t === "continent" ? null : {type:t === "country" ? "country" : "place", kind:KIND_ES[t] || "Lugar", name:x.name || parts[0], cc, lat:+x.lat, lng:+x.lon, sub:[parts.slice(1, -1).find(x => !/\d/.test(x) && x !== (x.name || parts[0])) || "", CTRY.get(cc)?.name || parts[parts.length - 1]].filter(Boolean).join(", ")}; }).filter(p => p && p.cc && CTRY.has(p.cc));
+  } catch {
+    try {
+      const js = await (await fetch(`https://photon.komoot.io/api/?limit=8&q=${encodeURIComponent(q)}`)).json();
+      out = (js.features || []).map(f => { const pr = f.properties || {}, cc = (pr.countrycode || "").toUpperCase(), t = pr.type || pr.osm_value;
+        return {type:t === "country" ? "country" : "place", kind:KIND_ES[pr.osm_value] || KIND_ES[t] || "Lugar", name:pr.name, cc, lat:f.geometry.coordinates[1], lng:f.geometry.coordinates[0], sub:[pr.state, CTRY.get(cc)?.name].filter(Boolean).join(", ")}; }).filter(p => p.name && CTRY.has(p.cc));
+    } catch {}
+  }
+  if (GL.inp.value.trim() === q) globeResults(q, out);
+}
+ACT["trv-go"] = el => { const c = CTRY.get(el.dataset.cc); if (!c) return; window.scrollTo({top:0, behavior:reduce.matches ? "auto" : "smooth"}); globeGo({type:"country", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng}); };
+document.addEventListener("visibilitychange", () => { if (!document.hidden && GL.el && GL.el.isConnected) globeLoop(); });
+
+KIT_VIEWS.custom = s => (isTravel(s) ? vTravel(s) : "") + vCustom(s);
 const extrasBlock = s => s && s.tpl !== "custom" && (s.mods || s.extra) ? vCustom(s, true) : "";
 
 /* ---------- builder ---------- */

@@ -1,5 +1,5 @@
 // Órbita — caché sin conexión. Sube VERSION al publicar cambios.
-const VERSION = "orbita-v40";
+const VERSION = "orbita-v41";
 const MP_CACHE = "orbita-mp-1.1.1";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/apple-touch-icon.png"];
 
@@ -20,8 +20,8 @@ self.addEventListener("fetch", e => {
   }
   // Resto (iconos, fuentes, librería 3D): caché primero y se refresca en segundo plano.
   if (url.pathname.endsWith("version.txt")) return;
-  // Recortador de fondo (MediaPipe): se descarga una vez y se queda guardado.
-  if (/@mediapipe\/tasks-vision@|mediapipe-models\//.test(url.href)){
+  // Recortador de fondo (MediaPipe e ISNet) y el mapa del mundo: se descargan una vez y se quedan guardados.
+  if (/@mediapipe\/tasks-vision@|mediapipe-models\/|onnxruntime-web@|\/models\/isnet|d3-(array|geo)@|topojson-client@|world-atlas@/.test(url.href)){
     e.respondWith(caches.open(MP_CACHE).then(async c => (await c.match(req)) || fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; })));
     return;
   }
