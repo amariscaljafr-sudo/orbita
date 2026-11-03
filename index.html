@@ -1469,7 +1469,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "53";
+const APP_VERSION = "54";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1992,6 +1992,7 @@ function vProfile(){
         <label class="toggle"><span><b>Sonido en los avisos</b><span class="sub">Suena al llegar la hora si Órbita está abierta.</span></span><input type="checkbox" name="sound" id="pf-sound"${S.settings.sound !== false ? " checked" : ""}></label>
       </form>
       <div class="box"><span class="lbl">Tus datos</span><div class="set-list">
+        ${row("app-update", "rot", "Buscar actualización", `Tienes la versión ${APP_VERSION}`)}
         ${row("export", "data", "Exportar copia de seguridad", "Guarda todo en un archivo")}
         ${row("import", "data", "Importar copia", "Recupera tus datos o pásalos a otro dispositivo")}
         ${all().some(i => i.example) ? row("clear-examples", "trash", "Borrar los ejemplos", "Deja solo lo tuyo") : ""}
@@ -2595,6 +2596,12 @@ function aiMic(){
   };
   try { r.start(); AI.rec = r; if (btn) btn.classList.add("on"); buzz(); }
   catch { AI.rec = null; if (inp) inp.focus(); toast("Dicta con el teclado", "Toca el micrófono 🎤 del teclado, habla y luego pulsa enviar."); }
+}
+// load the newest app: drop the cached page (not your data, nor the downloaded models) and reload
+async function forceUpdate(){
+  try { const reg = await navigator.serviceWorker?.getRegistration(); await reg?.update(); } catch {}
+  try { for (const k of await caches.keys()) if (/^orbita-v/.test(k)) await caches.delete(k); } catch {}
+  location.replace(location.pathname + "?u=" + Date.now() + location.hash);
 }
 async function aiSend(text){
   if (AI.busy || !text.trim()) return;
@@ -4310,6 +4317,13 @@ document.addEventListener("submit", async e => {
 });
 Object.assign(ACT, {
   "g-link"(){ swapLayer(openLinkImport); },
+  async "app-update"(){
+    toast("Buscando actualización…");
+    try {
+      const v = (await (await fetch("version.txt?t=" + Date.now(), {cache:"no-store"})).text()).trim();
+      if (v && +v > +APP_VERSION) forceUpdate(); else toast("Ya tienes la última versión", `Versión ${APP_VERSION}.`);
+    } catch { toast("Sin conexión", "Conéctate a internet y vuelve a probar."); }
+  },
   "ai-mic"(){ aiMic(); },
   "ai-voice-reply"(el){ S.settings.voiceReply = !!el.checked; putSettings(true); if (!el.checked) try { speechSynthesis.cancel(); } catch {} },
   "g-new"(el){ const sid = el.dataset.sec; swapLayer(() => openLayer(`${sheetHead("Nueva prenda")}<div class="stack" style="gap:10px">
@@ -6164,8 +6178,15 @@ async function enrichMedia(tpl){
     navigator.serviceWorker.register("sw.js", {updateViaCache:"none"}).then(reg => { reg.update().catch(() => {}); document.addEventListener("visibilitychange", () => { if (!document.hidden) reg.update().catch(() => {}); }); }).catch(() => {});
     let reloaded = false;
     navigator.serviceWorker.addEventListener("controllerchange", () => { if (reloaded || $(".sheet") || $(".onb")) return; reloaded = true; location.reload(); });
-    const checkVersion = () => fetch("version.txt?t=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.text() : "").then(v => { v = v.trim(); if (v && v !== APP_VERSION && !sessionStorage.getItem("orbita.reload." + v)){ sessionStorage.setItem("orbita.reload." + v, "1"); location.reload(); } }).catch(() => {});
-    checkVersion(); document.addEventListener("visibilitychange", () => { if (!document.hidden) checkVersion(); });
+    const checkVersion = () => fetch("version.txt?t=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.text() : "").then(v => {
+      v = v.trim(); if (!v || +v <= +APP_VERSION) return;
+      let t = {}; try { t = JSON.parse(sessionStorage.getItem("orbita.upd") || "{}"); } catch {}
+      if (t.v === v && (t.n >= 4 || Date.now() - t.at < 45000)) return;
+      sessionStorage.setItem("orbita.upd", JSON.stringify({v, n:t.v === v ? t.n + 1 : 1, at:Date.now()}));
+      forceUpdate();
+    }).catch(() => {});
+    checkVersion(); setInterval(() => { if (!document.hidden) checkVersion(); }, 120000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) checkVersion(); });
   }
 })();
 })();
