@@ -1477,7 +1477,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "56";
+const APP_VERSION = "57";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -5548,9 +5548,9 @@ function globeDraw(){
   for (const f of feats){
     ctx.beginPath(); path(f);
     const paint = GL.mode === "paises" ? st.ccs.has(f.cc) : GL.mode === "continentes" ? st.conts && st.conts.has(CTRY.get(f.cc)?.cont) : false;
-    ctx.fillStyle = paint ? "#16171a" : (GL.sel && GL.sel.cc === f.cc && GL.sel.type === "country") ? "#ffffff" : "#e6e5e1"; ctx.fill();
+    ctx.fillStyle = GL.mode ? (paint ? "#ffffff" : "#8d8c87") : (GL.sel && GL.sel.cc === f.cc && GL.sel.type === "country") ? "#ffffff" : "#e6e5e1"; ctx.fill();
   }
-  ctx.beginPath(); path(feats === geo.hi ? geo.hiMesh : geo.mesh); ctx.strokeStyle = GL.mode ? "rgba(255,255,255,.35)" : "rgba(0,0,0,.28)"; ctx.lineWidth = .5; ctx.stroke();
+  ctx.beginPath(); path(feats === geo.hi ? geo.hiMesh : geo.mesh); ctx.strokeStyle = "rgba(0,0,0,.28)"; ctx.lineWidth = .5; ctx.stroke();
   if (GL.sel && GL.sel.cc && GL.sel.type === "country"){ const f = feats.find(f => f.cc === GL.sel.cc); if (f){ ctx.beginPath(); path(f); ctx.strokeStyle = "#111"; ctx.lineWidth = 1.6; ctx.stroke(); } }
   // light from the top left, dark edge: makes it read as a sphere
   const sh = ctx.createRadialGradient(cx - R * .4, cy - R * .45, R * .1, cx, cy, R * 1.02); sh.addColorStop(0, "rgba(255,255,255,.22)"); sh.addColorStop(.55, "rgba(255,255,255,0)"); sh.addColorStop(1, "rgba(0,0,0,.42)");
@@ -5559,14 +5559,14 @@ function globeDraw(){
   const center = [-GL.rot[0], -GL.rot[1]], vis = [], taken = [], z = GL.zoom;
   const fk = center[0].toFixed(1) + "," + center[1].toFixed(1) + (feats === geo.hi ? "h" : "");
   if (GL.fk !== fk){ GL.fk = fk; GL.fcc = ""; if (z >= 1.9){ const f = feats.find(f => f.cc && d3.geoContains(f, center)); GL.fcc = f ? f.cc : ""; } }
-  const focus = new Set([GL.fcc, GL.sel && GL.sel.type === "country" ? GL.sel.cc : ""].filter(Boolean));
+  const focus = new Set([GL.sel && GL.sel.type === "country" ? GL.sel.cc : ""].filter(Boolean));
   const limit = z < 1.4 ? 70 : z < 2.5 ? 320 : z < 4 ? 750 : 9999;
   const near = (x, y, w) => taken.some(b => x + w > b[0] && x < b[2] && Math.abs(y - b[1]) < 9);
   const mine = [];
   const pins = st.all.map(x => x.g.lat != null ? x : (x.g.type === "country" && CTRY.get(x.g.cc) ? {...x, g:{...x.g, ...capitalOf(x.g.cc)}} : null)).filter(Boolean);
   for (const c of CITIES){
     const picked = GL.sel && GL.sel.type !== "country" && GL.sel.name === c.name && GL.sel.cc === c.cc;
-    if (!picked && (z < 1.9 || !focus.has(c.cc) || GL.mode === "paises")) continue;
+    if (!picked && (!focus.has(c.cc) || GL.mode === "paises")) continue;
     if (d3.geoDistance([c.lng, c.lat], center) > 1.52) continue;
     const [x, y] = proj([c.lng, c.lat]); vis.push({c, x, y});
   }
@@ -5578,7 +5578,7 @@ function globeDraw(){
   }
   for (const v of vis){
     const picked = GL.sel && GL.sel.type !== "country" && GL.sel.name === v.c.name && GL.sel.cc === v.c.cc;
-    if (!picked && (z < 3.2 || (z < 4.5 && !v.c.cap && v.c.rank > 400))) continue;
+    if (!picked && z < 2.4) continue;
     const w = ctx.measureText(v.c.name).width + 4; if (near(v.x + 4, v.y, w)) continue; taken.push([v.x + 4, v.y, v.x + 4 + w]);
     ctx.lineWidth = 2.4; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.strokeText(v.c.name, v.x + 4, v.y); ctx.fillStyle = "#16171a"; ctx.fillText(v.c.name, v.x + 4, v.y);
   }
@@ -5589,7 +5589,7 @@ function globeDraw(){
     ctx.beginPath(); ctx.arc(x, y, z >= 3 ? 4 : 3.3, 0, 7); ctx.fillStyle = RED; ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.3; ctx.fill(); ctx.stroke();
     vis.push({pin:p, x, y});
     const picked = GL.sel && GL.sel.type !== "country" && normT(GL.sel.name) === normT(p.e.title) && GL.sel.cc === p.g.cc;
-    if (p.g.type !== "country" && (picked || (!GL.mode && z >= 3.2 && focus.has(p.g.cc)))) mine.push({p, x, y});
+    if (p.g.type !== "country" && (picked || (focus.has(p.g.cc) && z >= 2.4))) mine.push({p, x, y});
   }
   ctx.font = "700 10px Archivo, system-ui, sans-serif";
   for (const m of mine){
@@ -5733,7 +5733,7 @@ async function globeOnline(q){
         return {type:t === "country" ? "country" : "place", kind:KIND_ES[pr.osm_value] || KIND_ES[t] || "Lugar", name:pr.name, cc, lat:f.geometry.coordinates[1], lng:f.geometry.coordinates[0], sub:[pr.state, CTRY.get(cc)?.name].filter(Boolean).join(", ")}; }).filter(p => p.name && CTRY.has(p.cc));
     } catch {}
   }
-  if (GL.inp.value.trim() === q) globeResults(q, out);
+  if (GL.inp.value.trim() === q && document.activeElement === GL.inp) globeResults(q, out);
 }
 ACT["trv-open"] = el => { const cc = el.dataset.cc, c = CTRY.get(cc); S.trvOpen = {...(S.trvOpen || {}), [cc]:!(S.trvOpen || {})[cc]}; if (S.trvOpen[cc] && c) globeGo({type:"country", name:c.name, cc, lat:c.lat, lng:c.lng}); buzz(); render(); };
 ACT["trv-addc"] = el => {
@@ -5746,7 +5746,7 @@ ACT["trv-addc"] = el => {
       <div class="ta-res tc-list">${html(rowsOf(""))}</div></div>`, {onMount:root => {
       const q = $("#tc-q", root), res = $(".tc-list", root);
       q.addEventListener("input", () => { res.innerHTML = html(rowsOf(q.value)) || `<div class="gr-more">No encuentro ese país.</div>`; });
-      res.addEventListener("click", e => { const b = e.target.closest("[data-cc]"); if (!b || b.disabled) return; const c = CTRY.get(b.dataset.cc); closeLayer(); trvAdd(s, {type:"country", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng}, true); S.trvOpen = {...(S.trvOpen || {}), [c.cc]:true}; globeGo({type:"country", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng}); });
+      res.addEventListener("click", e => { const b = e.target.closest("[data-cc]"); if (!b || b.disabled) return; const c = CTRY.get(b.dataset.cc); closeLayer(); trvAdd(s, {type:"country", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng}, true); globeGo({type:"country", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng}); });
     }}));
 };
 ACT["trv-addin"] = el => {
