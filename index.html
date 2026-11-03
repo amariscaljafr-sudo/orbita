@@ -501,7 +501,9 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .chat-in textarea:focus{border-color:var(--ink);background:var(--paper)}
 .chat-in .btn{width:50px;padding:0;min-height:50px}
 .chat-in .btn.mic{background:var(--paper-2);color:var(--ink);border-color:transparent}
-.chat-in .btn.mic.on{background:var(--red);color:#fff;animation:micp 1.2s ease-in-out infinite}
+.chat-in .btn.mic.on{background:var(--red);color:#fff;animation:micp 1.2s ease-in-out infinite;transform:scale(calc(1 + var(--lvl, 0) * .18));transition:transform .08s}
+.chat-in .btn.mic.busy{background:var(--ink);color:#fff;opacity:.85;animation:micw .9s ease-in-out infinite alternate}
+@keyframes micw{from{opacity:.55}to{opacity:1}}
 @keyframes micp{0%,100%{box-shadow:0 0 0 0 rgba(225,6,0,.45)}50%{box-shadow:0 0 0 10px rgba(225,6,0,0)}}
 .voice-opt{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--mute);padding:2px 2px 0}
 
@@ -1469,7 +1471,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "54";
+const APP_VERSION = "55";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -2579,7 +2581,64 @@ function aiSpeak(t){
     speechSynthesis.speak(u);
   } catch {}
 }
-function aiMic(){
+// the reliable way (also on iPhone/iPad home-screen apps): record the voice here and let Gemini write it down
+function aiMicUI(state){
+  AI.micState = state; const b = $("#ai-mic"), t = $("#ai-in");
+  if (b){ b.classList.toggle("on", state === "rec"); b.classList.toggle("busy", state === "wait"); }
+  if (t) t.placeholder = state === "rec" ? "Te escucho… (para cuando quieras)" : state === "wait" ? "Entendiendo lo que has dicho…" : "Escribe o habla…";
+}
+function wavOf(chunks, rate){
+  let n = 0; for (const c of chunks) n += c.length;
+  const pcm = new Float32Array(n); let o = 0; for (const c of chunks){ pcm.set(c, o); o += c.length; }
+  const out = 16000, k = rate / out, m = Math.floor(n / k), buf = new ArrayBuffer(44 + m * 2), v = new DataView(buf);
+  const w = (i, str) => { for (let j = 0; j < str.length; j++) v.setUint8(i + j, str.charCodeAt(j)); };
+  w(0, "RIFF"); v.setUint32(4, 36 + m * 2, true); w(8, "WAVE"); w(12, "fmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, out, true); v.setUint32(28, out * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, "data"); v.setUint32(40, m * 2, true);
+  let peak = 0; for (let i = 0; i < n; i++) peak = Math.max(peak, Math.abs(pcm[i]));
+  const g = peak > 0 && peak < .5 ? .9 / peak : 1;
+  for (let i = 0; i < m; i++){ let a = 0, c = 0; for (let j = Math.floor(i * k); j < Math.floor((i + 1) * k) && j < n; j++){ a += pcm[j]; c++; } const x = Math.max(-1, Math.min(1, (c ? a / c : 0) * g)); v.setInt16(44 + i * 2, x < 0 ? x * 32768 : x * 32767, true); }
+  return new Blob([buf], {type:"audio/wav"});
+}
+async function aiMic(){
+  if (AI.micState === "wait") return;
+  if (AI.rec){ AI.rec.stop(); return; }
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!provKey("gemini") || !navigator.mediaDevices?.getUserMedia || !AC) return aiMicSpeech();
+  const ac = new AC(); try { ac.resume(); } catch {}
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true}}); }
+  catch (e){ try { ac.close(); } catch {} toast("Permite el micrófono", "En el iPad: Ajustes → Safari → Micrófono → Permitir. O dicta con el 🎤 del teclado."); return; }
+  try { window.speechSynthesis && speechSynthesis.cancel(); } catch {}
+  const src = ac.createMediaStreamSource(stream), proc = ac.createScriptProcessor(4096, 1, 1), chunks = [];
+  let spoke = false, t0 = performance.now(), quiet = t0, done = false, noise = .012;
+  const finish = async () => {
+    if (done) return; done = true; AI.rec = null;
+    try { proc.disconnect(); src.disconnect(); } catch {} stream.getTracks().forEach(t => t.stop()); const rate = ac.sampleRate; try { ac.close(); } catch {}
+    if (!spoke){ aiMicUI(""); toast("No he oído nada", "Toca el micro y habla un poco más alto."); return; }
+    aiMicUI("wait");
+    try {
+      const wav = wavOf(chunks, rate), b64 = (await blobToDataURL(wav)).split(",")[1];
+      const d = await geminiOnce([{text:"Transcribe exactamente lo que dice esta grabación (en español). Devuelve solo el texto dicho, sin comillas ni comentarios. Si no se entiende nada, no devuelvas nada."}, {inline_data:{mime_type:"audio/wav", data:b64}}], undefined, 800);
+      const text = (d.candidates?.[0]?.content?.parts || []).map(x => x.text || "").join(" ").replace(/\s+/g, " ").trim();
+      aiMicUI("");
+      if (!text){ toast("No te he entendido", "Prueba otra vez, más cerca del micro."); return; }
+      const t = $("#ai-in"); if (t){ t.value = ""; t.style.height = "auto"; }
+      aiSend(text).then(() => { const last = [...AI.view].reverse().find(m => m.r === "a"); if (last) aiSpeak(last.t); });
+    } catch (e){ aiMicUI(""); toast("No he podido entenderte", e && e.status === 429 ? "Has usado el cupo gratis de Gemini por ahora. Prueba en un rato." : "Revisa la conexión e inténtalo otra vez."); }
+  };
+  proc.onaudioprocess = e => {
+    if (done) return;
+    const x = e.inputBuffer.getChannelData(0); chunks.push(new Float32Array(x));
+    let sum = 0; for (let i = 0; i < x.length; i++) sum += x[i] * x[i];
+    const rms = Math.sqrt(sum / x.length), now = performance.now(), b = $("#ai-mic");
+    if (b) b.style.setProperty("--lvl", Math.min(1, rms * 12).toFixed(2));
+    if (now - t0 < 400) noise = Math.max(noise, rms * 1.8);
+    if (rms > Math.max(.018, noise)){ spoke = true; quiet = now; }
+    if ((spoke && now - quiet > 1500) || now - t0 > 30000 || (!spoke && now - t0 > 7000)) finish();
+  };
+  src.connect(proc); proc.connect(ac.destination);
+  AI.rec = {stop:finish}; aiMicUI("rec"); buzz();
+}
+function aiMicSpeech(){
   const inp = $("#ai-in"), btn = $("#ai-mic");
   if (AI.rec){ AI.rec.stop(); return; }
   if (!SpeechRec){ if (inp) inp.focus(); toast("Dicta con el teclado", "Toca el micrófono 🎤 del teclado, habla y luego pulsa enviar."); return; }
@@ -4188,7 +4247,7 @@ async function geminiOnce(prompt, tools, maxTok=2000){
     const model = GEM_MODELS[(gemIdx + t) % GEM_MODELS.length], ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 60000);
     try {
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {method:"POST", signal:ctl.signal, headers:{"content-type":"application/json", "x-goog-api-key":provKey("gemini")},
-        body:JSON.stringify({contents:[{role:"user", parts:[{text:prompt}]}], tools, generationConfig:{temperature:.1, maxOutputTokens:maxTok}})});
+        body:JSON.stringify({contents:[{role:"user", parts:Array.isArray(prompt) ? prompt : [{text:prompt}]}], tools, generationConfig:{temperature:.1, maxOutputTokens:maxTok}})});
       const data = await res.json().catch(() => ({}));
       clearTimeout(timer);
       if (res.ok) return data;
