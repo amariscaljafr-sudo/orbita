@@ -1231,6 +1231,18 @@ img.missing{visibility:hidden}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;transition-duration:.001s!important}
 }
+/* category cards: white, black text, red details */
+.gq,.gq.pic{background:var(--paper)!important;color:var(--ink)!important;border:1px solid var(--line)!important;box-shadow:0 10px 22px -18px rgba(0,0,0,.35)!important;aspect-ratio:auto!important;min-height:92px!important;justify-content:space-between!important;padding:14px!important}
+.gq b{color:var(--ink)!important;text-shadow:none!important;font-size:16px!important}
+.gq b::after{content:"";display:block;width:22px;height:3px;border-radius:2px;background:var(--red);margin-top:8px}
+.gq > span:not(.gq-bg){color:var(--red)!important;opacity:1!important;text-shadow:none!important;font-weight:800!important;font-size:12px!important}
+.gq.empty0 > span{color:var(--mute)!important}
+.gq.empty0 b::after{background:var(--line-2)}
+.gq::before{content:"";position:absolute;right:12px;top:12px;width:8px;height:8px;border-right:2px solid var(--ink);border-top:2px solid var(--ink);transform:rotate(45deg);opacity:.35}
+.gq-bg,.gq-p{display:none!important}
+.genre-h,.genre-h.pic{background:var(--paper)!important;color:var(--ink)!important;border:1px solid var(--line);min-height:0!important;align-items:baseline!important;border-left:4px solid var(--red)}
+.genre-h > b,.genre-h > span:not(.gq-bg){text-shadow:none!important}
+.genre-h span{color:var(--red)!important;opacity:1!important}
 </style>
 </head>
 <body>
@@ -1385,7 +1397,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "47";
+const APP_VERSION = "48";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -4775,6 +4787,17 @@ function normalizeKits(){
     putItem({...e, sub:r.sub, fields:{...(e.fields || {}), ...(r.fields || {})}}, true); n++;
   }
   for (const x of sections()) if (x.tpl === "armario" && !x.fields.some(f => f.key === "cajon")){ const i = x.fields.findIndex(f => f.key === "categoria"); x.fields.splice(i + 1, 0, {key:"cajon", label:"Sitio en el cajón (accesorios)", type:"select", options:["Relojes","Gafas","Joyas","Neceseres","Bolsos","Otros"]}); ch = true; }
+  if (!S.settings.cleanup5){
+    for (const x of sections()) if (x.tpl === "custom" && /deseo/i.test(x.name || "")){
+      x.mods = {...(x.mods || {})};
+      if (x.mods.estados) x.mods.estados = {...x.mods.estados, on:false};
+      x.mods.fotos = {...(x.mods.fotos || {}), on:true};
+      x.extra = [...(x.extra || [])];
+      if (!x.extra.some(e => /qu[eé] es|descrip/i.test(e.label || ""))) x.extra.unshift({key:"x" + uid(), label:"Qué es", type:"text"});
+      if (!x.extra.some(e => /marca/i.test(e.label || ""))) x.extra.unshift({key:"x" + uid(), label:"Marca", type:"text"});
+    }
+    S.settings.cleanup5 = true; ch = true;
+  }
   if (!S.settings.cleanup4){
     for (const x of sections()) if (x.tpl === "armario"){ const f = x.fields.find(f => f.key === "categoria"); if (f && f.options) f.options = f.options.filter(o => o !== "Vestido"); }
     for (const e of ofKind("entry")) if (secById(e.sectionId)?.tpl === "armario" && e.fields?.categoria === "Vestido"){ putItem({...e, fields:{...e.fields, categoria:"Arriba"}}, true); n++; }
@@ -4906,7 +4929,8 @@ function customCard(s, e){
 function vCustom(s, extras=false){
   const m = s.mods || {}, on = k => mOn(s, k), es = entriesOf(s.id), tk = todayKey(), n = Math.max(3, Math.min(10, +m.top?.n || 5));
   const track = ["tareas","racha","progreso","dinero","cantidad","valor","estados","lugar","etiquetas","cuenta"].some(on) || (s.extra || []).some(x => x.label);
-  const catL = m.cats?.label || "Categoría", tabs = extras ? (track ? [["lista", "Seguimiento", es.length]] : []) : [["lista", "Todo", es.length]];
+  const wish = !extras && /deseo/i.test(s.name || "") && on("cats");
+  const catL = m.cats?.label || "Categoría", tabs = extras ? (track ? [["lista", "Seguimiento", es.length]] : []) : wish ? [] : [["lista", "Todo", es.length]];
   const sx = extras ? {id:"x" + s.id} : s;
   if (on("cats")) tabs.push(["cats", catL]);
   if (on("top")) tabs.push(["top", "Top " + n]);
@@ -4939,7 +4963,7 @@ function vCustom(s, extras=false){
     } else {
       const gens = [...opts, ...(es.some(e => genOf(e) === NOGEN) ? [NOGEN] : []), ...[...new Set(es.map(genOf))].filter(x => x !== NOGEN && !opts.includes(x))];
       body = `<div class="genres">${gens.map(x => { const xs = es.filter(e => genOf(e) === x), pics = xs.slice(0, 3);
-        return `<button class="gq${xs.length ? "" : " empty0"}" style="--h:${hue(x)}" data-act="m-genre" data-sec="${s.id}" data-g="${esc(x)}"><b>${esc(x)}</b><span>${xs.length || "Vacío"}</span>${pics.length ? `<span class="gq-p">${pics.map(e => `<span class="tp">${poster(e)}</span>`).join("")}</span>` : ""}</button>`; }).join("")}</div>
+        return `<button class="gq${xs.length ? "" : " empty0"}" style="--h:${hue(x)}" data-act="m-genre" data-sec="${s.id}" data-g="${esc(x)}"><b>${esc(x)}</b><span>${xs.length || "Vacío"}</span></button>`; }).join("")}</div>
         <div class="row">${kbtn(s, "item", "Añadir", preset({}))}</div>`;
     }
   } else if (tab === "top") body = topBlock(s, "__all", `Top ${n}`, n);
@@ -5352,7 +5376,7 @@ const BD_PRESETS = [
   {name:"Hábitos", icon:"spark", purpose:"Hábitos diarios con su racha de días seguidos", mods:{racha:{on:true}, cats:{on:true, label:"Área", opts:["Salud","Mente","Deporte","Productividad","Social","Casa"]}, notas:{on:true}}, extra:[{label:"Hora ideal", type:"time"},{label:"Por qué lo hago", type:"text"}]},
   {name:"Gastos y ahorro", icon:"wallet", purpose:"Lo que gasto cada mes por categorías, con presupuesto", mods:{dinero:{on:true, moneda:"€", meta:"1000"}, cats:{on:true, label:"Categoría", opts:["Comida","Casa","Transporte","Ocio","Ropa","Salud","Suscripciones","Regalos","Otros"]}, calendario:{on:true}, etiquetas:{on:true}, notas:{on:true}}, extra:[{label:"Forma de pago", type:"select", opts:["Tarjeta","Efectivo","Bizum","Transferencia"]}]},
   {name:"Recetas", icon:"utensils", purpose:"Mis recetas por tipo de plato, con tiempo y dificultad", mods:{cats:{on:true, label:"Tipo de plato", opts:["Desayunos","Entrantes","Pasta","Arroces","Carnes","Pescados","Verduras","Postres","Salsas"]}, top:{on:true, n:5, perCat:false}, valor:{on:true}, fotos:{on:true}, enlace:{on:true}, notas:{on:true}}, extra:[{label:"Tiempo (min)", type:"number"},{label:"Dificultad", type:"select", opts:["Fácil","Media","Difícil"]},{label:"Raciones", type:"number"},{label:"Ingredientes", type:"longtext"}]},
-  {name:"Lista de deseos", icon:"gift", purpose:"Cosas que quiero comprarme, con precio y enlace", mods:{estados:{on:true, opts:["Lo quiero","Ahorrando","Comprado"]}, cats:{on:true, label:"Categoría", opts:["Ropa","Tecnología","Casa","Libros","Belleza","Deporte","Viajes","Otros"]}, dinero:{on:true, moneda:"€", meta:""}, enlace:{on:true}, fotos:{on:true}, notas:{on:true}}, extra:[{label:"Prioridad", type:"select", opts:["Alta","Media","Baja"]},{label:"Tienda", type:"text"}]},
+  {name:"Lista de deseos", icon:"gift", purpose:"Cosas que quiero comprarme, con precio y enlace", mods:{cats:{on:true, label:"Categoría", opts:["Ropa","Tecnología","Casa","Libros","Belleza","Deporte","Viajes","Otros"]}, dinero:{on:true, moneda:"€", meta:""}, enlace:{on:true}, fotos:{on:true}, notas:{on:true}}, extra:[{label:"Marca", type:"text"},{label:"Qué es", type:"text"},{label:"Prioridad", type:"select", opts:["Alta","Media","Baja"]},{label:"Tienda", type:"text"}]},
   {name:"Cumpleaños y regalos", icon:"gift", purpose:"Los cumpleaños de mi gente con cuenta atrás e ideas de regalo", mods:{calendario:{on:true}, cuenta:{on:true}, dinero:{on:true, moneda:"€", meta:""}, tareas:{on:true}, notas:{on:true}}, extra:[{label:"Idea de regalo", type:"text"},{label:"Relación", type:"select", opts:["Familia","Pareja","Amistad","Trabajo"]}]},
   {name:"Conciertos y eventos", icon:"music", purpose:"Conciertos, festivales y planes con fecha, lugar y entradas", mods:{cats:{on:true, label:"Tipo", opts:["Concierto","Festival","Teatro","Deporte","Exposición","Cine","Otro"]}, calendario:{on:true}, cuenta:{on:true}, lugar:{on:true}, dinero:{on:true, moneda:"€", meta:""}, fotos:{on:true}, valor:{on:true}, notas:{on:true}}, extra:[{label:"Con quién", type:"text"},{label:"Entradas compradas", type:"check"}]},
   {name:"Plantas", icon:"leaf", purpose:"Mis plantas y cuándo regarlas", mods:{racha:{on:true}, fotos:{on:true}, lugar:{on:true}, notas:{on:true}}, extra:[{label:"Regar cada (días)", type:"number"},{label:"Luz", type:"select", opts:["Sol directo","Mucha luz","Semisombra","Sombra"]},{label:"Último abono", type:"date"}]},
@@ -5718,6 +5742,7 @@ const GENRE_SUBJ = {Novela:"fiction", Fantasía:"fantasy", "Ciencia ficción":"s
 S.gimg = lsGet("orbita.gimg", {});
 let gimgBusy = false;
 async function loadGenreImages(tpl){
+  return; // category cards use Órbita's own colours, without pictures
   if (gimgBusy) return; gimgBusy = true;
   const c = MEDIA_CFG[tpl], todo = c.genres.filter(g => !S.gimg[tpl + ":" + g]);
   if (tpl === "peliculas" && todo.length){
@@ -5737,7 +5762,7 @@ async function loadGenreImages(tpl){
   }
   gimgBusy = false;
 }
-function paintGenre(b, urls){ if (b.querySelector(".gq-bg")) return; b.insertAdjacentHTML("afterbegin", `<span class="gq-bg" aria-hidden="true">${urls.slice(0, 1).map(u => `<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer">`).join("")}</span>`); b.classList.add("pic"); }
+function paintGenre(b, urls){ return; if (b.querySelector(".gq-bg")) return; b.insertAdjacentHTML("afterbegin", `<span class="gq-bg" aria-hidden="true">${urls.slice(0, 1).map(u => `<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer">`).join("")}</span>`); b.classList.add("pic"); }
 new MutationObserver(() => {
   const grid = $(".genres[data-tpl]"); if (!grid || grid.dataset.gi) return; grid.dataset.gi = "1";
   const tpl = grid.dataset.tpl;
