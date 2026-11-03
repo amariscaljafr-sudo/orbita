@@ -1308,6 +1308,8 @@ img.missing{visibility:hidden}
 .ktopic .ic svg{color:#fff!important}
 .ktopic b::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--red);margin-top:7px}
 .ktopic .kt-n{align-self:flex-start;color:var(--red);background:rgba(225,6,0,.09);border-radius:999px;padding:3px 9px;font-size:11.5px;font-weight:800;opacity:1}
+.ai-look{width:100%;border-radius:16px;background:var(--paper-2);display:block}
+.pb-ai .ai-busy{background:var(--ink)}
 </style>
 </head>
 <body>
@@ -1462,7 +1464,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "51";
+const APP_VERSION = "52";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -3985,9 +3987,49 @@ function vProbador(){
         <div class="row"><input type="date" class="inp" id="pb-date" value="${todayKey()}" style="width:auto;flex:1;min-width:150px" aria-label="Día del outfit"><button class="btn pri" data-act="wear-save"${worn.length ? "" : " disabled"}>${ic("cal")}Guardar en el calendario</button></div>
         ${worn.length ? `<button class="lnk" data-act="wear-clear" style="align-self:flex-start">Quitar todo</button>` : ""}
       </div>
+      ${aiLookHtml(worn, photo)}
     </div>
   </div>`;
 }
+S.aiLook = null;
+const lookKey = () => Object.values(S.wear).filter(Boolean).sort().join(",");
+function aiLookHtml(worn, photo){
+  const a = S.aiLook && S.aiLook.key === lookKey() ? S.aiLook : null;
+  return `<div class="box stack pb-ai" style="gap:12px">
+    <div class="sec-t"><span class="lbl">Verme con IA</span><span class="sp"></span><span class="tag">Gratis</span></div>
+    ${a && a.busy ? `<div class="ai-busy"><span class="spin"></span><span><b>Creando tu foto…</b>Suele tardar entre 10 y 40 segundos.</span></div>`
+      : a && a.pid ? `<img class="ai-look" data-img="${a.pid}" alt="Tú con este outfit"><div class="row"><button class="btn sm" data-act="ai-look" ${worn.length ? "" : "disabled"}>${ic("rot")}Otra versión</button><button class="btn sm ghost" data-act="ai-look-dl">${ic("data")}Guardar imagen</button></div><p class="muted small" style="margin:0">Al pulsar «Guardar en el calendario», el outfit se guarda con esta foto.</p>`
+      : `<p class="muted small" style="margin:0">${!photo ? "Sube una foto tuya de cuerpo entero en tu avatar y la IA te enseñará con tus prendas reales: con sus colores, dibujos y texturas." : "La IA crea una foto realista de ti con las prendas que hayas elegido, con sus colores, dibujos y texturas reales."}</p>
+         ${a && a.err ? `<p class="small" style="margin:0;color:var(--red);font-weight:700">${esc(a.err)}</p>` : ""}
+         ${photo ? `<button class="btn pri red" data-act="ai-look"${worn.length ? "" : " disabled"}>${ic("spark")}Verme con estas prendas</button>` : `<a class="btn" href="#avatar">${ic("cam")}Subir mi foto</a>`}`}
+  </div>`;
+}
+const IMG_MODELS = ["gemini-2.5-flash-image", "gemini-2.5-flash-image-preview", "gemini-2.0-flash-preview-image-generation"];
+async function geminiImage(parts){
+  let last = null;
+  for (const model of IMG_MODELS){
+    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 120000);
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {method:"POST", signal:ctl.signal, headers:{"content-type":"application/json", "x-goog-api-key":provKey("gemini")},
+        body:JSON.stringify({contents:[{role:"user", parts}], generationConfig:{responseModalities:["TEXT", "IMAGE"], temperature:.4}})});
+      const data = await res.json().catch(() => ({})); clearTimeout(timer);
+      if (res.ok){
+        const ps = data.candidates?.[0]?.content?.parts || [], im = ps.find(x => x.inlineData || x.inline_data);
+        if (im){ const d = im.inlineData || im.inline_data; return {b64:d.data, mime:d.mimeType || d.mime_type || "image/png"}; }
+        last = {status:200, block:true, message:ps.map(x => x.text || "").join(" ") || data.promptFeedback?.blockReason || ""}; continue;
+      }
+      last = {status:res.status, message:data?.error?.message || ""};
+      if (res.status === 401 || res.status === 403) break;
+    } catch (e){ clearTimeout(timer); last = {status:0, message:ctl.signal.aborted ? "slow" : "net"}; }
+  }
+  throw last || {status:0};
+}
+async function blobB64(blob, max=1024){
+  const c = await blobCanvas(blob, max), x = document.createElement("canvas"); x.width = c.width; x.height = c.height;
+  const cx = x.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, x.width, x.height); cx.drawImage(c, 0, 0);
+  const b = await canvasBlob(x, "image/jpeg", .9), u = await blobToDataURL(b); return u.split(",")[1];
+}
+const CAT_ES = {Arriba:"parte de arriba", Abajo:"parte de abajo", Abrigo:"abrigo o chaqueta", Calzado:"calzado", Accesorio:"accesorio"};
 const savePos = () => lsSet("orbita.wearpos", S.wearPos);
 function setPos(el, p){ S.wearPos[el.dataset.g] = {x:p.x, y:p.y, w:p.w, r:p.r || 0}; placeLayer(el); }
 function selectLayer(g){
@@ -4044,6 +4086,42 @@ Object.assign(ACT, {
   "wear-cat"(el){ S.wearCat = el.dataset.c; render(); },
   wear(el){ const c = el.dataset.c; S.wear[c] = S.wear[c] === el.dataset.id ? undefined : el.dataset.id; if (!S.wear[c]) delete S.wear[c]; if (c === "Vestido" && S.wear.Vestido){ delete S.wear.Arriba; delete S.wear.Abajo; } if ((c === "Arriba" || c === "Abajo") && S.wear[c]) delete S.wear.Vestido; S.pbSel = S.wear[c] || ""; lsSet("orbita.wear", S.wear); buzz(); render(); },
   "wear-clear"(){ S.wear = {}; S.pbSel = ""; lsSet("orbita.wear", S.wear); render(); },
+  async "ai-look"(){
+    if (!provKey("gemini")){ toast("Conecta tu Gemini gratis", "Lo tienes en Perfil y ajustes → Asistente. Es gratis y sin tarjeta."); return; }
+    const me = meAvatar(), gs = garments(), worn = Object.values(S.wear).map(id => gs.find(g => g.id === id)).filter(Boolean);
+    if (!me || !worn.length) return;
+    const key = lookKey(); S.aiLook = {key, busy:true}; render();
+    try {
+      const person = await IDB.get(me.orig || me.cut); if (!person) throw {status:-1};
+      const parts = [{text:"Imagen 1: la persona."}, {inline_data:{mime_type:"image/jpeg", data:await blobB64(person)}}], desc = [];
+      let n = 1;
+      for (const g of worn){
+        const b = g.photo ? await IDB.get(g.photo).catch(() => null) : null;
+        if (b){ n++; parts.push({text:`Imagen ${n}: ${g.title} (${CAT_ES[g.cat] || "prenda"}).`}, {inline_data:{mime_type:"image/jpeg", data:await blobB64(b, 900)}}); desc.push(`- Imagen ${n}: «${g.title}», ${CAT_ES[g.cat] || "prenda"}.`); }
+        else desc.push(`- «${g.title}», ${CAT_ES[g.cat] || "prenda"}${g.color ? `, de color ${colorName(g.color) || g.color}` : ""} (sin foto: hazla sencilla).`);
+      }
+      parts.push({text:`Eres un probador virtual de ropa. Genera UNA foto realista de cuerpo entero de la persona de la Imagen 1 llevando puestas estas prendas:
+${desc.join("\n")}
+Reglas: mantén exactamente la misma persona (cara, pelo, tono de piel, complexión y altura). Reproduce cada prenda con total fidelidad: mismo color, estampado, dibujos, logos, costuras y textura (por ejemplo, si unas zapatillas tienen estrellas, deben verse las estrellas). Si en la foto de una prenda aparece un modelo, usa solo la prenda. Para lo que no esté en la lista, ropa básica neutra. Pose natural de pie mirando a cámara, fondo de estudio gris muy claro, luz suave. Sin texto ni marcas de agua.`});
+      const img = await geminiImage(parts);
+      const blob = await (await fetch(`data:${img.mime};base64,${img.b64}`)).blob(), pid = "img" + uid();
+      await IDB.put(pid, blob);
+      if (S.aiLook && S.aiLook.pid) IDB.del(S.aiLook.pid).catch(() => {});
+      S.aiLook = {key, pid};
+    } catch (e){
+      const st = e && e.status, m = String(e && e.message || "");
+      const err = st === -1 ? "No encuentro tu foto; vuelve a subirla en tu avatar."
+        : st === 429 || /quota|exhausted|limit/i.test(m) ? "Tu clave gratuita no tiene cupo para crear imágenes ahora mismo. No se te cobra nada: prueba más tarde (el cupo gratis se renueva cada día)."
+        : st === 401 || st === 403 ? "Tu clave de Gemini no funciona. Revísala en Perfil y ajustes → Asistente."
+        : st === 400 && /location|region|country|not supported|unsupported/i.test(m) ? "Google no ofrece todavía la creación de imágenes gratis para tu clave o tu país."
+        : st === 200 ? "La IA no ha querido crear esta imagen. Prueba con otra foto tuya o con otras prendas."
+        : st === 0 && m === "slow" ? "Ha tardado demasiado. Inténtalo otra vez."
+        : "No se ha podido crear la imagen. Revisa la conexión e inténtalo otra vez.";
+      S.aiLook = {key, err};
+    }
+    render();
+  },
+  async "ai-look-dl"(){ const a = S.aiLook; if (!a || !a.pid) return; const b = await IDB.get(a.pid); if (!b) return; const u = URL.createObjectURL(b), l = document.createElement("a"); l.href = u; l.download = "outfit-orbita.png"; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); },
   async "wear-save"(){
     const ids = Object.values(S.wear).filter(id => S.items.has(id)); if (!ids.length) return;
     const s = ensureOutfitSec(), d = $("#pb-date")?.value || todayKey();
@@ -4051,7 +4129,9 @@ Object.assign(ACT, {
     const names = ids.map(id => S.items.get(id).title);
     const fields = {}; if (dateF) fields[dateF.key] = d; if (gF) fields[gF.key] = ids;
     const txt = s.fields.find(f => f.type === "longtext" && /prenda/i.test(f.label)); if (txt) fields[txt.key] = names.join(", ");
-    if (pF && avatarMode() === "foto" && meAvatar()){ const b = await composeLook(); if (b){ const pid = "img" + uid(); await IDB.put(pid, b); fields[pF.key] = [pid]; } }
+    const ai = S.aiLook && S.aiLook.pid && S.aiLook.key === lookKey() ? await IDB.get(S.aiLook.pid).catch(() => null) : null;
+    if (pF && ai){ const pid = "img" + uid(); await IDB.put(pid, ai); fields[pF.key] = [pid]; }
+    else if (pF && avatarMode() === "foto" && meAvatar()){ const b = await composeLook(); if (b){ const pid = "img" + uid(); await IDB.put(pid, b); fields[pF.key] = [pid]; } }
     putItem({id:uid(), kind:"entry", sectionId:s.id, title:"Outfit " + relDay(d).toLowerCase(), fields});
     toast("Outfit guardado", `En tu calendario de outfits, ${relDay(d).toLowerCase()}.`);
   }
