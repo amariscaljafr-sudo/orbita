@@ -1385,7 +1385,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "46";
+const APP_VERSION = "47";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -5170,10 +5170,11 @@ function globeDraw(){
   const focus = new Set([GL.fcc, GL.sel && GL.sel.type === "country" ? GL.sel.cc : ""].filter(Boolean));
   const limit = z < 1.4 ? 70 : z < 2.5 ? 320 : z < 4 ? 750 : 9999;
   const near = (x, y, w) => taken.some(b => x + w > b[0] && x < b[2] && Math.abs(y - b[1]) < 9);
+  const mine = [];
   const pins = st.all.map(x => x.g.lat != null ? x : (x.g.type === "country" && CTRY.get(x.g.cc) ? {...x, g:{...x.g, ...capitalOf(x.g.cc)}} : null)).filter(Boolean);
   for (const c of CITIES){
     const picked = GL.sel && GL.sel.type !== "country" && GL.sel.name === c.name && GL.sel.cc === c.cc;
-    if (!picked && (z < 1.9 || !focus.has(c.cc))) continue;
+    if (!picked && (z < 1.9 || !focus.has(c.cc) || GL.mode === "paises")) continue;
     if (d3.geoDistance([c.lng, c.lat], center) > 1.52) continue;
     const [x, y] = proj([c.lng, c.lat]); vis.push({c, x, y});
   }
@@ -5193,6 +5194,12 @@ function globeDraw(){
     const [x, y] = proj([p.g.lng, p.g.lat]), v = st.ccs.has(p.g.cc) && trvVisited(secById(GL.sid) || {}, p.e);
     const onRed = !!GL.mode; ctx.beginPath(); ctx.arc(x, y, 5.5, 0, 7); ctx.fillStyle = onRed ? "#fff" : RED; ctx.strokeStyle = onRed ? "#111" : "#fff"; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
     vis.push({pin:p, x, y});
+    if (p.g.type !== "country" && (focus.has(p.g.cc) || (GL.mode === "paises" && z >= 1.9))) mine.push({p, x, y});
+  }
+  ctx.font = "700 10px Archivo, system-ui, sans-serif";
+  for (const m of mine){
+    const t = m.p.e.title, w = ctx.measureText(t).width + 4;
+    ctx.lineWidth = 3; ctx.strokeStyle = "#fff"; ctx.strokeText(t, m.x + 8, m.y); ctx.fillStyle = GL.mode ? "#111" : RED; ctx.fillText(t, m.x + 8, m.y);
   }
   GL.vis = vis;
 }
@@ -5225,9 +5232,10 @@ function globeCard(p){
     const kind = p.type === "country" ? "País" : p.kind || (p.cap ? "Capital" : "Ciudad");
     body = `<b class="gc-t">${p.type === "country" ? flagOf(p.cc) + " " : ""}${esc(p.name)}</b>
       <span class="gc-s">${esc(kind)}${p.type !== "country" && c ? ` · ${flagOf(p.cc)} ${esc(c.name)}` : ""}${c ? ` · ${esc(CONTS[c.cont])}` : ""}</span>
+      ${p.type === "country" ? (() => { const cs = st.vis.filter(x => x.g.cc === p.cc && x.g.type !== "country"); return cs.length ? `<span class="gc-s">Ciudades que has visitado:</span><div class="gc-chips">${cs.map(x => `<button class="chip" data-act="open" data-id="${x.e.id}">${esc(x.e.title)}</button>`).join("")}</div>` : ""; })() : ""}
       ${e ? `<span class="gc-st${trvVisited(s, e) ? " on" : ""}">${trvVisited(s, e) ? "Has estado aquí" : esc(e.fields?.estado || "Quiero ir")}</span>
         <div class="gc-b"><button class="btn sm" data-act="open" data-id="${e.id}">${ic("edit")}Contar mi viaje</button>${!trvVisited(s, e) ? `<button class="btn sm pri red" data-gc="vis" data-id="${e.id}">${ic("check")}He estado</button>` : ""}<button class="btn sm ghost" data-gc="del" data-id="${e.id}">${ic("trash")}Quitar</button></div>`
-      : `<div class="gc-b"><button class="btn sm pri red" data-gc="add" data-v="1">${ic("check")}He estado aquí</button></div>`}`;
+      : (p.type === "country" && st.ccs.has(p.cc) ? `<span class="gc-st on">Has estado aquí</span>` : `<div class="gc-b"><button class="btn sm pri red" data-gc="add" data-v="1">${ic("check")}He estado aquí</button></div>`)}`;
   }
   card.innerHTML = `<button class="gc-x" data-gc="close" aria-label="Cerrar">${ic("x")}</button>${body}`; card.hidden = false;
   globeDraw();
