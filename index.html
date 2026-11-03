@@ -500,6 +500,10 @@ details.faq p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
 .chat-in textarea{flex:1;min-height:50px;max-height:140px;padding:13px 15px;border-radius:16px;background:var(--paper-2);border:1.5px solid transparent;outline:none;font-size:16px;resize:none}
 .chat-in textarea:focus{border-color:var(--ink);background:var(--paper)}
 .chat-in .btn{width:50px;padding:0;min-height:50px}
+.chat-in .btn.mic{background:var(--paper-2);color:var(--ink);border-color:transparent}
+.chat-in .btn.mic.on{background:var(--red);color:#fff;animation:micp 1.2s ease-in-out infinite}
+@keyframes micp{0%,100%{box-shadow:0 0 0 0 rgba(225,6,0,.45)}50%{box-shadow:0 0 0 10px rgba(225,6,0,0)}}
+.voice-opt{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--mute);padding:2px 2px 0}
 
 
 /* wardrobe */
@@ -1362,6 +1366,7 @@ const P = {
   search:"M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5",
   left:"M15 5l-7 7 7 7", right:"M9 5l7 7-7 7", x:"M6 6l12 12M18 6 6 18",
   trash:"M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13", edit:"M4 20h4L19 9l-4-4L4 16zM14 6l4 4",
+  mic:"M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3M9 21h6",
   pin:"M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12zM12 7a2 2 0 1 0 0 4 2 2 0 0 0 0-4z",
   link:"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1",
   gift:"M3 9h18v4H3zM5 13h14v8H5zM12 9v12M12 9c-2-4-6-4-6-1s4 1 6 1c2 0 6 2 6-1s-4-3-6 1",
@@ -1464,7 +1469,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "52";
+const APP_VERSION = "53";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -2560,6 +2565,37 @@ function aiErrorText(e){
   if (st >= 500) return "El servicio de Claude no responde ahora mismo. Inténtalo en unos minutos.";
   return "No he podido conectar con el asistente. Comprueba tu conexión.";
 }
+// voice: speak to the assistant (Web Speech API, free, on the device)
+const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+function aiSpeak(t){
+  try {
+    if (!window.speechSynthesis || S.settings.voiceReply === false) return;
+    const clean = String(t || "").replace(/[*_#`>|]/g, "").replace(/\[(.*?)\]\(.*?\)/g, "$1").slice(0, 600);
+    if (!clean.trim()) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(clean); u.lang = "es-ES"; u.rate = 1.02;
+    const v = speechSynthesis.getVoices().find(x => /^es(-|_)ES/i.test(x.lang)) || speechSynthesis.getVoices().find(x => /^es/i.test(x.lang)); if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  } catch {}
+}
+function aiMic(){
+  const inp = $("#ai-in"), btn = $("#ai-mic");
+  if (AI.rec){ AI.rec.stop(); return; }
+  if (!SpeechRec){ if (inp) inp.focus(); toast("Dicta con el teclado", "Toca el micrófono 🎤 del teclado, habla y luego pulsa enviar."); return; }
+  try { window.speechSynthesis && speechSynthesis.cancel(); } catch {}
+  const r = new SpeechRec(), base = inp && inp.value.trim() ? inp.value.trim() + " " : "";
+  let heard = "", failed = false;
+  r.lang = "es-ES"; r.interimResults = true; r.continuous = false; r.maxAlternatives = 1;
+  r.onresult = e => { heard = [...e.results].map(x => x[0].transcript).join(" ").trim(); if (inp){ inp.value = base + heard; inp.style.height = "auto"; inp.style.height = Math.min(140, inp.scrollHeight) + "px"; } };
+  r.onerror = e => { failed = true; if (e.error === "not-allowed" || e.error === "service-not-allowed") toast("Permite el micrófono", "Actívalo para Órbita en los ajustes del iPhone, o dicta con el micrófono del teclado."); else if (e.error !== "aborted" && e.error !== "no-speech") toast("No te he oído bien", "Prueba otra vez, o dicta con el micrófono del teclado."); else if (e.error === "no-speech") toast("No he oído nada", "Toca el micro y habla."); };
+  r.onend = () => {
+    AI.rec = null; const b = $("#ai-mic"); if (b) b.classList.remove("on");
+    const t = inp ? inp.value.trim() : "";
+    if (!failed && heard && t){ inp.value = ""; inp.style.height = "auto"; aiSend(t).then(() => { const last = [...AI.view].reverse().find(m => m.r === "a"); if (last) aiSpeak(last.t); }); }
+  };
+  try { r.start(); AI.rec = r; if (btn) btn.classList.add("on"); buzz(); }
+  catch { AI.rec = null; if (inp) inp.focus(); toast("Dicta con el teclado", "Toca el micrófono 🎤 del teclado, habla y luego pulsa enviar."); }
+}
 async function aiSend(text){
   if (AI.busy || !text.trim()) return;
   AI.busy = true;
@@ -2620,7 +2656,8 @@ function vAssistant(){
   return `
     <div class="row" style="justify-content:space-between"><span class="tag">${PROV_NAME[aiProv()]}</span>${AI.view.length ? `<button class="lnk" data-act="ai-clear">Nueva charla</button>` : ""}</div>
     <div class="chat" id="chat"></div>
-    <form class="chat-in page" data-form="ai"><textarea id="ai-in" name="t" rows="1" placeholder="Escribe lo que necesites…" aria-label="Mensaje para el asistente" enterkeyhint="send"></textarea><button class="btn pri" id="chat-send" type="submit" aria-label="Enviar">${ic("send")}</button></form>`;
+    <form class="chat-in page" data-form="ai"><textarea id="ai-in" name="t" rows="1" placeholder="Escribe o habla…" aria-label="Mensaje para el asistente" enterkeyhint="send"></textarea><button class="btn mic${AI.rec ? " on" : ""}" id="ai-mic" type="button" data-act="ai-mic" aria-label="Hablar al asistente">${ic("mic")}</button><button class="btn pri" id="chat-send" type="submit" aria-label="Enviar">${ic("send")}</button></form>
+    <label class="voice-opt"><input type="checkbox" data-act="ai-voice-reply"${S.settings.voiceReply === false ? "" : " checked"}> Leerme en voz alta las respuestas cuando hablo</label>`;
 }
 function openAI(prefill){
   S.aiPrefill = prefill || "";
@@ -4273,6 +4310,8 @@ document.addEventListener("submit", async e => {
 });
 Object.assign(ACT, {
   "g-link"(){ swapLayer(openLinkImport); },
+  "ai-mic"(){ aiMic(); },
+  "ai-voice-reply"(el){ S.settings.voiceReply = !!el.checked; putSettings(true); if (!el.checked) try { speechSynthesis.cancel(); } catch {} },
   "g-new"(el){ const sid = el.dataset.sec; swapLayer(() => openLayer(`${sheetHead("Nueva prenda")}<div class="stack" style="gap:10px">
     <button class="nw-opt" data-act="add" data-kind="entry" data-sec="${sid}"><span class="nw-i">${ic("cam")}</span><span><b>Con una foto</b><span>Hazla ahora o elígela de la galería; el fondo se quita solo.</span></span></button>
     <button class="nw-opt" data-act="g-link"><span class="nw-i">${ic("link")}</span><span><b>Desde el enlace de una tienda</b><span>Pega el enlace (Zara, Pull&amp;Bear…) y se crea con su foto.</span></span></button></div>`)); },
