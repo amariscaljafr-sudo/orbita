@@ -1187,6 +1187,14 @@ button.crumb{align-self:flex-start}
 .tbar.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink)}
 .tbar.on .tb-h > b{color:var(--red)}
 .tl-pl{display:flex;flex-direction:column;gap:6px}
+.tl-c{position:relative}
+.tl-c.open .tl-h{padding-right:44px}
+.tl-c.open .tl-h > .i{display:none}
+.tl-add{position:absolute;right:12px;top:14px;width:34px;height:34px;border-radius:50%;border:0;background:var(--red);color:#fff;display:grid;place-items:center;z-index:2;box-shadow:0 4px 10px -3px rgba(225,6,0,.6)}
+.tl-add .i{width:17px;height:17px}
+.ta-res{display:flex;flex-direction:column}
+.ta-res:empty{display:none}
+.ta-sug{display:flex;flex-direction:column;gap:8px}
 .tl-flag{width:42px;height:42px;border-radius:12px;background:var(--paper-2);display:grid;place-items:center;font-size:26px;flex:none}
 .tl-h > .i{width:16px;height:16px;opacity:.45;transition:transform .2s}
 .tl-c.open .tl-h > .i{transform:rotate(-90deg)}
@@ -1454,7 +1462,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "50";
+const APP_VERSION = "51";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -5185,7 +5193,7 @@ function vTravel(s){
   const groups = [...byC.entries()].sort((a, b) => (CTRY.get(a[0])?.name || "").localeCompare(CTRY.get(b[0])?.name || "", "es"));
   const ctryBlock = ([cc, xs]) => { const c = CTRY.get(cc), cities = xs.filter(x => x.g.type !== "country");
     const open = (S.trvOpen || {})[cc];
-    return `<div class="tl-c on${open ? " open" : ""}"><button class="tl-h" data-act="trv-open" data-cc="${cc}" aria-expanded="${!!open}"><span class="tl-flag">${flagOf(cc)}</span><b>${esc(c?.name || cc)}</b><span>${cities.length ? `${cities.length} ${cities.length === 1 ? "ciudad" : "ciudades"}` : "País"}</span>${ic(open ? "left" : "right")}</button>
+    return `<div class="tl-c on${open ? " open" : ""}">${open ? `<button class="tl-add" data-act="trv-addin" data-sec="${s.id}" data-cc="${cc}" aria-label="Añadir otro sitio en ${esc(c?.name || "")}">${ic("plus")}</button>` : ""}<button class="tl-h" data-act="trv-open" data-cc="${cc}" aria-expanded="${!!open}"><span class="tl-flag">${flagOf(cc)}</span><b>${esc(c?.name || cc)}</b><span>${cities.length ? `${cities.length} ${cities.length === 1 ? "ciudad" : "ciudades"}` : "País"}</span>${ic(open ? "left" : "right")}</button>
       ${open ? (cities.length ? `<div class="tl-pl">${cities.sort((a, b) => a.e.title.localeCompare(b.e.title, "es")).map(trvPlace).join("")}</div>` : `<p class="muted small" style="margin:0">Busca arriba una ciudad de ${esc(c?.name || "")} para añadirla.</p>`) : ""}</div>`; };
   let list = "";
   if (mode === "paises") list = groups.length ? `<div class="trv-list">${groups.map(ctryBlock).join("")}</div>` : `<p class="muted small trv-hint">Aún no has marcado ningún país.</p>`;
@@ -5524,6 +5532,45 @@ async function globeOnline(q){
   if (GL.inp.value.trim() === q) globeResults(q, out);
 }
 ACT["trv-open"] = el => { const cc = el.dataset.cc, c = CTRY.get(cc); S.trvOpen = {...(S.trvOpen || {}), [cc]:!(S.trvOpen || {})[cc]}; if (S.trvOpen[cc] && c) globeGo({type:"country", name:c.name, cc, lat:c.lat, lng:c.lng}); buzz(); render(); };
+ACT["trv-addin"] = el => {
+  const s = secById(el.dataset.sec), cc = el.dataset.cc, c = CTRY.get(cc); if (!s || !c) return;
+  const have = new Set(travelStats(s).vis.filter(x => x.g.cc === cc).map(x => normT(x.e.title)));
+  const sugg = CITIES.filter(x => x.cc === cc && !have.has(normT(x.name))).slice(0, 8);
+  let found = [];
+  const row = (p, i) => `<button type="button" class="gr" data-pick="${i}"><span class="gr-i">${flagOf(cc)}</span><span class="gr-t"><b>${esc(p.name)}</b><span>${esc([p.kind || (p.cap ? "Capital" : "Ciudad"), p.sub].filter(Boolean).join(" · "))}</span></span></button>`;
+  swapLayer(() => openLayer(`${sheetHead(`Añadir en ${flagOf(cc)} ${esc(c.name)}`)}<div class="stack" style="gap:12px">
+      <input class="inp" type="search" id="ta-q" placeholder="Busca una ciudad o un pueblo de ${esc(c.name)}" autocomplete="off" enterkeyhint="search">
+      <div class="ta-res"></div>
+      ${sugg.length ? `<div class="ta-sug"><span class="muted small">Ciudades grandes:</span><div class="chips">${sugg.map((x, i) => `<button type="button" class="chip" data-sug="${i}">${esc(x.name)}</button>`).join("")}</div></div>` : ""}
+    </div>`, {onMount:root => {
+      const q = $("#ta-q", root), res = $(".ta-res", root); let timer = 0;
+      const add = p => { closeLayer(); trvAdd(s, {...p, type:"city", cc}, true); };
+      const show = list => { found = list; res.innerHTML = list.length ? list.map(row).join("") : `<div class="gr-more">${q.value.trim() ? "Buscando…" : ""}</div>`; };
+      q.addEventListener("input", () => {
+        clearTimeout(timer); const v = q.value.trim(); if (!v){ show([]); return; }
+        const n = normT(v), loc = CITIES.filter(x => x.cc === cc && normT(x.name).includes(n)).slice(0, 5).map(x => ({name:x.name, lat:x.lat, lng:x.lng, cap:x.cap}));
+        show(loc);
+        timer = setTimeout(async () => {
+          let web = [];
+          try {
+            const js = await (await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=8&accept-language=es&countrycodes=${cc.toLowerCase()}&q=${encodeURIComponent(v)}`)).json();
+            web = js.filter(x => (x.addresstype || x.type) !== "country").map(x => { const parts = String(x.display_name || "").split(", "); return {name:x.name || parts[0], lat:+x.lat, lng:+x.lon, kind:KIND_ES[x.addresstype || x.type] || "Lugar", sub:parts.slice(1, -1).find(y => !/\d/.test(y)) || ""}; });
+          } catch {}
+          if (!web.length) try {
+            const js = await (await fetch(`https://photon.komoot.io/api/?limit=10&q=${encodeURIComponent(v + " " + c.en)}`)).json();
+            web = (js.features || []).filter(f => (f.properties?.countrycode || "").toUpperCase() === cc).map(f => ({name:f.properties.name, lat:f.geometry.coordinates[1], lng:f.geometry.coordinates[0], kind:KIND_ES[f.properties.osm_value] || "Lugar", sub:f.properties.state || ""}));
+          } catch {}
+          if (q.value.trim() !== v) return;
+          const seen = new Set(loc.map(x => normT(x.name)));
+          show([...loc, ...web.filter(x => x.name && !seen.has(normT(x.name)))]);
+          if (!found.length) res.innerHTML = `<div class="gr-more">No encuentro «${esc(v)}» en ${esc(c.name)}.</div>`;
+        }, 500);
+      });
+      res.addEventListener("click", e => { const b = e.target.closest("[data-pick]"); if (b) add(found[+b.dataset.pick]); });
+      root.addEventListener("click", e => { const b = e.target.closest("[data-sug]"); if (b){ const x = sugg[+b.dataset.sug]; add({name:x.name, lat:x.lat, lng:x.lng}); } });
+      setTimeout(() => q.focus(), 350);
+    }}));
+};
 ACT["trv-go"] = el => { const c = CTRY.get(el.dataset.cc); if (!c) return; window.scrollTo({top:0, behavior:reduce.matches ? "auto" : "smooth"}); globeGo({type:"country", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng}); };
 document.addEventListener("visibilitychange", () => { if (!document.hidden && GL.el && GL.el.isConnected) globeLoop(); });
 
