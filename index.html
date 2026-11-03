@@ -1190,7 +1190,8 @@ button.crumb{align-self:flex-start}
 .tp{border-radius:14px;background:var(--paper-2);padding:10px;display:flex;flex-direction:column;gap:8px}
 .tp-h{display:flex;align-items:center;gap:10px;border:0;background:transparent;padding:0;font:inherit;color:inherit;text-align:left;width:100%}
 .tp-h img{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none}
-.tp-star{width:44px;height:44px;border-radius:10px;background:var(--red);color:#fff;display:grid;place-items:center;font-size:20px;flex:none}
+.tp-star{width:44px;height:44px;border-radius:10px;background:var(--paper);display:grid;place-items:center;flex:none}
+.tp-star i{width:14px;height:14px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px #fff,0 0 0 4px var(--line-2)}
 .tp-t{flex:1;min-width:0;display:flex;flex-direction:column}
 .tp-t b{font-size:15px}
 .tp-t span{font-size:12.5px;color:var(--mute)}
@@ -1201,6 +1202,26 @@ button.crumb{align-self:flex-start}
 .tp-add{display:flex;gap:8px;align-items:center;border:1px dashed var(--line-2);border-radius:12px;background:transparent;padding:10px;font:inherit;font-size:13px;color:var(--ink-2);text-align:left}
 .tp-add .i{width:16px;height:16px;flex:none}
 .trv-hint{margin:0}
+.tcal{display:flex;flex-direction:column;gap:12px;margin-top:6px;padding-top:16px;border-top:1px solid var(--line)}
+.tc-h{display:flex;align-items:center;gap:6px}
+.tc-h .sub-h{margin:0}
+.tc-h > b{font-size:14px;min-width:96px;text-align:center}
+.tc-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.tc-w{font-size:11px;font-weight:700;color:var(--mute);text-align:center;padding:2px 0}
+.tc-d{border:0;background:var(--paper-2);border-radius:10px;min-height:50px;padding:5px 3px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;font:inherit;color:inherit;min-width:0}
+.tc-d b{font-size:13px}
+.tc-d span{font-size:8.5px;font-weight:700;line-height:1.1;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tc-d.out{opacity:.35}
+.tc-d.today b{color:var(--red)}
+.tc-d.on{background:var(--red);color:#fff}
+.tc-d.on.today b{color:#fff;text-decoration:underline}
+.tc-l{display:flex;flex-direction:column;gap:6px}
+.tc-r{display:flex;align-items:center;gap:10px;width:100%;border:1px solid var(--line);background:var(--paper);border-radius:14px;padding:10px 12px;font:inherit;color:inherit;text-align:left}
+.tc-r span{font-size:18px}
+.tc-r b{flex:1;font-size:14.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tc-r i{font-style:normal;font-size:12.5px;color:var(--mute);white-space:nowrap}
+.tc-row{display:flex;gap:6px;align-items:center}
+.tc-pick{display:flex;flex-wrap:wrap;gap:6px}
 
 .vw-hint{margin:0;color:var(--mute);font-size:13px;text-align:center;max-width:36ch}
 .vw-dots{display:flex;gap:6px}
@@ -1364,7 +1385,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "45";
+const APP_VERSION = "46";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -4804,7 +4825,7 @@ const CAT_PRESETS = [
 const EXTRA_TYPES = [["text","Texto"],["longtext","Texto largo"],["number","Número"],["date","Fecha"],["time","Hora"],["select","Opciones"],["rating","Estrellas"],["check","Sí / No"],["link","Enlace"],["progress","Progreso"],["color","Color"]];
 const splitList = v => (Array.isArray(v) ? v : String(v || "").split(",")).map(x => String(x).trim()).filter(Boolean).slice(0, 30);
 const mOn = (s, k) => !!(s.mods && s.mods[k] && s.mods[k].on);
-const TRV_FIELDS = [["fecha","Cuándo fui","date"],["comida","Dónde he comido","longtext"],["cena","Dónde he cenado","longtext"],["bebida","Qué he bebido","longtext"],["gusto","Lo que más me ha gustado","longtext"],["ver","Sitios que ver","longtext"],["portada","Fotos","photos"],["notas","Notas","longtext"]];
+const TRV_FIELDS = [["fecha","Llegué","date"],["hasta","Me fui","date"],["comida","Dónde he comido","longtext"],["cena","Dónde he cenado","longtext"],["bebida","Qué he bebido","longtext"],["gusto","Lo que más me ha gustado","longtext"],["ver","Sitios que ver","longtext"],["portada","Fotos","photos"],["notas","Notas","longtext"]];
 function customFields(s){
   if (isTravel(s)) return TRV_FIELDS.map(([k, l, t]) => F(k, l, t));
   const m = s.mods || {}, on = k => mOn(s, k), out = [];
@@ -4970,7 +4991,7 @@ const TRV_SHOW = TRV_FIELDS.filter(f => f[2] === "longtext");
 function trvPlace(x){
   const f = x.e.fields || {}, ph = (f.portada || [])[0], filled = TRV_SHOW.filter(([k]) => String(f[k] || "").trim());
   return `<div class="tp">
-    <button class="tp-h" data-act="open" data-id="${x.e.id}">${ph ? `<img data-img="${ph}" alt="">` : `<span class="tp-star">★</span>`}<span class="tp-t"><b>${esc(x.e.title)}</b><span>${isDate(f.fecha) ? esc(cap1(fmt(parseYmd(f.fecha), {day:"numeric", month:"long", year:"numeric"}))) : "Toca para contar tu viaje"}</span></span>${ic("edit")}</button>
+    <button class="tp-h" data-act="open" data-id="${x.e.id}">${ph ? `<img data-img="${ph}" alt="">` : `<span class="tp-star"><i></i></span>`}<span class="tp-t"><b>${esc(x.e.title)}</b><span>${trvDays(x.e) ? esc(rangeTxt(trvDays(x.e), true)) : "Toca para contar tu viaje"}</span></span>${ic("edit")}</button>
     ${filled.length ? `<dl class="tp-d">${filled.map(([k, l]) => `<div><dt>${esc(l)}</dt><dd>${esc(f[k])}</dd></div>`).join("")}</dl>`
       : `<button class="tp-add" data-act="open" data-id="${x.e.id}">${ic("plus")}Dónde comiste y cenaste, qué bebiste, lo que más te gustó, sitios que ver…</button>`}
   </div>`;
@@ -4986,7 +5007,7 @@ function vTravel(s){
   if (mode === "paises") list = groups.length ? `<div class="trv-list">${groups.map(ctryBlock).join("")}</div>` : `<p class="muted small trv-hint">Aún no has marcado ningún país.</p>`;
   else if (mode === "continentes") list = `<div class="trv-list">${CONTS.map((cn, i) => { const gs = groups.filter(([cc]) => CTRY.get(cc)?.cont === i), tot = [...CTRY.values()].filter(c => c.cont === i && c.ok).length;
       return `<div class="tl-c${gs.length ? " on" : ""}"><div class="tl-h"><span class="tl-f">${ic("globe")}</span><b>${cn}</b><span>${gs.filter(([cc]) => CTRY.get(cc)?.ok).length} de ${tot}</span></div>${gs.length ? `<div class="tl-p">${gs.map(([cc]) => `<button class="chip" data-act="trv-go" data-cc="${cc}">${flagOf(cc)} ${esc(CTRY.get(cc)?.name || cc)}</button>`).join("")}</div>` : ""}</div>`; }).join("")}</div>`;
-  else list = `<p class="muted small trv-hint">${st.vis.length ? "Toca «Países» o «Continentes» para pintarlos en el mapa y ver tus ciudades." : "Gira el globo, toca una ciudad o búscala arriba y pulsa «He estado aquí». Se marcará con una estrella."}</p>`;
+  else list = `<p class="muted small trv-hint">${st.vis.length ? "Toca «Países» o «Continentes» para pintarlos en el mapa y ver tus ciudades." : "Gira el globo, toca una ciudad o búscala arriba y pulsa «He estado aquí». Se marcará con un punto rojo."}</p>`;
   return `<section class="trv">
     <div class="globe-slot" data-globe="${s.id}"></div>
     <div class="trv-bars">
@@ -4994,8 +5015,51 @@ function vTravel(s){
       <button class="tbar${mode === "continentes" ? " on" : ""}" data-act="trv-mode" data-m="continentes" aria-pressed="${mode === "continentes"}"><div class="tb-h"><b>Continentes</b><span><b>${st.conts.size}</b> de ${CONTS.length}</span></div><div class="tb-t seg7">${CONTS.map((c, i) => `<i class="${st.conts.has(i) ? "on" : ""}" title="${c}"></i>`).join("")}</div><span class="tb-p">${st.conts.size ? [...st.conts].sort().map(i => CONTS[i]).join(" · ") : "Aún ninguno"}</span></button>
     </div>
     ${list}
+    ${trvCalHtml(s, st)}
   </section>`;
 }
+const trvDays = e => { const f = e.fields || {}; if (!isDate(f.fecha)) return null; return [f.fecha, isDate(f.hasta) && f.hasta >= f.fecha ? f.hasta : f.fecha]; };
+const rangeTxt = (r, year) => { const o = {day:"numeric", month:"short", ...(year ? {year:"numeric"} : {})}; return r[0] === r[1] ? fmt(parseYmd(r[0]), o) : `${fmt(parseYmd(r[0]), {day:"numeric", month:"short"})} – ${fmt(parseYmd(r[1]), o)}`; };
+const trvCalNow = () => { const n = new Date(); return S.trvCal || {y:n.getFullYear(), m:n.getMonth()}; };
+function trvCalHtml(s, st){
+  const c = trvCalNow(), first = new Date(c.y, c.m, 1), last = new Date(c.y, c.m + 1, 0), start = addDays(first, -((first.getDay() + 6) % 7)), tk = todayKey();
+  const places = st.vis.map(x => ({x, r:trvDays(x.e)})).filter(p => p.r);
+  let cells = "";
+  for (let i = 0; i < 42; i++){
+    const d = addDays(start, i), k = ymd(d); if (i === 35 && d.getMonth() !== c.m) break;
+    const ps = places.filter(p => k >= p.r[0] && k <= p.r[1]);
+    cells += `<button class="tc-d${d.getMonth() !== c.m ? " out" : ""}${ps.length ? " on" : ""}${k === tk ? " today" : ""}" data-act="trv-day" data-sec="${s.id}" data-d="${k}"><b>${d.getDate()}</b>${ps.length ? `<span>${esc(ps[0].x.e.title)}${ps.length > 1 ? " +" + (ps.length - 1) : ""}</span>` : ""}</button>`;
+  }
+  const month = places.filter(p => p.r[1] >= ymd(first) && p.r[0] <= ymd(last)).sort((a, b) => a.r[0] < b.r[0] ? -1 : 1);
+  return `<section class="tcal">
+    <div class="tc-h"><h2 class="sub-h">Calendario</h2><span class="sp"></span><button class="ibtn" data-act="trv-cal" data-d="-1" aria-label="Mes anterior">${ic("left")}</button><b>${esc(cap1(fmt(first, {month:"long"})))} ${c.y}</b><button class="ibtn" data-act="trv-cal" data-d="1" aria-label="Mes siguiente">${ic("right")}</button></div>
+    <div class="tc-g">${["L","M","X","J","V","S","D"].map(w => `<div class="tc-w">${w}</div>`).join("")}${cells}</div>
+    ${month.length ? `<div class="tc-l">${month.map(p => `<button class="tc-r" data-act="open" data-id="${p.x.e.id}"><span>${flagOf(p.x.g.cc)}</span><b>${esc(p.x.e.title)}</b><i>${esc(rangeTxt(p.r))}</i></button>`).join("")}</div>`
+      : `<p class="muted small" style="margin:0">Toca un día para apuntar dónde estuviste.</p>`}
+  </section>`;
+}
+ACT["trv-cal"] = el => { const c = trvCalNow(), d = new Date(c.y, c.m + +el.dataset.d, 1); S.trvCal = {y:d.getFullYear(), m:d.getMonth()}; render(); };
+ACT["trv-day"] = el => {
+  const s = secById(el.dataset.sec), k = el.dataset.d; if (!s) return;
+  const st = travelStats(s), here = st.vis.filter(x => { const r = trvDays(x.e); return r && k >= r[0] && k <= r[1]; }), rest = st.vis.filter(x => !here.includes(x));
+  swapLayer(() => openLayer(`${sheetHead(esc(cap1(fmt(parseYmd(k), {weekday:"long", day:"numeric", month:"long"}))))}<div class="stack" style="gap:12px">
+    ${here.length ? `<div class="stack" style="gap:8px">${here.map(x => `<div class="tc-row"><button class="tc-r" data-act="open" data-id="${x.e.id}"><span>${flagOf(x.g.cc)}</span><b>${esc(x.e.title)}</b><i>${esc(rangeTxt(trvDays(x.e)))}</i></button><button class="ibtn" data-act="trv-unday" data-id="${x.e.id}" data-d="${k}" aria-label="Quitar este día">${ic("x")}</button></div>`).join("")}</div>` : ""}
+    ${rest.length ? `<p class="muted small" style="margin:0">${here.length ? "¿Estuviste en otro sitio ese día?" : "¿Dónde estuviste ese día?"}</p><div class="tc-pick">${rest.map(x => `<button class="chip" data-act="trv-setday" data-id="${x.e.id}" data-d="${k}">${flagOf(x.g.cc)} ${esc(x.e.title)}</button>`).join("")}</div>`
+      : !here.length ? `<p class="muted small" style="margin:0">Primero añade en el globo los sitios donde has estado; luego podrás ponerles los días.</p>` : ""}
+  </div>`));
+};
+ACT["trv-setday"] = el => {
+  const e = S.items.get(el.dataset.id), k = el.dataset.d; if (!e) return;
+  const r = trvDays(e), a = r && r[0] < k ? r[0] : k, b = r && r[1] > k ? r[1] : k;
+  closeLayer(); putItem({...e, fields:{...e.fields, fecha:a, hasta:b}}); buzz(); toast(`${e.title}: ${rangeTxt([a, b])}`);
+};
+ACT["trv-unday"] = el => {
+  const e = S.items.get(el.dataset.id), k = el.dataset.d, r = e && trvDays(e); if (!r) return;
+  const day = (x, n) => ymd(addDays(parseYmd(x), n));
+  let f = {fecha:r[0], hasta:r[1]};
+  if (r[0] === r[1]) f = {fecha:"", hasta:""}; else if (k === r[0]) f.fecha = day(k, 1); else f.hasta = day(k, -1);
+  closeLayer(); putItem({...e, fields:{...e.fields, ...f}});
+};
 ACT["trv-mode"] = el => { GL.mode = GL.mode === el.dataset.m ? "" : el.dataset.m; buzz(); render(); };
 
 /* --- the globe itself: drawn with d3-geo on a canvas and kept alive between renders --- */
@@ -5101,31 +5165,33 @@ function globeDraw(){
   ctx.fillStyle = sh; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fill();
   // cities: capitals and the biggest ones; more appear as you zoom in
   const center = [-GL.rot[0], -GL.rot[1]], vis = [], taken = [], z = GL.zoom;
+  const fk = center[0].toFixed(1) + "," + center[1].toFixed(1) + (feats === geo.hi ? "h" : "");
+  if (GL.fk !== fk){ GL.fk = fk; GL.fcc = ""; if (z >= 1.9){ const f = feats.find(f => f.cc && d3.geoContains(f, center)); GL.fcc = f ? f.cc : ""; } }
+  const focus = new Set([GL.fcc, GL.sel && GL.sel.type === "country" ? GL.sel.cc : ""].filter(Boolean));
   const limit = z < 1.4 ? 70 : z < 2.5 ? 320 : z < 4 ? 750 : 9999;
-  const near = (x, y, w) => taken.some(b => x + w > b[0] && x < b[2] && Math.abs(y - b[1]) < 11);
+  const near = (x, y, w) => taken.some(b => x + w > b[0] && x < b[2] && Math.abs(y - b[1]) < 9);
   const pins = st.all.map(x => x.g.lat != null ? x : (x.g.type === "country" && CTRY.get(x.g.cc) ? {...x, g:{...x.g, ...capitalOf(x.g.cc)}} : null)).filter(Boolean);
   for (const c of CITIES){
-    if (c.rank > limit && !c.cap) continue; if (c.cap && z < 1.25 && c.rank > 260) continue;
+    const picked = GL.sel && GL.sel.type !== "country" && GL.sel.name === c.name && GL.sel.cc === c.cc;
+    if (!picked && (z < 1.9 || !focus.has(c.cc))) continue;
     if (d3.geoDistance([c.lng, c.lat], center) > 1.52) continue;
     const [x, y] = proj([c.lng, c.lat]); vis.push({c, x, y});
   }
-  ctx.font = "600 10.5px Archivo, system-ui, sans-serif"; ctx.textBaseline = "middle";
+  ctx.font = "600 9px Archivo, system-ui, sans-serif"; ctx.textBaseline = "middle";
   for (const v of vis){
     const on = GL.sel && GL.sel.type !== "country" && GL.sel.name === v.c.name && GL.sel.cc === v.c.cc;
-    if (v.c.cap){ star(ctx, v.x, v.y, 4.6); ctx.fillStyle = on ? RED : "#16171a"; ctx.fill(); ctx.lineWidth = .9; ctx.strokeStyle = "#fff"; ctx.stroke(); }
-    else { ctx.beginPath(); ctx.arc(v.x, v.y, 1.8, 0, 7); ctx.fillStyle = on ? RED : "#2b2d31"; ctx.fill(); }
+    ctx.beginPath(); ctx.arc(v.x, v.y, v.c.cap ? 2.6 : 1.8, 0, 7); ctx.fillStyle = on ? RED : "#2b2d31"; ctx.fill();
+    if (v.c.cap){ ctx.lineWidth = 1; ctx.strokeStyle = "#fff"; ctx.stroke(); }
   }
   for (const v of vis){
-    const show = z >= 3.2 || (z >= 1.7 && (v.c.cap || v.c.rank < 160)) || v.c.rank < 18;
-    if (!show) continue;
-    const w = ctx.measureText(v.c.name).width + 6; if (near(v.x + 5, v.y, w)) continue; taken.push([v.x + 5, v.y, v.x + 5 + w]);
-    ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.strokeText(v.c.name, v.x + 5, v.y); ctx.fillStyle = "#16171a"; ctx.fillText(v.c.name, v.x + 5, v.y);
+    const w = ctx.measureText(v.c.name).width + 4; if (near(v.x + 4, v.y, w)) continue; taken.push([v.x + 4, v.y, v.x + 4 + w]);
+    ctx.lineWidth = 2.4; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.strokeText(v.c.name, v.x + 4, v.y); ctx.fillStyle = "#16171a"; ctx.fillText(v.c.name, v.x + 4, v.y);
   }
   // your places
   for (const p of pins){
     if (d3.geoDistance([p.g.lng, p.g.lat], center) > 1.55) continue;
     const [x, y] = proj([p.g.lng, p.g.lat]), v = st.ccs.has(p.g.cc) && trvVisited(secById(GL.sid) || {}, p.e);
-    star(ctx, x, y, 9); const onRed = !!GL.mode; ctx.fillStyle = onRed ? "#fff" : RED; ctx.strokeStyle = onRed ? "#111" : "#fff"; ctx.lineWidth = 1.8; ctx.fill(); ctx.stroke();
+    const onRed = !!GL.mode; ctx.beginPath(); ctx.arc(x, y, 5.5, 0, 7); ctx.fillStyle = onRed ? "#fff" : RED; ctx.strokeStyle = onRed ? "#111" : "#fff"; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
     vis.push({pin:p, x, y});
   }
   GL.vis = vis;
