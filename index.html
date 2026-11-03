@@ -1488,7 +1488,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "58";
+const APP_VERSION = "59";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -5459,7 +5459,7 @@ function vTravel(s){
   if (mode === "paises") list = addHead + (groups.length ? `<div class="trv-list">${groups.map(ctryBlock).join("")}</div>` : `<p class="muted small trv-hint">Aún no has marcado ningún país. Toca + para añadir uno.</p>`);
   else if (mode === "continentes") list = `<div class="trv-list">${CONTS.map((cn, i) => { const gs = groups.filter(([cc]) => CTRY.get(cc)?.cont === i), tot = [...CTRY.values()].filter(c => c.cont === i && c.ok).length;
       return `<div class="tl-c${gs.length ? " on" : ""}"><div class="tl-h"><span class="tl-f">${ic("globe")}</span><b>${cn}</b><span>${gs.filter(([cc]) => CTRY.get(cc)?.ok).length} de ${tot}</span></div>${gs.length ? `<div class="tl-p">${gs.map(([cc]) => `<button class="chip" data-act="trv-go" data-cc="${cc}">${flagOf(cc)} ${esc(CTRY.get(cc)?.name || cc)}</button>`).join("")}</div>` : ""}</div>`; }).join("")}</div>`;
-  else list = `<p class="muted small trv-hint">${st.vis.length ? "Toca «Países» o «Continentes» para pintarlos en el mapa y ver tus ciudades." : "Gira el globo, toca una ciudad o búscala arriba y pulsa «He estado aquí». Se marcará con un punto rojo."}</p>`;
+  else list = `<p class="muted small trv-hint">${st.vis.length ? "Toca un país del mapa para ver las ciudades que has visitado. «Países» te enseña la lista y «Continentes» pinta los continentes." : "Gira el globo, toca una ciudad o búscala arriba y pulsa «He estado aquí». Se marcará con un punto rojo."}</p>`;
   return `<section class="trv">
     <div class="globe-slot" data-globe="${s.id}"></div>
     <div class="trv-bars">
@@ -5608,54 +5608,36 @@ function globeDraw(){
   if (GL.zoom > 2.2 && !geo.hi && !geo.hiP) geo.hiP = fetch(ATLAS("50m")).then(r => r.json()).then(t => { geo.hi = topojson.feature(t, t.objects.countries).features.map(f => { const c = f.id ? CTRY_N3.get(String(+f.id)) : CTRY_BY_NAME.get(normT(f.properties.name)); f.cc = c ? c.cc : ""; return f; }); geo.hiMesh = topojson.mesh(t, t.objects.countries, (a, b) => a !== b); globeDraw(); }).catch(() => {});
   for (const f of feats){
     ctx.beginPath(); path(f);
-    const paint = GL.mode === "paises" ? st.ccs.has(f.cc) : GL.mode === "continentes" ? st.conts && st.conts.has(CTRY.get(f.cc)?.cont) : false;
-    ctx.fillStyle = GL.mode ? (paint ? "#ffffff" : "#8d8c87") : (GL.sel && GL.sel.cc === f.cc && GL.sel.type === "country") ? "#ffffff" : "#e6e5e1"; ctx.fill();
+    const paint = GL.mode === "continentes" ? !!(st.conts && st.conts.has(CTRY.get(f.cc)?.cont)) : st.ccs.has(f.cc);
+    ctx.fillStyle = paint ? RED : (GL.sel && GL.sel.cc === f.cc && GL.sel.type === "country") ? "#ffffff" : "#e6e5e1"; ctx.fill();
   }
   ctx.beginPath(); path(feats === geo.hi ? geo.hiMesh : geo.mesh); ctx.strokeStyle = "rgba(0,0,0,.28)"; ctx.lineWidth = .5; ctx.stroke();
   if (GL.sel && GL.sel.cc && GL.sel.type === "country"){ const f = feats.find(f => f.cc === GL.sel.cc); if (f){ ctx.beginPath(); path(f); ctx.strokeStyle = "#111"; ctx.lineWidth = 1.6; ctx.stroke(); } }
   // light from the top left, dark edge: makes it read as a sphere
   const sh = ctx.createRadialGradient(cx - R * .4, cy - R * .45, R * .1, cx, cy, R * 1.02); sh.addColorStop(0, "rgba(255,255,255,.22)"); sh.addColorStop(.55, "rgba(255,255,255,0)"); sh.addColorStop(1, "rgba(0,0,0,.42)");
   ctx.fillStyle = sh; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fill();
-  // cities: capitals and the biggest ones; more appear as you zoom in
-  const center = [-GL.rot[0], -GL.rot[1]], vis = [], taken = [], z = GL.zoom;
-  const fk = center[0].toFixed(1) + "," + center[1].toFixed(1) + (feats === geo.hi ? "h" : "");
-  if (GL.fk !== fk){ GL.fk = fk; GL.fcc = ""; if (z >= 1.9){ const f = feats.find(f => f.cc && d3.geoContains(f, center)); GL.fcc = f ? f.cc : ""; } }
-  const focus = new Set([GL.sel && GL.sel.type === "country" ? GL.sel.cc : ""].filter(Boolean));
-  const limit = z < 1.4 ? 70 : z < 2.5 ? 320 : z < 4 ? 750 : 9999;
-  const near = (x, y, w) => taken.some(b => x + w > b[0] && x < b[2] && Math.abs(y - b[1]) < 9);
-  const mine = [];
-  const pins = st.all.map(x => x.g.lat != null ? x : (x.g.type === "country" && CTRY.get(x.g.cc) && !st.all.some(y => y.g.cc === x.g.cc && y.g.type !== "country") ? {...x, g:{...x.g, ...capitalOf(x.g.cc)}} : null)).filter(Boolean);
-  for (const c of CITIES){
-    const picked = GL.sel && GL.sel.type !== "country" && GL.sel.name === c.name && GL.sel.cc === c.cc;
-    if (!picked && (!focus.has(c.cc) || GL.mode === "paises")) continue;
-    if (d3.geoDistance([c.lng, c.lat], center) > 1.52) continue;
-    const [x, y] = proj([c.lng, c.lat]); vis.push({c, x, y});
-  }
-  ctx.font = "600 9px Archivo, system-ui, sans-serif"; ctx.textBaseline = "middle";
-  for (const v of vis){
-    const on = GL.sel && GL.sel.type !== "country" && GL.sel.name === v.c.name && GL.sel.cc === v.c.cc;
-    ctx.beginPath(); ctx.arc(v.x, v.y, v.c.cap ? 2 : 1.3, 0, 7); ctx.fillStyle = on ? RED : "#2b2d31"; ctx.fill();
-    if (v.c.cap){ ctx.lineWidth = .8; ctx.strokeStyle = "#fff"; ctx.stroke(); }
-  }
-  for (const v of vis){
-    const picked = GL.sel && GL.sel.type !== "country" && GL.sel.name === v.c.name && GL.sel.cc === v.c.cc;
-    if (!picked && z < 2.4) continue;
-    const w = ctx.measureText(v.c.name).width + 4; if (near(v.x + 4, v.y, w)) continue; taken.push([v.x + 4, v.y, v.x + 4 + w]);
-    ctx.lineWidth = 2.4; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.strokeText(v.c.name, v.x + 4, v.y); ctx.fillStyle = "#16171a"; ctx.fillText(v.c.name, v.x + 4, v.y);
-  }
-  // your places
-  for (const p of pins){
-    if (d3.geoDistance([p.g.lng, p.g.lat], center) > 1.55) continue;
-    const [x, y] = proj([p.g.lng, p.g.lat]), v = st.ccs.has(p.g.cc) && trvVisited(secById(GL.sid) || {}, p.e);
-    ctx.beginPath(); ctx.arc(x, y, z >= 3 ? 4 : 3.3, 0, 7); ctx.fillStyle = RED; ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.3; ctx.fill(); ctx.stroke();
-    vis.push({pin:p, x, y});
-    const picked = GL.sel && GL.sel.type !== "country" && normT(GL.sel.name) === normT(p.e.title) && GL.sel.cc === p.g.cc;
-    if (p.g.type !== "country" && (picked || (focus.has(p.g.cc) && z >= 2.4))) mine.push({p, x, y});
-  }
-  ctx.font = "700 10px Archivo, system-ui, sans-serif";
-  for (const m of mine){
-    const t = m.p.e.title, w = ctx.measureText(t).width + 4;
-    ctx.lineWidth = 3; ctx.strokeStyle = "#fff"; ctx.strokeText(t, m.x + 6, m.y); ctx.fillStyle = "#16171a"; ctx.fillText(t, m.x + 6, m.y);
+  // no cities on the world map; tap a country to see the cities you visited there and its capital
+  const center = [-GL.rot[0], -GL.rot[1]], vis = [], taken = [];
+  const fcc = GL.sel ? GL.sel.cc : "", sid = secById(GL.sid);
+  const near = (x, y, w) => taken.some(q => x + w > q[0] && x < q[2] && Math.abs(y - q[1]) < 10);
+  const label = (t, x, y, bold) => { ctx.font = `${bold ? 800 : 600} ${bold ? 10.5 : 9.5}px Archivo, system-ui, sans-serif`; const w = ctx.measureText(t).width + 6; if (near(x + 6, y, w)) return; taken.push([x + 6, y, x + 6 + w]); ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255,255,255,.92)"; ctx.strokeText(t, x + 6, y); ctx.fillStyle = "#16171a"; ctx.fillText(t, x + 6, y); };
+  ctx.textBaseline = "middle";
+  if (fcc){
+    const mine = st.all.filter(x => x.g.cc === fcc && x.g.type !== "country" && x.g.lat != null);
+    const cap = CITIES.find(c => c.cc === fcc && c.cap);
+    // the capital (a small dark dot with a ring), unless you've already got it as a visited city
+    if (cap && !mine.some(x => normT(x.e.title) === normT(cap.name)) && d3.geoDistance([cap.lng, cap.lat], center) < 1.52){
+      const [x, y] = proj([cap.lng, cap.lat]);
+      ctx.beginPath(); ctx.arc(x, y, 3, 0, 7); ctx.fillStyle = "#16171a"; ctx.fill(); ctx.lineWidth = 1.2; ctx.strokeStyle = "#fff"; ctx.stroke();
+      vis.push({c:cap, x, y}); label(cap.name + " · capital", x, y, false);
+    }
+    // the cities you've visited: white dots with a black ring, clear on the red
+    for (const p of mine){
+      if (d3.geoDistance([p.g.lng, p.g.lat], center) > 1.55) continue;
+      const [x, y] = proj([p.g.lng, p.g.lat]);
+      ctx.beginPath(); ctx.arc(x, y, 4, 0, 7); ctx.fillStyle = "#fff"; ctx.fill(); ctx.lineWidth = 1.6; ctx.strokeStyle = "#16171a"; ctx.stroke();
+      vis.push({pin:p, x, y}); label(p.e.title, x, y, true);
+    }
   }
   GL.vis = vis;
 }
