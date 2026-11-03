@@ -1194,6 +1194,12 @@ button.crumb{align-self:flex-start}
 .tbar.on .tb-h > b{color:var(--red)}
 .tl-pl{display:flex;flex-direction:column;gap:6px}
 .tl-c{position:relative}
+.gl-addc{position:absolute;left:10px;top:10px;z-index:3;display:flex;align-items:center;gap:4px;height:36px;padding:0 13px 0 9px;border-radius:999px;border:0;background:var(--red);color:#fff;font:inherit;font-size:13.5px;font-weight:800;box-shadow:0 6px 16px -6px rgba(225,6,0,.8)}
+.gl-addc .i{width:16px;height:16px}
+.plus-sm.red{background:var(--red);color:#fff;border-color:var(--red)}
+.tc-list{max-height:55vh;overflow:auto}
+.gr.done{opacity:.55}
+.gr.done > .i{width:16px;height:16px;color:var(--red);margin-left:auto}
 .tl-c.open .tl-h{padding-right:44px}
 .tl-c.open .tl-h > .i{display:none}
 .tl-add{position:absolute;right:12px;top:14px;width:34px;height:34px;border-radius:50%;border:0;background:var(--red);color:#fff;display:grid;place-items:center;z-index:2;box-shadow:0 4px 10px -3px rgba(225,6,0,.6)}
@@ -1471,7 +1477,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "55";
+const APP_VERSION = "56";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -5386,9 +5392,10 @@ function vTravel(s){
   const ctryBlock = ([cc, xs]) => { const c = CTRY.get(cc), cities = xs.filter(x => x.g.type !== "country");
     const open = (S.trvOpen || {})[cc];
     return `<div class="tl-c on${open ? " open" : ""}">${open ? `<button class="tl-add" data-act="trv-addin" data-sec="${s.id}" data-cc="${cc}" aria-label="Añadir otro sitio en ${esc(c?.name || "")}">${ic("plus")}</button>` : ""}<button class="tl-h" data-act="trv-open" data-cc="${cc}" aria-expanded="${!!open}"><span class="tl-flag">${flagOf(cc)}</span><b>${esc(c?.name || cc)}</b><span>${cities.length ? `${cities.length} ${cities.length === 1 ? "ciudad" : "ciudades"}` : "País"}</span>${ic(open ? "left" : "right")}</button>
-      ${open ? (cities.length ? `<div class="tl-pl">${cities.sort((a, b) => a.e.title.localeCompare(b.e.title, "es")).map(trvPlace).join("")}</div>` : `<p class="muted small" style="margin:0">Busca arriba una ciudad de ${esc(c?.name || "")} para añadirla.</p>`) : ""}</div>`; };
+      ${open ? (cities.length ? `<div class="tl-pl">${cities.sort((a, b) => a.e.title.localeCompare(b.e.title, "es")).map(trvPlace).join("")}</div>` : `<p class="muted small" style="margin:0">Toca el + rojo para añadir ciudades de ${esc(c?.name || "")}.</p>`) : ""}</div>`; };
   let list = "";
-  if (mode === "paises") list = groups.length ? `<div class="trv-list">${groups.map(ctryBlock).join("")}</div>` : `<p class="muted small trv-hint">Aún no has marcado ningún país.</p>`;
+  const addHead = `<div class="sec-t"><h2 class="sub-h">Tus países</h2><span class="n">${groups.length || ""}</span><span class="sp"></span><button class="plus-sm red" data-act="trv-addc" data-sec="${s.id}" aria-label="Añadir un país">${ic("plus")}</button></div>`;
+  if (mode === "paises") list = addHead + (groups.length ? `<div class="trv-list">${groups.map(ctryBlock).join("")}</div>` : `<p class="muted small trv-hint">Aún no has marcado ningún país. Toca + para añadir uno.</p>`);
   else if (mode === "continentes") list = `<div class="trv-list">${CONTS.map((cn, i) => { const gs = groups.filter(([cc]) => CTRY.get(cc)?.cont === i), tot = [...CTRY.values()].filter(c => c.cont === i && c.ok).length;
       return `<div class="tl-c${gs.length ? " on" : ""}"><div class="tl-h"><span class="tl-f">${ic("globe")}</span><b>${cn}</b><span>${gs.filter(([cc]) => CTRY.get(cc)?.ok).length} de ${tot}</span></div>${gs.length ? `<div class="tl-p">${gs.map(([cc]) => `<button class="chip" data-act="trv-go" data-cc="${cc}">${flagOf(cc)} ${esc(CTRY.get(cc)?.name || cc)}</button>`).join("")}</div>` : ""}</div>`; }).join("")}</div>`;
   else list = `<p class="muted small trv-hint">${st.vis.length ? "Toca «Países» o «Continentes» para pintarlos en el mapa y ver tus ciudades." : "Gira el globo, toca una ciudad o búscala arriba y pulsa «He estado aquí». Se marcará con un punto rojo."}</p>`;
@@ -5466,6 +5473,7 @@ function globeEl(){
     <div class="gl-res" hidden></div>
     <div class="gl-stage"><canvas aria-label="Globo terráqueo: arrastra para girarlo y pellizca para acercar"></canvas>
       <div class="gl-zoom"><button type="button" data-gz="in" aria-label="Acercar">+</button><button type="button" data-gz="out" aria-label="Alejar">−</button><button type="button" data-gz="home" aria-label="Ver todo el mundo">${ic("rot")}</button></div>
+      <button type="button" class="gl-addc" aria-label="Añadir un país">${ic("plus")}País</button>
       <div class="gl-load">Cargando el mapa…</div><div class="gl-card" hidden></div></div>`;
   GL.el = el; GL.cv = $("canvas", el); GL.ctx = GL.cv.getContext("2d"); GL.card = $(".gl-card", el); GL.res = $(".gl-res", el); GL.inp = $("input", el);
   globeInput(el);
@@ -5540,9 +5548,9 @@ function globeDraw(){
   for (const f of feats){
     ctx.beginPath(); path(f);
     const paint = GL.mode === "paises" ? st.ccs.has(f.cc) : GL.mode === "continentes" ? st.conts && st.conts.has(CTRY.get(f.cc)?.cont) : false;
-    ctx.fillStyle = paint ? RED : (GL.sel && GL.sel.cc === f.cc && GL.sel.type === "country") ? "#ffffff" : "#e6e5e1"; ctx.fill();
+    ctx.fillStyle = paint ? "#16171a" : (GL.sel && GL.sel.cc === f.cc && GL.sel.type === "country") ? "#ffffff" : "#e6e5e1"; ctx.fill();
   }
-  ctx.beginPath(); path(feats === geo.hi ? geo.hiMesh : geo.mesh); ctx.strokeStyle = "rgba(0,0,0,.28)"; ctx.lineWidth = .5; ctx.stroke();
+  ctx.beginPath(); path(feats === geo.hi ? geo.hiMesh : geo.mesh); ctx.strokeStyle = GL.mode ? "rgba(255,255,255,.35)" : "rgba(0,0,0,.28)"; ctx.lineWidth = .5; ctx.stroke();
   if (GL.sel && GL.sel.cc && GL.sel.type === "country"){ const f = feats.find(f => f.cc === GL.sel.cc); if (f){ ctx.beginPath(); path(f); ctx.strokeStyle = "#111"; ctx.lineWidth = 1.6; ctx.stroke(); } }
   // light from the top left, dark edge: makes it read as a sphere
   const sh = ctx.createRadialGradient(cx - R * .4, cy - R * .45, R * .1, cx, cy, R * 1.02); sh.addColorStop(0, "rgba(255,255,255,.22)"); sh.addColorStop(.55, "rgba(255,255,255,0)"); sh.addColorStop(1, "rgba(0,0,0,.42)");
@@ -5565,10 +5573,12 @@ function globeDraw(){
   ctx.font = "600 9px Archivo, system-ui, sans-serif"; ctx.textBaseline = "middle";
   for (const v of vis){
     const on = GL.sel && GL.sel.type !== "country" && GL.sel.name === v.c.name && GL.sel.cc === v.c.cc;
-    ctx.beginPath(); ctx.arc(v.x, v.y, v.c.cap ? 2.6 : 1.8, 0, 7); ctx.fillStyle = on ? RED : "#2b2d31"; ctx.fill();
-    if (v.c.cap){ ctx.lineWidth = 1; ctx.strokeStyle = "#fff"; ctx.stroke(); }
+    ctx.beginPath(); ctx.arc(v.x, v.y, v.c.cap ? 2 : 1.3, 0, 7); ctx.fillStyle = on ? RED : "#2b2d31"; ctx.fill();
+    if (v.c.cap){ ctx.lineWidth = .8; ctx.strokeStyle = "#fff"; ctx.stroke(); }
   }
   for (const v of vis){
+    const picked = GL.sel && GL.sel.type !== "country" && GL.sel.name === v.c.name && GL.sel.cc === v.c.cc;
+    if (!picked && (z < 3.2 || (z < 4.5 && !v.c.cap && v.c.rank > 400))) continue;
     const w = ctx.measureText(v.c.name).width + 4; if (near(v.x + 4, v.y, w)) continue; taken.push([v.x + 4, v.y, v.x + 4 + w]);
     ctx.lineWidth = 2.4; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.strokeText(v.c.name, v.x + 4, v.y); ctx.fillStyle = "#16171a"; ctx.fillText(v.c.name, v.x + 4, v.y);
   }
@@ -5576,14 +5586,15 @@ function globeDraw(){
   for (const p of pins){
     if (d3.geoDistance([p.g.lng, p.g.lat], center) > 1.55) continue;
     const [x, y] = proj([p.g.lng, p.g.lat]), v = st.ccs.has(p.g.cc) && trvVisited(secById(GL.sid) || {}, p.e);
-    const onRed = false; ctx.beginPath(); ctx.arc(x, y, 5.5, 0, 7); ctx.fillStyle = onRed ? "#fff" : RED; ctx.strokeStyle = onRed ? "#111" : "#fff"; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.arc(x, y, z >= 3 ? 4 : 3.3, 0, 7); ctx.fillStyle = RED; ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.3; ctx.fill(); ctx.stroke();
     vis.push({pin:p, x, y});
-    if (p.g.type !== "country" && (focus.has(p.g.cc) || (GL.mode === "paises" && z >= 1.9))) mine.push({p, x, y});
+    const picked = GL.sel && GL.sel.type !== "country" && normT(GL.sel.name) === normT(p.e.title) && GL.sel.cc === p.g.cc;
+    if (p.g.type !== "country" && (picked || (!GL.mode && z >= 3.2 && focus.has(p.g.cc)))) mine.push({p, x, y});
   }
   ctx.font = "700 10px Archivo, system-ui, sans-serif";
   for (const m of mine){
     const t = m.p.e.title, w = ctx.measureText(t).width + 4;
-    ctx.lineWidth = 3; ctx.strokeStyle = "#fff"; ctx.strokeText(t, m.x + 8, m.y); ctx.fillStyle = GL.mode ? "#111" : RED; ctx.fillText(t, m.x + 8, m.y);
+    ctx.lineWidth = 3; ctx.strokeStyle = "#fff"; ctx.strokeText(t, m.x + 6, m.y); ctx.fillStyle = "#16171a"; ctx.fillText(t, m.x + 6, m.y);
   }
   GL.vis = vis;
 }
@@ -5662,6 +5673,7 @@ function globeInput(el){
   cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
   cv.addEventListener("wheel", e => { e.preventDefault(); GL.auto = false; GL.zoom = Math.max(.8, Math.min(14, GL.zoom * Math.exp(-e.deltaY / 300))); globeDraw(); }, {passive:false});
   el.addEventListener("click", e => {
+    if (e.target.closest(".gl-addc")){ ACT["trv-addc"]({dataset:{sec:GL.sid}}); return; }
     const z = e.target.closest("[data-gz]");
     if (z){ const k = z.dataset.gz; GL.anim = {t0:performance.now(), d:450, from:{rot:[...GL.rot], zoom:GL.zoom}, to:{rot:k === "home" ? [GL.rot[0], -20] : [...GL.rot], zoom:k === "in" ? Math.min(14, GL.zoom * 1.8) : k === "out" ? Math.max(.8, GL.zoom / 1.8) : 1}, ease:easeIO}; GL.auto = false; globeLoop(); return; }
     const g = e.target.closest("[data-gc]"), s = secById(GL.sid);
@@ -5724,6 +5736,19 @@ async function globeOnline(q){
   if (GL.inp.value.trim() === q) globeResults(q, out);
 }
 ACT["trv-open"] = el => { const cc = el.dataset.cc, c = CTRY.get(cc); S.trvOpen = {...(S.trvOpen || {}), [cc]:!(S.trvOpen || {})[cc]}; if (S.trvOpen[cc] && c) globeGo({type:"country", name:c.name, cc, lat:c.lat, lng:c.lng}); buzz(); render(); };
+ACT["trv-addc"] = el => {
+  const s = secById(el.dataset.sec); if (!s) return;
+  const st = travelStats(s), all = [...CTRY.values()].sort((a, b) => a.name.localeCompare(b.name, "es"));
+  const rowsOf = q => { const n = normT(q); return all.filter(c => !n || normT(c.name).includes(n) || normT(c.en).includes(n)).slice(0, n ? 40 : 250); };
+  const html = list => list.map(c => { const v = st.ccs.has(c.cc); return `<button type="button" class="gr${v ? " done" : ""}" data-cc="${c.cc}"${v ? " disabled" : ""}><span class="gr-i">${flagOf(c.cc)}</span><span class="gr-t"><b>${esc(c.name)}</b><span>${v ? "Ya visitado" : esc(CONTS[c.cont])}</span></span>${v ? ic("check") : ""}</button>`; }).join("");
+  swapLayer(() => openLayer(`${sheetHead("Añadir un país")}<div class="stack" style="gap:10px">
+      <input class="inp" type="search" id="tc-q" placeholder="Busca un país" autocomplete="off" enterkeyhint="search">
+      <div class="ta-res tc-list">${html(rowsOf(""))}</div></div>`, {onMount:root => {
+      const q = $("#tc-q", root), res = $(".tc-list", root);
+      q.addEventListener("input", () => { res.innerHTML = html(rowsOf(q.value)) || `<div class="gr-more">No encuentro ese país.</div>`; });
+      res.addEventListener("click", e => { const b = e.target.closest("[data-cc]"); if (!b || b.disabled) return; const c = CTRY.get(b.dataset.cc); closeLayer(); trvAdd(s, {type:"country", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng}, true); S.trvOpen = {...(S.trvOpen || {}), [c.cc]:true}; globeGo({type:"country", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng}); });
+    }}));
+};
 ACT["trv-addin"] = el => {
   const s = secById(el.dataset.sec), cc = el.dataset.cc, c = CTRY.get(cc); if (!s || !c) return;
   const have = new Set(travelStats(s).vis.filter(x => x.g.cc === cc).map(x => normT(x.e.title)));
