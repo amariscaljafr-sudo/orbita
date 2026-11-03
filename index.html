@@ -1194,6 +1194,11 @@ button.crumb{align-self:flex-start}
 .tbar.on .tb-h > b{color:var(--red)}
 .tl-pl{display:flex;flex-direction:column;gap:6px}
 .tl-c{position:relative}
+.tl-when{display:flex;align-items:center;gap:10px;width:100%;border:1px dashed var(--line-2);border-radius:14px;background:transparent;padding:10px 12px;font:inherit;font-size:13.5px;color:var(--ink-2);text-align:left}
+.tl-when > .i{width:17px;height:17px;flex:none;color:var(--red)}
+.tl-when > span{flex:1;min-width:0}
+.tl-when.on{border-style:solid;border-color:transparent;background:rgba(225,6,0,.07);color:var(--ink)}
+.tl-when.on b{font-size:14px}
 .gl-addc{position:absolute;left:10px;top:10px;z-index:3;display:flex;align-items:center;gap:4px;height:36px;padding:0 13px 0 9px;border-radius:999px;border:0;background:var(--red);color:#fff;font:inherit;font-size:13.5px;font-weight:800;box-shadow:0 6px 16px -6px rgba(225,6,0,.8)}
 .gl-addc .i{width:16px;height:16px}
 .plus-sm.red{background:var(--red);color:#fff;border-color:var(--red)}
@@ -1322,6 +1327,12 @@ img.missing{visibility:hidden}
 .ktopic .kt-n{align-self:flex-start;color:var(--red);background:rgba(225,6,0,.09);border-radius:999px;padding:3px 9px;font-size:11.5px;font-weight:800;opacity:1}
 .ai-look{width:100%;border-radius:16px;background:var(--paper-2);display:block}
 .pb-ai .ai-busy{background:var(--ink)}
+.tprog{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:20px;border:1px solid var(--line);background:radial-gradient(120% 110% at 100% 100%,rgba(225,6,0,.1),rgba(225,6,0,0) 58%),var(--paper)}
+.tprog-h{display:flex;justify-content:space-between;align-items:baseline}
+.tprog-h b{font-size:15px}
+.tprog-h span{font-size:13px;font-weight:700;color:var(--red)}
+.kt-bar{display:block;height:4px;border-radius:999px;background:var(--paper-3);overflow:hidden;margin-top:6px}
+.kt-bar i{display:block;height:100%;background:var(--red);border-radius:999px}
 </style>
 </head>
 <body>
@@ -1451,7 +1462,7 @@ const TEMPLATES = {
   pendientes:{name:"Pendientes", icon:"task", d:"Lo que te queda por hacer", fields:[F("estado","Estado","select",{options:["Pendiente","En curso","Hecho"]}),F("fecha","Para cuándo","date"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true},
   comidas:{name:"Comidas y salud", icon:"utensils", d:"Menú semanal, nutrientes y tu objetivo", fields:[F("fecha","Día","date"),F("momento","Momento","select",{options:["Desayuno","Comida","Merienda","Cena","Snack"]}),F("notas","Qué comí","longtext"),F("receta","Receta","link")], statusKey:"momento", dateKey:"fecha", calendar:true},
   aprender:{name:"Quiero aprender", icon:"bulb", d:"Temas con barra de progreso e ideas", fields:[F("estado","Estado","select",{options:["Idea","Empezado","En curso","Dominado"]}),F("prioridad","Prioridad","select",{options:["Alta","Media","Baja"]}),F("progreso","Progreso","progress"),F("recursos","Recursos","link"),F("notas","Notas","longtext")], statusKey:"estado", tasks:true},
-  conocimientos:{name:"Conocimientos", icon:"spark", d:"Lo que sabes, ordenado por temas", fields:[F("tema","Tema","text"),F("fecha","Aprendido el","date"),F("notas","Resumen","longtext"),F("fuente","Fuente","link")], dateKey:"fecha"},
+  conocimientos:{name:"Aprendizaje", icon:"bulb", d:"Lo que quieres aprender y lo que sabes, organizado con IA", fields:[F("tema","Tema","text"),F("fecha","Aprendido el","date"),F("notas","Resumen","longtext"),F("fuente","Fuente","link")], dateKey:"fecha"},
   proyectos:{name:"Proyectos", icon:"folder", d:"Avance, tareas y fechas límite", fields:[F("estado","Estado","select",{options:["Idea","En marcha","En pausa","Terminado"]}),F("progreso","Progreso","progress"),F("fecha","Fecha límite","date"),F("notas","Notas","longtext")], statusKey:"estado", dateKey:"fecha", calendar:true, tasks:true},
   estudios:{name:"Estudios", icon:"cap", d:"Horario, calendario, fechas clave y materias", fields:[F("asignatura","Asignatura","text"),F("tipo","Tipo","select",{options:["Examen","Entrega","Repaso","Clase"]}),F("fecha","Fecha","date"),F("hora","Hora","time"),F("estado","Estado","select",{options:["Pendiente","Preparando","Hecho"]}),F("nota","Nota","number"),F("notas","Apuntes","longtext")], statusKey:"tipo", dateKey:"fecha", timeKey:"hora", calendar:true, tasks:true},
   libros:{name:"Libros y podcasts", icon:"book", d:"Pendientes, leyendo, terminados y tu top 5", fields:[F("autor","Autor","text"),F("estado","Estado","select",{options:["Por leer","Leyendo","Leído"]}),F("valoracion","Valoración","rating"),F("notas","Notas","longtext")], statusKey:"estado"},
@@ -1467,7 +1478,7 @@ const PURPOSES = [
   ["lectura","Lectura","book",["libros"]],
   ["estilo","Ropa y estilo","shirt",["armario","outfits"]],
   ["comida","Comida","utensils",["comidas"]],
-  ["aprender","Aprender cosas nuevas","bulb",["aprender","conocimientos"]]
+  ["aprender","Aprender cosas nuevas","bulb",["conocimientos"]]
 ];
 
 /* ================= state & storage ================= */
@@ -1477,7 +1488,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "57";
+const APP_VERSION = "58";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -2287,7 +2298,7 @@ function openTemplates(parentId){
       <div class="row"><button type="submit" class="btn pri">${ic("spark")}Crear con el asistente</button><span class="muted small">${aiKey() ? "Diseña los campos y apartados por ti." : "Antes conecta el asistente en Perfil y ajustes (Gemini es gratis)."}</span></div>
     </form>
     <div class="group-t" style="padding-top:22px">O empieza con una plantilla</div>
-    <div class="qa">${Object.entries(TEMPLATES).map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${parentId || ""}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="qd">${esc(t.d)}</span></button>`).join("")}</div>`);
+    <div class="qa">${Object.entries(TEMPLATES).filter(([k]) => k !== "aprender").map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${parentId || ""}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="qd">${esc(t.d)}</span></button>`).join("")}</div>`);
 }
 function makeSection(tplKey, parentId){
   const t = TEMPLATES[tplKey], kit = KITS[tplKey];
@@ -2794,7 +2805,7 @@ function drawOnb(){
   } else {
     if (!d.picks.size) d.picks = suggestedTpls();
     const sug = suggestedTpls();
-    const tpls = Object.entries(TEMPLATES).filter(([k]) => k !== "blanco");
+    const tpls = Object.entries(TEMPLATES).filter(([k]) => k !== "blanco" && k !== "aprender");
     const ordered = [...tpls.filter(([k]) => sug.has(k)), ...tpls.filter(([k]) => !sug.has(k))];
     body = `<div class="grow"><h1 class="big" style="font-size:clamp(2.2rem,9vw,3.6rem)">Tus primeras secciones<i>.</i></h1>
       <p class="lead" style="margin-top:-8px">${sug.size ? "Te he marcado las que encajan con lo que me has contado. Cambia lo que quieras." : "Elige con cuáles empezar. Podrás crear más, con subsecciones dentro, cuando quieras."}</p>
@@ -4921,7 +4932,7 @@ function vConocimientos(s){
   const pool = q ? [s, ...descendants(s.id)].flatMap(x => entriesOf(x.id)) : entriesOf(s.id);
   const ns = pool.filter(e => !q || JSON.stringify([e.title, e.fields]).toLowerCase().includes(q)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   const sugg = top ? ["Tecnología","Ropa","Zapatos","Mochilas","Cocina","Salud","Viajes","Dinero"].filter(n => !subs.some(x => x.name.toLowerCase() === n.toLowerCase())).slice(0, 6) : [];
-  const tile = t => { const es = [t, ...descendants(t.id)].flatMap(x => entriesOf(x.id)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); return `<div class="ktw"><button class="kt-del" data-act="topic-del" data-sec="${t.id}" aria-label="Borrar el tema ${esc(t.name)}">${ic("trash")}<span>Borrar</span></button><a class="ktopic" href="#s-${t.id}" draggable="false"><span class="ic">${ic(t.icon)}</span><b>${esc(t.name)}</b><span class="kt-n">${es.length} ${es.length === 1 ? "nota" : "notas"}</span></a></div>`; };
+  const tile = t => { const es = [t, ...descendants(t.id)].flatMap(x => entriesOf(x.id)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); return `<div class="ktw"><button class="kt-del" data-act="topic-del" data-sec="${t.id}" aria-label="Borrar el tema ${esc(t.name)}">${ic("trash")}<span>Borrar</span></button><a class="ktopic" href="#s-${t.id}" draggable="false"><span class="ic">${ic(t.icon)}</span><b>${esc(t.name)}</b><span class="kt-n">${es.length} ${es.length === 1 ? "nota" : "notas"}</span><span class="kt-bar"><i style="width:${Math.max(0, Math.min(100, +t.prog || 0))}%"></i></span></a></div>`; };
   const nrow = e => { const sec = secById(e.sectionId); return `<button class="krow" data-act="open" data-id="${e.id}"><span class="kr-t"><b>${esc(e.title)}</b><span>${esc([e.fields?.fecha ? relDay(e.fields.fecha) : "", q && sec && sec.id !== s.id ? sec.name : ""].filter(Boolean).join(" · "))}</span></span>${e.example ? '<span class="tag ex">Ejemplo</span>' : ""}${ic("right")}</button>`; };
   const showLoose = !top || q || S.conLoose?.[s.id];
   if (top && !q){
@@ -4930,7 +4941,8 @@ function vConocimientos(s){
       ? (subs.length || loose.length ? `<div class="ktopics">${subs.map(tile).join("")}</div>${subs.length ? `<p class="muted small" style="margin:-4px 0 0">Para borrar una categoría, deslízala hacia arriba.</p>` : ""}
           ${loose.length ? `<section class="stack" style="gap:10px"><div class="sec-t"><h2 class="sub-h">Sin categoría</h2><span class="n">${loose.length}</span></div><div class="klist">${loose.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).map(nrow).join("")}</div></section>` : ""}`
         : `<div class="con-empty"><p class="muted" style="margin:0">Aún no has creado ninguna categoría.</p><button class="lnk" data-act="kit-tab" data-sec="${s.id}" data-t="nuevo">Ir a «Nuevo»${ic("right")}</button></div>`)
-      : `<div class="con-new"><button class="btn pri con-add" data-act="con-add" data-sec="${s.id}">${ic("plus")}Añadir</button><p class="muted small" style="margin:0;text-align:center">Crea un tema (Historia, Inglés…) y la IA lo organizará por apartados.</p></div>`;
+      : `<div class="con-new"><button class="btn pri con-add" data-act="con-add" data-sec="${s.id}">${ic("plus")}Añadir</button><p class="muted small" style="margin:0;text-align:center">Crea un tema (Historia, Inglés…) y la IA lo organizará por apartados.</p></div>
+        ${(() => { const have = new Set(subs.map(x => x.name.toLowerCase())), ideas = LEARN_IDEAS.filter(x => !have.has(x.toLowerCase())).slice(0, 12); return ideas.length ? `<section class="stack" style="gap:10px"><div class="sec-t"><h2 class="sub-h">Ideas para aprender</h2></div><div class="chips wrap">${ideas.map(x => `<button class="chip" data-act="con-quick" data-sec="${s.id}" data-name="${esc(x)}">${ic("plus")}${esc(x)}</button>`).join("")}</div></section>` : ""; })()}`;
     return `${kitTabs(s, [["nuevo", "Nuevo"], ["general", "General", subs.length]], tab)}${body}`;
   }
   return `${kitHead(s, top ? "Todo lo que vas aprendiendo, ordenado por temas." : `Tus notas sobre ${esc(s.name.toLowerCase())}.`)}
@@ -4953,8 +4965,9 @@ function vTopic(s){
   const blk = (a, xs, fixed) => { const tl = a.t === "linea", list = tl ? [...xs].sort((x, y) => yearNum(x.fields?.anio) - yearNum(y.fields?.anio)) : [...xs].sort((x, y) => (x.createdAt || 0) - (y.createdAt || 0));
     return `<section class="apt${tl ? " tl" : ""}"><div class="apt-h"><b>${esc(a.n)}</b>${tl && !/l[ií]nea/i.test(a.n) ? `<span class="apt-k">Línea del tiempo</span>` : ""}<span class="sp"></span>${fixed ? "" : `<button class="apt-x" data-act="apt-del" data-sec="${s.id}" data-apt="${esc(a.n)}" aria-label="Quitar apartado">${ic("trash")}</button>`}<button class="apt-plus" data-act="apt-add" data-sec="${s.id}" data-apt="${esc(fixed ? "" : a.n)}" aria-label="Añadir a ${esc(a.n)}">${ic("plus")}</button></div>
       ${list.length ? `<div class="apt-l">${list.map(e => item(e, tl)).join("")}</div>` : `<button class="apt-empty" data-act="apt-add" data-sec="${s.id}" data-apt="${esc(a.n)}">${ic("plus")}Añadir a ${esc(a.n.toLowerCase())}</button>`}</section>`; };
-  const vq = s.vq || [];
-  return `${busy ? `<div class="ai-busy"><span class="spin"></span><span><b>Preparando «${esc(s.name)}»…</b>La IA está creando los apartados y rellenándolos.</span></div>` : ""}
+  const vq = s.vq || [], pr = Math.max(0, Math.min(100, +s.prog || 0));
+  const progH = `<div class="tprog"><div class="tprog-h"><b>Cuánto sé</b><span>${pr}% · ${lvl(pr)}</span></div><div class="lbar"><i style="width:${pr}%"></i></div><div class="row" style="gap:6px">${[5, 10].map(v => `<button class="chip sm" data-act="topic-prog" data-sec="${s.id}" data-v="${v}">+${v} %</button>`).join("")}<button class="chip sm" data-act="topic-prog" data-sec="${s.id}" data-v="-5">−5 %</button></div></div>`;
+  return `${progH}${busy ? `<div class="ai-busy"><span class="spin"></span><span><b>Preparando «${esc(s.name)}»…</b>La IA está creando los apartados y rellenándolos.</span></div>` : ""}
     ${!busy && !apts.length ? `<div class="ai-cta"><b>Organiza este tema</b><span>La IA crea los apartados que tienen sentido (por ejemplo, en Historia: guerras, personajes, línea del tiempo) y los rellena.</span><button class="btn pri" data-act="topic-ai" data-sec="${s.id}">${ic("spark")}Organizar con IA</button></div>` : ""}
     ${apts.map(a => blk(a, notes.filter(e => e.fields?.apt === a.n))).join("")}
     ${loose.length ? blk({n:"Notas", t:"lista"}, loose, true) : ""}
@@ -5093,6 +5106,8 @@ Object.assign(ACT, {
   "apt-del"(el){ const t = secById(el.dataset.sec); if (!t) return; const n = el.dataset.apt; if (!confirm(`¿Quitar el apartado «${n}»? Lo que tenga dentro pasará a Notas.`)) return; secPatch(t.id, {apts:(t.apts || []).filter(a => a.n !== n)}); },
   "vid-add"(el){ swapLayer(() => openLayer(`${sheetHead("Añadir vídeo")}<form class="stack" data-form="vid-add" data-sec="${el.dataset.sec}"><div class="field"><label for="va-u">Enlace del vídeo</label><input type="url" id="va-u" name="url" required placeholder="https://youtu.be/…" inputmode="url"></div><p class="muted small" style="margin:0">Pega el enlace de YouTube (en la app de YouTube: Compartir → Copiar enlace). Se podrá ver aquí mismo.</p><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Añadir</button></div></div></form>`)); },
   "vid-play"(el){ const id = el.dataset.y; el.outerHTML = `<iframe class="vid-f" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Vídeo"></iframe>`; },
+  "topic-prog"(el){ const t = secById(el.dataset.sec); if (!t) return; const p = Math.max(0, Math.min(100, (+t.prog || 0) + +el.dataset.v)); buzz(); secPatch(t.id, {prog:p}); if (p >= 100 && +el.dataset.v > 0) toast("¡Tema dominado!", `${t.name} al 100 %.`); },
+  "con-quick"(el){ const s = secById(el.dataset.sec), n = el.dataset.name; if (!s || !n) return; const old = childrenOf(s.id).find(x => x.name.toLowerCase() === n.toLowerCase()), t = old || makeTopic(s.id, n); S.kitTab[s.id] = "general"; location.hash = "s-" + t.id; if (!old) topicAI(t, ""); },
   "topic-ai"(el){ const t = secById(el.dataset.sec); if (t) topicAI(t, ""); },
   "con-loose"(el){ S.conLoose = {...(S.conLoose || {}), [el.dataset.sec]:!(S.conLoose || {})[el.dataset.sec]}; render(); },
   "topic-del"(el){
@@ -5105,7 +5120,7 @@ Object.assign(ACT, {
   "topic-quick"(el){ makeTopic(el.dataset.parent, el.dataset.name); render(); toast("Tema creado", el.dataset.name); }
 });
 document.addEventListener("submit", e => {
-  const f = e.target, k = f.dataset.form; if (!["idea-plan","nutri-goal","peso-log","topic-new","con-add","apt-new","vid-add"].includes(k)) return;
+  const f = e.target, k = f.dataset.form; if (!["idea-plan","nutri-goal","peso-log","topic-new","con-add","apt-new","vid-add","trv-when"].includes(k)) return;
   e.preventDefault(); const fd = new FormData(f);
   if (k === "idea-plan"){
     const i = S.items.get(f.dataset.id); if (!i) return;
@@ -5124,6 +5139,16 @@ document.addEventListener("submit", e => {
     const old = childrenOf(s.id).find(x => x.name.toLowerCase() === n.toLowerCase()), t = old || makeTopic(s.id, n);
     closeLayer(); S.kitTab[s.id] = "general"; location.hash = "s-" + t.id;
     if (!old || !(t.apts || []).length) topicAI(t, String(fd.get("extra") || "").trim());
+  } else if (k === "trv-when"){
+    const s = secById(f.dataset.sec), cc = f.dataset.cc, c = CTRY.get(cc); if (!s || !c) return;
+    const t = String(fd.get("t") || "y"), w = {t};
+    if (t === "y"){ const y = parseInt(fd.get("y"), 10); if (!(y > 1900 && y < 2200)){ toast("Pon el año", "Por ejemplo: 2023."); return; } w.y = y; }
+    if (t === "m"){ const m = String(fd.get("m") || ""); if (!/^\d{4}-\d{2}$/.test(m)){ toast("Elige el mes"); return; } w.m = m; }
+    if (t === "d"){ const a = String(fd.get("a") || ""), b = String(fd.get("b") || ""); if (!isDate(a)){ toast("Pon el día que llegaste"); return; } w.a = a; w.b = isDate(b) && b >= a ? b : a; }
+    let e = trvCountryEntry(s, cc);
+    const fields = {...(e?.fields || {geo:{type:"country", cc}}), cuando:w};
+    if (t === "d"){ fields.fecha = w.a; fields.hasta = w.b; } else { delete fields.fecha; delete fields.hasta; }
+    closeLayer(); putItem(e ? {...e, fields} : {id:uid(), kind:"entry", sectionId:s.id, title:c.name, fields}); buzz(); toast(`${c.name}: ${whenTxt(w)}`);
   } else if (k === "apt-new"){
     const t = secById(f.dataset.sec), n = String(fd.get("name") || "").trim(); if (!t || !n) return;
     closeLayer(); if (!(t.apts || []).some(a => a.n.toLowerCase() === n.toLowerCase())) secPatch(t.id, {apts:[...(t.apts || []), {n, t:fd.get("linea") ? "linea" : "lista"}]});
@@ -5156,6 +5181,29 @@ function normalizeKits(){
     putItem({...e, sub:r.sub, fields:{...(e.fields || {}), ...(r.fields || {})}}, true); n++;
   }
   for (const x of sections()) if (x.tpl === "armario" && !x.fields.some(f => f.key === "cajon")){ const i = x.fields.findIndex(f => f.key === "categoria"); x.fields.splice(i + 1, 0, {key:"cajon", label:"Sitio en el cajón (accesorios)", type:"select", options:["Relojes","Gafas","Joyas","Neceseres","Bolsos","Otros"]}); ch = true; }
+  if (!S.settings.cleanup6){
+    // one learning section: "Quiero aprender" topics move into "Aprendizaje" (with their progress and resources)
+    const apr = sections().filter(x => x.tpl === "aprender");
+    let con = sections().find(x => x.tpl === "conocimientos" && !x.parentId);
+    if (apr.length && !con){ con = makeSection("conocimientos", null); S.settings.sections = [...sections(), con]; }
+    if (con) S.settings.sections = sections().map(x => x.id === con.id && /^conocimientos$/i.test(x.name || "") ? {...x, name:"Aprendizaje", icon:"bulb"} : x);
+    for (const a of apr){
+      for (const e of entriesOf(a.id)){
+        const f = e.fields || {}, nm = String(e.title || "Tema").slice(0, 40);
+        let t = sections().find(x => x.parentId === con.id && x.name.toLowerCase() === nm.toLowerCase());
+        if (!t){ t = makeSection("conocimientos", con.id); t.name = nm; t.icon = "bulb"; S.settings.sections = [...sections(), t]; }
+        const prog = Math.max(+t.prog || 0, +f.progreso || 0);
+        S.settings.sections = sections().map(x => x.id === t.id ? {...x, prog} : x);
+        for (const r of Array.isArray(f.recursos) ? f.recursos : []) if (r && (r.n || r.u)) putItem({id:uid(), kind:"entry", sectionId:t.id, sub:"nota", title:String(r.n || r.u).slice(0, 120), fields:/youtu\.?be/.test(r.u || "") ? {video:r.u} : {fuente:r.u || ""}}, true);
+        if (String(f.notas || "").trim()) putItem({id:uid(), kind:"entry", sectionId:t.id, sub:"nota", title:"Lo que voy aprendiendo", fields:{notas:f.notas}}, true);
+        delItem(e.id, true);
+      }
+      const gone = [a.id, ...descendants(a.id).map(x => x.id)];
+      for (const e of ofKind("entry").filter(e => gone.includes(e.sectionId))) delItem(e.id, true);
+      S.settings.sections = sections().filter(x => !gone.includes(x.id));
+    }
+    S.settings.cleanup6 = true; ch = true; n++;
+  }
   if (!S.settings.cleanup5){
     for (const x of sections()) if (x.tpl === "custom" && /deseo/i.test(x.name || "")){
       x.mods = {...(x.mods || {})};
@@ -5381,6 +5429,19 @@ function travelStats(s){
   return {all, vis, wish, ccs, wcc, conts, counted:[...ccs].filter(c => CTRY.get(c)?.ok).length};
 }
 const TRV_SHOW = TRV_FIELDS.filter(f => f[2] === "longtext");
+const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const trvCountryEntry = (s, cc) => entriesOf(s.id).find(e => { const g = e.fields?.geo; return g && g.type === "country" && g.cc === cc; });
+function whenTxt(w){
+  if (!w || !w.t) return "";
+  if (w.t === "y") return String(w.y || "");
+  if (w.t === "m"){ const [y, m] = String(w.m || "").split("-"); return m ? `${MESES[+m - 1]} de ${y}` : ""; }
+  if (w.t === "d" && isDate(w.a)) return rangeTxt([w.a, isDate(w.b) && w.b >= w.a ? w.b : w.a], true);
+  return "";
+}
+function trvWhenBtn(s, cc){
+  const t = whenTxt(trvCountryEntry(s, cc)?.fields?.cuando);
+  return `<button class="tl-when${t ? " on" : ""}" data-act="trv-when" data-sec="${s.id}" data-cc="${cc}">${ic("cal")}<span>${t ? `<b>Fui en ${esc(t)}</b>` : "¿Cuándo fuiste? Pon la fecha, el mes o solo el año"}</span>${ic(t ? "edit" : "plus")}</button>`;
+}
 function trvPlace(x){
   const r = trvDays(x.e);
   return `<button class="tcity" data-act="open" data-id="${x.e.id}"><span class="tcity-f">${flagOf(x.g.cc)}</span><span class="tp-t"><b>${esc(x.e.title)}</b><span>${r ? esc(rangeTxt(r, true)) : "Toca para apuntar fechas, comidas, sitios…"}</span></span>${ic("right")}</button>`;
@@ -5392,7 +5453,7 @@ function vTravel(s){
   const ctryBlock = ([cc, xs]) => { const c = CTRY.get(cc), cities = xs.filter(x => x.g.type !== "country");
     const open = (S.trvOpen || {})[cc];
     return `<div class="tl-c on${open ? " open" : ""}">${open ? `<button class="tl-add" data-act="trv-addin" data-sec="${s.id}" data-cc="${cc}" aria-label="Añadir otro sitio en ${esc(c?.name || "")}">${ic("plus")}</button>` : ""}<button class="tl-h" data-act="trv-open" data-cc="${cc}" aria-expanded="${!!open}"><span class="tl-flag">${flagOf(cc)}</span><b>${esc(c?.name || cc)}</b><span>${cities.length ? `${cities.length} ${cities.length === 1 ? "ciudad" : "ciudades"}` : "País"}</span>${ic(open ? "left" : "right")}</button>
-      ${open ? (cities.length ? `<div class="tl-pl">${cities.sort((a, b) => a.e.title.localeCompare(b.e.title, "es")).map(trvPlace).join("")}</div>` : `<p class="muted small" style="margin:0">Toca el + rojo para añadir ciudades de ${esc(c?.name || "")}.</p>`) : ""}</div>`; };
+      ${open ? trvWhenBtn(s, cc) : ""}${open ? (cities.length ? `<div class="tl-pl">${cities.sort((a, b) => a.e.title.localeCompare(b.e.title, "es")).map(trvPlace).join("")}</div>` : `<p class="muted small" style="margin:0">Toca el + rojo para añadir ciudades de ${esc(c?.name || "")}.</p>`) : ""}</div>`; };
   let list = "";
   const addHead = `<div class="sec-t"><h2 class="sub-h">Tus países</h2><span class="n">${groups.length || ""}</span><span class="sp"></span><button class="plus-sm red" data-act="trv-addc" data-sec="${s.id}" aria-label="Añadir un país">${ic("plus")}</button></div>`;
   if (mode === "paises") list = addHead + (groups.length ? `<div class="trv-list">${groups.map(ctryBlock).join("")}</div>` : `<p class="muted small trv-hint">Aún no has marcado ningún país. Toca + para añadir uno.</p>`);
@@ -5563,7 +5624,7 @@ function globeDraw(){
   const limit = z < 1.4 ? 70 : z < 2.5 ? 320 : z < 4 ? 750 : 9999;
   const near = (x, y, w) => taken.some(b => x + w > b[0] && x < b[2] && Math.abs(y - b[1]) < 9);
   const mine = [];
-  const pins = st.all.map(x => x.g.lat != null ? x : (x.g.type === "country" && CTRY.get(x.g.cc) ? {...x, g:{...x.g, ...capitalOf(x.g.cc)}} : null)).filter(Boolean);
+  const pins = st.all.map(x => x.g.lat != null ? x : (x.g.type === "country" && CTRY.get(x.g.cc) && !st.all.some(y => y.g.cc === x.g.cc && y.g.type !== "country") ? {...x, g:{...x.g, ...capitalOf(x.g.cc)}} : null)).filter(Boolean);
   for (const c of CITIES){
     const picked = GL.sel && GL.sel.type !== "country" && GL.sel.name === c.name && GL.sel.cc === c.cc;
     if (!picked && (!focus.has(c.cc) || GL.mode === "paises")) continue;
@@ -5736,6 +5797,18 @@ async function globeOnline(q){
   if (GL.inp.value.trim() === q && document.activeElement === GL.inp) globeResults(q, out);
 }
 ACT["trv-open"] = el => { const cc = el.dataset.cc, c = CTRY.get(cc); S.trvOpen = {...(S.trvOpen || {}), [cc]:!(S.trvOpen || {})[cc]}; if (S.trvOpen[cc] && c) globeGo({type:"country", name:c.name, cc, lat:c.lat, lng:c.lng}); buzz(); render(); };
+ACT["trv-when"] = el => {
+  const s = secById(el.dataset.sec), cc = el.dataset.cc, c = CTRY.get(cc); if (!s || !c) return;
+  const w = trvCountryEntry(s, cc)?.fields?.cuando || {}, t = w.t || "y", y0 = new Date().getFullYear();
+  const radio = (v, l) => `<input type="radio" name="t" id="twt-${v}" value="${v}"${t === v ? " checked" : ""} onchange="this.form.querySelectorAll('[data-w]').forEach(x => x.hidden = x.dataset.w !== this.value)"><label for="twt-${v}">${l}</label>`;
+  swapLayer(() => openLayer(`${sheetHead(`¿Cuándo fuiste a ${flagOf(cc)} ${esc(c.name)}?`)}<form class="stack" data-form="trv-when" data-sec="${s.id}" data-cc="${cc}">
+      <div class="seg">${radio("y", "Solo el año")}${radio("m", "Mes y año")}${radio("d", "Fechas")}</div>
+      <div class="field" data-w="y"${t === "y" ? "" : " hidden"}><label for="tw-y">Año</label><input type="number" id="tw-y" name="y" inputmode="numeric" min="1930" max="${y0 + 5}" placeholder="${y0}" value="${esc(w.y || "")}"></div>
+      <div class="field" data-w="m"${t === "m" ? "" : " hidden"}><label for="tw-m">Mes</label><input type="month" id="tw-m" name="m" value="${esc(w.m || "")}"></div>
+      <div class="field" data-w="d"${t === "d" ? "" : " hidden"}><label for="tw-a">Llegué</label><input type="date" id="tw-a" name="a" value="${esc(w.a || "")}"><label for="tw-b" style="margin-top:8px">Me fui</label><input type="date" id="tw-b" name="b" value="${esc(w.b || "")}"></div>
+      <div class="sheet-f">${w.t ? `<button type="button" class="btn ghost" data-act="trv-when-del" data-sec="${s.id}" data-cc="${cc}">Quitar</button>` : "<span></span>"}<div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Guardar</button></div></div></form>`));
+};
+ACT["trv-when-del"] = el => { const s = secById(el.dataset.sec), e = s && trvCountryEntry(s, el.dataset.cc); closeLayer(); if (e){ const f = {...e.fields}; delete f.cuando; if (f.fecha && f.hasta) { delete f.fecha; delete f.hasta; } putItem({...e, fields:f}); } };
 ACT["trv-addc"] = el => {
   const s = secById(el.dataset.sec); if (!s) return;
   const st = travelStats(s), all = [...CTRY.values()].sort((a, b) => a.name.localeCompare(b.name, "es"));
@@ -5886,7 +5959,7 @@ function bdBody(){
       <div class="group-t">Ideas listas para usar</div>
       <p class="muted small" style="margin:-6px 0 0">Ya vienen configuradas con todo. Elige una, revisa y créala.</p>
       <div class="bd-presets">${BD_PRESETS.map((p, i) => `<button type="button" class="bd-pre" data-act="bd-preset" data-i="${i}"><span class="ic">${ic(p.icon)}</span><b>${esc(p.name)}</b><span>${esc(p.purpose)}</span></button>`).join("")}</div>
-      <details class="bd-tpl"><summary>O empieza con una plantilla</summary><div class="qa" style="margin-top:12px">${Object.entries(TEMPLATES).map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${d.parentId}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="qd">${esc(t.d)}</span></button>`).join("")}</div></details>
+      <details class="bd-tpl"><summary>O empieza con una plantilla</summary><div class="qa" style="margin-top:12px">${Object.entries(TEMPLATES).filter(([k]) => k !== "aprender").map(([k, t]) => `<button data-act="tpl-pick" data-tpl="${k}" data-parent="${d.parentId}"><span class="ic">${ic(t.icon)}</span>${esc(t.name)}<span class="qd">${esc(t.d)}</span></button>`).join("")}</div></details>
     </div>`;
   if (d.step === 2) return `${sheetHead(title)}${dots}
     <div class="stack" style="gap:14px">
