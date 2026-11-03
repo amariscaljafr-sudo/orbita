@@ -1364,7 +1364,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "44";
+const APP_VERSION = "45";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -1676,7 +1676,6 @@ function agendaRow(x){
 function agendaHtml(){
   const sel = S.cal.sel, tk = todayKey(), isToday = sel === tk;
   const its = mergeDay(dayItems(sel));
-  const tmk = ymd(addDays(parseYmd(tk), 1)), tmw = isToday ? mergeDay(dayItems(tmk)) : [];
   const late = isToday ? ofKind("task").filter(t => !t.done && t.date && t.date < tk) : [];
   const dd = daysBetween(tk, sel);
   const title = isToday ? "Para hoy" : dd === 1 ? "Para mañana" : dd === -1 ? "Ayer" : `${cap1(fmt(parseYmd(sel), {weekday:"long"}))} ${parseYmd(sel).getDate()}`;
@@ -1688,10 +1687,6 @@ function agendaHtml(){
       <div class="ag-list">${its.length ? its.map(agendaRow).join("") : `<div class="empty"><b>${isToday ? "Hoy no tienes nada apuntado." : "Día libre."}</b>Abre el menú ☰ y toca «Añadir», o pídeselo al asistente.</div>`}
       ${late.length ? `<div class="group-t red">Atrasadas · ${late.length}</div>${late.map(t => agendaRow({t:"task", it:t, time:"", label:"Era para " + relDay(t.date).toLowerCase(), red:true, title:t.title})).join("")}` : ""}</div>
     </div>
-    ${isToday && tmw.length ? `<div class="ag-block tmw">
-      <div class="sec-t"><h2>Mañana</h2><span class="n">${tmw.length}</span><span class="sp"></span><button class="lnk" data-act="day" data-date="${tmk}">Horario${ic("right")}</button></div>
-      <div class="ag-list">${tmw.map(agendaRow).join("")}</div>
-    </div>` : ""}
     ${isToday ? `<div class="ag-block free" data-more="+{n} más">
       <div class="sec-t"><h2>Tiempo libre</h2><span class="n">${free.length || ""}</span><span class="sp"></span><a class="lnk def-lnk" href="#tareas">Tareas${ic("right")}</a><a class="lnk more-btn" href="#tareas" hidden></a></div>
       <p class="free-sub">Aprovecha para adelantar algo de lo pendiente.</p>
