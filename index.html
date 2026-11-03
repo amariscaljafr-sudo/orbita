@@ -1243,6 +1243,9 @@ img.missing{visibility:hidden}
 .genre-h,.genre-h.pic{background:var(--paper)!important;color:var(--ink)!important;border:1px solid var(--line);min-height:0!important;align-items:baseline!important;border-left:4px solid var(--red)}
 .genre-h > b,.genre-h > span:not(.gq-bg){text-shadow:none!important}
 .genre-h span{color:var(--red)!important;opacity:1!important}
+.con-new{display:flex;flex-direction:column;align-items:center;gap:12px;padding:44px 0 10px}
+.con-add{height:56px;padding:0 34px;font-size:17px;border-radius:999px}
+.con-empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:40px 0;text-align:center}
 </style>
 </head>
 <body>
@@ -1397,7 +1400,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "48";
+const APP_VERSION = "49";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -4661,6 +4664,15 @@ function vConocimientos(s){
   const tile = t => { const es = [t, ...descendants(t.id)].flatMap(x => entriesOf(x.id)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); return `<div class="ktw"><button class="kt-del" data-act="topic-del" data-sec="${t.id}" aria-label="Borrar el tema ${esc(t.name)}">${ic("trash")}<span>Borrar</span></button><a class="ktopic" href="#s-${t.id}" draggable="false"><span class="ic">${ic(t.icon)}</span><b>${esc(t.name)}</b><span class="kt-n">${es.length} ${es.length === 1 ? "nota" : "notas"}</span></a></div>`; };
   const nrow = e => { const sec = secById(e.sectionId); return `<button class="krow" data-act="open" data-id="${e.id}"><span class="kr-t"><b>${esc(e.title)}</b><span>${esc([e.fields?.fecha ? relDay(e.fields.fecha) : "", q && sec && sec.id !== s.id ? sec.name : ""].filter(Boolean).join(" · "))}</span></span>${e.example ? '<span class="tag ex">Ejemplo</span>' : ""}${ic("right")}</button>`; };
   const showLoose = !top || q || S.conLoose?.[s.id];
+  if (top && !q){
+    const tab = kitTab(s, "nuevo"), loose = entriesOf(s.id);
+    const body = tab === "general"
+      ? (subs.length || loose.length ? `<div class="ktopics">${subs.map(tile).join("")}</div>${subs.length ? `<p class="muted small" style="margin:-4px 0 0">Para borrar una categoría, deslízala hacia arriba.</p>` : ""}
+          ${loose.length ? `<section class="stack" style="gap:10px"><div class="sec-t"><h2 class="sub-h">Sin categoría</h2><span class="n">${loose.length}</span></div><div class="klist">${loose.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).map(nrow).join("")}</div></section>` : ""}`
+        : `<div class="con-empty"><p class="muted" style="margin:0">Aún no has creado ninguna categoría.</p><button class="lnk" data-act="kit-tab" data-sec="${s.id}" data-t="nuevo">Ir a «Nuevo»${ic("right")}</button></div>`)
+      : `<div class="con-new"><button class="btn pri con-add" data-act="con-add" data-sec="${s.id}">${ic("plus")}Añadir</button><p class="muted small" style="margin:0;text-align:center">Elige una categoría y escribe todo lo que sepas sobre ella.</p></div>`;
+    return `${kitTabs(s, [["nuevo", "Nuevo"], ["general", "General", subs.length]], tab)}${body}`;
+  }
   return `${kitHead(s, top ? "Todo lo que vas aprendiendo, ordenado por temas." : `Tus notas sobre ${esc(s.name.toLowerCase())}.`)}
     <input class="search-in" id="sq-${s.id}" data-input="secq" data-sec="${s.id}" placeholder="${top ? "Buscar en todos tus conocimientos" : "Buscar en " + esc(s.name.toLowerCase())}" value="${esc(S.secQuery[s.id] || "")}" aria-label="Buscar">
     ${q ? "" : `<section class="stack" style="gap:12px"><div class="sec-t"><h2 class="sub-h">${top ? "Temas" : "Dentro de " + esc(s.name)}</h2><span class="n">${subs.length || ""}</span><span class="sp"></span><button class="plus-sm" data-act="topic-new" data-parent="${s.id}" aria-label="Nuevo tema">${ic("plus")}</button></div>
@@ -4739,6 +4751,16 @@ Object.assign(ACT, {
   "cut-fix"(el){ openCutFix(el.dataset.id); },
   "cl-wear"(el){ const g = garments().find(x => x.id === el.dataset.id); if (g) ACT.wear({dataset:{c:g.cat, id:g.id}}); },
   "topic-new"(el){ const p = secById(el.dataset.parent); swapLayer(() => openLayer(`${sheetHead(p && p.tpl === "conocimientos" ? "Nuevo tema" : "Nuevo apartado")}<form class="stack" data-form="topic-new" data-parent="${el.dataset.parent}"><div class="field"><label for="tn-name">Nombre</label><input type="text" id="tn-name" name="name" placeholder="Ej.: Tecnología, Mochilas, Zapatos…" required></div><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Crear</button></div></div></form>`)); },
+  "con-add"(el){
+    const s = secById(el.dataset.sec); if (!s) return; const subs = childrenOf(s.id);
+    const radio = (id, v, label, on) => `<input type="radio" name="cat" id="${id}" value="${v}"${on ? " checked" : ""} onchange="this.form.newcat.hidden=this.value!=='__new';if(this.value==='__new')this.form.newcat.focus()"><label for="${id}">${label}</label>`;
+    swapLayer(() => openLayer(`${sheetHead("Nuevo conocimiento")}<form class="stack" data-form="con-add" data-sec="${s.id}">
+      <div class="field"><label>Categoría</label><div class="seg">${subs.map((t, i) => radio("ca" + i, t.id, esc(t.name), i === 0)).join("")}${radio("ca-new", "__new", "+ Nueva", !subs.length)}</div>
+        <input class="inp" name="newcat" placeholder="Nombre de la categoría (ej.: Tecnología, Historia, Cocina…)"${subs.length ? " hidden" : ""} style="margin-top:8px"></div>
+      <div class="field"><label for="ca-t">Título</label><input type="text" id="ca-t" name="title" placeholder="Ej.: Cómo funciona un procesador"></div>
+      <div class="field"><label for="ca-n">Todo lo que sabes</label><textarea id="ca-n" name="notas" style="min-height:200px" placeholder="Escribe aquí todo lo que sepas sobre esto…"></textarea></div>
+      <div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Guardar</button></div></div></form>`));
+  },
   "con-loose"(el){ S.conLoose = {...(S.conLoose || {}), [el.dataset.sec]:!(S.conLoose || {})[el.dataset.sec]}; render(); },
   "topic-del"(el){
     const id = el.dataset.sec, t = secById(id); if (!t) return;
@@ -4750,7 +4772,7 @@ Object.assign(ACT, {
   "topic-quick"(el){ makeTopic(el.dataset.parent, el.dataset.name); render(); toast("Tema creado", el.dataset.name); }
 });
 document.addEventListener("submit", e => {
-  const f = e.target, k = f.dataset.form; if (!["idea-plan","nutri-goal","peso-log","topic-new"].includes(k)) return;
+  const f = e.target, k = f.dataset.form; if (!["idea-plan","nutri-goal","peso-log","topic-new","con-add"].includes(k)) return;
   e.preventDefault(); const fd = new FormData(f);
   if (k === "idea-plan"){
     const i = S.items.get(f.dataset.id); if (!i) return;
@@ -4763,6 +4785,16 @@ document.addEventListener("submit", e => {
   } else if (k === "peso-log"){
     const kg = +String(fd.get("kg") || "").replace(",", "."); if (!kg) return;
     putItem({id:uid(), kind:"entry", sectionId:f.dataset.sec, sub:"peso", title:`${kg} kg`, fields:{fecha:todayKey(), kg}}); toast("Peso apuntado", `${kg} kg hoy.`);
+  } else if (k === "con-add"){
+    const s = secById(f.dataset.sec); if (!s) return;
+    let cat = String(fd.get("cat") || "__new"), t = secById(cat);
+    if (cat === "__new" || !t){
+      const n = String(fd.get("newcat") || "").trim(); if (!n){ toast("Ponle nombre a la categoría"); f.newcat.hidden = false; f.newcat.focus(); return; }
+      t = childrenOf(s.id).find(x => x.name.toLowerCase() === n.toLowerCase()) || makeTopic(s.id, n);
+    }
+    const notas = String(fd.get("notas") || "").trim(), title = String(fd.get("title") || "").trim() || notas.split("\n")[0].slice(0, 60) || t.name;
+    putItem({id:uid(), kind:"entry", sectionId:t.id, sub:"nota", title, fields:{notas, fecha:todayKey()}});
+    closeLayer(); buzz(); toast("Guardado", `En ${t.name}.`);
   } else if (k === "topic-new"){
     const n = String(fd.get("name") || "").trim(); if (!n) return;
     const t = makeTopic(f.dataset.parent, n); closeLayer(); location.hash = "s-" + t.id;
