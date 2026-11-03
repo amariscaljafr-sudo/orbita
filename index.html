@@ -1186,7 +1186,13 @@ button.crumb{align-self:flex-start}
 .tbar{font:inherit;color:inherit;text-align:left;cursor:pointer;transition:border-color .2s,box-shadow .2s}
 .tbar.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink)}
 .tbar.on .tb-h > b{color:var(--red)}
-.tl-pl{display:flex;flex-direction:column;gap:8px}
+.tl-pl{display:flex;flex-direction:column;gap:6px}
+.tl-flag{width:42px;height:42px;border-radius:12px;background:var(--paper-2);display:grid;place-items:center;font-size:26px;flex:none}
+.tl-h > .i{width:16px;height:16px;opacity:.45;transition:transform .2s}
+.tl-c.open .tl-h > .i{transform:rotate(-90deg)}
+.tcity{display:flex;align-items:center;gap:10px;width:100%;border:0;background:var(--paper-2);border-radius:14px;padding:8px 10px;font:inherit;color:inherit;text-align:left}
+.tcity-f{width:38px;height:38px;border-radius:10px;background:var(--paper);display:grid;place-items:center;font-size:22px;flex:none;box-shadow:inset 0 0 0 1px var(--line)}
+.tcity > .i{width:16px;height:16px;opacity:.4}
 .tp{border-radius:14px;background:var(--paper-2);padding:10px;display:flex;flex-direction:column;gap:8px}
 .tp-h{display:flex;align-items:center;gap:10px;border:0;background:transparent;padding:0;font:inherit;color:inherit;text-align:left;width:100%}
 .tp-h img{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none}
@@ -1232,20 +1238,68 @@ img.missing{visibility:hidden}
   *,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;transition-duration:.001s!important}
 }
 /* category cards: white, black text, red details */
-.gq,.gq.pic{background:var(--paper)!important;color:var(--ink)!important;border:1px solid var(--line)!important;box-shadow:0 10px 22px -18px rgba(0,0,0,.35)!important;aspect-ratio:auto!important;min-height:92px!important;justify-content:space-between!important;padding:14px!important}
-.gq b{color:var(--ink)!important;text-shadow:none!important;font-size:16px!important}
-.gq b::after{content:"";display:block;width:22px;height:3px;border-radius:2px;background:var(--red);margin-top:8px}
-.gq > span:not(.gq-bg){color:var(--red)!important;opacity:1!important;text-shadow:none!important;font-weight:800!important;font-size:12px!important}
-.gq.empty0 > span{color:var(--mute)!important}
+.gq,.gq.pic{background:radial-gradient(120% 110% at 100% 100%,rgba(225,6,0,.13),rgba(225,6,0,0) 58%),var(--paper)!important;color:var(--ink)!important;border:1px solid var(--line)!important;box-shadow:0 14px 26px -20px rgba(225,6,0,.55),0 1px 0 rgba(0,0,0,.03)!important;aspect-ratio:auto!important;min-height:104px!important;justify-content:space-between!important;padding:14px 14px 12px!important;border-radius:20px!important;transition:transform .15s var(--ease),box-shadow .2s!important}
+.gq b{color:var(--ink)!important;text-shadow:none!important;font-size:16.5px!important;padding-right:30px;letter-spacing:-.02em}
+.gq b::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--red);margin-top:8px}
+.gq > span:not(.gq-bg){align-self:flex-start;color:var(--red)!important;background:rgba(225,6,0,.09);border-radius:999px;padding:3px 9px!important;opacity:1!important;text-shadow:none!important;font-weight:800!important;font-size:11.5px!important}
+.gq::before{content:"›";position:absolute;right:11px;top:11px;width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;font-size:19px;font-weight:700;line-height:24px;text-align:center;box-shadow:0 4px 10px -3px rgba(225,6,0,.6)}
+.gq::after{content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:0 3px 3px 0;background:var(--red)}
+.gq.empty0{background:var(--paper)!important;box-shadow:none!important}
+.gq.empty0 > span{color:var(--mute)!important;background:var(--paper-2)}
 .gq.empty0 b::after{background:var(--line-2)}
-.gq::before{content:"";position:absolute;right:12px;top:12px;width:8px;height:8px;border-right:2px solid var(--ink);border-top:2px solid var(--ink);transform:rotate(45deg);opacity:.35}
+.gq.empty0::before{background:var(--paper-3);color:var(--mute);box-shadow:none}
+.gq.empty0::after{background:var(--line-2)}
 .gq-bg,.gq-p{display:none!important}
-.genre-h,.genre-h.pic{background:var(--paper)!important;color:var(--ink)!important;border:1px solid var(--line);min-height:0!important;align-items:baseline!important;border-left:4px solid var(--red)}
+.genre-h,.genre-h.pic{background:radial-gradient(120% 140% at 100% 100%,rgba(225,6,0,.14),rgba(225,6,0,0) 60%),var(--paper)!important;color:var(--ink)!important;border:1px solid var(--line);min-height:0!important;align-items:baseline!important;border-left:5px solid var(--red)}
 .genre-h > b,.genre-h > span:not(.gq-bg){text-shadow:none!important}
 .genre-h span{color:var(--red)!important;opacity:1!important}
 .con-new{display:flex;flex-direction:column;align-items:center;gap:12px;padding:44px 0 10px}
 .con-add{height:56px;padding:0 34px;font-size:17px;border-radius:999px}
 .con-empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:40px 0;text-align:center}
+.ai-busy{display:flex;gap:12px;align-items:center;padding:14px;border-radius:18px;background:var(--ink);color:#fff}
+.ai-busy b{display:block;font-size:15px}
+.ai-busy span span,.ai-busy > span:last-child{font-size:13px;opacity:.85}
+.ai-busy .spin{border-color:rgba(255,255,255,.3);border-top-color:#fff;flex:none}
+.ai-cta{display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:20px;border:1px solid var(--line);background:radial-gradient(120% 110% at 100% 100%,rgba(225,6,0,.12),rgba(225,6,0,0) 58%),var(--paper)}
+.ai-cta b{font-size:17px}
+.ai-cta span{font-size:13.5px;color:var(--ink-2)}
+.ai-cta .btn{align-self:flex-start;margin-top:4px}
+.apt{display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:20px;border:1px solid var(--line);background:var(--paper)}
+.apt-h{display:flex;align-items:center;gap:8px}
+.apt-h > b{font-size:17px;letter-spacing:-.01em}
+.apt-h > b::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:8px;vertical-align:2px}
+.apt-k{font-size:11px;font-weight:700;color:var(--red);background:rgba(225,6,0,.09);padding:2px 8px;border-radius:999px}
+.apt-plus,.apt-x{width:32px;height:32px;border-radius:50%;border:0;display:grid;place-items:center;flex:none}
+.apt-plus{background:var(--red);color:#fff}
+.apt-x{background:transparent;color:var(--mute)}
+.apt-plus .i,.apt-x .i{width:16px;height:16px}
+.apt-l{display:flex;flex-direction:column;gap:6px}
+.apt-i{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;border:0;background:var(--paper-2);border-radius:14px;padding:10px 12px;font:inherit;color:inherit;text-decoration:none}
+.apt-y{flex:none;min-width:54px;font-size:12px;font-weight:800;color:var(--red);padding-top:2px}
+.apt-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.apt-t b{font-size:14.5px}
+.apt-t span{font-size:13px;color:var(--ink-2);line-height:1.35}
+.apt.tl .apt-l{gap:0;position:relative;padding-left:14px}
+.apt.tl .apt-l::before{content:"";position:absolute;left:4px;top:10px;bottom:10px;width:2px;background:var(--line-2)}
+.apt.tl .apt-i{background:transparent;padding:8px 4px 8px 10px;position:relative}
+.apt.tl .apt-i::before{content:"";position:absolute;left:-14px;top:13px;width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px var(--paper)}
+.apt-empty{display:flex;gap:8px;align-items:center;border:1px dashed var(--line-2);border-radius:14px;background:transparent;padding:12px;font:inherit;font-size:13.5px;color:var(--ink-2);text-align:left}
+.apt-empty .i{width:16px;height:16px;flex:none}
+.vid-l{display:flex;flex-direction:column;gap:10px}
+.vid{display:flex;flex-direction:column;gap:6px}
+.vid-t{position:relative;border:0;padding:0;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#000;width:100%}
+.vid-t img{width:100%;height:100%;object-fit:cover;display:block}
+.vid-p{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:20px;padding-left:3px;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.vid-f{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
+.vid-n{border:0;background:transparent;padding:0 2px;font:inherit;font-size:14px;font-weight:700;text-align:left;color:inherit}
+.vq{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.apt-h .sp{flex:1}
+.apt-h > b{min-width:0}
+.ktopic{background:radial-gradient(120% 110% at 100% 100%,rgba(225,6,0,.13),rgba(225,6,0,0) 58%),var(--paper)!important;color:var(--ink)!important;border:1px solid var(--line);box-shadow:0 14px 26px -20px rgba(225,6,0,.55);position:relative}
+.ktopic .ic{background:var(--red)!important;box-shadow:0 4px 10px -3px rgba(225,6,0,.6)}
+.ktopic .ic svg{color:#fff!important}
+.ktopic b::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--red);margin-top:7px}
+.ktopic .kt-n{align-self:flex-start;color:var(--red);background:rgba(225,6,0,.09);border-radius:999px;padding:3px 9px;font-size:11.5px;font-weight:800;opacity:1}
 </style>
 </head>
 <body>
@@ -1400,7 +1454,7 @@ const S = {
   taskFilter:"pendientes", remTab:"avisos", secFilter:{}, secQuery:{}, noteQuery:"",
   sheetRefresh:null, greet:null
 };
-const APP_VERSION = "49";
+const APP_VERSION = "50";
 const LS_KEY = "orbita.v1", AI_KEY = "orbita.aikey";
 let itemsCol = null, settingsRef = null;
 const chains = new Map();
@@ -3996,13 +4050,13 @@ Object.assign(ACT, {
 });
 
 /* ================= garment from a shop link (free, with your Gemini key) ================= */
-async function geminiOnce(prompt, tools){
+async function geminiOnce(prompt, tools, maxTok=2000){
   let last = null;
   for (let t = 0; t < 5; t++){
     const model = GEM_MODELS[(gemIdx + t) % GEM_MODELS.length], ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 60000);
     try {
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {method:"POST", signal:ctl.signal, headers:{"content-type":"application/json", "x-goog-api-key":provKey("gemini")},
-        body:JSON.stringify({contents:[{role:"user", parts:[{text:prompt}]}], tools, generationConfig:{temperature:.1, maxOutputTokens:2000}})});
+        body:JSON.stringify({contents:[{role:"user", parts:[{text:prompt}]}], tools, generationConfig:{temperature:.1, maxOutputTokens:maxTok}})});
       const data = await res.json().catch(() => ({}));
       clearTimeout(timer);
       if (res.ok) return data;
@@ -4654,7 +4708,7 @@ function subsBlock(s, kitMode){
 const KIT_VIEWS = {entrenos:vEntrenos, peliculas:vMedia, libros:vMedia, comidas:vComidas, aprender:vAprender, estudios:vEstudios, armario:vArmario};
 
 /* ---------- Conocimientos: cuaderno por temas ---------- */
-KITS.conocimientos = {def:"nota", kinds:{nota:{label:"Nota", title:"Qué has aprendido (título)", fields:[F("notas","Lo que aprendí","longtext"),F("fuente","Fuente","link"),F("fecha","Fecha","date"),F("tema","Etiqueta","text")], dateKey:"fecha"}}};
+KITS.conocimientos = {def:"nota", kinds:{nota:{label:"Nota", title:"Título", fields:[F("notas","Lo que sabes","longtext"),F("anio","Año o fecha (opcional)","text"),F("fuente","Enlace o fuente","link"),F("apt","","hidden"),F("video","","hidden")]}}};
 const noteCard = (e, wide) => { const f = e.fields || {}, sec = secById(e.sectionId); return `<button class="note" data-act="open" data-id="${e.id}"><h4>${esc(e.title)}</h4>${f.notas ? `<p>${esc(f.notas)}</p>` : ""}<div class="mt">${esc([f.fecha ? relDay(f.fecha) : "", f.tema, wide && sec && sec.parentId ? sec.name : "", f.fuente ? "Con fuente" : ""].filter(Boolean).join(" · "))}${e.example ? " · Ejemplo" : ""}</div></button>`; };
 function vConocimientos(s){
   const top = !s.parentId || !secById(s.parentId), subs = childrenOf(s.id), q = (S.secQuery[s.id] || "").toLowerCase();
@@ -4670,7 +4724,7 @@ function vConocimientos(s){
       ? (subs.length || loose.length ? `<div class="ktopics">${subs.map(tile).join("")}</div>${subs.length ? `<p class="muted small" style="margin:-4px 0 0">Para borrar una categoría, deslízala hacia arriba.</p>` : ""}
           ${loose.length ? `<section class="stack" style="gap:10px"><div class="sec-t"><h2 class="sub-h">Sin categoría</h2><span class="n">${loose.length}</span></div><div class="klist">${loose.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).map(nrow).join("")}</div></section>` : ""}`
         : `<div class="con-empty"><p class="muted" style="margin:0">Aún no has creado ninguna categoría.</p><button class="lnk" data-act="kit-tab" data-sec="${s.id}" data-t="nuevo">Ir a «Nuevo»${ic("right")}</button></div>`)
-      : `<div class="con-new"><button class="btn pri con-add" data-act="con-add" data-sec="${s.id}">${ic("plus")}Añadir</button><p class="muted small" style="margin:0;text-align:center">Elige una categoría y escribe todo lo que sepas sobre ella.</p></div>`;
+      : `<div class="con-new"><button class="btn pri con-add" data-act="con-add" data-sec="${s.id}">${ic("plus")}Añadir</button><p class="muted small" style="margin:0;text-align:center">Crea un tema (Historia, Inglés…) y la IA lo organizará por apartados.</p></div>`;
     return `${kitTabs(s, [["nuevo", "Nuevo"], ["general", "General", subs.length]], tab)}${body}`;
   }
   return `${kitHead(s, top ? "Todo lo que vas aprendiendo, ordenado por temas." : `Tus notas sobre ${esc(s.name.toLowerCase())}.`)}
@@ -4681,7 +4735,74 @@ function vConocimientos(s){
     <section class="stack" style="gap:12px"><div class="sec-t">${top && !q ? `<button class="lnk" data-act="con-loose" data-sec="${s.id}" style="font-size:15px">${ic(showLoose ? "left" : "right")}Notas sin tema${ns.length ? ` (${ns.length})` : ""}</button>` : `<h2 class="sub-h">${q ? "Resultados" : "Notas"}</h2><span class="n">${ns.length || ""}</span>`}<span class="sp"></span>${kbtn(s, "nota", "Nota", {fecha:todayKey()}, "btn sm pri")}</div>
       ${showLoose ? (ns.length ? `<div class="klist">${ns.map(nrow).join("")}</div>` : kempty(q ? "Nada coincide." : "Aún no hay notas aquí.", q ? "Prueba con otra palabra." : "Apunta lo que aprendas: un truco, un dato, un resumen de un vídeo…")) : ""}</section>`;
 }
-KIT_VIEWS.conocimientos = vConocimientos;
+KIT_VIEWS.conocimientos = s => (s.parentId && secById(s.parentId)) ? vTopic(s) : vConocimientos(s);
+const ytId = u => { const m = String(u || "").match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/); return m ? m[1] : ""; };
+const yearNum = v => { const m = String(v || "").match(/(-?\d{1,4})/); if (!m) return 1e9; let n = +m[1]; if (/a\.?\s?c\.?|antes de cristo/i.test(String(v))) n = -Math.abs(n); return n; };
+S.conBusy = {};
+function vTopic(s){
+  const es = entriesOf(s.id), apts = s.apts || [], busy = S.conBusy[s.id];
+  const vids = es.filter(e => e.fields?.video), notes = es.filter(e => !e.fields?.video);
+  const loose = notes.filter(e => !apts.some(a => a.n === e.fields?.apt));
+  const item = (e, tl) => `<button class="apt-i" data-act="open" data-id="${e.id}">${tl || e.fields?.anio ? `<span class="apt-y">${esc(e.fields?.anio || "·")}</span>` : ""}<span class="apt-t"><b>${esc(e.title)}</b>${e.fields?.notas ? `<span>${esc(e.fields.notas)}</span>` : ""}</span></button>`;
+  const blk = (a, xs, fixed) => { const tl = a.t === "linea", list = tl ? [...xs].sort((x, y) => yearNum(x.fields?.anio) - yearNum(y.fields?.anio)) : [...xs].sort((x, y) => (x.createdAt || 0) - (y.createdAt || 0));
+    return `<section class="apt${tl ? " tl" : ""}"><div class="apt-h"><b>${esc(a.n)}</b>${tl && !/l[ií]nea/i.test(a.n) ? `<span class="apt-k">Línea del tiempo</span>` : ""}<span class="sp"></span>${fixed ? "" : `<button class="apt-x" data-act="apt-del" data-sec="${s.id}" data-apt="${esc(a.n)}" aria-label="Quitar apartado">${ic("trash")}</button>`}<button class="apt-plus" data-act="apt-add" data-sec="${s.id}" data-apt="${esc(fixed ? "" : a.n)}" aria-label="Añadir a ${esc(a.n)}">${ic("plus")}</button></div>
+      ${list.length ? `<div class="apt-l">${list.map(e => item(e, tl)).join("")}</div>` : `<button class="apt-empty" data-act="apt-add" data-sec="${s.id}" data-apt="${esc(a.n)}">${ic("plus")}Añadir a ${esc(a.n.toLowerCase())}</button>`}</section>`; };
+  const vq = s.vq || [];
+  return `${busy ? `<div class="ai-busy"><span class="spin"></span><span><b>Preparando «${esc(s.name)}»…</b>La IA está creando los apartados y rellenándolos.</span></div>` : ""}
+    ${!busy && !apts.length ? `<div class="ai-cta"><b>Organiza este tema</b><span>La IA crea los apartados que tienen sentido (por ejemplo, en Historia: guerras, personajes, línea del tiempo) y los rellena.</span><button class="btn pri" data-act="topic-ai" data-sec="${s.id}">${ic("spark")}Organizar con IA</button></div>` : ""}
+    ${apts.map(a => blk(a, notes.filter(e => e.fields?.apt === a.n))).join("")}
+    ${loose.length ? blk({n:"Notas", t:"lista"}, loose, true) : ""}
+    <section class="apt vids"><div class="apt-h"><b>Vídeos</b><span class="sp"></span><button class="apt-plus" data-act="vid-add" data-sec="${s.id}" aria-label="Añadir vídeo">${ic("plus")}</button></div>
+      ${vids.length ? `<div class="vid-l">${vids.map(e => { const id = ytId(e.fields.video); return id ? `<div class="vid"><button class="vid-t" data-act="vid-play" data-y="${id}" aria-label="Ver ${esc(e.title)}"><img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy"><span class="vid-p">▶</span></button><button class="vid-n" data-act="open" data-id="${e.id}">${esc(e.title)}</button></div>` : `<a class="apt-i" href="${esc(e.fields.video)}" target="_blank" rel="noopener"><span class="apt-t"><b>${esc(e.title)}</b><span>Abrir enlace</span></span></a>`; }).join("")}</div>` : ""}
+      ${vq.length ? `<div class="vq"><span class="muted small">Buscar en YouTube:</span>${vq.map(q => `<a class="chip" href="https://www.youtube.com/results?search_query=${encodeURIComponent(q)}" target="_blank" rel="noopener">▶ ${esc(q)}</a>`).join("")}</div>` : ""}
+      ${!vids.length && !vq.length ? `<button class="apt-empty" data-act="vid-add" data-sec="${s.id}">${ic("plus")}Pega el enlace de un vídeo para verlo aquí</button>` : ""}</section>
+    <div class="row"><button class="btn" data-act="apt-new" data-sec="${s.id}">${ic("plus")}Apartado</button>${apts.length && !busy ? `<button class="btn ghost" data-act="topic-ai" data-sec="${s.id}">${ic("spark")}Ampliar con IA</button>` : ""}</div>`;
+}
+const TOPIC_TPL = [
+  [/histor|guerra|imperio|edad media|roma|egipt|revoluc/i, [["Línea del tiempo","linea"],["Guerras y batallas","lista"],["Personajes","lista"],["Lugares","lista"]]],
+  [/ingl|franc|alem|ital|portug|japon|chin|coreano|idioma|lengua|español/i, [["Vocabulario","lista"],["Gramática","lista"],["Frases útiles","lista"],["Pronunciación","lista"]]],
+  [/program|tecnolog|inform|c[oó]digo|software|\bia\b|inteligencia|ordenador|web/i, [["Conceptos","lista"],["Herramientas","lista"],["Trucos","lista"],["Proyectos","lista"]]],
+  [/cocin|receta|gastro|reposter/i, [["Técnicas","lista"],["Ingredientes","lista"],["Recetas","lista"],["Trucos","lista"]]],
+  [/cienc|f[ií]sica|qu[ií]mica|biolog|matem|astro/i, [["Conceptos","lista"],["Fórmulas y leyes","lista"],["Científicos","linea"],["Experimentos","lista"]]],
+  [/arte|pintur|m[uú]sica|cine|literat|arquitect/i, [["Obras","lista"],["Artistas","lista"],["Estilos","lista"],["Línea del tiempo","linea"]]],
+  [/deport|entren|muay|boxeo|f[uú]tbol|baloncesto|gimnas/i, [["Técnicas","lista"],["Reglas","lista"],["Rutinas","lista"],["Referentes","lista"]]],
+  [/econom|finanz|invers|dinero|bolsa|cripto|ahorro/i, [["Conceptos","lista"],["Estrategias","lista"],["Errores comunes","lista"],["Herramientas","lista"]]],
+  [/./, [["Ideas clave","lista"],["Datos","lista"],["Preguntas","lista"],["Recursos","lista"]]]];
+async function topicAI(t, extra){
+  if (S.conBusy[t.id]) return;
+  S.conBusy[t.id] = true; render();
+  let plan = null;
+  if (provKey("gemini")){
+    const have = (t.apts || []).map(a => a.n), known = entriesOf(t.id).map(e => e.title).slice(0, 40);
+    const prompt = `Voy a estudiar el tema «${t.name}»${extra ? ` (me interesa sobre todo: ${extra})` : ""}. Organízalo como un cuaderno de estudio en español de España.${have.length ? ` Ya tengo estos apartados: ${have.join(", ")}; puedes añadir items a ellos o proponer 1 o 2 apartados nuevos.` : ""}${known.length ? ` No repitas estos items: ${known.join("; ")}.` : ""}
+Devuelve SOLO un JSON válido, sin texto alrededor, con esta forma:
+{"apartados":[{"nombre":"Guerras","tipo":"lista","items":[{"titulo":"Primera Guerra Mundial","anio":"1914-1918","texto":"Una o dos frases claras."}]},{"nombre":"Línea del tiempo","tipo":"linea","items":[{"titulo":"Caída de Roma","anio":"476","texto":"..."}]}],"videos":["búsqueda para YouTube"]}
+Reglas: ${have.length ? "" : "de 3 a 5 apartados que tengan sentido para este tema concreto (por ejemplo, para Historia: Línea del tiempo, Guerras, Personajes, Lugares; para un idioma: Vocabulario, Gramática, Frases útiles). "}Usa "tipo":"linea" solo para una línea del tiempo y pon "anio" en cada uno de sus items (usa "a. C." si hace falta). De 3 a 6 items por apartado, datos correctos y concretos, textos de 1 o 2 frases. En "videos", 3 o 4 búsquedas para encontrar buenos vídeos en YouTube sobre el tema.`;
+    try {
+      const d = await geminiOnce(prompt, undefined, 8000);
+      const txt = (d.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("");
+      plan = JSON.parse((txt.match(/\{[\s\S]*\}/) || ["null"])[0]);
+      if (!plan || !Array.isArray(plan.apartados)) plan = null;
+    } catch (e){ toast("La IA no ha podido rellenarlo", e && e.status === 429 ? "Has usado el cupo gratis de Gemini por ahora. He creado los apartados básicos." : "He creado los apartados básicos; puedes probar «Ampliar con IA» luego."); }
+  }
+  if (!plan && !(t.apts || []).length) plan = {apartados:(TOPIC_TPL.find(([r]) => r.test(t.name + " " + extra)) || TOPIC_TPL[TOPIC_TPL.length - 1])[1].map(([nombre, tipo]) => ({nombre, tipo, items:[]})), videos:[]};
+  const cur = secById(t.id);
+  if (plan && cur){
+    const apts = [...(cur.apts || [])], titles = new Set(entriesOf(t.id).map(e => e.title.toLowerCase()));
+    for (const a of plan.apartados.slice(0, 7)){
+      const n = String(a.nombre || "").trim().slice(0, 40); if (!n) continue;
+      let ex = apts.find(x => x.n.toLowerCase() === n.toLowerCase());
+      if (!ex){ ex = {n, t:a.tipo === "linea" ? "linea" : "lista"}; apts.push(ex); }
+      for (const it of (Array.isArray(a.items) ? a.items : []).slice(0, 8)){
+        const ti = String(it.titulo || "").trim().slice(0, 120); if (!ti || titles.has(ti.toLowerCase())) continue; titles.add(ti.toLowerCase());
+        putItem({id:uid(), kind:"entry", sectionId:t.id, sub:"nota", title:ti, fields:{apt:ex.n, anio:String(it.anio || "").slice(0, 30), notas:String(it.texto || "").slice(0, 1200), ia:true}}, true);
+      }
+    }
+    const vq = [...new Set([...(cur.vq || []), ...(Array.isArray(plan.videos) ? plan.videos : []).map(String)])].slice(0, 6);
+    S.settings.sections = sections().map(x => x.id === t.id ? {...x, apts, vq} : x); putSettings(true); flushBulk();
+  }
+  delete S.conBusy[t.id]; render();
+}
 /* ---------- actions ---------- */
 const kitPut = (e, fields, extra={}) => putItem({...e, ...extra, fields:{...(e.fields || {}), ...fields}});
 function makeTopic(parentId, name){
@@ -4752,15 +4873,21 @@ Object.assign(ACT, {
   "cl-wear"(el){ const g = garments().find(x => x.id === el.dataset.id); if (g) ACT.wear({dataset:{c:g.cat, id:g.id}}); },
   "topic-new"(el){ const p = secById(el.dataset.parent); swapLayer(() => openLayer(`${sheetHead(p && p.tpl === "conocimientos" ? "Nuevo tema" : "Nuevo apartado")}<form class="stack" data-form="topic-new" data-parent="${el.dataset.parent}"><div class="field"><label for="tn-name">Nombre</label><input type="text" id="tn-name" name="name" placeholder="Ej.: Tecnología, Mochilas, Zapatos…" required></div><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Crear</button></div></div></form>`)); },
   "con-add"(el){
-    const s = secById(el.dataset.sec); if (!s) return; const subs = childrenOf(s.id);
-    const radio = (id, v, label, on) => `<input type="radio" name="cat" id="${id}" value="${v}"${on ? " checked" : ""} onchange="this.form.newcat.hidden=this.value!=='__new';if(this.value==='__new')this.form.newcat.focus()"><label for="${id}">${label}</label>`;
-    swapLayer(() => openLayer(`${sheetHead("Nuevo conocimiento")}<form class="stack" data-form="con-add" data-sec="${s.id}">
-      <div class="field"><label>Categoría</label><div class="seg">${subs.map((t, i) => radio("ca" + i, t.id, esc(t.name), i === 0)).join("")}${radio("ca-new", "__new", "+ Nueva", !subs.length)}</div>
-        <input class="inp" name="newcat" placeholder="Nombre de la categoría (ej.: Tecnología, Historia, Cocina…)"${subs.length ? " hidden" : ""} style="margin-top:8px"></div>
-      <div class="field"><label for="ca-t">Título</label><input type="text" id="ca-t" name="title" placeholder="Ej.: Cómo funciona un procesador"></div>
-      <div class="field"><label for="ca-n">Todo lo que sabes</label><textarea id="ca-n" name="notas" style="min-height:200px" placeholder="Escribe aquí todo lo que sepas sobre esto…"></textarea></div>
-      <div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Guardar</button></div></div></form>`));
+    const s = secById(el.dataset.sec); if (!s) return;
+    const sugg = ["Historia","Inglés","Tecnología","Cocina","Economía","Ciencia","Arte","Deporte"].filter(n => !childrenOf(s.id).some(x => x.name.toLowerCase() === n.toLowerCase())).slice(0, 6);
+    swapLayer(() => openLayer(`${sheetHead("Nuevo tema")}<form class="stack" data-form="con-add" data-sec="${s.id}">
+      <div class="field"><label for="ca-name">Tema</label><input type="text" id="ca-name" name="name" placeholder="Ej.: Historia, Inglés, Inversión…" required maxlength="40" autocomplete="off">
+        ${sugg.length ? `<div class="chips" style="margin-top:8px">${sugg.map(n => `<button type="button" class="chip" onclick="this.form.name.value='${n}'">${n}</button>`).join("")}</div>` : ""}</div>
+      <div class="field"><label for="ca-x">¿Qué te interesa? (opcional)</label><input type="text" id="ca-x" name="extra" placeholder="Ej.: la Segunda Guerra Mundial, Roma…" autocomplete="off"></div>
+      <p class="muted small" style="margin:0">${provKey("gemini") ? "La IA preparará los apartados que tienen sentido para este tema y los rellenará para empezar." : "Se crearán los apartados típicos de este tema. Conecta tu Gemini gratis en Perfil y ajustes para que la IA los rellene."}</p>
+      <div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">${ic("spark")}Crear tema</button></div></div></form>`));
   },
+  "apt-add"(el){ swapLayer(() => openEntry(el.dataset.sec, null, {sub:"nota", fields:{apt:el.dataset.apt}})); },
+  "apt-new"(el){ swapLayer(() => openLayer(`${sheetHead("Nuevo apartado")}<form class="stack" data-form="apt-new" data-sec="${el.dataset.sec}"><div class="field"><label for="an-n">Nombre</label><input type="text" id="an-n" name="name" required maxlength="40" placeholder="Ej.: Personajes, Fórmulas, Vocabulario…"></div><label class="row" style="gap:8px;font-size:14px"><input type="checkbox" name="linea"> Es una línea del tiempo (ordenada por años)</label><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Crear</button></div></div></form>`)); },
+  "apt-del"(el){ const t = secById(el.dataset.sec); if (!t) return; const n = el.dataset.apt; if (!confirm(`¿Quitar el apartado «${n}»? Lo que tenga dentro pasará a Notas.`)) return; secPatch(t.id, {apts:(t.apts || []).filter(a => a.n !== n)}); },
+  "vid-add"(el){ swapLayer(() => openLayer(`${sheetHead("Añadir vídeo")}<form class="stack" data-form="vid-add" data-sec="${el.dataset.sec}"><div class="field"><label for="va-u">Enlace del vídeo</label><input type="url" id="va-u" name="url" required placeholder="https://youtu.be/…" inputmode="url"></div><p class="muted small" style="margin:0">Pega el enlace de YouTube (en la app de YouTube: Compartir → Copiar enlace). Se podrá ver aquí mismo.</p><div class="sheet-f"><span></span><div class="r"><button type="button" class="btn ghost" data-act="close">Cancelar</button><button class="btn pri" type="submit">Añadir</button></div></div></form>`)); },
+  "vid-play"(el){ const id = el.dataset.y; el.outerHTML = `<iframe class="vid-f" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Vídeo"></iframe>`; },
+  "topic-ai"(el){ const t = secById(el.dataset.sec); if (t) topicAI(t, ""); },
   "con-loose"(el){ S.conLoose = {...(S.conLoose || {}), [el.dataset.sec]:!(S.conLoose || {})[el.dataset.sec]}; render(); },
   "topic-del"(el){
     const id = el.dataset.sec, t = secById(id); if (!t) return;
@@ -4772,7 +4899,7 @@ Object.assign(ACT, {
   "topic-quick"(el){ makeTopic(el.dataset.parent, el.dataset.name); render(); toast("Tema creado", el.dataset.name); }
 });
 document.addEventListener("submit", e => {
-  const f = e.target, k = f.dataset.form; if (!["idea-plan","nutri-goal","peso-log","topic-new","con-add"].includes(k)) return;
+  const f = e.target, k = f.dataset.form; if (!["idea-plan","nutri-goal","peso-log","topic-new","con-add","apt-new","vid-add"].includes(k)) return;
   e.preventDefault(); const fd = new FormData(f);
   if (k === "idea-plan"){
     const i = S.items.get(f.dataset.id); if (!i) return;
@@ -4787,14 +4914,18 @@ document.addEventListener("submit", e => {
     putItem({id:uid(), kind:"entry", sectionId:f.dataset.sec, sub:"peso", title:`${kg} kg`, fields:{fecha:todayKey(), kg}}); toast("Peso apuntado", `${kg} kg hoy.`);
   } else if (k === "con-add"){
     const s = secById(f.dataset.sec); if (!s) return;
-    let cat = String(fd.get("cat") || "__new"), t = secById(cat);
-    if (cat === "__new" || !t){
-      const n = String(fd.get("newcat") || "").trim(); if (!n){ toast("Ponle nombre a la categoría"); f.newcat.hidden = false; f.newcat.focus(); return; }
-      t = childrenOf(s.id).find(x => x.name.toLowerCase() === n.toLowerCase()) || makeTopic(s.id, n);
-    }
-    const notas = String(fd.get("notas") || "").trim(), title = String(fd.get("title") || "").trim() || notas.split("\n")[0].slice(0, 60) || t.name;
-    putItem({id:uid(), kind:"entry", sectionId:t.id, sub:"nota", title, fields:{notas, fecha:todayKey()}});
-    closeLayer(); buzz(); toast("Guardado", `En ${t.name}.`);
+    const n = String(fd.get("name") || "").trim(); if (!n) return;
+    const old = childrenOf(s.id).find(x => x.name.toLowerCase() === n.toLowerCase()), t = old || makeTopic(s.id, n);
+    closeLayer(); S.kitTab[s.id] = "general"; location.hash = "s-" + t.id;
+    if (!old || !(t.apts || []).length) topicAI(t, String(fd.get("extra") || "").trim());
+  } else if (k === "apt-new"){
+    const t = secById(f.dataset.sec), n = String(fd.get("name") || "").trim(); if (!t || !n) return;
+    closeLayer(); if (!(t.apts || []).some(a => a.n.toLowerCase() === n.toLowerCase())) secPatch(t.id, {apts:[...(t.apts || []), {n, t:fd.get("linea") ? "linea" : "lista"}]});
+  } else if (k === "vid-add"){
+    const u = String(fd.get("url") || "").trim(), id = ytId(u); if (!u) return;
+    closeLayer();
+    const e = putItem({id:uid(), kind:"entry", sectionId:f.dataset.sec, sub:"nota", title:id ? "Vídeo de YouTube" : u.replace(/^https?:\/\//, "").slice(0, 60), fields:{video:u}});
+    if (id) fetch(`https://noembed.com/embed?url=${encodeURIComponent("https://www.youtube.com/watch?v=" + id)}`).then(r => r.json()).then(j => { if (j && j.title){ const it = S.items.get(e.id); if (it) putItem({...it, title:j.title}); } }).catch(() => {});
   } else if (k === "topic-new"){
     const n = String(fd.get("name") || "").trim(); if (!n) return;
     const t = makeTopic(f.dataset.parent, n); closeLayer(); location.hash = "s-" + t.id;
@@ -5045,20 +5176,17 @@ function travelStats(s){
 }
 const TRV_SHOW = TRV_FIELDS.filter(f => f[2] === "longtext");
 function trvPlace(x){
-  const f = x.e.fields || {}, ph = (f.portada || [])[0], filled = TRV_SHOW.filter(([k]) => String(f[k] || "").trim());
-  return `<div class="tp">
-    <button class="tp-h" data-act="open" data-id="${x.e.id}">${ph ? `<img data-img="${ph}" alt="">` : `<span class="tp-star"><i></i></span>`}<span class="tp-t"><b>${esc(x.e.title)}</b><span>${trvDays(x.e) ? esc(rangeTxt(trvDays(x.e), true)) : "Toca para contar tu viaje"}</span></span>${ic("edit")}</button>
-    ${filled.length ? `<dl class="tp-d">${filled.map(([k, l]) => `<div><dt>${esc(l)}</dt><dd>${esc(f[k])}</dd></div>`).join("")}</dl>`
-      : `<button class="tp-add" data-act="open" data-id="${x.e.id}">${ic("plus")}Dónde comiste y cenaste, qué bebiste, lo que más te gustó, sitios que ver…</button>`}
-  </div>`;
+  const r = trvDays(x.e);
+  return `<button class="tcity" data-act="open" data-id="${x.e.id}"><span class="tcity-f">${flagOf(x.g.cc)}</span><span class="tp-t"><b>${esc(x.e.title)}</b><span>${r ? esc(rangeTxt(r, true)) : "Toca para apuntar fechas, comidas, sitios…"}</span></span>${ic("right")}</button>`;
 }
 function vTravel(s){
   const st = travelStats(s), pc = Math.round(st.counted / CTRY_TOTAL * 100), mode = GL.mode || "", byC = new Map();
   for (const x of st.vis){ const k = x.g.cc; if (!byC.has(k)) byC.set(k, []); byC.get(k).push(x); }
   const groups = [...byC.entries()].sort((a, b) => (CTRY.get(a[0])?.name || "").localeCompare(CTRY.get(b[0])?.name || "", "es"));
   const ctryBlock = ([cc, xs]) => { const c = CTRY.get(cc), cities = xs.filter(x => x.g.type !== "country");
-    return `<div class="tl-c on"><button class="tl-h" data-act="trv-go" data-cc="${cc}"><span class="tl-f">${flagOf(cc)}</span><b>${esc(c?.name || cc)}</b><span>${cities.length ? `${cities.length} ${cities.length === 1 ? "ciudad" : "ciudades"}` : "País"}</span></button>
-      ${cities.length ? `<div class="tl-pl">${cities.map(trvPlace).join("")}</div>` : `<p class="muted small" style="margin:0">Busca arriba una ciudad de ${esc(c?.name || "")} para añadirla.</p>`}</div>`; };
+    const open = (S.trvOpen || {})[cc];
+    return `<div class="tl-c on${open ? " open" : ""}"><button class="tl-h" data-act="trv-open" data-cc="${cc}" aria-expanded="${!!open}"><span class="tl-flag">${flagOf(cc)}</span><b>${esc(c?.name || cc)}</b><span>${cities.length ? `${cities.length} ${cities.length === 1 ? "ciudad" : "ciudades"}` : "País"}</span>${ic(open ? "left" : "right")}</button>
+      ${open ? (cities.length ? `<div class="tl-pl">${cities.sort((a, b) => a.e.title.localeCompare(b.e.title, "es")).map(trvPlace).join("")}</div>` : `<p class="muted small" style="margin:0">Busca arriba una ciudad de ${esc(c?.name || "")} para añadirla.</p>`) : ""}</div>`; };
   let list = "";
   if (mode === "paises") list = groups.length ? `<div class="trv-list">${groups.map(ctryBlock).join("")}</div>` : `<p class="muted small trv-hint">Aún no has marcado ningún país.</p>`;
   else if (mode === "continentes") list = `<div class="trv-list">${CONTS.map((cn, i) => { const gs = groups.filter(([cc]) => CTRY.get(cc)?.cont === i), tot = [...CTRY.values()].filter(c => c.cont === i && c.ok).length;
@@ -5248,7 +5376,7 @@ function globeDraw(){
   for (const p of pins){
     if (d3.geoDistance([p.g.lng, p.g.lat], center) > 1.55) continue;
     const [x, y] = proj([p.g.lng, p.g.lat]), v = st.ccs.has(p.g.cc) && trvVisited(secById(GL.sid) || {}, p.e);
-    const onRed = !!GL.mode; ctx.beginPath(); ctx.arc(x, y, 5.5, 0, 7); ctx.fillStyle = onRed ? "#fff" : RED; ctx.strokeStyle = onRed ? "#111" : "#fff"; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
+    const onRed = false; ctx.beginPath(); ctx.arc(x, y, 5.5, 0, 7); ctx.fillStyle = onRed ? "#fff" : RED; ctx.strokeStyle = onRed ? "#111" : "#fff"; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
     vis.push({pin:p, x, y});
     if (p.g.type !== "country" && (focus.has(p.g.cc) || (GL.mode === "paises" && z >= 1.9))) mine.push({p, x, y});
   }
@@ -5385,7 +5513,8 @@ async function globeOnline(q){
     const js = await r.json();
     out = js.map(x => { const t = x.addresstype || x.type, cc = (x.address?.country_code || "").toUpperCase(), parts = String(x.display_name || "").split(", ");
       return t === "continent" ? null : {type:t === "country" ? "country" : "place", kind:KIND_ES[t] || "Lugar", name:x.name || parts[0], cc, lat:+x.lat, lng:+x.lon, sub:[parts.slice(1, -1).find(x => !/\d/.test(x) && x !== (x.name || parts[0])) || "", CTRY.get(cc)?.name || parts[parts.length - 1]].filter(Boolean).join(", ")}; }).filter(p => p && p.cc && CTRY.has(p.cc));
-  } catch {
+  } catch {}
+  if (!out.length){
     try {
       const js = await (await fetch(`https://photon.komoot.io/api/?limit=8&q=${encodeURIComponent(q)}`)).json();
       out = (js.features || []).map(f => { const pr = f.properties || {}, cc = (pr.countrycode || "").toUpperCase(), t = pr.type || pr.osm_value;
@@ -5394,6 +5523,7 @@ async function globeOnline(q){
   }
   if (GL.inp.value.trim() === q) globeResults(q, out);
 }
+ACT["trv-open"] = el => { const cc = el.dataset.cc, c = CTRY.get(cc); S.trvOpen = {...(S.trvOpen || {}), [cc]:!(S.trvOpen || {})[cc]}; if (S.trvOpen[cc] && c) globeGo({type:"country", name:c.name, cc, lat:c.lat, lng:c.lng}); buzz(); render(); };
 ACT["trv-go"] = el => { const c = CTRY.get(el.dataset.cc); if (!c) return; window.scrollTo({top:0, behavior:reduce.matches ? "auto" : "smooth"}); globeGo({type:"country", name:c.name, cc:c.cc, lat:c.lat, lng:c.lng}); };
 document.addEventListener("visibilitychange", () => { if (!document.hidden && GL.el && GL.el.isConnected) globeLoop(); });
 
